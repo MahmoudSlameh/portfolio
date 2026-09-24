@@ -55,6 +55,7 @@ export default defineConfig({
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
             'Reference-Frontend/**',
+            'scripts/**',
         ],
         options: {
             denyWarnings: true,
