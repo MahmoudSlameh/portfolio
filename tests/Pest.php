@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\TypeScriptInterfaces;
 use Tests\TestCase;
@@ -55,7 +57,15 @@ expect()->extend('toMatchInterface', function (string $interface) {
 |
 */
 
-function something()
+/**
+ * Sign in a panel user and make the admin panel current (for Filament Livewire tests).
+ */
+function actingAsAdmin(): User
 {
-    // ..
+    $user = User::factory()->create();
+
+    test()->actingAs($user);
+    Filament::setCurrentPanel('admin');
+
+    return $user;
 }

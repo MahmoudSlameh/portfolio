@@ -6,6 +6,7 @@ use App\Support\Countries;
 use Carbon\CarbonImmutable;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -107,5 +108,42 @@ final class Fields
                     ->label('Show on the site')
                     ->default(true),
             ]);
+    }
+
+    /**
+     * Spatie Media Library image upload with the image editor (optionally locked to aspect ratios like "16:9").
+     *
+     * @param  list<string>  $aspectRatios
+     * @param  list<string>|null  $acceptedTypes
+     */
+    public static function image(string $collection, array $aspectRatios = [], ?array $acceptedTypes = null): SpatieMediaLibraryFileUpload
+    {
+        $upload = SpatieMediaLibraryFileUpload::make($collection)
+            ->collection($collection)
+            ->image()
+            ->maxSize(10 * 1024)
+            ->downloadable()
+            ->openable();
+
+        if ($acceptedTypes !== null) {
+            $upload->acceptedFileTypes($acceptedTypes);
+        }
+
+        if ($aspectRatios !== []) {
+            $upload->imageEditor()->imageEditorAspectRatioOptions($aspectRatios);
+        }
+
+        return $upload;
+    }
+
+    /**
+     * Required alt text for an image (accessibility + SEO).
+     */
+    public static function alt(string $name, string $placeholder = 'Describe the image for screen readers and search engines'): TextInput
+    {
+        return TextInput::make($name)
+            ->label('Alt text')
+            ->placeholder($placeholder)
+            ->maxLength(255);
     }
 }

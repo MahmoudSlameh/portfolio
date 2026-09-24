@@ -27,11 +27,11 @@ opens global search.
 
 ---
 
-## P2-02 · Profile & Bio page — `todo`
+## P2-02 · Profile & Bio page — `done`
 
-- [ ] `app/Filament/Pages/EditProfile.php` singleton form with the 5 tabs.
-- [ ] Portrait (3:4 editor) + alt required, resume PDF.
-- [ ] Save notification; cache flushed.
+- [x] `app/Filament/Pages/EditProfile.php` singleton form with the 5 tabs.
+- [x] Portrait (3:4 editor) + alt required, resume PDF.
+- [x] Save notification; cache flushed.
 
 **Acceptance**: every Profile column editable; portrait conversions created;
 test covers save + upload.
@@ -156,3 +156,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 ## Notes
 
 - 2026-09-24 — P2-01: Panel: Indigo/Zinc, Inter, SPA, collapsible sidebar, full width, ⌘K search, DB notifications (30s poll), unsaved-changes alerts, DB transactions, 6 navigation groups, 'View site' user-menu item, password reset + full profile page. Custom theme resources/css/filament/admin/theme.css (in vite inputs) so custom Blade views can use Tailwind. Shared builders: App\Filament\Support\Fields (country, month, currentToggle, slug/slugSource, visibilitySection) and Columns (period, visibility, duration). User::canAccessPanel uses config('portfolio.admin_emails') in production.
+- 2026-09-24 — P2-02: App\Filament\Support\SingletonPage (abstract: fill from record, sticky save bar ⌘S, saveRelationships for Spatie uploads, DB transaction) + Pages\EditProfile (slug /admin/bio, 5 tabs). Tests: tests/Feature/Filament/EditProfilePageTest.php — use Repeater::fake() + internal item shape for simple repeaters in fillForm; actingAsAdmin() helper in tests/Pest.php.
