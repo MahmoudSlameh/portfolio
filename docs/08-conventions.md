@@ -29,6 +29,12 @@ A task is **not done** until `composer ci:check` passes.
   `create()`d model is not refreshed from the DB); `json` columns have no DB
   default at all (MySQL, D15) — their default lives only in `$attributes`.
   Month-precision dates are stored as the first day of the month.
+- **Morph map is enforced** (`AppServiceProvider::configureMorphMap`): every
+  new model must be added with a short snake_case alias, or media uploads /
+  pivots / notifications on it throw.
+- Reusable model concerns live in `app/Models/Concerns`: `IsSingleton`,
+  `GeneratesSlug`, `HasSortOrder`, `HasVisibilityAndOrder`, `HasSkills`,
+  `RegistersImageConversions`. Prefer them over re-implementing.
   Scopes: `visible()`, `ordered()`, `published()`.
 - Controllers stay thin: query → resource → `Inertia::render`. Put derived
   computations (career entries, book stats, reading time, search index) in

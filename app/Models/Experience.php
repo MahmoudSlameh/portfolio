@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Enums\CareerBranch;
 use App\Enums\EmploymentType;
 use App\Enums\WorkMode;
+use App\Models\Concerns\HasSkills;
 use App\Models\Concerns\HasVisibilityAndOrder;
 use App\Support\Content\Location;
 use Carbon\CarbonImmutable;
 use Database\Factories\ExperienceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,6 +43,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Company|null $company
+ * @property-read Collection<int, Skill> $skills
+ * @property-read list<string> $stack
  * @property-read bool $is_current
  * @property-read string $organization
  * @property-read string|null $location_label
@@ -55,7 +59,7 @@ use Illuminate\Support\Carbon;
 class Experience extends Model
 {
     /** @use HasFactory<ExperienceFactory> */
-    use HasFactory, HasVisibilityAndOrder;
+    use HasFactory, HasSkills, HasVisibilityAndOrder;
 
     /**
      * @var array<string, mixed>

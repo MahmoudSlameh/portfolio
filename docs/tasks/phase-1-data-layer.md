@@ -62,11 +62,11 @@ Companies, Experiences, Education, Certifications, Testimonials.
 
 ---
 
-## P1-04 · Skills — `todo`
+## P1-04 · Skills — `done`
 
-- [ ] `skill_categories`, `skills`, `skillables` (morph pivot with
+- [x] `skill_categories`, `skills`, `skillables` (morph pivot with
       `sort_order`).
-- [ ] `HasSkills` trait (`skills()` morphToMany ordered by pivot) for
+- [x] `HasSkills` trait (`skills()` morphToMany ordered by pivot) for
       Experience and Project.
 
 **Acceptance**: attaching skills keeps order; `stack` array returns names in
@@ -152,3 +152,4 @@ twice → no duplicates; every template page later renders like the reference.
 - 2026-09-24 — P1-01: 18 enums + Template (Arabic font families dropped from fontsHref); CareerBranch::forEmploymentType(); tests/Unit/EnumsTest.php.
 - 2026-09-24 — P1-02: IsSingleton + RegistersImageConversions (thumb/webp/og) concerns, App\Support\Media\MimeTypes. DB defaults are mirrored in model $attributes (create() does not refresh). NowPage books pivot left for P1-06. Media smoke test passes (GD WebP).
 - 2026-09-24 — P1-03: Company/Experience/Education/Certification/Testimonial + factories (states: current, remote, openSource, client, hidden). HasVisibilityAndOrder concern (#[Scope]), #[RouteKey('slug')] on Company, App\Support\Countries (symfony/intl, flags), Support\Content\Location, Support\Content\ChangelogMetadata. Experience skills() comes in P1-04.
+- 2026-09-24 — P1-04: skill_categories, skills (stack-only when no category), skillables morph pivot with sort_order; HasSkills (skills(), syncSkillsInOrder(), stack). Also: GeneratesSlug/HasSortOrder concerns and an enforced morph map (short aliases in media/skillables).

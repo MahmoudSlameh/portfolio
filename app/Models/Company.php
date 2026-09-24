@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CompanyKind;
 use App\Enums\WordmarkStyle;
+use App\Models\Concerns\GeneratesSlug;
 use App\Models\Concerns\HasVisibilityAndOrder;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Support\Content\Location;
@@ -17,7 +18,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -54,7 +54,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Company extends Model implements HasMedia
 {
     /** @use HasFactory<CompanyFactory> */
-    use HasFactory, HasVisibilityAndOrder, InteractsWithMedia, RegistersImageConversions;
+    use GeneratesSlug, HasFactory, HasVisibilityAndOrder, InteractsWithMedia, RegistersImageConversions;
 
     /**
      * @var array<string, mixed>
@@ -66,15 +66,6 @@ class Company extends Model implements HasMedia
         'is_visible' => true,
         'sort_order' => 0,
     ];
-
-    protected static function booted(): void
-    {
-        static::saving(function (Company $company): void {
-            if (blank($company->slug)) {
-                $company->slug = Str::slug($company->name);
-            }
-        });
-    }
 
     /**
      * @return array<string, string>
