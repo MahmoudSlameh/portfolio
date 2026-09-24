@@ -67,6 +67,7 @@ scores in Notes).
 ---
 
 ## Notes
+
 - 2026-09-24 — P4-01: SSR audited: all 9 pages × 3 templates render full content server-side (h1/title/meta/JSON-LD in raw HTML) and hydrate with zero console errors (Playwright). Supervisor program goes into docs/10-deployment.md (P5-04).
 - 2026-09-24 — P4-02: `Seo` builder + `SeoHead` (head-key per tag): title/description/canonical/robots/OG/Twitter/article tags; fallbacks profile → site settings; preview + non-indexable → noindex. Covered by Site/PublicPagesTest + TemplatePreviewTest.
 - 2026-09-24 — P4-03: `JsonLd`: Person, WebSite, BreadcrumbList, CreativeWork, BlogPosting, CollectionPage/Blog + ItemList; nulls stripped. Rich Results Test is external (not reachable from the build sandbox) — run it after deploy (checklist in docs/10-deployment.md).

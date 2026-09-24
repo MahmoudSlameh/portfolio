@@ -44,18 +44,18 @@ Management for **everything** the templates display — see
 
 ## Tech stack (as installed)
 
-| Layer        | Package                                                                    | Version                     |
-| ------------ | -------------------------------------------------------------------------- | --------------------------- |
-| Runtime      | PHP                                                                        | ^8.3 (8.4 in dev container) |
-| Framework    | laravel/framework                                                          | 13.x                        |
-| Admin        | filament/filament                                                          | 5.8.x (Livewire 4)          |
-| Media        | filament/spatie-laravel-media-library-plugin → spatie/laravel-medialibrary | 5.8.x → 11.x                |
-| Bridge       | inertiajs/inertia-laravel + @inertiajs/react                               | 3.x                         |
-| Routes in TS | laravel/wayfinder + @laravel/vite-plugin-wayfinder                         | 0.1.x                       |
-| UI           | React 19 + React Compiler, Tailwind CSS 4                                  |                             |
-| Build        | Vite 8 via `vite-plus` (`vp`)                                              |                             |
-| Tests        | Pest 5, Larastan (level 7), Pint                                           |                             |
-| AI tooling   | laravel/boost (dev)                                                        | 2.x                         |
+| Layer        | Package                                                                    | Version                        |
+| ------------ | -------------------------------------------------------------------------- | ------------------------------ |
+| Runtime      | PHP                                                                        | ^8.4 (Symfony 8 needs ≥ 8.4.1) |
+| Framework    | laravel/framework                                                          | 13.x                           |
+| Admin        | filament/filament                                                          | 5.8.x (Livewire 4)             |
+| Media        | filament/spatie-laravel-media-library-plugin → spatie/laravel-medialibrary | 5.8.x → 11.x                   |
+| Bridge       | inertiajs/inertia-laravel + @inertiajs/react                               | 3.x                            |
+| Routes in TS | laravel/wayfinder + @laravel/vite-plugin-wayfinder                         | 0.1.x                          |
+| UI           | React 19 + React Compiler, Tailwind CSS 4                                  |                                |
+| Build        | Vite 8 via `vite-plus` (`vp`)                                              |                                |
+| Tests        | Pest 5, Larastan (level 7), Pint                                           |                                |
+| AI tooling   | laravel/boost (dev)                                                        | 2.x                            |
 
 ## What exists today (starting point)
 

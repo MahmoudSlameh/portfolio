@@ -6,13 +6,17 @@ use App\Enums\SocialPlatform;
 use App\Enums\UsesKind;
 use App\Filament\Pages\EditNowPage;
 use App\Filament\Resources\Books\Pages\CreateBook;
+use App\Filament\Resources\Books\Pages\EditBook;
 use App\Filament\Resources\Books\Pages\ListBooks;
 use App\Filament\Resources\Socials\Pages\ManageSocials;
 use App\Filament\Resources\UsesGroups\Pages\CreateUsesGroup;
+use App\Filament\Resources\UsesGroups\Pages\EditUsesGroup;
+use App\Filament\Resources\UsesGroups\Pages\ListUsesGroups;
 use App\Models\Book;
 use App\Models\NowPage;
 use App\Models\Social;
 use App\Models\UsesGroup;
+use App\Models\UsesItem;
 use Filament\Forms\Components\Repeater;
 use Livewire\Livewire;
 
@@ -69,6 +73,33 @@ test('a uses group is created with its items in order', function () {
     $undo();
 
     expect(UsesGroup::query()->firstOrFail()->items->pluck('name')->all())->toBe(['MacBook Pro', 'HHKB']);
+});
+
+test('a book can be edited and marked as currently reading', function () {
+    $book = Book::factory()->create();
+
+    Livewire::test(EditBook::class, ['record' => $book->getRouteKey()])
+        ->assertSchemaStateSet(['title' => $book->title])
+        ->fillForm(['status' => ReadingStatus::Reading->value])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($book->refresh()->status)->toBe(ReadingStatus::Reading);
+});
+
+test('uses groups are listed and can be renamed', function () {
+    $group = UsesGroup::factory()->has(UsesItem::factory()->count(2), 'items')->create(['title' => 'Desk']);
+
+    Livewire::test(ListUsesGroups::class)
+        ->assertCanSeeTableRecords([$group]);
+
+    Livewire::test(EditUsesGroup::class, ['record' => $group->getRouteKey()])
+        ->fillForm(['title' => 'Desk setup'])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($group->refresh()->title)->toBe('Desk setup')
+        ->and($group->items)->toHaveCount(2);
 });
 
 test('social links get a label from the platform', function () {

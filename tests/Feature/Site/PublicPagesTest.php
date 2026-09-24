@@ -41,6 +41,27 @@ test('every page renders in every template with its props', function (Template $
     }
 })->with('templates');
 
+test('a fresh install without any content renders every page with empty lists', function (Template $template) {
+    Project::query()->delete();
+    Article::query()->delete();
+    Book::query()->delete();
+    SiteSetting::current()->update(['active_template' => $template]);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertInertia(fn (Assert $inertia) => $inertia
+            ->component("{$template->value}/Home")
+            ->where('projects', [])
+            ->where('career', [])
+            ->where('companies', [])
+            ->where('articles', [])
+            ->where('books', []));
+
+    foreach (['/projects', '/writing', '/books', '/uses', '/now'] as $url) {
+        $this->get($url)->assertOk();
+    }
+})->with('templates');
+
 test('unknown pages render the template 404 page with a 404 status', function (Template $template) {
     SiteSetting::current()->update(['active_template' => $template]);
 

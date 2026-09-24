@@ -80,7 +80,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P4-03 | JSON-LD                                                            | P4-02               | done   |
 | P4-04 | sitemap.xml, robots.txt, rss.xml                                   | P4-02               | done   |
 | P4-05 | Performance pass                                                   | P4-02               | done   |
-| P5-01 | Test hardening & CI                                                | P4-*                | todo   |
-| P5-02 | Content health & admin polish                                      | P2-*                | todo   |
+| P5-01 | Test hardening & CI                                                | P4-*                | done   |
+| P5-02 | Content health & admin polish                                      | P2-*                | done   |
 | P5-03 | Remove `Reference-Frontend/`                                       | P3-*, P5-01         | todo   |
 | P5-04 | Deployment guide & launch checklist                                | P4-*                | todo   |

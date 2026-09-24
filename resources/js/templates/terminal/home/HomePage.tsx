@@ -10,28 +10,39 @@ import { Services } from './Services';
 import { Skills } from './Skills';
 import { Stats } from './Stats';
 
+/** Sections whose content lives in the panel are skipped while their list is empty. */
 export function HomePage(data: HomePageProps) {
+    const hasSkills = data.skillGroups.some((group) => group.skills.length > 0);
+
     return (
         <>
             <Hero profile={data.profile} skillGroups={data.skillGroups} />
-            <Stats profile={data.profile} />
+            {data.profile.stats.length > 0 && <Stats profile={data.profile} />}
             <Cooperation
                 profile={data.profile}
                 companies={data.companies}
                 career={data.career}
             />
-            <Services profile={data.profile} groups={data.skillGroups} />
-            <Experience career={data.career} />
-            <Education
-                education={data.education}
-                certifications={data.certifications}
-            />
-            <ProjectsSlider
-                projects={data.projects}
-                companies={data.companies}
-            />
-            <Skills groups={data.skillGroups} />
-            <Blog articles={data.articles} projects={data.projects} />
+            {hasSkills && (
+                <Services profile={data.profile} groups={data.skillGroups} />
+            )}
+            {data.career.length > 0 && <Experience career={data.career} />}
+            {(data.education.length > 0 || data.certifications.length > 0) && (
+                <Education
+                    education={data.education}
+                    certifications={data.certifications}
+                />
+            )}
+            {data.projects.length > 0 && (
+                <ProjectsSlider
+                    projects={data.projects}
+                    companies={data.companies}
+                />
+            )}
+            {hasSkills && <Skills groups={data.skillGroups} />}
+            {data.articles.length > 0 && (
+                <Blog articles={data.articles} projects={data.projects} />
+            )}
             <Contact profile={data.profile} />
         </>
     );

@@ -128,7 +128,9 @@ export function Cooperation({
                         <span className="text-tm-300">{c('coop.titleD')}</span>
                     </h2>
 
-                    <CompanyTicker companies={companies} />
+                    {companies.length > 0 && (
+                        <CompanyTicker companies={companies} />
+                    )}
 
                     <div className="flex flex-col items-center gap-4 md:flex-row">
                         <Avatar profile={profile} />

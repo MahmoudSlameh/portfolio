@@ -2,21 +2,21 @@
 
 ---
 
-## P5-01 · Test hardening & CI — `todo`
+## P5-01 · Test hardening & CI — `done`
 
-- [ ] Coverage of every item in [08 · Testing](../08-conventions.md#testing-pest).
-- [ ] CI workflow (`.github/workflows/tests.yml`) also runs
+- [x] Coverage of every item in [08 · Testing](../08-conventions.md#testing-pest).
+- [x] CI workflow (`.github/workflows/tests.yml`) also runs
       `npm run build:ssr` and publishes/links the storage (media tests use
       `Storage::fake`).
-- [ ] Larastan level 7 clean with no baseline growth.
+- [x] Larastan level 7 clean with no baseline growth.
 
 **Acceptance**: `composer ci:check` green locally and on GitHub Actions.
 
-## P5-02 · Content health & admin polish — `todo`
+## P5-02 · Content health & admin polish — `done`
 
-- [ ] Walk through every screen in 04 with an empty DB and with demo data;
+- [x] Walk through every screen in 04 with an empty DB and with demo data;
       fix empty states, helper texts, icons, column widths, mobile layout.
-- [ ] Content health widget reports correctly.
+- [x] Content health widget reports correctly.
 
 ## P5-03 · Remove `Reference-Frontend/` — `todo`
 
@@ -36,5 +36,5 @@ and the launch checklist from 07 §6.
 ---
 
 ## Notes
-
-_(add dated notes here)_
+- 2026-09-24 — P5-01: 171 tests / 1455 assertions green; Larastan level 7 with no baseline. CI (.github/workflows/tests.yml) now runs PHP 8.4 (the lock's Symfony 8 needs ≥ 8.4.1; composer.json requires ^8.4) with gd/intl/exif and builds the SSR bundle. Media tests use Storage::fake, so no storage:link is needed in CI. Added tests: book edit, uses-group list/edit, and an empty-install test for every template. Removed the starter's placeholder tests.
+- 2026-09-24 — P5-02: Walked the admin and site with an empty DB (seeders without demo content) and with demo data, at desktop and mobile widths. Admin empty states, helper texts and content health are correct. Found and fixed a client crash on the changelog home when there are no companies. Home sections in all templates now render only when their list has items (see docs/08 § Empty content).

@@ -72,6 +72,14 @@ A task is **not done** until `composer ci:check` passes.
 - No data fetching in components; everything arrives as Inertia props.
 - SSR-safe code only (no browser globals during render).
 
+## Empty content
+
+Every list the owner manages can be empty on a fresh install. Home pages render a
+section only when its list has items (see each template's `HomePage`), and
+components must never index into a list without a guard (`list[0]`, `list[active]`).
+Before a release, load every page against an empty database (`php artisan
+migrate:fresh --seed` without the demo seeder) and check the browser console.
+
 ## Testing (Pest)
 
 - Feature test per public route × per template (dataset over
