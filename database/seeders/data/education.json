@@ -1,0 +1,28 @@
+[
+    {
+        "id": "ms-dist",
+        "institution": "University of Edinburgh",
+        "degree": "MSc",
+        "field": "Distributed Systems (part-time, online)",
+        "start": 2020,
+        "end": 2022,
+        "location": "Remote",
+        "notes": [
+            "Dissertation: deterministic replay for event-sourced ledgers",
+            "Distinction"
+        ]
+    },
+    {
+        "id": "bsc-cs",
+        "institution": "Cairo University",
+        "degree": "BSc",
+        "field": "Computer Engineering",
+        "start": 2011,
+        "end": 2016,
+        "location": "Cairo",
+        "notes": [
+            "Graduation project: Arabic OCR for handwritten invoices",
+            "ACM ICPC regional finalist, 2014"
+        ]
+    }
+]

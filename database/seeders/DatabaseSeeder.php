@@ -2,24 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\NowPage;
+use App\Models\Profile;
+use App\Models\SiteSetting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Seed what every install needs: the admin user and the singleton rows.
+     * Demo content is opt-in: `php artisan db:seed --class=DemoContentSeeder`.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(AdminUserSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        SiteSetting::current();
+        Profile::current();
+        NowPage::current();
     }
 }

@@ -130,11 +130,11 @@ the TS interface keys (keep a PHP array of expected keys per resource).
 
 ---
 
-## P1-09 · Seeders — `todo`
+## P1-09 · Seeders — `done`
 
-- [ ] `AdminUserSeeder` (from env), `SiteSettingSeeder`, `ProfileSeeder`
+- [x] `AdminUserSeeder` (from env), `SiteSettingSeeder`, `ProfileSeeder`
       (empty-but-valid defaults).
-- [ ] `DemoContentSeeder`: convert every `Reference-Frontend/src/data/*.ts`
+- [x] `DemoContentSeeder`: convert every `Reference-Frontend/src/data/*.ts`
       record to PHP arrays in `database/seeders/data/*.php` (English values
       only) and import idempotently; attach images from
       `Reference-Frontend/public/images` (largest width) with alt texts from
@@ -157,3 +157,4 @@ twice → no duplicates; every template page later renders like the reference.
 - 2026-09-24 — P1-06: articles (Builder body [{type,data}], wordCount/readingMinutes match the reference: fixture tests/Fixtures/ledgers-article.json = 340 words / 2 min; publishing stamps published_at), article_project, books, uses groups/items, socials, contact_messages (unread scope, mark read/unread), book_now_page pivot + NowPage::currentlyReading() fallback. Datetime casts are immutable_datetime (app uses CarbonImmutable).
 - 2026-09-24 — P1-07: Implemented as one class App\Support\Content\PortfolioContent (1:1 port of lib/content.ts: career, skillGroups, projects+facets+detail, articles+tags+detail, books+stats, education, certifications, testimonials, uses, now, searchIndex) + Support\Content\ArticleBody (Builder → ArticleBlock union). Filtering runs on collections (tiny dataset, same semantics as the reference).
 - 2026-09-24 — P1-08: resources/js/types/content.ts is the contract (English-only, ImageData, workMode/address/grade/institutionUrl added; Education start/end = YYYY-MM|null). 14 JsonResources + App\Support\Media\ImageData. tests/Support/TypeScriptInterfaces parses content.ts; expect()->toMatchInterface('X') asserts exact keys.
+- 2026-09-24 — P1-09: DatabaseSeeder = AdminUserSeeder (config('portfolio.admin'), 'password' fallback outside production) + singletons. DemoContentSeeder reads JSON exported by scripts/export-reference-data.cjs (TypeScript compiler, no hand conversion) + database/seeders/images. Runs twice without duplicates (tests/Feature/SeedersTest.php). ImageData strips Spatie's data: placeholder from srcSet.

@@ -1,0 +1,169 @@
+[
+    {
+        "id": "tessellate-staff",
+        "companyId": "tessellate",
+        "organization": "Tessellate",
+        "role": "Staff Software Engineer, Payments Platform",
+        "type": "full-time",
+        "branch": "main",
+        "start": "2024-02",
+        "end": null,
+        "location": "Remote",
+        "version": "v5.0.0",
+        "commit": "a41c9e2",
+        "message": "feat(career): lead payments platform at Tessellate",
+        "summary": "Technical lead for the ledger, settlement and payouts domains across four teams. Owner of the platform roadmap and the Atlas design system.",
+        "highlights": [
+            "Designed Ledgerline, a double-entry ledger now recording $2.1B in annual volume with zero unbalanced journals.",
+            "Replaced nightly batch reconciliation with streaming settlement, cutting close time from 9 hours to 12 minutes.",
+            "Started the staff engineering guild and the RFC process now used by 60 engineers."
+        ],
+        "stack": [
+            "Go",
+            "PostgreSQL",
+            "Kafka",
+            "TypeScript",
+            "React",
+            "Terraform"
+        ],
+        "projectIds": ["ledgerline", "atlas"]
+    },
+    {
+        "id": "lattice-senior",
+        "companyId": "lattice",
+        "organization": "Lattice Freight",
+        "role": "Senior Software Engineer",
+        "type": "full-time",
+        "branch": "main",
+        "start": "2021-04",
+        "end": "2024-01",
+        "location": "Amsterdam · Remote",
+        "version": "v4.0.0",
+        "commit": "7f3b0d1",
+        "message": "feat(career): move to logistics at Lattice Freight",
+        "summary": "Tech lead on the visibility team, responsible for shipment tracking, carrier integrations and the customer-facing tracking app.",
+        "highlights": [
+            "Led the Relay rewrite from polling to event streaming — p95 update latency fell from 4 minutes to 3 seconds.",
+            "Built a carrier-integration SDK that took new carrier onboarding from six weeks to four days.",
+            "Mentored five engineers, two of whom are now tech leads."
+        ],
+        "stack": [
+            "TypeScript",
+            "Node.js",
+            "Kafka",
+            "PostgreSQL",
+            "React",
+            "Kubernetes"
+        ],
+        "projectIds": ["relay"]
+    },
+    {
+        "id": "quire-oss",
+        "companyId": null,
+        "organization": "Quire (open source)",
+        "role": "Creator & Maintainer, Quire",
+        "type": "open-source",
+        "branch": "oss",
+        "start": "2021-01",
+        "end": null,
+        "location": "Open source",
+        "version": "oss/1.0.0",
+        "commit": "c2e8a55",
+        "message": "chore(oss): branch quire from side project",
+        "summary": "An open-source Markdown-to-print typesetting engine. Started as a tool for my own writing; now used by publishers and documentation teams.",
+        "highlights": [
+            "4,800 GitHub stars, 90 contributors and a monthly release cadence since 2021.",
+            "Implemented Knuth–Plass line breaking with Arabic kashida justification.",
+            "Spoke about Quire at JSConf EU 2023 and ReactConf Cairo 2024."
+        ],
+        "stack": ["Rust", "TypeScript", "WebAssembly"],
+        "projectIds": ["quire"]
+    },
+    {
+        "id": "halcyon-engineer",
+        "companyId": "halcyon",
+        "organization": "Halcyon Health",
+        "role": "Software Engineer",
+        "type": "full-time",
+        "branch": "main",
+        "start": "2019-06",
+        "end": "2021-03",
+        "location": "London · Remote",
+        "version": "v3.0.0",
+        "commit": "3d91f07",
+        "message": "feat(career): join clinical software at Halcyon Health",
+        "summary": "Full-stack engineer on the acute-care product, working directly with emergency-department nurses and clinicians.",
+        "highlights": [
+            "Built Pulse, a real-time triage dashboard now used in 14 emergency departments.",
+            "Reduced median time-to-triage by 31% in the first pilot hospital.",
+            "Introduced accessibility audits into the release checklist; reached WCAG 2.1 AA."
+        ],
+        "stack": ["TypeScript", "React", "GraphQL", "Node.js", "PostgreSQL"],
+        "projectIds": ["pulse"]
+    },
+    {
+        "id": "freelance",
+        "companyId": null,
+        "organization": "Self-employed",
+        "role": "Independent Consultant",
+        "type": "freelance",
+        "branch": "freelance",
+        "start": "2018-03",
+        "end": "2020-08",
+        "location": "Cairo · Remote",
+        "version": "freelance/0.9.0",
+        "commit": "e05b6ac",
+        "message": "chore(freelance): take on consulting alongside main work",
+        "summary": "Evening and weekend consulting for fintech and energy teams on API design, reliability and architecture reviews.",
+        "highlights": [
+            "Designed idempotent payment APIs and a reconciliation audit for NilePay.",
+            "Delivered an ingestion architecture review for Orbital Grid that halved their cloud bill.",
+            "Built Tidewater, a tiny edge feature-flag service, from a client request."
+        ],
+        "stack": ["Node.js", "PostgreSQL", "Redis", "AWS"],
+        "projectIds": ["tidewater"]
+    },
+    {
+        "id": "kiosk-frontend",
+        "companyId": "kiosk",
+        "organization": "Kiosk Studio",
+        "role": "Frontend Engineer",
+        "type": "full-time",
+        "branch": "main",
+        "start": "2016-09",
+        "end": "2019-05",
+        "location": "Cairo",
+        "version": "v2.0.0",
+        "commit": "9a7c3e4",
+        "message": "feat(career): ship Arabic-first products at Kiosk Studio",
+        "summary": "First engineering hire at a twelve-person product studio. Built commerce and fintech products for clients across the region.",
+        "highlights": [
+            "Built the Souk.co checkout, raising mobile conversion by 19%.",
+            "Created the studio’s first component library with full RTL support.",
+            "Grew from sole frontend engineer to leading a team of four."
+        ],
+        "stack": ["JavaScript", "React", "CSS", "Node.js"],
+        "projectIds": ["souk-checkout", "almanac"]
+    },
+    {
+        "id": "meridian-intern",
+        "companyId": "meridian",
+        "organization": "Meridian Bank",
+        "role": "Software Engineering Intern",
+        "type": "internship",
+        "branch": "main",
+        "start": "2015-06",
+        "end": "2016-08",
+        "location": "Cairo",
+        "version": "v1.0.0",
+        "commit": "1f00d2b",
+        "message": "init: first commit",
+        "summary": "Reporting team intern at a retail bank, writing SQL reports and internal tools for branch managers.",
+        "highlights": [
+            "Rewrote the daily branch report, cutting generation time from 40 minutes to 90 seconds.",
+            "Learned that the most important user of a system is often the one filling in the spreadsheet."
+        ],
+        "stack": ["SQL", "C#", "Excel"],
+        "projectIds": []
+    }
+]

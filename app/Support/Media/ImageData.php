@@ -40,7 +40,7 @@ final class ImageData
 
         return [
             'src' => $converted ? $media->getUrl($conversion) : $media->getUrl(),
-            'srcSet' => $converted ? $media->getSrcset($conversion) : '',
+            'srcSet' => $converted ? self::srcSet($media, $conversion) : '',
             'width' => $width,
             'height' => $height,
             'alt' => (string) $alt,
@@ -65,5 +65,16 @@ final class ImageData
         $scale = min(1, self::WEBP_MAX_EDGE / max($width, $height));
 
         return [(int) round($width * $scale), (int) round($height * $scale)];
+    }
+
+    /**
+     * Responsive variants without Spatie's inline placeholder entry (the placeholder is sent separately),
+     * so browsers never pick the tiny blurred image as a srcset candidate.
+     */
+    private static function srcSet(Media $media, string $conversion): string
+    {
+        return collect(explode(', ', $media->getSrcset($conversion)))
+            ->reject(fn (string $candidate): bool => $candidate === '' || str_starts_with($candidate, 'data:'))
+            ->implode(', ');
     }
 }

@@ -12,6 +12,12 @@ return [
     |
     */
 
+    'admin' => [
+        'name' => env('ADMIN_NAME', 'Admin'),
+        'email' => env('ADMIN_EMAIL'),
+        'password' => env('ADMIN_PASSWORD'),
+    ],
+
     'admin_emails' => array_values(array_filter(array_map(
         'trim',
         explode(',', (string) env('ADMIN_EMAILS', (string) env('ADMIN_EMAIL', ''))),

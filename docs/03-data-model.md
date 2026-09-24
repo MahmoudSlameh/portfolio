@@ -419,8 +419,9 @@ is computed **in PHP** with the same algorithm and returned as props.
 - `DatabaseSeeder` → `AdminUserSeeder` (from `ADMIN_EMAIL` / `ADMIN_PASSWORD`
   env) + `SiteSettingSeeder`.
 - `DemoContentSeeder` (optional, `php artisan db:seed --class=DemoContentSeeder`)
-  imports every `Reference-Frontend/src/data/*.ts` record (hand-converted to
-  PHP arrays in `database/seeders/data/*.php`) and attaches images from
-  `Reference-Frontend/public/images/*` (largest width) through
-  `addMedia()->preservingOriginal()`. Must be idempotent (`updateOrCreate` by
-  slug).
+  imports the reference portfolio from `database/seeders/data/*.json` (exported
+  from `Reference-Frontend/src/data/*.ts` by `node scripts/export-reference-data.cjs`,
+  English values only) and attaches images from `database/seeders/images/*.webp`
+  (largest width of each reference image). Idempotent: `updateOrCreate` on natural
+  keys (slug, credential id, role + start month…); images only added to empty
+  collections.
