@@ -25,6 +25,10 @@ A task is **not done** until `composer ci:check` passes.
 - Enums in `app/Enums`, string-backed, implementing Filament `HasLabel`,
   `HasColor`, `HasIcon` where shown as badges.
 - Models: `HasFactory`; every model gets a factory (used by tests).
+  Mirror every DB column default in the model `$attributes` (a freshly
+  `create()`d model is not refreshed from the DB); `json` columns have no DB
+  default at all (MySQL, D15) — their default lives only in `$attributes`.
+  Month-precision dates are stored as the first day of the month.
   Scopes: `visible()`, `ordered()`, `published()`.
 - Controllers stay thin: query → resource → `Inertia::render`. Put derived
   computations (career entries, book stats, reading time, search index) in

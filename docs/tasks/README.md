@@ -43,8 +43,8 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P0-02 | Laravel Boost + AI guidelines                                      | P0-01               | done   |
 | P0-03 | Spatie Media Library setup (package already required)              | P0-01               | done   |
 | P0-04 | Extra packages (symfony/intl) & config file `config/portfolio.php` | P0-01               | done   |
-| P1-01 | Enums                                                              | P0-04               | todo   |
-| P1-02 | Singletons: Profile, SiteSetting, NowPage                          | P1-01, P0-03        | todo   |
+| P1-01 | Enums                                                              | P0-04               | done   |
+| P1-02 | Singletons: Profile, SiteSetting, NowPage                          | P1-01, P0-03        | done   |
 | P1-03 | Companies, Experiences, Education, Certifications, Testimonials    | P1-01, P0-03        | todo   |
 | P1-04 | Skills, categories, skillables                                     | P1-01               | todo   |
 | P1-05 | Projects + gallery items                                           | P1-03, P1-04        | todo   |

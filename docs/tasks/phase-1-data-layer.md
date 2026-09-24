@@ -10,13 +10,13 @@ Pest unit test for casts/relations/derived values.
 
 ---
 
-## P1-01 · Enums — `todo`
+## P1-01 · Enums — `done`
 
-- [ ] Create every enum from the table in 03 under `app/Enums`, string-backed.
-- [ ] Implement `HasLabel` (+ `HasColor`/`HasIcon` for: ProjectStatus,
+- [x] Create every enum from the table in 03 under `app/Enums`, string-backed.
+- [x] Implement `HasLabel` (+ `HasColor`/`HasIcon` for: ProjectStatus,
       ArticleStatus, ReadingStatus, WorkMode, EmploymentType, CompanyKind,
       AvailabilityStatus, ContactTopic, SocialPlatform).
-- [ ] `Template` enum: `label()`, `description()`, `fontsHref()` (copy URLs
+- [x] `Template` enum: `label()`, `description()`, `fontsHref()` (copy URLs
       from `Reference-Frontend/src/templates/*/index.ts`; drop Arabic font
       families), `screenshot()` path.
 
@@ -25,15 +25,17 @@ covers `fontsHref()` non-empty for each case.
 
 ---
 
-## P1-02 · Singletons: Profile, SiteSetting, NowPage — `todo`
+## P1-02 · Singletons: Profile, SiteSetting, NowPage — `done`
 
-- [ ] Migrations per 03. `json` columns get **no DB default** (MySQL 8 rule,
+- [x] Migrations per 03. `json` columns get **no DB default** (MySQL 8 rule,
       D15) — set defaults in the model `$attributes` instead.
-- [ ] `Profile::current()`, `SiteSetting::current()`, `NowPage::current()`
-      (`firstOrCreate` with sensible defaults; cached; observer flushes cache).
-- [ ] `Profile` & `SiteSetting` implement `HasMedia` with collections from 05.
-- [ ] `NowPage::readingBooks()` pivot migration can wait for P1-06 (books).
-- [ ] Media smoke test (from P0-03): upload a fake portrait to `Profile`, run
+- [x] `Profile::current()`, `SiteSetting::current()`, `NowPage::current()`
+      (created on first access with sensible defaults; memoized per request in
+      the container; saving/deleting forgets it — `App\Models\Concerns\IsSingleton`).
+      Cross-request caching of shared props happens in P3-02.
+- [x] `Profile` & `SiteSetting` implement `HasMedia` with collections from 05.
+- [x] `NowPage::readingBooks()` pivot migration can wait for P1-06 (books).
+- [x] Media smoke test (from P0-03): upload a fake portrait to `Profile`, run
       conversions, assert `width`/`height` custom properties are stored.
 
 **Acceptance**: calling `current()` twice returns the same row; media
@@ -147,4 +149,5 @@ twice → no duplicates; every template page later renders like the reference.
 
 ## Notes
 
-_(add dated notes here)_
+- 2026-09-24 — P1-01: 18 enums + Template (Arabic font families dropped from fontsHref); CareerBranch::forEmploymentType(); tests/Unit/EnumsTest.php.
+- 2026-09-24 — P1-02: IsSingleton + RegistersImageConversions (thumb/webp/og) concerns, App\Support\Media\MimeTypes. DB defaults are mirrored in model $attributes (create() does not refresh). NowPage books pivot left for P1-06. Media smoke test passes (GD WebP).
