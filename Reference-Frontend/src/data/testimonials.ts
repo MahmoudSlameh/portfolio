@@ -1,0 +1,31 @@
+import type { Testimonial } from '@/types/content';
+
+export const testimonials: Testimonial[] = [
+  {
+    id: 'lina',
+    quote:
+      'Adam is the rare staff engineer who makes the whole room sharper. Ledgerline shipped with zero drama because he spent the first month earning the finance team’s trust, not writing code.',
+    author: 'Lina Haddad',
+    role: 'VP Engineering',
+    companyId: 'tessellate',
+    relation: 'Managed Adam, 2024 — now',
+  },
+  {
+    id: 'pieter',
+    quote:
+      'He took our scariest system — shipment tracking — and turned it into the one nobody worries about. The carrier SDK he designed is still how we onboard every partner.',
+    author: 'Pieter van Dijk',
+    role: 'CTO',
+    companyId: 'lattice',
+    relation: 'Worked with Adam, 2021 — 2024',
+  },
+  {
+    id: 'grace',
+    quote:
+      'Adam shadowed our night shift before proposing anything. Pulse is the first piece of software my nurses asked to keep after a pilot.',
+    author: 'Grace Okafor',
+    role: 'Lead Emergency Nurse',
+    companyId: 'halcyon',
+    relation: 'Clinical partner on Pulse',
+  },
+];
