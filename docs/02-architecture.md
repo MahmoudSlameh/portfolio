@@ -81,9 +81,9 @@ docs/                               # this documentation
 3. Wraps it in `ProjectDetailResource` and builds `SeoData`.
 4. `Inertia::render($templates->page('CaseStudy'), ['project' => ..., 'seo' => ...])`.
 5. `HandleInertiaRequests::share()` adds global props: `site`, `profile`
-   (layout subset), `socials`, `template` (`id`, `fontsHref`, `isPreview`),
+   (layout subset), `socials`, `template` (`id`, `isPreview`),
    `searchIndex` (deferred/once prop), `flash`.
-6. `app.blade.php` injects the template font stylesheet and the pre-hydration
+6. `app.blade.php` preloads the template's self-hosted fonts, injects the pre-hydration
    theme script, then `<x-inertia::head>` (SSR head) and `<x-inertia::app>`.
 7. SSR node server renders the page; browser hydrates.
 

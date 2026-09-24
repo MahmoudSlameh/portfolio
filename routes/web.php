@@ -5,6 +5,7 @@ use App\Http\Controllers\Site\ContactMessageController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\PageController;
 use App\Http\Controllers\Site\ProjectController;
+use App\Http\Controllers\Site\SeoController;
 use App\Http\Middleware\EnsurePageEnabled;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,10 @@ Route::middleware(EnsurePageEnabled::class.':writing')->group(function (): void 
 Route::get('/books', [PageController::class, 'books'])->middleware(EnsurePageEnabled::class.':books')->name('books');
 Route::get('/uses', [PageController::class, 'uses'])->middleware(EnsurePageEnabled::class.':uses')->name('uses');
 Route::get('/now', [PageController::class, 'now'])->middleware(EnsurePageEnabled::class.':now')->name('now');
+
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+Route::get('/rss.xml', [SeoController::class, 'rss'])->name('rss');
 
 Route::post('/contact', [ContactMessageController::class, 'store'])->middleware('throttle:contact')->name('contact.store');
 

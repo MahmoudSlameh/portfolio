@@ -65,16 +65,19 @@ test('skills, companies, career, testimonials, education and certifications matc
         ->and($this->content->certifications()[0])->toMatchInterface('Certification');
 });
 
-test('projects match their interfaces, including images', function () {
+test('projects match their interfaces; lists omit the case-study fields', function () {
     $project = $this->content->projects()[0];
     $detail = $this->content->projectBySlug($project['slug']);
 
     expect($project)->toMatchInterface('Project')
         ->and($project['cover'])->toMatchInterface('ImageData')
-        ->and($project['gallery'][0])->toHaveKey('caption')
+        ->and($project['gallery'])->toBe([])
+        ->and($project['overview'])->toBe([])
         ->and($project['metrics'][0])->toMatchInterface('ProjectMetric')
         ->and($this->content->projectFacets())->toMatchInterface('ProjectFacets')
         ->and($detail)->toMatchInterface('ProjectDetail')
+        ->and($detail['gallery'][0])->toHaveKey('caption')
+        ->and($detail['overview'])->not->toBeEmpty()
         ->and($detail['experience'] ?? null)->toMatchInterface('Experience')
         ->and($detail['relatedArticles'][0] ?? null)->toMatchInterface('ArticleSummary');
 });

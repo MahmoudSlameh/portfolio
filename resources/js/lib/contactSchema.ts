@@ -1,36 +1,44 @@
-import { z } from 'zod';
 import type { DictionaryKey } from '@/i18n/dictionary';
 import type { ContactMessage } from '@/types/content';
-
-const errorKey = (key: DictionaryKey): string => key;
-
-export const contactSchema = z.object({
-    name: z.string().trim().min(1, errorKey('contact.error.nameRequired')),
-    email: z
-        .string()
-        .trim()
-        .min(1, errorKey('contact.error.emailRequired'))
-        .pipe(z.email(errorKey('contact.error.emailInvalid'))),
-    topic: z.enum(['advisory', 'role', 'speaking', 'hello']),
-    message: z.string().trim().min(20, errorKey('contact.error.messageShort')),
-});
 
 export type ContactField = keyof ContactMessage;
 
 export type ContactErrors = Partial<Record<ContactField, DictionaryKey>>;
 
+const TOPICS: ContactMessage['topic'][] = [
+    'advisory',
+    'role',
+    'speaking',
+    'hello',
+];
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Client-side check of the contact form (the server validates again in ContactMessageRequest).
+ * Returns trimmed values, or the first error key per field.
+ */
 export const validateContact = (
     values: ContactMessage,
 ):
     | { success: true; data: ContactMessage }
     | { success: false; errors: ContactErrors } => {
-    const result = contactSchema.safeParse(values);
-    if (result.success) return { success: true, data: result.data };
-
+    const data: ContactMessage = {
+        name: values.name.trim(),
+        email: values.email.trim(),
+        topic: values.topic,
+        message: values.message.trim(),
+    };
     const errors: ContactErrors = {};
-    for (const issue of result.error.issues) {
-        const field = issue.path[0] as ContactField;
-        errors[field] ??= issue.message as DictionaryKey;
-    }
-    return { success: false, errors };
+
+    if (data.name === '') errors.name = 'contact.error.nameRequired';
+    if (data.email === '') errors.email = 'contact.error.emailRequired';
+    else if (!EMAIL_PATTERN.test(data.email))
+        errors.email = 'contact.error.emailInvalid';
+    if (!TOPICS.includes(data.topic)) data.topic = 'hello';
+    if (data.message.length < 20) errors.message = 'contact.error.messageShort';
+
+    return Object.keys(errors).length === 0
+        ? { success: true, data }
+        : { success: false, errors };
 };

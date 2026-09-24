@@ -12,18 +12,15 @@ use App\Enums\SocialPlatform;
 use App\Enums\Template;
 use App\Enums\WorkMode;
 
-test('every template has a label, description, fonts stylesheet and screenshot', function (Template $template) {
+test('every template has a label, description and screenshot', function (Template $template) {
     expect($template->getLabel())->not->toBeEmpty()
         ->and($template->getDescription())->not->toBeEmpty()
-        ->and($template->fontsHref())->toStartWith('https://fonts.googleapis.com/')
         ->and($template->screenshot())->toBe("templates/{$template->value}.webp");
 })->with(Template::cases());
 
-test('template fonts do not load arabic families', function (Template $template) {
-    expect($template->fontsHref())
-        ->not->toContain('Arabic')
-        ->not->toContain('Readex')
-        ->not->toContain('Cairo');
+test('every template preloads self-hosted font files that exist', function (Template $template) {
+    expect($template->preloadFonts())->not->toBeEmpty()
+        ->each(fn ($font) => $font->toEndWith('.woff2')->and(file_exists(dirname(__DIR__, 2).'/'.$font->value))->toBeTrue());
 })->with(Template::cases());
 
 test('the default template is changelog', function () {

@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router';
 import { LayoutGrid, Table2 } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import { useState } from 'react';
 import { ProjectCard } from '@/templates/changelog/components/content/ProjectCard';
 import { ProjectStatusBadge } from '@/templates/changelog/components/content/ProjectStatusBadge';
@@ -289,13 +289,13 @@ export function ProjectArchive({
                 )}
 
                 {projects.length > 0 && view === 'grid' && (
-                    <motion.ul
+                    <m.ul
                         layout
                         className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
                     >
                         <AnimatePresence mode="popLayout" initial={false}>
                             {projects.map((project, index) => (
-                                <motion.li
+                                <m.li
                                     key={project.id}
                                     layout
                                     initial={{ opacity: 0, y: 12 }}
@@ -310,10 +310,10 @@ export function ProjectArchive({
                                         project={project}
                                         priority={index < 3}
                                     />
-                                </motion.li>
+                                </m.li>
                             ))}
                         </AnimatePresence>
-                    </motion.ul>
+                    </m.ul>
                 )}
             </div>
         </>

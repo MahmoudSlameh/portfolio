@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import { useState, type KeyboardEvent } from 'react';
 import { IconButton } from '@/templates/changelog/components/ui/IconButton';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -53,7 +53,7 @@ export function TestimonialCarousel({
                         initial={false}
                         custom={offset}
                     >
-                        <motion.figure
+                        <m.div
                             key={current.id}
                             role="group"
                             aria-roledescription="slide"
@@ -69,33 +69,41 @@ export function TestimonialCarousel({
                                 ease: [0.22, 1, 0.36, 1],
                             }}
                         >
-                            <blockquote
-                                lang="en"
-                                className="font-display text-[1.625rem] leading-[1.25] text-ink md:text-[2.25rem]"
-                            >
-                                <span aria-hidden className="text-signal-ink">
-                                    “
-                                </span>
-                                {current.quote}
-                                <span aria-hidden className="text-signal-ink">
-                                    ”
-                                </span>
-                            </blockquote>
-                            <figcaption
-                                lang="en"
-                                className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1"
-                            >
-                                <span className="text-[0.9375rem] font-semibold text-ink">
-                                    {current.author}
-                                </span>
-                                <span className="text-sm text-ink-muted">
-                                    {current.role}, {current.company?.name}
-                                </span>
-                                <span className="font-mono text-[0.6875rem] text-ink-subtle">
-                                    {current.relation}
-                                </span>
-                            </figcaption>
-                        </motion.figure>
+                            <figure>
+                                <blockquote
+                                    lang="en"
+                                    className="font-display text-[1.625rem] leading-[1.25] text-ink md:text-[2.25rem]"
+                                >
+                                    <span
+                                        aria-hidden
+                                        className="text-signal-ink"
+                                    >
+                                        “
+                                    </span>
+                                    {current.quote}
+                                    <span
+                                        aria-hidden
+                                        className="text-signal-ink"
+                                    >
+                                        ”
+                                    </span>
+                                </blockquote>
+                                <figcaption
+                                    lang="en"
+                                    className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1"
+                                >
+                                    <span className="text-[0.9375rem] font-semibold text-ink">
+                                        {current.author}
+                                    </span>
+                                    <span className="text-sm text-ink-muted">
+                                        {current.role}, {current.company?.name}
+                                    </span>
+                                    <span className="font-mono text-[0.6875rem] text-ink-subtle">
+                                        {current.relation}
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </m.div>
                     </AnimatePresence>
                 </div>
             </div>

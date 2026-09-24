@@ -20,21 +20,18 @@ export function Footer({
         select: (state) => state.location.pathname === '/',
     });
     const linkClass =
-        'text-ink opacity-50 transition-opacity hover:opacity-100';
+        'text-ink opacity-75 transition-opacity hover:opacity-100';
 
     return (
         <footer className="tm-container">
             <div className="border-t border-tm-border pt-6 pb-4 text-center">
-                <Link
-                    to="/"
-                    aria-label={t('nav.homeLabel', { name: profile.name })}
-                    className="mb-4 inline-flex"
-                >
+                <Link to="/" className="mb-4 inline-flex">
                     <Wordmark
                         profile={profile}
                         className="flex items-center justify-center gap-2"
                         textClassName="tm-footer-logo text-2xl font-medium"
                     />
+                    <span className="sr-only">{t('nav.homeSuffix')}</span>
                 </Link>
                 <ul
                     aria-label={t('hero.socialLabel')}

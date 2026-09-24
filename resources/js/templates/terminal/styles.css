@@ -18,10 +18,9 @@
 }
 
 [data-template='terminal'] {
-    --tpl-font-display:
-        'DM Mono', 'IBM Plex Sans Arabic', ui-monospace, monospace;
-    --tpl-font-sans: 'DM Mono', 'IBM Plex Sans Arabic', ui-monospace, monospace;
-    --tpl-font-mono: 'DM Mono', 'IBM Plex Sans Arabic', ui-monospace, monospace;
+    --tpl-font-display: 'DM Mono', ui-monospace, monospace;
+    --tpl-font-sans: 'DM Mono', ui-monospace, monospace;
+    --tpl-font-mono: 'DM Mono', ui-monospace, monospace;
 
     --paper: #e8e8e8;
     --surface: #ffffff;
@@ -50,10 +49,12 @@
     --tm-border: #c0dcbc;
     --tm-text-body: #565662;
     --tm-text-200: #565662;
-    --tm-text-300: #5e5e65;
+    --tm-text-300: #55555c;
     --tm-text-400: #6d6d72;
     --tm-tile: #f8f8f8;
     --tm-tile-hover: #c5c5ca;
+    /* Brand tints are darkened in light mode so tile glyphs keep AA contrast. */
+    --tm-tint-mix: 62%;
     --tm-mint: #c0dcbc;
     --tm-overlay: #ffffff;
     --tm-grid-line: rgb(31 31 36 / 0.07);
@@ -93,6 +94,7 @@
     --tm-text-400: #79797c;
     --tm-tile: #24242d;
     --tm-tile-hover: #242424;
+    --tm-tint-mix: 100%;
     --tm-overlay: #272730;
     --tm-grid-line: rgb(255 255 255 / 0.05);
     --tm-binary: rgb(168 255 83 / 0.1);

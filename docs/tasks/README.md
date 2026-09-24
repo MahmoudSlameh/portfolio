@@ -75,11 +75,11 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P3-08 | Contact form end-to-end                                            | P3-05, P2-11        | done   |
 | P3-09 | Command palette & search index                                     | P3-05               | done   |
 | P3-10 | Preview bar & template switching                                   | P3-05…P3-07, P2-12  | done   |
-| P4-01 | SSR production-ready                                               | P3-07               | todo   |
-| P4-02 | SeoData + SeoHead + per-page meta                                  | P4-01               | todo   |
-| P4-03 | JSON-LD                                                            | P4-02               | todo   |
-| P4-04 | sitemap.xml, robots.txt, rss.xml                                   | P4-02               | todo   |
-| P4-05 | Performance pass                                                   | P4-02               | todo   |
+| P4-01 | SSR production-ready                                               | P3-07               | done   |
+| P4-02 | SeoData + SeoHead + per-page meta                                  | P4-01               | done   |
+| P4-03 | JSON-LD                                                            | P4-02               | done   |
+| P4-04 | sitemap.xml, robots.txt, rss.xml                                   | P4-02               | done   |
+| P4-05 | Performance pass                                                   | P4-02               | done   |
 | P5-01 | Test hardening & CI                                                | P4-*                | todo   |
 | P5-02 | Content health & admin polish                                      | P2-*                | todo   |
 | P5-03 | Remove `Reference-Frontend/`                                       | P3-*, P5-01         | todo   |

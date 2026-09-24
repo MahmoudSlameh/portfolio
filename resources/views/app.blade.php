@@ -34,10 +34,13 @@
         @endif
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="{{ $template->fontsHref() }}">
+        @foreach ($template->preloadFonts() as $font)
+            <link rel="preload" href="{{ Vite::asset($font) }}" as="font" type="font/woff2" crossorigin>
+        @endforeach
 
+        @if ($settings->isPageEnabled('writing'))
+            <link rel="alternate" type="application/rss+xml" title="{{ $settings->site_name }} — Writing" href="{{ url('/rss.xml') }}">
+        @endif
         @if ($settings->google_site_verification)
             <meta name="google-site-verification" content="{{ $settings->google_site_verification }}">
         @endif

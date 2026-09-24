@@ -1,12 +1,12 @@
 [data-template='changelog'] {
     --tpl-font-display:
-        'Bricolage Grotesque', 'Readex Pro', ui-sans-serif, system-ui,
-        sans-serif;
+        'Bricolage Grotesque Variable', 'Bricolage Grotesque', ui-sans-serif,
+        system-ui, sans-serif;
     --tpl-font-sans:
-        'Geist', 'Readex Pro', ui-sans-serif, system-ui, sans-serif;
+        'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif;
     --tpl-font-mono:
-        'JetBrains Mono', 'Readex Pro', ui-monospace, 'SFMono-Regular',
-        monospace;
+        'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace,
+        'SFMono-Regular', monospace;
 
     --paper: #f7f5ff;
     --surface: #eeeafd;
@@ -81,11 +81,6 @@
 }
 
 @layer base {
-    html[data-template='changelog']:lang(ar) {
-        font-family:
-            'Readex Pro', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    }
-
     [data-template='changelog'] body::after {
         content: '';
         position: fixed;
@@ -106,11 +101,6 @@
     [data-template='changelog'] blockquote .font-display {
         font-weight: 420;
         letter-spacing: -0.015em;
-    }
-
-    [data-template='changelog'] :lang(ar) .font-display,
-    [data-template='changelog'] .font-display:lang(ar) {
-        letter-spacing: 0;
     }
 
     [data-template='changelog'] ::selection {
@@ -158,13 +148,6 @@
         line-height: 1.4;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-    }
-
-    :lang(ar) .eyebrow {
-        font-family: var(--font-sans);
-        font-size: 0.8125rem;
-        letter-spacing: 0;
-        text-transform: none;
     }
 
     .version-label {
@@ -228,7 +211,8 @@
 
     .aurora {
         position: absolute;
-        inset: -20% -10% auto;
+        /* Fixed top offset: a %-based one moves whenever the hero height settles (counted as CLS). */
+        inset: -18rem -10% auto;
         height: 120%;
         pointer-events: none;
         filter: blur(80px) saturate(140%);
@@ -491,10 +475,6 @@
 
 .animate-pulse-dot {
     animation: pulse-dot 2.4s ease-in-out infinite;
-}
-
-[data-template='changelog'] .font-display:lang(ar):not(.ltr-isolate) {
-    line-height: 1.45;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -29,17 +29,19 @@ function HexPortrait({ profile }: { profile: Profile }) {
                 className="relative aspect-[81/73] w-full bg-[linear-gradient(160deg,#127080_0%,#0d3c4d_55%,#0a2733_100%)]"
                 style={{ clipPath: `url(#${clipId})` }}
             >
-                <img
-                    src={src}
-                    srcSet={srcSet}
-                    sizes="(min-width: 992px) 505px, 90vw"
-                    width={profile.portrait?.width}
-                    height={profile.portrait?.height}
-                    alt={c('hero.portrait', { name: profile.name })}
-                    fetchPriority="high"
-                    decoding="async"
-                    className="absolute inset-0 size-full object-cover object-[50%_20%] mix-blend-luminosity"
-                />
+                {src && (
+                    <img
+                        src={src}
+                        srcSet={srcSet || undefined}
+                        sizes="(min-width: 992px) 505px, 90vw"
+                        width={profile.portrait?.width}
+                        height={profile.portrait?.height}
+                        alt={c('hero.portrait', { name: profile.name })}
+                        fetchPriority="high"
+                        decoding="async"
+                        className="absolute inset-0 size-full object-cover object-[50%_20%] mix-blend-luminosity"
+                    />
+                )}
             </div>
             <CodeHexagon className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[40%]" />
         </div>

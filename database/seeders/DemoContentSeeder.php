@@ -52,7 +52,10 @@ class DemoContentSeeder extends Seeder
         $this->uses();
         $this->now();
 
-        SiteSetting::current()->update(['active_template' => $this->data('settings')['activeTemplate']]);
+        SiteSetting::current()->update([
+            'active_template' => $this->data('settings')['activeTemplate'],
+            'site_name' => Profile::current()->name,
+        ]);
     }
 
     private function profile(): void

@@ -11,7 +11,7 @@ const en = {
     'nav.primary': 'Primary',
     'nav.footer': 'Footer',
     'nav.skip': 'Skip to content',
-    'nav.homeLabel': '{name}, home',
+    'nav.homeSuffix': ' (home)',
 
     'theme.toLight': 'Switch to light theme',
     'theme.toDark': 'Switch to dark theme',

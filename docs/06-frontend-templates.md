@@ -118,7 +118,7 @@ export interface SharedProps {
     profile: Profile;
     socials: Social[];
     searchIndex: SearchIndex; // Inertia once/deferred prop
-    template: { id: TemplateId; fontsHref: string; isPreview: boolean };
+    template: { id: TemplateId; isPreview: boolean };
     flash: { success?: string };
 }
 export interface PageSeoProps {
@@ -159,10 +159,13 @@ send `<meta name="robots" content="noindex">` and
 
 ## Fonts & theme
 
-- `Template` enum exposes `fontsHref()` (Google Fonts URL from each template's
-  `index.ts`). Blade renders `<link rel="preconnect">` + the stylesheet in
-  `<head>` server-side (no FOUT from JS injection). Consider self-hosting
-  fonts later (Phase 4).
+- Fonts are **self-hosted** with Fontsource packages (`@fontsource-variable/*`,
+  `@fontsource/*`), imported at the top of `resources/js/styles/main.css`.
+  Vite fingerprints the `.woff2` files; `@font-face` + `unicode-range` means a
+  page downloads only the faces it renders. No third-party font requests.
+- `Template::preloadFonts()` lists the above-the-fold font files (Vite manifest
+  keys); `app.blade.php` emits `<link rel="preload" as="font">` for the active
+  template only, so the first paint uses the right type (no swap CLS).
 - `<html data-template="terminal">` is set server-side in Blade.
 - Theme (light/dark) pre-hydration script from reference `index.html` moves
   into `app.blade.php` (minus template/locale bits).
@@ -172,8 +175,11 @@ send `<meta name="robots" content="noindex">` and
 
 ## Dependencies to add to root `package.json`
 
-From the reference: `lucide-react`, `motion`, `sugar-high`, `zod` (contact
-form client validation — optional, server validates anyway).
+From the reference: `lucide-react`, `motion`, `sugar-high`. `zod` was dropped
+(the contact form uses a tiny hand-written validator; the server validates anyway).
+`motion` is used through `LazyMotion` + `m.*` components: `app.tsx` loads the
+`domMax` feature bundle asynchronously (`lib/motionFeatures.ts`), so **always use
+`m.div` etc., never `motion.div`** (`strict` mode throws).
 **Not** needed: `@tanstack/react-router`, `@tanstack/router-plugin`,
 `sharp` (Spatie handles images).
 
@@ -183,8 +189,8 @@ uses 5.7 — keep root's and fix any type errors.
 
 ## Adding a new template later
 
-1. Add a case to `App\Enums\Template` (label, description, fontsHref,
-   screenshot path).
+1. Add a case to `App\Enums\Template` (label, description, preloadFonts,
+   screenshot path) and import its Fontsource packages in `styles/main.css`.
 2. Create `resources/js/templates/<id>/` and the 9 pages in
    `resources/js/pages/<id>/`.
 3. Add `public/templates/<id>.webp` screenshot for the Appearance page.

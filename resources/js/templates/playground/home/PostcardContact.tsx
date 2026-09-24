@@ -394,7 +394,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                                 tone="blue"
                                 disabled={status === 'submitting'}
                                 aria-busy={status === 'submitting'}
-                                className="self-start text-white"
+                                className="self-start text-on-pop"
                             >
                                 <Send
                                     aria-hidden

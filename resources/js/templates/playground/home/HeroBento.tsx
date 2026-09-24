@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router';
 import { ArrowDownRight, Clock, MapPin, Sparkles } from 'lucide-react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { useRef, type RefObject } from 'react';
 import { useNow } from '@/hooks/useLocalTime';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -33,7 +33,7 @@ function AvailabilitySticker({
     const pop = availabilityPop[profile.availability.status];
 
     return (
-        <motion.div
+        <m.div
             drag
             dragConstraints={constraintsRef}
             dragElastic={0.18}
@@ -56,7 +56,7 @@ function AvailabilitySticker({
             <span aria-hidden className="pg-label text-[0.625rem] opacity-70">
                 ✋ {p('hero.dragMe')}
             </span>
-        </motion.div>
+        </m.div>
     );
 }
 

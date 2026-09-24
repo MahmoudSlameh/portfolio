@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, m, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -34,7 +34,7 @@ export function RotatingText({
         >
             <span className="sr-only">{items.join(', ')}</span>
             <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
+                <m.span
                     key={items[index]}
                     aria-hidden
                     className="col-start-1 row-start-1 whitespace-nowrap"
@@ -44,7 +44,7 @@ export function RotatingText({
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 >
                     {items[index]}
-                </motion.span>
+                </m.span>
             </AnimatePresence>
         </span>
     );

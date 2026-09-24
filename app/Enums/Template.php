@@ -34,14 +34,26 @@ enum Template: string implements HasDescription, HasLabel
     }
 
     /**
-     * Google Fonts stylesheet loaded in the document head for this template.
+     * Above-the-fold font files (Vite manifest keys) preloaded in the document head
+     * so the first paint already uses the template's type and the swap causes no layout shift.
+     *
+     * @return list<string>
      */
-    public function fontsHref(): string
+    public function preloadFonts(): array
     {
         return match ($this) {
-            self::Changelog => 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500;600&display=swap',
-            self::Playground => 'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap',
-            self::Terminal => 'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap',
+            self::Changelog => [
+                'node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2',
+                'node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2',
+            ],
+            self::Playground => [
+                'node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2',
+                'node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2',
+            ],
+            self::Terminal => [
+                'node_modules/@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2',
+                'node_modules/@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2',
+            ],
         };
     }
 

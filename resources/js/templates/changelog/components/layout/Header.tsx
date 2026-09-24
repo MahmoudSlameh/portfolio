@@ -43,11 +43,7 @@ export function Header({ profile, socials }: HeaderProps) {
             )}
         >
             <div className="shell flex h-[var(--header-height)] items-center gap-4">
-                <Link
-                    to="/"
-                    aria-label={t('nav.homeLabel', { name: profile.name })}
-                    className="group flex min-w-0 items-center gap-3"
-                >
+                <Link to="/" className="group flex min-w-0 items-center gap-3">
                     <span
                         aria-hidden
                         className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#7c3aed,#c026d3_55%,#06b6d4)] font-mono text-[0.6875rem] font-bold text-white shadow-[0_8px_20px_-8px_#7c3aed] transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[-8deg]"
@@ -62,6 +58,7 @@ export function Header({ profile, socials }: HeaderProps) {
                             changelog {profile.currentVersion}
                         </span>
                     </span>
+                    <span className="sr-only">{t('nav.homeSuffix')}</span>
                 </Link>
 
                 <nav

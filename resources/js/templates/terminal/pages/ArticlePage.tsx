@@ -6,7 +6,7 @@ import {
     Check,
     Link2,
 } from 'lucide-react';
-import { motion, useScroll, useSpring } from 'motion/react';
+import { m, useScroll, useSpring } from 'motion/react';
 import { useRef } from 'react';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -87,7 +87,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                 title={t('article.progress')}
                 className="fixed inset-x-0 top-0 z-50 h-[3px]"
             >
-                <motion.div
+                <m.div
                     style={{ scaleX }}
                     className="h-full origin-left bg-[linear-gradient(90deg,#659932,#a8ff53)] rtl:origin-right"
                 />

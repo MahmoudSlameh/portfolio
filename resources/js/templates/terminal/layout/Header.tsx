@@ -231,9 +231,6 @@ export function Header({
                     <div className="flex min-w-0 flex-1 items-center justify-between gap-3 px-4 py-3 lg:px-5">
                         <Link
                             to="/"
-                            aria-label={t('nav.homeLabel', {
-                                name: profile.name,
-                            })}
                             className="inline-flex min-w-0 items-center"
                         >
                             <Wordmark
@@ -241,6 +238,9 @@ export function Header({
                                 className="flex min-w-0 items-center gap-2"
                                 textClassName="tm-logo-text truncate text-lg font-medium sm:text-2xl"
                             />
+                            <span className="sr-only">
+                                {t('nav.homeSuffix')}
+                            </span>
                         </Link>
 
                         <ul className="hidden items-center xl:flex">

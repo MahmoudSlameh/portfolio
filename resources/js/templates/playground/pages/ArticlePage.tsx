@@ -6,7 +6,7 @@ import {
     Check,
     Link2,
 } from 'lucide-react';
-import { motion, useScroll, useSpring } from 'motion/react';
+import { m, useScroll, useSpring } from 'motion/react';
 import { useRef, type RefObject } from 'react';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -42,7 +42,7 @@ function ProgressBar({
             title={t('article.progress')}
             className="fixed inset-x-0 top-0 z-50 h-2.5 border-b-2 border-edge bg-raised"
         >
-            <motion.div
+            <m.div
                 style={{ scaleX }}
                 className="pg-progress h-full bg-[linear-gradient(90deg,var(--pop-yellow),var(--pop-pink),var(--pop-blue),var(--pop-green))]"
             />

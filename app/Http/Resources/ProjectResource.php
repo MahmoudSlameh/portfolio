@@ -40,6 +40,20 @@ class ProjectResource extends JsonResource
             'timeline' => (string) $this->timeline,
             'stack' => $this->stack,
             'cover' => ImageData::fromCollection($this->resource, 'cover', $this->cover_alt ?? $this->title),
+            ...$this->caseStudyFields(),
+            'metrics' => ProfileResource::withIds($this->metrics, 'label'),
+            'links' => $this->links,
+        ];
+    }
+
+    /**
+     * Fields only the case-study page renders.
+     *
+     * @return array<string, mixed>
+     */
+    protected function caseStudyFields(): array
+    {
+        return [
             'gallery' => $this->galleryItems
                 ->map(fn (ProjectGalleryItem $item): ?array => ($image = ImageData::fromCollection($item, 'image', $item->alt)) === null
                     ? null
@@ -53,8 +67,6 @@ class ProjectResource extends JsonResource
             'architecture' => $this->architecture,
             'features' => $this->features,
             'challenges' => $this->challenges,
-            'metrics' => ProfileResource::withIds($this->metrics, 'label'),
-            'links' => $this->links,
         ];
     }
 

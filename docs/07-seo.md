@@ -100,8 +100,8 @@ Builders live in `App\Support\Seo\JsonLd` (static methods returning arrays).
   WebP/AVIF conversions.
 - Everything else `loading="lazy" decoding="async"`.
 - Template JS/CSS code-split per template (only the active template ships).
-- Fonts: `preconnect` + `display=swap`; later self-host with
-  `laravel-vite-plugin/fonts` for the active template.
+- Fonts: self-hosted (Fontsource, `display=swap`), above-the-fold faces
+  preloaded per template (`Template::preloadFonts()`).
 - `motion`: respect reduced motion (`MotionConfig reducedMotion="user"`,
   already in reference); avoid layout-shifting reveal animations above the fold.
 - HTTP: `Cache-Control` for built assets (Vite hashed) = immutable; enable

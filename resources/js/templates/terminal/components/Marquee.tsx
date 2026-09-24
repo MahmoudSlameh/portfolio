@@ -28,7 +28,7 @@ export function Marquee({
             <div className="tm-marquee-track" role="list" aria-label={label}>
                 {items}
             </div>
-            <div className="tm-marquee-track" aria-hidden>
+            <div className="tm-marquee-track" aria-hidden inert>
                 {items}
             </div>
         </div>

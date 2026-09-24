@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router';
 import { ArrowRight } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import { useMemo, useState } from 'react';
 import { ProjectCard } from '@/templates/changelog/components/content/ProjectCard';
 import {
@@ -71,13 +71,10 @@ export function FeaturedWork({ projects }: { projects: Project[] }) {
             <p className="sr-only" aria-live="polite">
                 {t('common.results', { count: visibleProjects.length })}
             </p>
-            <motion.ul
-                layout
-                className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-            >
+            <m.ul layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 <AnimatePresence mode="popLayout" initial={false}>
                     {visibleProjects.map((project) => (
-                        <motion.li
+                        <m.li
                             key={project.id}
                             layout
                             initial={{ opacity: 0, y: 12 }}
@@ -89,10 +86,10 @@ export function FeaturedWork({ projects }: { projects: Project[] }) {
                             }}
                         >
                             <ProjectCard project={project} />
-                        </motion.li>
+                        </m.li>
                     ))}
                 </AnimatePresence>
-            </motion.ul>
+            </m.ul>
         </Section>
     );
 }

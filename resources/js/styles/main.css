@@ -1,4 +1,16 @@
 @import 'tailwindcss';
+/* Self-hosted template fonts: only the faces a page actually uses are downloaded. */
+@import '@fontsource-variable/bricolage-grotesque/opsz.css';
+@import '@fontsource-variable/geist/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/space-grotesk/wght.css';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+@import '@fontsource/dm-mono/300.css';
+@import '@fontsource/dm-mono/400.css';
+@import '@fontsource/dm-mono/400-italic.css';
+@import '@fontsource/dm-mono/500.css';
 @import './base.css';
 @import '../templates/changelog/styles.css';
 @import '../templates/playground/styles.css';

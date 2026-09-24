@@ -62,11 +62,15 @@ function Avatar({ profile }: { profile: Profile }) {
         >
             <div className="flex size-[82px] items-center justify-center rounded-full border border-tm-mint">
                 <div className="relative size-10">
-                    <img
-                        src={src}
-                        alt=""
-                        className="size-10 rounded-full object-cover object-top"
-                    />
+                    {src ? (
+                        <img
+                            src={src}
+                            alt=""
+                            className="size-10 rounded-full object-cover object-top"
+                        />
+                    ) : (
+                        <span className="block size-10 rounded-full bg-tm-border" />
+                    )}
                     <span className="absolute -end-0.5 bottom-0 size-2 rounded-full bg-[#a8ff53] ring-2 ring-tm-card" />
                 </div>
             </div>

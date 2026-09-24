@@ -11,6 +11,7 @@ use App\Http\Resources\CompanyResource;
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\ExperienceResource;
 use App\Http\Resources\ProfileResource;
+use App\Http\Resources\ProjectCardResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\SkillCategoryResource;
 use App\Http\Resources\SkillResource;
@@ -149,7 +150,7 @@ final class PortfolioContent
             ->sort(fn (Project $a, Project $b): int => (($a->year <=> $b->year) * $direction) ?: strcmp($a->title, $b->title))
             ->values();
 
-        return $this->resolve(ProjectResource::class, $projects);
+        return $this->resolve(ProjectCardResource::class, $projects);
     }
 
     /**
@@ -182,7 +183,7 @@ final class PortfolioContent
 
         /** @var Project $project */
         $project = $ordered[$index];
-        $project->loadMissing(['experience.company', 'experience.skills', 'experience.projects', 'articles' => fn ($query) => $query->published()->with(['media', 'projects'])]);
+        $project->loadMissing(['galleryItems.media', 'experience.company', 'experience.skills', 'experience.projects', 'articles' => fn ($query) => $query->published()->with(['media', 'projects'])]);
         $previous = $ordered->get($index - 1);
         $next = $ordered->get($index + 1);
 
@@ -367,7 +368,7 @@ final class PortfolioContent
     {
         return Project::query()
             ->published()
-            ->with(['media', 'skills', 'company.media', 'company.experiences', 'galleryItems.media'])
+            ->with(['media', 'skills', 'company.media', 'company.experiences'])
             ->get();
     }
 

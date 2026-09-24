@@ -1,6 +1,6 @@
 import { Link } from '@/lib/router';
 import { Shuffle } from 'lucide-react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
@@ -49,7 +49,7 @@ export function NotFoundPage() {
                 dir="ltr"
             >
                 {DIGITS.map((digit, index) => (
-                    <motion.span
+                    <m.span
                         key={`${digit.id}-${round}`}
                         aria-hidden
                         drag
@@ -70,7 +70,7 @@ export function NotFoundPage() {
                         )}
                     >
                         {digit.char}
-                    </motion.span>
+                    </m.span>
                 ))}
                 <span className="absolute start-6 top-6">
                     <Sticker pop="red" tilt={-6}>

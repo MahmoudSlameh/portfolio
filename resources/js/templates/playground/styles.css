@@ -11,11 +11,11 @@
 
 [data-template='playground'] {
     --tpl-font-display:
-        'Archivo', 'Cairo', ui-sans-serif, system-ui, sans-serif;
+        'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, sans-serif;
     --tpl-font-sans:
-        'Space Grotesk', 'Cairo', ui-sans-serif, system-ui, sans-serif;
-    --tpl-font-mono:
-        'Space Mono', 'Cairo', ui-monospace, 'SFMono-Regular', monospace;
+        'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui,
+        sans-serif;
+    --tpl-font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', monospace;
 
     --paper: #fff6e5;
     --surface: #ffecc2;
@@ -86,11 +86,6 @@
 }
 
 @layer base {
-    html[data-template='playground']:lang(ar) {
-        font-family:
-            'Cairo', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-    }
-
     [data-template='playground'] body {
         background-image: radial-gradient(
             var(--pg-dot) 1.2px,
@@ -136,13 +131,6 @@
         text-transform: uppercase;
     }
 
-    :lang(ar) .pg-display {
-        font-family: 'Cairo', var(--tpl-font-display);
-        font-stretch: normal;
-        letter-spacing: 0;
-        line-height: 1.2;
-    }
-
     .pg-display.pg-keep-case {
         text-transform: none;
     }
@@ -153,12 +141,6 @@
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-    }
-
-    :lang(ar) .pg-label {
-        font-family: 'Cairo', var(--tpl-font-sans);
-        font-size: 0.8125rem;
-        letter-spacing: 0;
     }
 
     .pg-card {
@@ -298,21 +280,9 @@
         white-space: nowrap;
     }
 
-    :lang(ar) .pg-sticker {
-        font-family: 'Cairo', var(--tpl-font-sans);
-        font-size: 0.8125rem;
-        letter-spacing: 0;
-    }
-
     .pg-outline-text {
         color: transparent;
         -webkit-text-stroke: 2px var(--pg-outline, var(--ink));
-    }
-
-    :lang(ar) .pg-outline-text {
-        color: var(--pg-outline, var(--ink));
-        -webkit-text-stroke: 0;
-        opacity: 0.35;
     }
 
     .pg-input {

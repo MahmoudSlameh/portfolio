@@ -2,7 +2,7 @@ import { Link } from '@/lib/router';
 import { ArrowUpRight } from 'lucide-react';
 import {
     AnimatePresence,
-    motion,
+    m,
     useMotionValue,
     useReducedMotion,
     useSpring,
@@ -166,7 +166,7 @@ export function WorkList({ projects }: { projects: Project[] }) {
                 {!reduceMotion && (
                     <AnimatePresence>
                         {hovered && (
-                            <motion.div
+                            <m.div
                                 key={hovered.id}
                                 aria-hidden
                                 style={{ x: springX, y: springY }}
@@ -188,7 +188,7 @@ export function WorkList({ projects }: { projects: Project[] }) {
                                     image={hovered.cover}
                                     sizes="18rem"
                                 />
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 )}

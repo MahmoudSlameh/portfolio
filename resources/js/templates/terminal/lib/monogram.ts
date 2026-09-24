@@ -20,5 +20,5 @@ export const monogram = (name: string): string => {
 export const tintFor = (name: string): string => {
     let hash = 0;
     for (const char of name) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-    return TINTS[hash % TINTS.length];
+    return `color-mix(in oklab, ${TINTS[hash % TINTS.length]} var(--tm-tint-mix, 100%), black)`;
 };

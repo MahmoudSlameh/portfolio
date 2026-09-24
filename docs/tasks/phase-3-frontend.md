@@ -127,6 +127,7 @@ template and `?template=` is ignored for them.
 ---
 
 ## Notes
+
 - 2026-09-24 — P3-05: All three templates ported in one pass with the compat layer (see docs/06 'As built'); verified with Playwright screenshots: identical to the reference minus the language toggle; zero JS errors on all 9 pages × 3 templates.
 - 2026-09-24 — P3-06: See P3-05.
 - 2026-09-24 — P3-07: See P3-05.

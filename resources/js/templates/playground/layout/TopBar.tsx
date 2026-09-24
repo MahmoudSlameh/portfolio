@@ -16,17 +16,14 @@ export function TopBar({ profile }: { profile: Profile }) {
 
     return (
         <header className="pg-shell flex h-[var(--header-height)] items-center justify-between gap-3">
-            <Link
-                to="/"
-                aria-label={t('nav.homeLabel', { name: profile.name })}
-                className="group inline-flex items-center gap-3"
-            >
+            <Link to="/" className="group inline-flex items-center gap-3">
                 <span className="pg-press pg-press-target pg-wobble inline-flex size-11 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow font-display text-sm font-black text-on-pop [font-stretch:125%] shadow-[var(--pg-shadow)]">
                     {profile.initials}
                 </span>
                 <span className="hidden font-display text-lg leading-none font-extrabold text-ink [font-stretch:115%] sm:block">
                     {profile.name}
                 </span>
+                <span className="sr-only">{t('nav.homeSuffix')}</span>
             </Link>
 
             <div className="flex items-center gap-2 sm:gap-3">
