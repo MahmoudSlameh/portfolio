@@ -24,7 +24,7 @@ Only when all templates are ported, P1-09 seeder no longer reads from it,
 and the owner confirms. Remove it and any references in docs (keep a note in
 09 with the last commit hash that contained it).
 
-## P5-04 · Deployment guide & launch checklist — `todo`
+## P5-04 · Deployment guide & launch checklist — `done`
 
 Write `docs/10-deployment.md`: server requirements (PHP 8.3+, Node 22,
 imagick/gd with WebP, image optimizers), env vars, build steps
@@ -40,3 +40,4 @@ and the launch checklist from 07 §6.
 - 2026-09-24 — P5-01: 171 tests / 1455 assertions green; Larastan level 7 with no baseline. CI (.github/workflows/tests.yml) now runs PHP 8.4 (the lock's Symfony 8 needs ≥ 8.4.1; composer.json requires ^8.4) with gd/intl/exif and builds the SSR bundle. Media tests use Storage::fake, so no storage:link is needed in CI. Added tests: book edit, uses-group list/edit, and an empty-install test for every template. Removed the starter's placeholder tests.
 - 2026-09-24 — P5-02: Walked the admin and site with an empty DB (seeders without demo content) and with demo data, at desktop and mobile widths. Admin empty states, helper texts and content health are correct. Found and fixed a client crash on the changelog home when there are no companies. Home sections in all templates now render only when their list has items (see docs/08 § Empty content).
 - 2026-09-24 — P5-03: Reference-Frontend/ and scripts/export-reference-data.cjs removed. The last commit that contains them is eb06a9a (restore with `git checkout eb06a9a -- Reference-Frontend`). Lint, Tailwind and seeder references cleaned up; living docs updated (D24).
+- 2026-09-24 — P5-04: docs/10-deployment.md covers requirements (PHP 8.4, MySQL 8, Node 22, WebP-capable GD/Imagick), env, first and later deploys, Supervisor programs (SSR + queue), Nginx with caching and compression, backups, and the pre- and post-launch checklist. Rich Results Test and production Lighthouse runs are in the post-launch checklist.
