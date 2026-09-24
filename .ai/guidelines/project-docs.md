@@ -15,4 +15,3 @@ Before doing any work:
 
 `Reference-Frontend/` is the design source of truth for the three public
 templates (changelog, playground, terminal) — port it, don't redesign it.
-

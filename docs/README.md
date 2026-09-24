@@ -13,18 +13,18 @@
 
 ## Documentation map
 
-| # | Document | What it answers |
-|---|----------|-----------------|
-| 01 | [Project overview](01-project-overview.md) | Goals, scope, stack, what exists today |
-| 02 | [Architecture](02-architecture.md) | How Laravel, Filament, Inertia, SSR and templates fit together; folder layout; request lifecycle |
-| 03 | [Data model](03-data-model.md) | Every table, column, enum and relation, and how each maps to the frontend TypeScript types |
-| 04 | [Admin panel](04-admin-panel.md) | Filament panel design: navigation, every resource's form/table/filters/actions |
-| 05 | [Media](05-media.md) | Spatie Media Library: collections, conversions, alt text, how images reach React |
-| 06 | [Frontend & templates](06-frontend-templates.md) | Template system, porting from `Reference-Frontend`, template contract, preview |
-| 07 | [SEO](07-seo.md) | SSR, meta tags, JSON-LD, sitemap, RSS, performance budget |
-| 08 | [Conventions](08-conventions.md) | Code style, commands, testing, git workflow, definition of done |
-| 09 | [Decisions & open questions](09-decisions.md) | Architecture decision log + questions still waiting for the owner |
-| — | [Tasks](tasks/README.md) | The phased task plan and live status board |
+| #   | Document                                         | What it answers                                                                                  |
+| --- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| 01  | [Project overview](01-project-overview.md)       | Goals, scope, stack, what exists today                                                           |
+| 02  | [Architecture](02-architecture.md)               | How Laravel, Filament, Inertia, SSR and templates fit together; folder layout; request lifecycle |
+| 03  | [Data model](03-data-model.md)                   | Every table, column, enum and relation, and how each maps to the frontend TypeScript types       |
+| 04  | [Admin panel](04-admin-panel.md)                 | Filament panel design: navigation, every resource's form/table/filters/actions                   |
+| 05  | [Media](05-media.md)                             | Spatie Media Library: collections, conversions, alt text, how images reach React                 |
+| 06  | [Frontend & templates](06-frontend-templates.md) | Template system, porting from `Reference-Frontend`, template contract, preview                   |
+| 07  | [SEO](07-seo.md)                                 | SSR, meta tags, JSON-LD, sitemap, RSS, performance budget                                        |
+| 08  | [Conventions](08-conventions.md)                 | Code style, commands, testing, git workflow, definition of done                                  |
+| 09  | [Decisions & open questions](09-decisions.md)    | Architecture decision log + questions still waiting for the owner                                |
+| —   | [Tasks](tasks/README.md)                         | The phased task plan and live status board                                                       |
 
 ## Hard rules (non-negotiable)
 
@@ -45,7 +45,7 @@
    Visitors always see the active template; `?template=<id>` is a preview
    mechanism (see [06](06-frontend-templates.md#preview)).
 6. **Keep templates swappable.** All three templates receive the same props
-   (the *template contract*). Templates never fetch data themselves.
+   (the _template contract_). Templates never fetch data themselves.
 
 ## Quick start (local)
 

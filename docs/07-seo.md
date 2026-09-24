@@ -59,16 +59,16 @@ site default. Image → model `cover` `og` conversion → profile `og_image` →
 
 Titles/descriptions per page:
 
-| Page | Title | Description | JSON-LD |
-|------|-------|-------------|---------|
-| Home | `{name} — {role}` | profile headline | `Person` (name, jobTitle, image, email, sameAs = socials, worksFor = current company, alumniOf = education, knowsAbout = skills) + `WebSite` |
-| Projects | `Projects` | static + count | `CollectionPage` + `ItemList` + `BreadcrumbList` |
-| Case study | `{title} — case study` | summary | `CreativeWork` (name, description, image, dateCreated=year, author=Person, keywords=stack) + `BreadcrumbList` |
-| Writing | `Writing` | | `Blog` + `BreadcrumbList` |
-| Article | `{title}` | excerpt | `BlogPosting` (headline, datePublished, dateModified, image, author, keywords, wordCount, timeRequired) + `BreadcrumbList` |
-| Books | `Bookshelf` | | `CollectionPage` (+ `Book` items) |
-| Uses / Now | `Uses` / `Now` | | `WebPage` + `BreadcrumbList` |
-| 404 | `Not found` | | `noindex` |
+| Page       | Title                  | Description      | JSON-LD                                                                                                                                      |
+| ---------- | ---------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Home       | `{name} — {role}`      | profile headline | `Person` (name, jobTitle, image, email, sameAs = socials, worksFor = current company, alumniOf = education, knowsAbout = skills) + `WebSite` |
+| Projects   | `Projects`             | static + count   | `CollectionPage` + `ItemList` + `BreadcrumbList`                                                                                             |
+| Case study | `{title} — case study` | summary          | `CreativeWork` (name, description, image, dateCreated=year, author=Person, keywords=stack) + `BreadcrumbList`                                |
+| Writing    | `Writing`              |                  | `Blog` + `BreadcrumbList`                                                                                                                    |
+| Article    | `{title}`              | excerpt          | `BlogPosting` (headline, datePublished, dateModified, image, author, keywords, wordCount, timeRequired) + `BreadcrumbList`                   |
+| Books      | `Bookshelf`            |                  | `CollectionPage` (+ `Book` items)                                                                                                            |
+| Uses / Now | `Uses` / `Now`         |                  | `WebPage` + `BreadcrumbList`                                                                                                                 |
+| 404        | `Not found`            |                  | `noindex`                                                                                                                                    |
 
 Builders live in `App\Support\Seo\JsonLd` (static methods returning arrays).
 

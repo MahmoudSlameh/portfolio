@@ -5,11 +5,11 @@
 `Reference-Frontend/` is a standalone Vite + TanStack Router SPA with mock
 data. It contains three templates:
 
-| Id | Name | Style | Fonts |
-|----|------|-------|-------|
-| `changelog` | Changelog | Editorial "engineer's changelog", git-graph career, versions/commits | Bricolage Grotesque, Geist, JetBrains Mono |
-| `playground` | Playground | Playful bento, stickers, tickets, dock navigation | see `templates/playground/index.ts` |
-| `terminal` | Terminal | Dark dev-terminal, mono type, slider, services | DM Mono (+ IBM Plex Sans Arabic → drop) |
+| Id           | Name       | Style                                                                | Fonts                                      |
+| ------------ | ---------- | -------------------------------------------------------------------- | ------------------------------------------ |
+| `changelog`  | Changelog  | Editorial "engineer's changelog", git-graph career, versions/commits | Bricolage Grotesque, Geist, JetBrains Mono |
+| `playground` | Playground | Playful bento, stickers, tickets, dock navigation                    | see `templates/playground/index.ts`        |
+| `terminal`   | Terminal   | Dark dev-terminal, mono type, slider, services                       | DM Mono (+ IBM Plex Sans Arabic → drop)    |
 
 Run it to look at the designs:
 `cd Reference-Frontend && npm install && npm run dev` then
@@ -20,21 +20,21 @@ every template (except the removed language toggle).
 
 ## How the reference works (what must be replaced)
 
-| Reference mechanism | Replacement in Laravel |
-|---------------------|------------------------|
-| TanStack file routes `src/routes/*` with `loader` | Laravel routes + controllers (`app/Http/Controllers/Site`) returning Inertia responses |
-| `lib/content.ts` (mock "API" over `data/*.ts`) | Eloquent queries + API Resources (same derived shapes computed in PHP) |
-| `route.head()` + `buildHead()` in `lib/seo.ts` | PHP `SeoData` → `seo` prop → `<SeoHead>` using Inertia `<Head>` (SSR) — see [07](07-seo.md) |
-| `validateSearch` (zod) + `navigate({search})` | Form Request validation on the server; `onSearchChange` → `router.get(url, {...filters}, {preserveState: true, preserveScroll: true, replace: true, only: [...]})` |
-| `@tanstack/react-router` `Link` (40 files) | `@inertiajs/react` `Link` with Wayfinder route helpers (`import { show } from '@/routes/projects'` → `href={show(slug).url}`) |
-| `useRouterState` (active path) | `usePage().url` |
-| Root loader `loadTemplate()` + `activateTemplate()` | Server picks template → Inertia component `"{template}/{Page}"`; fonts link injected in Blade |
-| `useTemplatePages()` | Not needed — each template has its own Inertia pages |
-| `submitContactMessage()` (fake latency) | Inertia `useForm().post('/contact')` (or Wayfinder form variant) → `ContactMessageController@store`, validation errors mapped to existing error keys |
-| `PreferencesProvider` locale + `useTranslation().l()` / `isRtl` | **Removed.** Keep theme (light/dark) only. `t()` stays as a tiny English dictionary for UI copy |
-| `i18n/dictionary.ts` `en` + `ar` | Keep `en` only |
-| `ImageAsset` + `imageUrl()` (`/images/{base}-{w}.webp`) | `ImageData` from Spatie media (see [05](05-media.md)) |
-| `sessionStorage`/`localStorage` template keys | Server-side (session) — see Preview |
+| Reference mechanism                                             | Replacement in Laravel                                                                                                                                             |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| TanStack file routes `src/routes/*` with `loader`               | Laravel routes + controllers (`app/Http/Controllers/Site`) returning Inertia responses                                                                             |
+| `lib/content.ts` (mock "API" over `data/*.ts`)                  | Eloquent queries + API Resources (same derived shapes computed in PHP)                                                                                             |
+| `route.head()` + `buildHead()` in `lib/seo.ts`                  | PHP `SeoData` → `seo` prop → `<SeoHead>` using Inertia `<Head>` (SSR) — see [07](07-seo.md)                                                                        |
+| `validateSearch` (zod) + `navigate({search})`                   | Form Request validation on the server; `onSearchChange` → `router.get(url, {...filters}, {preserveState: true, preserveScroll: true, replace: true, only: [...]})` |
+| `@tanstack/react-router` `Link` (40 files)                      | `@inertiajs/react` `Link` with Wayfinder route helpers (`import { show } from '@/routes/projects'` → `href={show(slug).url}`)                                      |
+| `useRouterState` (active path)                                  | `usePage().url`                                                                                                                                                    |
+| Root loader `loadTemplate()` + `activateTemplate()`             | Server picks template → Inertia component `"{template}/{Page}"`; fonts link injected in Blade                                                                      |
+| `useTemplatePages()`                                            | Not needed — each template has its own Inertia pages                                                                                                               |
+| `submitContactMessage()` (fake latency)                         | Inertia `useForm().post('/contact')` (or Wayfinder form variant) → `ContactMessageController@store`, validation errors mapped to existing error keys               |
+| `PreferencesProvider` locale + `useTranslation().l()` / `isRtl` | **Removed.** Keep theme (light/dark) only. `t()` stays as a tiny English dictionary for UI copy                                                                    |
+| `i18n/dictionary.ts` `en` + `ar`                                | Keep `en` only                                                                                                                                                     |
+| `ImageAsset` + `imageUrl()` (`/images/{base}-{w}.webp`)         | `ImageData` from Spatie media (see [05](05-media.md))                                                                                                              |
+| `sessionStorage`/`localStorage` template keys                   | Server-side (session) — see Preview                                                                                                                                |
 
 ## Target structure in `resources/js`
 
@@ -67,9 +67,16 @@ import { HomePage } from '@/templates/terminal/home/HomePage';
 import { SeoHead } from '@/shared/seo/SeoHead';
 
 export default function Home(props: HomePageProps & PageSeoProps) {
-  return (<><SeoHead seo={props.seo} /><HomePage {...props} /></>);
+    return (
+        <>
+            <SeoHead seo={props.seo} />
+            <HomePage {...props} />
+        </>
+    );
 }
-Home.layout = (page: React.ReactNode) => <TerminalLayout>{page}</TerminalLayout>;
+Home.layout = (page: React.ReactNode) => (
+    <TerminalLayout>{page}</TerminalLayout>
+);
 ```
 
 Layouts read global shared props (`profile`, `socials`, `searchIndex`) with
@@ -88,14 +95,20 @@ already matches this naming (component `terminal/Home` → file
 
 ```ts
 export interface SharedProps {
-  site: { name: string; url: string; enabledPages: Record<'writing'|'books'|'uses'|'now', boolean> };
-  profile: Profile;
-  socials: Social[];
-  searchIndex: SearchIndex;           // Inertia once/deferred prop
-  template: { id: TemplateId; fontsHref: string; isPreview: boolean };
-  flash: { success?: string };
+    site: {
+        name: string;
+        url: string;
+        enabledPages: Record<'writing' | 'books' | 'uses' | 'now', boolean>;
+    };
+    profile: Profile;
+    socials: Social[];
+    searchIndex: SearchIndex; // Inertia once/deferred prop
+    template: { id: TemplateId; fontsHref: string; isPreview: boolean };
+    flash: { success?: string };
 }
-export interface PageSeoProps { seo: SeoData }
+export interface PageSeoProps {
+    seo: SeoData;
+}
 ```
 
 Controllers are the only producers of these props. A PHP test per page asserts
@@ -113,14 +126,19 @@ while visitors see the one activated in the panel.
 
 Rules (`TemplateManager::current()`):
 
-1. `?template=<valid id>` → store in session `template.preview` (only if the
-   user is an authenticated admin **or** `allow_public_preview` is on).
-   `?template=` with an invalid value or `?template=reset` clears it.
-2. If a preview is stored in session and still allowed → use it.
+**Preview is for the owner only** (decision Q01). Visitors always get the
+active template and `?template=` is ignored for them.
+
+1. `?template=<valid id>` → store in session `template.preview` **only if**
+   the request has an authenticated user who can access the Filament panel
+   (Filament uses the same `web` session guard, so being logged in to
+   `/admin` is enough). `?template=` with an invalid value or
+   `?template=reset` clears it.
+2. If a preview is stored in session and the user is still an admin → use it.
 3. Else → `SiteSetting::current()->active_template`.
 
 While previewing: shared prop `template.isPreview = true` → render a small
-floating "Previewing *Terminal* · Exit preview · Activate" bar (admin only),
+floating "Previewing _Terminal_ · Exit preview · Activate" bar (admin only),
 send `<meta name="robots" content="noindex">` and
 `Vary: Cookie`; canonical URLs never include `?template=`.
 

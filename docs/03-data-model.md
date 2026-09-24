@@ -21,7 +21,7 @@ Conventions for every content table unless stated otherwise:
 
 ```
 Profile (singleton) ─┐       SiteSetting (singleton)      NowPage (singleton) ─┬─< now_page_book >── Book
-                     │                                                          
+                     │
 Company ─┬─< Experience >─┬─< skillables >── Skill >── SkillCategory
          │                └─< Project >──┬─< skillables
          ├─< Project                     ├─< ProjectGalleryItem (media)
@@ -36,27 +36,27 @@ Education   Certification   Social   UsesGroup ─< UsesItem   ContactMessage   
 All enums are string-backed and implement Filament `HasLabel` (+ `HasColor` /
 `HasIcon` where useful for badges).
 
-| Enum | Cases | Source |
-|------|-------|--------|
-| `Template` | `changelog`, `playground`, `terminal` | `templates/types.ts` |
-| `CompanyKind` | `employer`, `client` | `CompanyKind` |
-| `WordmarkStyle` | `serif`, `serif-italic`, `mono`, `sans-bold`, `sans-light`, `spaced` | used when no logo is uploaded |
-| `EmploymentType` | `full-time`, `part-time`, `contract`, `freelance`, `open-source`, `internship` | `EmploymentType` (+ `part-time`) |
-| `WorkMode` | `on-site`, `remote`, `hybrid` | **new** (owner requirement) |
-| `CareerBranch` | `main`, `freelance`, `oss` | `Branch` — auto-derived, overridable |
-| `ProjectStatus` | `live`, `maintained`, `archived`, `in-progress` | |
-| `ProjectCategory` | `platform`, `product`, `open-source`, `design-system` | |
-| `ProjectLinkKind` | `live`, `source`, `writeup`, `talk` | |
-| `ArchitectureNodeKind` | `client`, `service`, `store`, `queue`, `external` | |
-| `ReadingStatus` | `reading`, `read`, `to-read` | |
-| `BookCategory` | `engineering`, `design`, `systems`, `fiction`, `history`, `philosophy` | |
-| `BookCoverStyle` | `band`, `block`, `rule`, `circle`, `split` | |
-| `UsesKind` | `hardware`, `software`, `development` | |
-| `SocialPlatform` | `github`, `linkedin`, `x`, `mastodon`, `rss`, `read-cv`, `youtube`, `dribbble`, `stackoverflow`, `email`, `website` | `SocialIcon` (+ extras) |
-| `AvailabilityStatus` | `open`, `limited`, `closed` | |
-| `StatusTone` | `signal`, `neutral` | |
-| `ContactTopic` | `role`, `advisory`, `speaking`, `hello` | |
-| `ArticleStatus` | `draft`, `published` | **new** |
+| Enum                   | Cases                                                                                                               | Source                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `Template`             | `changelog`, `playground`, `terminal`                                                                               | `templates/types.ts`                 |
+| `CompanyKind`          | `employer`, `client`                                                                                                | `CompanyKind`                        |
+| `WordmarkStyle`        | `serif`, `serif-italic`, `mono`, `sans-bold`, `sans-light`, `spaced`                                                | used when no logo is uploaded        |
+| `EmploymentType`       | `full-time`, `part-time`, `contract`, `freelance`, `open-source`, `internship`                                      | `EmploymentType` (+ `part-time`)     |
+| `WorkMode`             | `on-site`, `remote`, `hybrid`                                                                                       | **new** (owner requirement)          |
+| `CareerBranch`         | `main`, `freelance`, `oss`                                                                                          | `Branch` — auto-derived, overridable |
+| `ProjectStatus`        | `live`, `maintained`, `archived`, `in-progress`                                                                     |                                      |
+| `ProjectCategory`      | `platform`, `product`, `open-source`, `design-system`                                                               |                                      |
+| `ProjectLinkKind`      | `live`, `source`, `writeup`, `talk`                                                                                 |                                      |
+| `ArchitectureNodeKind` | `client`, `service`, `store`, `queue`, `external`                                                                   |                                      |
+| `ReadingStatus`        | `reading`, `read`, `to-read`                                                                                        |                                      |
+| `BookCategory`         | `engineering`, `design`, `systems`, `fiction`, `history`, `philosophy`                                              |                                      |
+| `BookCoverStyle`       | `band`, `block`, `rule`, `circle`, `split`                                                                          |                                      |
+| `UsesKind`             | `hardware`, `software`, `development`                                                                               |                                      |
+| `SocialPlatform`       | `github`, `linkedin`, `x`, `mastodon`, `rss`, `read-cv`, `youtube`, `dribbble`, `stackoverflow`, `email`, `website` | `SocialIcon` (+ extras)              |
+| `AvailabilityStatus`   | `open`, `limited`, `closed`                                                                                         |                                      |
+| `StatusTone`           | `signal`, `neutral`                                                                                                 |                                      |
+| `ContactTopic`         | `role`, `advisory`, `speaking`, `hello`                                                                             |                                      |
+| `ArticleStatus`        | `draft`, `published`                                                                                                | **new**                              |
 
 Countries: store ISO-3166 alpha-2 in `country_code` (`char(2)`); list +
 names come from `symfony/intl` (`Symfony\Component\Intl\Countries`) — add the
@@ -71,62 +71,61 @@ package in P1.
 One row, accessed via `Profile::current()` (creates if missing). Maps to TS
 `Profile`.
 
-| Column | Type | Notes / TS field |
-|--------|------|------------------|
-| name | string | `name` |
-| initials | string(4) | `initials` (auto from name if blank) |
-| role | string | `role` — job title shown in hero |
-| headline | string(300) | `headline` |
-| focus_areas | json `string[]` | `focusAreas` (rotating text) |
-| summary | text | `summary` (short bio) |
-| story | json `string[]` | `story` (long bio paragraphs) |
-| location | string | `location` e.g. "Damascus, Syria" |
-| timezone | string | IANA, `timezone` |
-| timezone_label | string nullable | `timezoneLabel` |
-| email | string | `email` (public contact) |
-| phone | string nullable | new |
-| current_version | string nullable | `currentVersion` (changelog flavour) |
-| availability_status | enum `AvailabilityStatus` | `availability.status` |
-| availability_label | string | `availability.label` |
-| availability_note | string nullable | `availability.note` |
-| latest_release | json `{added: string[], changed: string[], removed: string[]}` | `latestRelease` |
-| stats | json `[{value, label}]` | `stats` (id generated from label slug) |
-| status | json `[{label, value, tone}]` | `status` strip |
-| principles | json `[{title, body}]` | `principles` |
-| portrait_alt | string nullable | `portrait.alt` |
-| updated_at | timestamp | `updatedAt` |
+| Column              | Type                                                           | Notes / TS field                       |
+| ------------------- | -------------------------------------------------------------- | -------------------------------------- |
+| name                | string                                                         | `name`                                 |
+| initials            | string(4)                                                      | `initials` (auto from name if blank)   |
+| role                | string                                                         | `role` — job title shown in hero       |
+| headline            | string(300)                                                    | `headline`                             |
+| focus_areas         | json `string[]`                                                | `focusAreas` (rotating text)           |
+| summary             | text                                                           | `summary` (short bio)                  |
+| story               | json `string[]`                                                | `story` (long bio paragraphs)          |
+| location            | string                                                         | `location` e.g. "Damascus, Syria"      |
+| timezone            | string                                                         | IANA, `timezone`                       |
+| timezone_label      | string nullable                                                | `timezoneLabel`                        |
+| email               | string                                                         | `email` (public contact)               |
+| phone               | string nullable                                                | new                                    |
+| current_version     | string nullable                                                | `currentVersion` (changelog flavour)   |
+| availability_status | enum `AvailabilityStatus`                                      | `availability.status`                  |
+| availability_label  | string                                                         | `availability.label`                   |
+| availability_note   | string nullable                                                | `availability.note`                    |
+| latest_release      | json `{added: string[], changed: string[], removed: string[]}` | `latestRelease`                        |
+| stats               | json `[{value, label}]`                                        | `stats` (id generated from label slug) |
+| status              | json `[{label, value, tone}]`                                  | `status` strip                         |
+| principles          | json `[{title, body}]`                                         | `principles`                           |
+| portrait_alt        | string nullable                                                | `portrait.alt`                         |
+| updated_at          | timestamp                                                      | `updatedAt`                            |
 
 Media: `portrait` (single image), `resume` (single PDF, optional),
 `og_image` (optional personal share image).
 
 ### `site_settings` → `App\Models\SiteSetting` (HasMedia)
 
-| Column | Type | Notes |
-|--------|------|-------|
-| active_template | enum `Template` default `changelog` | **the switch the owner uses** |
-| allow_public_preview | bool default `false` | see preview rules |
-| site_name | string | e.g. "Mahmoud Slameh" / brand title used in `<title>` suffix |
-| title_separator | string default `—` | |
-| meta_description | string(300) | default description |
-| twitter_handle | string nullable | |
-| google_site_verification | string nullable | |
-| bing_site_verification | string nullable | |
-| analytics_snippet | text nullable | (optional, e.g. Plausible) |
-| enabled_pages | json `{writing, books, uses, now}` bools | hides nav + returns 404 when off |
-| contact_recipient | string nullable | where contact notifications go (defaults to profile email) |
-| indexable | bool default `true` | global noindex switch (staging) |
+| Column                   | Type                                     | Notes                                                        |
+| ------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
+| active_template          | enum `Template` default `changelog`      | **the switch the owner uses**                                |
+| site_name                | string                                   | e.g. "Mahmoud Slameh" / brand title used in `<title>` suffix |
+| title_separator          | string default `—`                       |                                                              |
+| meta_description         | string(300)                              | default description                                          |
+| twitter_handle           | string nullable                          |                                                              |
+| google_site_verification | string nullable                          |                                                              |
+| bing_site_verification   | string nullable                          |                                                              |
+| analytics_snippet        | text nullable                            | (optional, e.g. Plausible)                                   |
+| enabled_pages            | json `{writing, books, uses, now}` bools | hides nav + returns 404 when off                             |
+| contact_recipient        | string nullable                          | where contact notifications go (defaults to profile email)   |
+| indexable                | bool default `true`                      | global noindex switch (staging)                              |
 
 Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`).
 
 ### `now_pages` → `App\Models\NowPage`
 
-| Column | Type | TS |
-|--------|------|----|
-| location | string | `location` |
-| availability | string | `availability` |
-| focus | json `[{title, body}]` | `focus` |
-| learning | json `[{title, body}]` | `learning` |
-| updated_at | timestamp | `updatedAt` |
+| Column       | Type                   | TS             |
+| ------------ | ---------------------- | -------------- |
+| location     | string                 | `location`     |
+| availability | string                 | `availability` |
+| focus        | json `[{title, body}]` | `focus`        |
+| learning     | json `[{title, body}]` | `learning`     |
+| updated_at   | timestamp              | `updatedAt`    |
 
 Relation: `readingBooks()` belongsToMany `Book` via `now_page_book`
 (`now_page_id`, `book_id`, `sort_order`) → `readingBookIds`. Default: when the
@@ -138,45 +137,45 @@ pivot is empty, fall back to books with status `reading`.
 
 ### `companies` → `App\Models\Company` (HasMedia) — "Clients & companies"
 
-| Column | Type | Notes / TS `Company` |
-|--------|------|------------------|
-| name | string | `name` |
-| slug | string unique | `id` in TS |
-| kind | enum `CompanyKind` | `kind` — employer vs client |
-| website_url | string nullable | `url` (**link to their site/page**) |
-| industry | string nullable | `industry` |
-| city | string nullable | → `location` |
-| country_code | char(2) nullable | → `location` |
-| period_label | string nullable | `period` — if blank, derived from linked experiences ("2021 — 2024", "2024 — now") |
-| engagement | text nullable | `engagement` (one-liner about the work) |
-| wordmark_style | enum `WordmarkStyle` default `sans-bold` | fallback rendering when there is no logo |
-| is_featured | bool | show on clients wall / cooperation section |
-| is_visible, sort_order | | |
+| Column                 | Type                                     | Notes / TS `Company`                                                               |
+| ---------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| name                   | string                                   | `name`                                                                             |
+| slug                   | string unique                            | `id` in TS                                                                         |
+| kind                   | enum `CompanyKind`                       | `kind` — employer vs client                                                        |
+| website_url            | string nullable                          | `url` (**link to their site/page**)                                                |
+| industry               | string nullable                          | `industry`                                                                         |
+| city                   | string nullable                          | → `location`                                                                       |
+| country_code           | char(2) nullable                         | → `location`                                                                       |
+| period_label           | string nullable                          | `period` — if blank, derived from linked experiences ("2021 — 2024", "2024 — now") |
+| engagement             | text nullable                            | `engagement` (one-liner about the work)                                            |
+| wordmark_style         | enum `WordmarkStyle` default `sans-bold` | fallback rendering when there is no logo                                           |
+| is_featured            | bool                                     | show on clients wall / cooperation section                                         |
+| is_visible, sort_order |                                          |                                                                                    |
 
 Media: `logo` (single; svg/png/webp; light variant) and `logo_dark`
 (optional). Frontend gets `logo: ImageData | null`.
 
 ### `experiences` → `App\Models\Experience` — "Work experience"
 
-| Column | Type | Notes / TS `Experience` |
-|--------|------|------------------|
-| company_id | FK nullable → companies (nullOnDelete) | `companyId` |
-| organization_name | string nullable | `organization` — required when no company (e.g. open source) ; else defaults to company name |
-| role | string | `role` — **job title** |
-| employment_type | enum `EmploymentType` | `type` |
-| work_mode | enum `WorkMode` | **new** — remote / on-site / hybrid |
-| country_code | char(2) nullable | **new** |
-| city | string nullable | **new** |
-| address | string nullable | **new** (optional street address, never required) |
-| start_date | date | `start` (YYYY-MM) |
-| end_date | date nullable | `end` — `null` = **currently working here** |
-| summary | text | `summary` — short description |
-| highlights | json `string[]` | `highlights` — **achievements** |
-| branch | enum `CareerBranch` nullable | `branch` — if null derived: open-source→`oss`, freelance/contract→`freelance`, else `main` |
-| version | string nullable | `version` — if null derived from chronological index (`v1.0.0`…) |
-| commit_hash | string(7) nullable | `commit` — if null `substr(sha1(id.role), 0, 7)` |
-| commit_message | string nullable | `message` — if null `feat(career): join {org} as {role}` |
-| is_visible, sort_order | | |
+| Column                 | Type                                   | Notes / TS `Experience`                                                                      |
+| ---------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------- |
+| company_id             | FK nullable → companies (nullOnDelete) | `companyId`                                                                                  |
+| organization_name      | string nullable                        | `organization` — required when no company (e.g. open source) ; else defaults to company name |
+| role                   | string                                 | `role` — **job title**                                                                       |
+| employment_type        | enum `EmploymentType`                  | `type`                                                                                       |
+| work_mode              | enum `WorkMode`                        | **new** — remote / on-site / hybrid                                                          |
+| country_code           | char(2) nullable                       | **new**                                                                                      |
+| city                   | string nullable                        | **new**                                                                                      |
+| address                | string nullable                        | **new** (optional street address, never required)                                            |
+| start_date             | date                                   | `start` (YYYY-MM)                                                                            |
+| end_date               | date nullable                          | `end` — `null` = **currently working here**                                                  |
+| summary                | text                                   | `summary` — short description                                                                |
+| highlights             | json `string[]`                        | `highlights` — **achievements**                                                              |
+| branch                 | enum `CareerBranch` nullable           | `branch` — if null derived: open-source→`oss`, freelance/contract→`freelance`, else `main`   |
+| version                | string nullable                        | `version` — if null derived from chronological index (`v1.0.0`…)                             |
+| commit_hash            | string(7) nullable                     | `commit` — if null `substr(sha1(id.role), 0, 7)`                                             |
+| commit_message         | string nullable                        | `message` — if null `feat(career): join {org} as {role}`                                     |
+| is_visible, sort_order |                                        |                                                                                              |
 
 Relations: `company()`, `skills()` (morphToMany `Skill` via `skillables` →
 `stack`), `projects()` hasMany (→ `projectIds`).
@@ -185,47 +184,47 @@ Computed `location` string for TS: `"{city}, {country} · {work mode}"`
 
 ### `education` → `App\Models\Education` (HasMedia)
 
-| Column | Type | Notes / TS `Education` |
-|--------|------|------------------|
-| degree | string | `degree` — **qualification name**, e.g. "Diploma in Software Engineering", "BSc" |
-| institution | string | `institution` — university / institute |
-| institution_url | string nullable | new |
-| field_of_study | string nullable | `field` — **specialization** |
-| grade | string nullable | **new** — "Distinction", "3.7 / 4.0", "Very good" |
-| country_code | char(2) nullable | → `location` |
-| city | string nullable | → `location` |
-| start_date | date | `start` (TS changes from `number` year → `YYYY-MM`) |
-| end_date | date nullable | `end` — `null` = **currently studying** (TS becomes `string \| null`) |
-| description | text nullable | new |
-| achievements | json `string[]` | `notes` — **achievements** |
-| is_visible, sort_order | | |
+| Column                 | Type             | Notes / TS `Education`                                                           |
+| ---------------------- | ---------------- | -------------------------------------------------------------------------------- |
+| degree                 | string           | `degree` — **qualification name**, e.g. "Diploma in Software Engineering", "BSc" |
+| institution            | string           | `institution` — university / institute                                           |
+| institution_url        | string nullable  | new                                                                              |
+| field_of_study         | string nullable  | `field` — **specialization**                                                     |
+| grade                  | string nullable  | **new** — "Distinction", "3.7 / 4.0", "Very good"                                |
+| country_code           | char(2) nullable | → `location`                                                                     |
+| city                   | string nullable  | → `location`                                                                     |
+| start_date             | date             | `start` (TS changes from `number` year → `YYYY-MM`)                              |
+| end_date               | date nullable    | `end` — `null` = **currently studying** (TS becomes `string \| null`)            |
+| description            | text nullable    | new                                                                              |
+| achievements           | json `string[]`  | `notes` — **achievements**                                                       |
+| is_visible, sort_order |                  |                                                                                  |
 
 Media: `logo` (institution logo, optional), `certificate` (optional image/PDF).
 
 ### `certifications` → `App\Models\Certification` (HasMedia)
 
-| Column | Type | TS |
-|--------|------|----|
-| name | string | `name` |
-| issuer | string | `issuer` |
-| issued_at | date | `year` (serialize year) |
-| expires_at | date nullable | new |
-| credential_id | string nullable | `credentialId` |
-| credential_url | string nullable | `url` |
-| is_visible, sort_order | | |
+| Column                 | Type            | TS                      |
+| ---------------------- | --------------- | ----------------------- |
+| name                   | string          | `name`                  |
+| issuer                 | string          | `issuer`                |
+| issued_at              | date            | `year` (serialize year) |
+| expires_at             | date nullable   | new                     |
+| credential_id          | string nullable | `credentialId`          |
+| credential_url         | string nullable | `url`                   |
+| is_visible, sort_order |                 |                         |
 
 Media: `badge` (optional).
 
 ### `testimonials` → `App\Models\Testimonial` (HasMedia)
 
-| Column | Type | TS |
-|--------|------|----|
-| quote | text | `quote` |
-| author_name | string | `author` |
-| author_role | string | `role` |
-| company_id | FK nullable | `companyId` |
-| relation | string nullable | `relation` ("Managed me, 2024 — now") |
-| is_visible, sort_order | | |
+| Column                 | Type            | TS                                    |
+| ---------------------- | --------------- | ------------------------------------- |
+| quote                  | text            | `quote`                               |
+| author_name            | string          | `author`                              |
+| author_role            | string          | `role`                                |
+| company_id             | FK nullable     | `companyId`                           |
+| relation               | string nullable | `relation` ("Managed me, 2024 — now") |
+| is_visible, sort_order |                 |                                       |
 
 Media: `avatar` (optional).
 
@@ -239,15 +238,15 @@ Media: `avatar` (optional).
 
 ### `skills` → `Skill` (HasMedia)
 
-| Column | Type | TS `Skill` |
-|--------|------|------------|
-| name | string unique | `name` |
-| slug | string unique | `id` |
-| skill_category_id | FK nullable | `categoryId` — null = technology used only as "stack" tag, not listed in skills section |
-| proficiency | tinyint nullable (1–5) | `proficiency` |
-| years | tinyint nullable | `years` |
-| icon | string nullable | brand icon key for `BrandIcon` (simple-icons slug) |
-| is_visible, sort_order | | |
+| Column                 | Type                   | TS `Skill`                                                                              |
+| ---------------------- | ---------------------- | --------------------------------------------------------------------------------------- |
+| name                   | string unique          | `name`                                                                                  |
+| slug                   | string unique          | `id`                                                                                    |
+| skill_category_id      | FK nullable            | `categoryId` — null = technology used only as "stack" tag, not listed in skills section |
+| proficiency            | tinyint nullable (1–5) | `proficiency`                                                                           |
+| years                  | tinyint nullable       | `years`                                                                                 |
+| icon                   | string nullable        | brand icon key for `BrandIcon` (simple-icons slug)                                      |
+| is_visible, sort_order |                        |                                                                                         |
 
 Media: `icon` (optional custom SVG).
 
@@ -263,36 +262,36 @@ Media: `icon` (optional custom SVG).
 
 ### `projects` → `App\Models\Project` (HasMedia, SoftDeletes)
 
-| Column | Type | TS `Project` |
-|--------|------|--------------|
-| slug | string unique | `slug` / `id` |
-| title | string | `title` |
-| tagline | string | `tagline` |
-| summary | text | `summary` (also meta description fallback) |
-| year | smallint | `year` |
-| status | enum `ProjectStatus` | `status` |
-| category | enum `ProjectCategory` | `category` |
-| is_featured | bool | `featured` (home page) |
-| version | string nullable | `version` |
-| company_id | FK nullable | `companyId` / client |
-| experience_id | FK nullable | `experienceId` |
-| role | string nullable | `role` |
-| team | string nullable | `team` |
-| timeline | string nullable | `timeline` |
-| overview | json `string[]` | `overview` |
-| problem | json `string[]` | `problem` |
-| approach | json `[{title, description}]` | `approach` |
-| architecture | json `Architecture` nullable | `architecture` (caption, columns, rows, nodes[], edges[]) |
-| features | json `[{title, description}]` | `features` |
-| challenges | json `[{title, description}]` | `challenges` |
-| metrics | json `[{value, label, detail}]` | `metrics` |
-| links | json `[{label, url, kind}]` | `links` |
-| cover_alt | string | `cover.alt` |
-| meta_title | string nullable | SEO override |
-| meta_description | string nullable | SEO override |
-| is_published | bool default false | |
-| published_at | timestamp nullable | |
-| sort_order | | |
+| Column           | Type                            | TS `Project`                                              |
+| ---------------- | ------------------------------- | --------------------------------------------------------- |
+| slug             | string unique                   | `slug` / `id`                                             |
+| title            | string                          | `title`                                                   |
+| tagline          | string                          | `tagline`                                                 |
+| summary          | text                            | `summary` (also meta description fallback)                |
+| year             | smallint                        | `year`                                                    |
+| status           | enum `ProjectStatus`            | `status`                                                  |
+| category         | enum `ProjectCategory`          | `category`                                                |
+| is_featured      | bool                            | `featured` (home page)                                    |
+| version          | string nullable                 | `version`                                                 |
+| company_id       | FK nullable                     | `companyId` / client                                      |
+| experience_id    | FK nullable                     | `experienceId`                                            |
+| role             | string nullable                 | `role`                                                    |
+| team             | string nullable                 | `team`                                                    |
+| timeline         | string nullable                 | `timeline`                                                |
+| overview         | json `string[]`                 | `overview`                                                |
+| problem          | json `string[]`                 | `problem`                                                 |
+| approach         | json `[{title, description}]`   | `approach`                                                |
+| architecture     | json `Architecture` nullable    | `architecture` (caption, columns, rows, nodes[], edges[]) |
+| features         | json `[{title, description}]`   | `features`                                                |
+| challenges       | json `[{title, description}]`   | `challenges`                                              |
+| metrics          | json `[{value, label, detail}]` | `metrics`                                                 |
+| links            | json `[{label, url, kind}]`     | `links`                                                   |
+| cover_alt        | string                          | `cover.alt`                                               |
+| meta_title       | string nullable                 | SEO override                                              |
+| meta_description | string nullable                 | SEO override                                              |
+| is_published     | bool default false              |                                                           |
+| published_at     | timestamp nullable              |                                                           |
+| sort_order       |                                 |                                                           |
 
 Media: `cover` (single, 16:9). Relations: `skills()` (→ `stack`),
 `galleryItems()` hasMany, `articles()` belongsToMany.
@@ -309,17 +308,17 @@ Filament relationship `Repeater` so each image has its own alt + caption.
 
 ### `articles` → `App\Models\Article` (HasMedia, SoftDeletes)
 
-| Column | Type | TS `Article` |
-|--------|------|--------------|
-| slug | string unique | `slug` / `id` |
-| title | string | `title` |
-| excerpt | string(400) | `excerpt` |
-| body | json `ArticleBlock[]` | `body` — edited with Filament `Builder` |
-| tags | json `string[]` | `tags` |
-| status | enum `ArticleStatus` | |
-| published_at | timestamp nullable | `publishedAt` |
-| cover_alt | string nullable | |
-| meta_title, meta_description | string nullable | SEO overrides |
+| Column                       | Type                  | TS `Article`                            |
+| ---------------------------- | --------------------- | --------------------------------------- |
+| slug                         | string unique         | `slug` / `id`                           |
+| title                        | string                | `title`                                 |
+| excerpt                      | string(400)           | `excerpt`                               |
+| body                         | json `ArticleBlock[]` | `body` — edited with Filament `Builder` |
+| tags                         | json `string[]`       | `tags`                                  |
+| status                       | enum `ArticleStatus`  |                                         |
+| published_at                 | timestamp nullable    | `publishedAt`                           |
+| cover_alt                    | string nullable       |                                         |
+| meta_title, meta_description | string nullable       | SEO overrides                           |
 
 Media: `cover` (optional; used as OG image). Relation: `projects()`
 belongsToMany via `article_project` (→ `projectIds`).
@@ -329,15 +328,15 @@ belongsToMany via `article_project` (→ `projectIds`).
 `ArticleBlock` union (Builder blocks, stored as
 `[{type, data}]` by Filament → normalized to the TS union in the resource):
 
-| Block | Fields |
-|-------|--------|
-| paragraph | `text` (Textarea; inline markdown allowed: `**bold**`, `` `code` ``, links) |
-| heading | `text`, `id` (auto slug) |
-| code | `language` (ts, tsx, sql, bash, json, php, …), `filename?`, `code` |
-| quote | `text`, `cite?` |
-| list | `items[]` |
-| callout | `title`, `text` |
-| image | **new** — `media_uuid` (one of the article's `body_images` media, picked from a Select with thumbnails), `alt`, `caption` |
+| Block     | Fields                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------- |
+| paragraph | `text` (Textarea; inline markdown allowed: `**bold**`, `` `code` ``, links)                                               |
+| heading   | `text`, `id` (auto slug)                                                                                                  |
+| code      | `language` (ts, tsx, sql, bash, json, php, …), `filename?`, `code`                                                        |
+| quote     | `text`, `cite?`                                                                                                           |
+| list      | `items[]`                                                                                                                 |
+| callout   | `title`, `text`                                                                                                           |
+| image     | **new** — `media_uuid` (one of the article's `body_images` media, picked from a Select with thumbnails), `alt`, `caption` |
 
 Article media collections: `cover` (single) and `body_images` (multiple,
 uploaded in an "Images" section of the form, then referenced by uuid from
@@ -345,20 +344,20 @@ uploaded in an "Images" section of the form, then referenced by uuid from
 
 ### `books` → `App\Models\Book` (HasMedia)
 
-| Column | Type | TS `Book` |
-|--------|------|-----------|
-| slug | string unique | `slug` / `id` |
-| title, author | string | |
-| published_year | smallint nullable | `publishedYear` |
-| category | enum `BookCategory` | |
-| status | enum `ReadingStatus` | |
-| finished_at | date nullable | `finishedAt` (YYYY-MM) |
-| rating | tinyint nullable 1–5 | |
-| pages | smallint nullable | |
-| note | text nullable | |
-| cover_background, cover_ink, cover_accent | string (hex) | `cover.*` — generated cover |
-| cover_style | enum `BookCoverStyle` | `cover.style` |
-| is_visible | | |
+| Column                                    | Type                  | TS `Book`                   |
+| ----------------------------------------- | --------------------- | --------------------------- |
+| slug                                      | string unique         | `slug` / `id`               |
+| title, author                             | string                |                             |
+| published_year                            | smallint nullable     | `publishedYear`             |
+| category                                  | enum `BookCategory`   |                             |
+| status                                    | enum `ReadingStatus`  |                             |
+| finished_at                               | date nullable         | `finishedAt` (YYYY-MM)      |
+| rating                                    | tinyint nullable 1–5  |                             |
+| pages                                     | smallint nullable     |                             |
+| note                                      | text nullable         |                             |
+| cover_background, cover_ink, cover_accent | string (hex)          | `cover.*` — generated cover |
+| cover_style                               | enum `BookCoverStyle` | `cover.style`               |
+| is_visible                                |                       |                             |
 
 Media: `cover_image` (optional real cover; templates fall back to the
 generated one).
@@ -391,17 +390,18 @@ reference, `Localized` removed). Key derived shapes:
 ```ts
 // replaces the reference ImageAsset { base, widths, ... }
 export interface ImageData {
-  src: string;        // largest conversion URL
-  srcSet: string;     // Spatie responsive images srcset
-  width: number;
-  height: number;
-  alt: string;
-  placeholder?: string; // tiny blurred base64 (Spatie responsive images placeholder)
+    src: string; // largest conversion URL
+    srcSet: string; // Spatie responsive images srcset
+    width: number;
+    height: number;
+    alt: string;
+    placeholder?: string; // tiny blurred base64 (Spatie responsive images placeholder)
 }
 
-export interface CareerEntry extends Experience {   // unchanged idea
-  company: Company | null;
-  projects: { slug: string; title: string }[];
+export interface CareerEntry extends Experience {
+    // unchanged idea
+    company: Company | null;
+    projects: { slug: string; title: string }[];
 }
 ```
 

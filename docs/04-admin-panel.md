@@ -50,26 +50,26 @@ cards).
 
 ## Navigation map
 
-| Group | Item | Type | Model |
-|-------|------|------|-------|
-| — | Dashboard | Page | widgets |
-| Profile | **Profile & Bio** | Singleton page | `Profile` |
-| Profile | Social links | Resource (simple/modal) | `Social` |
-| Profile | Now page | Singleton page | `NowPage` |
-| Career | **Work experience** | Resource | `Experience` |
-| Career | **Education** | Resource | `Education` |
-| Career | Certifications | Resource (simple) | `Certification` |
-| Career | **Companies & clients** | Resource | `Company` |
-| Career | Testimonials | Resource | `Testimonial` |
-| Work | Projects | Resource | `Project` |
-| Work | Skills | Resource (simple) + category relation manager | `Skill`, `SkillCategory` |
-| Content | Articles | Resource | `Article` |
-| Content | Books | Resource | `Book` |
-| Content | Uses | Resource (groups with items repeater) | `UsesGroup` |
-| Inbox | Messages (badge = unread count) | Resource (read-only + actions) | `ContactMessage` |
-| Site | **Appearance (templates)** | Custom page | `SiteSetting.active_template` |
-| Site | SEO & settings | Singleton page | `SiteSetting` |
-| Site | Users | Resource (simple) | `User` |
+| Group   | Item                            | Type                                          | Model                         |
+| ------- | ------------------------------- | --------------------------------------------- | ----------------------------- |
+| —       | Dashboard                       | Page                                          | widgets                       |
+| Profile | **Profile & Bio**               | Singleton page                                | `Profile`                     |
+| Profile | Social links                    | Resource (simple/modal)                       | `Social`                      |
+| Profile | Now page                        | Singleton page                                | `NowPage`                     |
+| Career  | **Work experience**             | Resource                                      | `Experience`                  |
+| Career  | **Education**                   | Resource                                      | `Education`                   |
+| Career  | Certifications                  | Resource (simple)                             | `Certification`               |
+| Career  | **Companies & clients**         | Resource                                      | `Company`                     |
+| Career  | Testimonials                    | Resource                                      | `Testimonial`                 |
+| Work    | Projects                        | Resource                                      | `Project`                     |
+| Work    | Skills                          | Resource (simple) + category relation manager | `Skill`, `SkillCategory`      |
+| Content | Articles                        | Resource                                      | `Article`                     |
+| Content | Books                           | Resource                                      | `Book`                        |
+| Content | Uses                            | Resource (groups with items repeater)         | `UsesGroup`                   |
+| Inbox   | Messages (badge = unread count) | Resource (read-only + actions)                | `ContactMessage`              |
+| Site    | **Appearance (templates)**      | Custom page                                   | `SiteSetting.active_template` |
+| Site    | SEO & settings                  | Singleton page                                | `SiteSetting`                 |
+| Site    | Users                           | Resource (simple)                             | `User`                        |
 
 ## Shared building blocks (`app/Filament/Support`)
 
@@ -108,40 +108,40 @@ Standard table behaviour: `->reorderable('sort_order')` where the model has
 Custom `Page` with a form bound to `Profile::current()` (so Spatie uploads
 work) and a sticky "Save" action. Layout: **Tabs** (persisted in query string).
 
-| Tab | Fields |
-|-----|--------|
-| Identity | name, initials (auto placeholder), role (job title), location, timezone (searchable Select of `timezone_identifiers_list()`), timezone_label, email, phone · aside: **portrait** upload (image editor 3:4) + `portrait_alt`, **resume** PDF |
-| Bio | headline (Textarea, char counter 300), summary (Textarea), **story** (Repeater `simple` Textarea, reorderable — long bio paragraphs), focus_areas (TagsInput, reorderable) |
-| Availability | availability_status (ToggleButtons: open/limited/closed with colors), availability_label, availability_note |
-| Highlights | stats (Repeater: value + label, grid 2, max 6), status strip (Repeater: label, value, tone), principles (Repeater: title + body, collapsible, `itemLabel` = title) |
-| Changelog extras | current_version, latest_release.added / .changed / .removed (TagsInput ×3). Description: "Used by the Changelog template only." |
+| Tab              | Fields                                                                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identity         | name, initials (auto placeholder), role (job title), location, timezone (searchable Select of `timezone_identifiers_list()`), timezone_label, email, phone · aside: **portrait** upload (image editor 3:4) + `portrait_alt`, **resume** PDF |
+| Bio              | headline (Textarea, char counter 300), summary (Textarea), **story** (Repeater `simple` Textarea, reorderable — long bio paragraphs), focus_areas (TagsInput, reorderable)                                                                  |
+| Availability     | availability_status (ToggleButtons: open/limited/closed with colors), availability_label, availability_note                                                                                                                                 |
+| Highlights       | stats (Repeater: value + label, grid 2, max 6), status strip (Repeater: label, value, tone), principles (Repeater: title + body, collapsible, `itemLabel` = title)                                                                          |
+| Changelog extras | current_version, latest_release.added / .changed / .removed (TagsInput ×3). Description: "Used by the Changelog template only."                                                                                                             |
 
 ## Work experience (`ExperienceResource`) — owner priority
 
 **Form**
 
-- Section *Position* (icon briefcase):
-  - `company_id` — Select relationship, searchable, preload,
-    `->createOptionForm(CompanyForm::quick())` (name, kind, website, logo) and
-    `->editOptionForm(...)`; hint "Leave empty for open-source / personal".
-  - `organization_name` — visible & required when `company_id` is empty.
-  - `role` — "Job title", required.
-  - `employment_type` — Select (enum).
-  - `work_mode` — ToggleButtons inline: On-site (building icon) / Remote
-    (globe) / Hybrid (arrows).
-- Section *Location* (icon map-pin), 3 columns: `country_code`
+- Section _Position_ (icon briefcase):
+    - `company_id` — Select relationship, searchable, preload,
+      `->createOptionForm(CompanyForm::quick())` (name, kind, website, logo) and
+      `->editOptionForm(...)`; hint "Leave empty for open-source / personal".
+    - `organization_name` — visible & required when `company_id` is empty.
+    - `role` — "Job title", required.
+    - `employment_type` — Select (enum).
+    - `work_mode` — ToggleButtons inline: On-site (building icon) / Remote
+      (globe) / Hybrid (arrows).
+- Section _Location_ (icon map-pin), 3 columns: `country_code`
   (CountrySelect), `city`, `address` (optional, full width).
-- Section *Period* (icon calendar):
-  - `start_date` MonthPicker required.
-  - `is_current` Toggle (dehydrated false, `->live()`, afterStateHydrated =
-    `end_date === null`) — "I currently work here".
-  - `end_date` MonthPicker, hidden when current, `->afterOrEqual('start_date')`.
-- Section *Description*: `summary` (Textarea, 3 rows, char counter),
+- Section _Period_ (icon calendar):
+    - `start_date` MonthPicker required.
+    - `is_current` Toggle (dehydrated false, `->live()`, afterStateHydrated =
+      `end_date === null`) — "I currently work here".
+    - `end_date` MonthPicker, hidden when current, `->afterOrEqual('start_date')`.
+- Section _Description_: `summary` (Textarea, 3 rows, char counter),
   `highlights` — Repeater `->simple(Textarea)` labelled **Achievements**,
   reorderable, add action "Add achievement".
-- Section *Tech stack*: `skills` Select multiple relationship, searchable,
+- Section _Tech stack_: `skills` Select multiple relationship, searchable,
   `->createOptionForm([name, category])`.
-- Aside: visibility section; collapsed section *Changelog template* with
+- Aside: visibility section; collapsed section _Changelog template_ with
   `branch`, `version`, `commit_hash`, `commit_message` — each shows the
   auto-derived value as placeholder.
 
@@ -152,20 +152,20 @@ badge + icon; country (flag + name); PeriodColumn; `highlights` count;
 type, work mode, company, "Current only" ternary. Actions: edit, replicate
 (opens edit), delete.
 
-**Relation manager**: *Projects* (attach existing projects to this role).
+**Relation manager**: _Projects_ (attach existing projects to this role).
 
 ## Education (`EducationResource`) — owner priority
 
 **Form**
 
-- Section *Qualification*: `degree` ("Qualification", e.g. *Diploma in
-  Software Engineering*), `field_of_study` ("Specialization"), `grade`
+- Section _Qualification_: `degree` ("Qualification", e.g. _Diploma in
+  Software Engineering_), `field_of_study` ("Specialization"), `grade`
   (with hint examples).
-- Section *Institution*: `institution`, `institution_url`, `country_code`,
+- Section _Institution_: `institution`, `institution_url`, `country_code`,
   `city` · aside: institution `logo` upload.
-- Section *Period*: `start_date`, `is_current` toggle ("I'm currently
+- Section _Period_: `start_date`, `is_current` toggle ("I'm currently
   studying here"), `end_date` (hidden when current).
-- Section *Details*: `description`, `achievements` (Repeater simple,
+- Section _Details_: `description`, `achievements` (Repeater simple,
   reorderable), `certificate` upload (image/PDF, optional).
 
 **Table**: logo, degree + institution (description), field, grade badge,
@@ -173,30 +173,30 @@ period ("2020 — Present"), visibility. Default sort `start_date desc`.
 
 ## Companies & clients (`CompanyResource`) — owner priority
 
-**Form**: Section *Brand*: `name`, `slug` (auto from name, editable),
+**Form**: Section _Brand_: `name`, `slug` (auto from name, editable),
 `kind` ToggleButtons (Employer / Client), `website_url` (url, prefix icon
 link, suffix action "open"), `industry` · aside: `logo` (svg/png/webp, image
 editor off for SVG), `logo_dark` (optional), `wordmark_style` Select with
 helper "Used when no logo is uploaded", `is_featured`, visibility.
-Section *Engagement*: `engagement` Textarea, `period_label` (placeholder shows
+Section _Engagement_: `engagement` Textarea, `period_label` (placeholder shows
 derived period), `city`, `country_code`.
 
 **Table** (grid layout via `->contentGrid(['md' => 2, 'xl' => 4])` card view
 with logo, name, kind badge, website link), reorderable, filters: kind,
-featured. Relation managers: *Experiences*, *Projects*, *Testimonials*.
+featured. Relation managers: _Experiences_, _Projects_, _Testimonials_.
 
 ## Projects (`ProjectResource`)
 
 Form uses **Tabs**:
 
-| Tab | Content |
-|-----|---------|
-| Basics | title (live → slug), slug, tagline, summary, year, status (badge select), category, is_featured, version, company (select + create), experience (select filtered by company), role, team, timeline, skills (stack, multi-select) · aside: `cover` upload (16:9 editor) + `cover_alt`, publish section (is_published, published_at), ViewOnSite |
-| Story | overview (Repeater simple Textarea), problem (Repeater simple), approach (Repeater title+description, collapsible), features (same), challenges (same) |
-| Architecture | caption, columns, rows; nodes Repeater (id, label, detail, kind select, column, row; grid 3); edges Repeater (from/to Selects populated from node ids via `Get`, label). Optional live preview (custom view field rendering the SVG diagram). |
-| Metrics & links | metrics Repeater (value, label, detail; grid 3); links Repeater (label, url, kind) |
-| Gallery | relationship Repeater `galleryItems` (image upload, alt, caption), reorderable, grid 2 |
-| SEO | meta_title (char counter 60), meta_description (counter 160), SERP preview (custom view) |
+| Tab             | Content                                                                                                                                                                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Basics          | title (live → slug), slug, tagline, summary, year, status (badge select), category, is_featured, version, company (select + create), experience (select filtered by company), role, team, timeline, skills (stack, multi-select) · aside: `cover` upload (16:9 editor) + `cover_alt`, publish section (is_published, published_at), ViewOnSite |
+| Story           | overview (Repeater simple Textarea), problem (Repeater simple), approach (Repeater title+description, collapsible), features (same), challenges (same)                                                                                                                                                                                         |
+| Architecture    | caption, columns, rows; nodes Repeater (id, label, detail, kind select, column, row; grid 3); edges Repeater (from/to Selects populated from node ids via `Get`, label). Optional live preview (custom view field rendering the SVG diagram).                                                                                                  |
+| Metrics & links | metrics Repeater (value, label, detail; grid 3); links Repeater (label, url, kind)                                                                                                                                                                                                                                                             |
+| Gallery         | relationship Repeater `galleryItems` (image upload, alt, caption), reorderable, grid 2                                                                                                                                                                                                                                                         |
+| SEO             | meta_title (char counter 60), meta_description (counter 160), SERP preview (custom view)                                                                                                                                                                                                                                                       |
 
 **Table**: cover thumb, title + tagline, category badge, status badge,
 featured icon toggle, year, stack (first 3 badges), published icon.
@@ -271,16 +271,15 @@ reading books (multi-select of books, default = status reading). Shows
   badge on the current one.
 - Card actions: **Activate** (confirmation modal → updates
   `site_settings.active_template`, flushes cache, success notification) and
-  **Preview** (opens `/?template=<id>` in new tab; works for logged-in admins
-  even when public preview is off).
-- Toggle `allow_public_preview`.
+  **Preview** (opens `/?template=<id>` in a new tab; preview works only for
+  the logged-in admin — visitors always get the active template).
 
 ## Site · SEO & settings (singleton page `SiteSettings`)
 
-Tabs: *General* (site_name, title_separator, enabled_pages toggles,
-contact_recipient) · *SEO* (meta_description, default_og_image, twitter_handle,
+Tabs: _General_ (site_name, title_separator, enabled_pages toggles,
+contact_recipient) · _SEO_ (meta_description, default_og_image, twitter_handle,
 indexable toggle with danger description, verification codes) ·
-*Advanced* (analytics_snippet, favicon). Header action: "Rebuild caches"
+_Advanced_ (analytics_snippet, favicon). Header action: "Rebuild caches"
 (flush content caches + regenerate sitemap).
 
 ## Dashboard widgets

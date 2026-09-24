@@ -89,10 +89,12 @@ shows markup).
 seed; no console errors; SSR works.
 
 ## P3-06 · Port Changelog template — `todo`
+
 Same as P3-05 for `changelog` (note: `features/` folder structure, career
 commit graph uses derived branch/version/commit).
 
 ## P3-07 · Port Playground template — `todo`
+
 Same as P3-05 for `playground`.
 
 ---
@@ -100,8 +102,7 @@ Same as P3-05 for `playground`.
 ## P3-08 · Contact form end-to-end — `todo`
 
 - [ ] `ContactMessageRequest` (rules mirror `lib/contactSchema.ts`: name
-      required, email valid, topic enum, message ≥ 20 chars) + honeypot field
-      + throttle.
+      required, email valid, topic enum, message ≥ 20 chars) + honeypot field + throttle.
 - [ ] Controller stores message, dispatches notification, redirects back with
       flash success.
 - [ ] All three templates' contact components use Inertia `useForm`; server
@@ -121,7 +122,7 @@ prop; actions: theme toggle, copy email (language action removed).
 Floating admin-only preview bar (Exit / Activate); `?template=` handling
 end-to-end; `noindex` while previewing.
 **Acceptance**: logged-in admin can preview each template; guest sees active
-template (unless public preview is enabled).
+template and `?template=` is ignored for them.
 
 ---
 

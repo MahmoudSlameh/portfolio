@@ -137,7 +137,7 @@ updates.
 
 - [ ] `Appearance` page: template cards (screenshots in
       `public/templates/<id>.webp` — take them from the reference app),
-      Activate (confirm) + Preview actions, public-preview toggle.
+      Activate (confirm) + Preview actions (admin-only preview).
 - [ ] `SiteSettings` page: General / SEO / Advanced tabs; "Rebuild caches"
       action.
 

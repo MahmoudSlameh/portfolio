@@ -14,18 +14,18 @@ A personal developer portfolio that:
 
 ### Public site (React + Inertia, SSR)
 
-| Route | Page | Content |
-|-------|------|---------|
-| `/` | Home | Hero/bio, stats, skills, career timeline, featured projects, clients, testimonials, education & certifications, latest writing, bookshelf, contact form |
-| `/projects` | Project archive | Filter by search / technology / category, sort, grid/table view |
-| `/projects/{slug}` | Case study | Overview, problem, approach, architecture diagram, features, challenges, metrics, gallery, links, prev/next |
-| `/writing` | Writing archive | Search + tag filter |
-| `/writing/{slug}` | Article | Block-based body, TOC, reading progress, related projects |
-| `/books` | Library | Reading status/category filters, stats, per-year chart |
-| `/uses` | Uses | Hardware / software / development tool groups |
-| `/now` | Now | Current focus, learning, reading |
-| `POST /contact` | — | Contact form submission (stored + notified) |
-| `/sitemap.xml`, `/robots.txt`, `/rss.xml` | — | SEO endpoints |
+| Route                                     | Page            | Content                                                                                                                                                 |
+| ----------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                       | Home            | Hero/bio, stats, skills, career timeline, featured projects, clients, testimonials, education & certifications, latest writing, bookshelf, contact form |
+| `/projects`                               | Project archive | Filter by search / technology / category, sort, grid/table view                                                                                         |
+| `/projects/{slug}`                        | Case study      | Overview, problem, approach, architecture diagram, features, challenges, metrics, gallery, links, prev/next                                             |
+| `/writing`                                | Writing archive | Search + tag filter                                                                                                                                     |
+| `/writing/{slug}`                         | Article         | Block-based body, TOC, reading progress, related projects                                                                                               |
+| `/books`                                  | Library         | Reading status/category filters, stats, per-year chart                                                                                                  |
+| `/uses`                                   | Uses            | Hardware / software / development tool groups                                                                                                           |
+| `/now`                                    | Now             | Current focus, learning, reading                                                                                                                        |
+| `POST /contact`                           | —               | Contact form submission (stored + notified)                                                                                                             |
+| `/sitemap.xml`, `/robots.txt`, `/rss.xml` | —               | SEO endpoints                                                                                                                                           |
 
 ### Admin panel (Filament 5, `/admin`)
 
@@ -35,7 +35,7 @@ Management for **everything** the templates display — see
 - **Work experience**: company, work mode (remote / on-site / hybrid), country,
   optional address, job title, short description, achievements, start date and
   optional end date ("currently working here").
-- **Education**: qualification name (e.g. *Diploma in Software Engineering*),
+- **Education**: qualification name (e.g. _Diploma in Software Engineering_),
   institution, start / optional end ("currently studying"), field of study,
   grade, achievements.
 - **Clients / companies**: name, logo, website link.
@@ -44,18 +44,18 @@ Management for **everything** the templates display — see
 
 ## Tech stack (as installed)
 
-| Layer | Package | Version |
-|-------|---------|---------|
-| Runtime | PHP | ^8.3 (8.4 in dev container) |
-| Framework | laravel/framework | 13.x |
-| Admin | filament/filament | 5.8.x (Livewire 4) |
-| Media | filament/spatie-laravel-media-library-plugin → spatie/laravel-medialibrary | 5.8.x → 11.x |
-| Bridge | inertiajs/inertia-laravel + @inertiajs/react | 3.x |
-| Routes in TS | laravel/wayfinder + @laravel/vite-plugin-wayfinder | 0.1.x |
-| UI | React 19 + React Compiler, Tailwind CSS 4 | |
-| Build | Vite 8 via `vite-plus` (`vp`) | |
-| Tests | Pest 5, Larastan (level 7), Pint | |
-| AI tooling | laravel/boost (dev) | 2.x |
+| Layer        | Package                                                                    | Version                     |
+| ------------ | -------------------------------------------------------------------------- | --------------------------- |
+| Runtime      | PHP                                                                        | ^8.3 (8.4 in dev container) |
+| Framework    | laravel/framework                                                          | 13.x                        |
+| Admin        | filament/filament                                                          | 5.8.x (Livewire 4)          |
+| Media        | filament/spatie-laravel-media-library-plugin → spatie/laravel-medialibrary | 5.8.x → 11.x                |
+| Bridge       | inertiajs/inertia-laravel + @inertiajs/react                               | 3.x                         |
+| Routes in TS | laravel/wayfinder + @laravel/vite-plugin-wayfinder                         | 0.1.x                       |
+| UI           | React 19 + React Compiler, Tailwind CSS 4                                  |                             |
+| Build        | Vite 8 via `vite-plus` (`vp`)                                              |                             |
+| Tests        | Pest 5, Larastan (level 7), Pint                                           |                             |
+| AI tooling   | laravel/boost (dev)                                                        | 2.x                         |
 
 ## What exists today (starting point)
 

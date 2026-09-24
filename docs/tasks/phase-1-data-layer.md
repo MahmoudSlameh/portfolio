@@ -3,7 +3,8 @@
 Docs: [03-data-model](../03-data-model.md) (the spec — follow column names
 exactly), [05-media](../05-media.md).
 
-General for every model: migration + model (fillable attrs, `casts()`,
+General for every model (migrations must run on SQLite **and** MySQL 8):
+migration + model (fillable attrs, `casts()`,
 `@property` docblocks, relations, scopes `visible()`/`ordered()`), factory,
 Pest unit test for casts/relations/derived values.
 
@@ -26,11 +27,14 @@ covers `fontsHref()` non-empty for each case.
 
 ## P1-02 · Singletons: Profile, SiteSetting, NowPage — `todo`
 
-- [ ] Migrations per 03 (json columns default `[]`/`{}`).
+- [ ] Migrations per 03. `json` columns get **no DB default** (MySQL 8 rule,
+      D15) — set defaults in the model `$attributes` instead.
 - [ ] `Profile::current()`, `SiteSetting::current()`, `NowPage::current()`
       (`firstOrCreate` with sensible defaults; cached; observer flushes cache).
 - [ ] `Profile` & `SiteSetting` implement `HasMedia` with collections from 05.
 - [ ] `NowPage::readingBooks()` pivot migration can wait for P1-06 (books).
+- [ ] Media smoke test (from P0-03): upload a fake portrait to `Profile`, run
+      conversions, assert `width`/`height` custom properties are stored.
 
 **Acceptance**: calling `current()` twice returns the same row; media
 collections registered; saving flushes the cache key.

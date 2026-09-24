@@ -23,7 +23,7 @@
 ## Key design choices
 
 1. **Server owns data, templates own presentation.** Controllers build the
-   exact props of the *template contract* (see
+   exact props of the _template contract_ (see
    [06](06-frontend-templates.md#the-template-contract)). Templates only render.
 2. **Template = Inertia page namespace.** The active template id prefixes the
    Inertia component name: `terminal/Home`, `changelog/CaseStudy`, … Each
@@ -33,7 +33,7 @@
    are validated with Form Requests and applied in Eloquent queries; the page
    receives the filtered list and the current filters. Inertia partial reloads
    (`only: ['projects']`) keep it snappy. This replaces the zod search schemas
-   + TanStack Router loaders of the reference app.
+    - TanStack Router loaders of the reference app.
 4. **Singletons as Eloquent models.** `Profile`, `SiteSetting` and `NowPage`
    are single-row models (not a settings package) so they can own Spatie media
    (portrait, OG image, CV…).
