@@ -52,7 +52,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P1-07 | Derived-data support classes                                       | P1-06               | done   |
 | P1-08 | API Resources + `ImageData`                                        | P1-07               | done   |
 | P1-09 | Seeders (admin, settings, DemoContentSeeder)                       | P1-08               | done   |
-| P2-01 | Panel configuration & shared building blocks                       | P1-02               | todo   |
+| P2-01 | Panel configuration & shared building blocks                       | P1-02               | done   |
 | P2-02 | Profile & Bio page                                                 | P2-01               | todo   |
 | P2-03 | Work experience resource                                           | P2-01, P1-03        | todo   |
 | P2-04 | Education resource                                                 | P2-01, P1-03        | todo   |

@@ -10,17 +10,17 @@ Boost `search-docs`.
 
 ---
 
-## P2-01 · Panel configuration & shared building blocks — `todo`
+## P2-01 · Panel configuration & shared building blocks — `done`
 
-- [ ] Configure `AdminPanelProvider` as in 04 (colors, font, SPA, groups,
+- [x] Configure `AdminPanelProvider` as in 04 (colors, font, SPA, groups,
       global search, DB notifications, unsaved-changes alerts, view-site menu
       item). Remove `FilamentInfoWidget`.
-- [ ] `notifications` table migration (`php artisan make:notifications-table`).
-- [ ] `User implements FilamentUser` with `canAccessPanel()` per 04.
-- [ ] Shared components in `app/Filament/Support`: `CountrySelect`,
+- [x] `notifications` table migration (`php artisan make:notifications-table`).
+- [x] `User implements FilamentUser` with `canAccessPanel()` per 04.
+- [x] Shared components in `app/Filament/Support`: `CountrySelect`,
       `MonthPicker`, `VisibilityAside`, `PeriodColumn`, `ViewOnSiteAction`,
       `ToggleVisibilityBulkAction`.
-- [ ] (Optional) custom theme.
+- [x] (Optional) custom theme.
 
 **Acceptance**: panel loads with empty groups hidden; dark mode works; ⌘K
 opens global search.
@@ -155,4 +155,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 
 ## Notes
 
-_(add dated notes here)_
+- 2026-09-24 — P2-01: Panel: Indigo/Zinc, Inter, SPA, collapsible sidebar, full width, ⌘K search, DB notifications (30s poll), unsaved-changes alerts, DB transactions, 6 navigation groups, 'View site' user-menu item, password reset + full profile page. Custom theme resources/css/filament/admin/theme.css (in vite inputs) so custom Blade views can use Tailwind. Shared builders: App\Filament\Support\Fields (country, month, currentToggle, slug/slugSource, visibilitySection) and Columns (period, visibility, duration). User::canAccessPanel uses config('portfolio.admin_emails') in production.
