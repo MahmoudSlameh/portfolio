@@ -43,19 +43,19 @@ collections registered; saving flushes the cache key.
 
 ---
 
-## P1-03 · Career models — `todo`
+## P1-03 · Career models — `done`
 
 Companies, Experiences, Education, Certifications, Testimonials.
 
-- [ ] Migrations with FKs (`nullOnDelete` for company links) and indexes on
+- [x] Migrations with FKs (`nullOnDelete` for company links) and indexes on
       `slug`, `sort_order`, `start_date`.
-- [ ] `Experience` accessors: `is_current`, `location_label`,
+- [x] `Experience` accessors: `is_current`, `location_label`,
       `resolved_branch`, `resolved_version`, `resolved_commit`,
       `resolved_message` (derivation rules in 03).
-- [ ] `Company::period_label` fallback derived from experiences.
-- [ ] `Education::is_current`, `location_label`.
-- [ ] Media collections (logo, certificate, badge, avatar).
-- [ ] Factories with realistic states (`current()`, `remote()`, `client()`).
+- [x] `Company::period_label` fallback derived from experiences.
+- [x] `Education::is_current`, `location_label`.
+- [x] Media collections (logo, certificate, badge, avatar).
+- [x] Factories with realistic states (`current()`, `remote()`, `client()`).
 
 **Acceptance**: unit tests for every derivation rule, including
 "end_date null ⇒ current" and branch derivation from employment type.
@@ -151,3 +151,4 @@ twice → no duplicates; every template page later renders like the reference.
 
 - 2026-09-24 — P1-01: 18 enums + Template (Arabic font families dropped from fontsHref); CareerBranch::forEmploymentType(); tests/Unit/EnumsTest.php.
 - 2026-09-24 — P1-02: IsSingleton + RegistersImageConversions (thumb/webp/og) concerns, App\Support\Media\MimeTypes. DB defaults are mirrored in model $attributes (create() does not refresh). NowPage books pivot left for P1-06. Media smoke test passes (GD WebP).
+- 2026-09-24 — P1-03: Company/Experience/Education/Certification/Testimonial + factories (states: current, remote, openSource, client, hidden). HasVisibilityAndOrder concern (#[Scope]), #[RouteKey('slug')] on Company, App\Support\Countries (symfony/intl, flags), Support\Content\Location, Support\Content\ChangelogMetadata. Experience skills() comes in P1-04.

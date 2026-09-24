@@ -157,25 +157,29 @@ Media: `logo` (single; svg/png/webp; light variant) and `logo_dark`
 
 ### `experiences` → `App\Models\Experience` — "Work experience"
 
-| Column                 | Type                                   | Notes / TS `Experience`                                                                      |
-| ---------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------- |
-| company_id             | FK nullable → companies (nullOnDelete) | `companyId`                                                                                  |
-| organization_name      | string nullable                        | `organization` — required when no company (e.g. open source) ; else defaults to company name |
-| role                   | string                                 | `role` — **job title**                                                                       |
-| employment_type        | enum `EmploymentType`                  | `type`                                                                                       |
-| work_mode              | enum `WorkMode`                        | **new** — remote / on-site / hybrid                                                          |
-| country_code           | char(2) nullable                       | **new**                                                                                      |
-| city                   | string nullable                        | **new**                                                                                      |
-| address                | string nullable                        | **new** (optional street address, never required)                                            |
-| start_date             | date                                   | `start` (YYYY-MM)                                                                            |
-| end_date               | date nullable                          | `end` — `null` = **currently working here**                                                  |
-| summary                | text                                   | `summary` — short description                                                                |
-| highlights             | json `string[]`                        | `highlights` — **achievements**                                                              |
-| branch                 | enum `CareerBranch` nullable           | `branch` — if null derived: open-source→`oss`, freelance/contract→`freelance`, else `main`   |
-| version                | string nullable                        | `version` — if null derived from chronological index (`v1.0.0`…)                             |
-| commit_hash            | string(7) nullable                     | `commit` — if null `substr(sha1(id.role), 0, 7)`                                             |
-| commit_message         | string nullable                        | `message` — if null `feat(career): join {org} as {role}`                                     |
-| is_visible, sort_order |                                        |                                                                                              |
+| Column                 | Type                                   | Notes / TS `Experience`                                                                                                                                                        |
+| ---------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| company_id             | FK nullable → companies (nullOnDelete) | `companyId`                                                                                                                                                                    |
+| organization_name      | string nullable                        | `organization` — required when no company (e.g. open source) ; else defaults to company name                                                                                   |
+| role                   | string                                 | `role` — **job title**                                                                                                                                                         |
+| employment_type        | enum `EmploymentType`                  | `type`                                                                                                                                                                         |
+| work_mode              | enum `WorkMode`                        | **new** — remote / on-site / hybrid                                                                                                                                            |
+| country_code           | char(2) nullable                       | **new**                                                                                                                                                                        |
+| city                   | string nullable                        | **new**                                                                                                                                                                        |
+| address                | string nullable                        | **new** (optional street address, never required)                                                                                                                              |
+| start_date             | date                                   | `start` (YYYY-MM)                                                                                                                                                              |
+| end_date               | date nullable                          | `end` — `null` = **currently working here**                                                                                                                                    |
+| summary                | text                                   | `summary` — short description                                                                                                                                                  |
+| highlights             | json `string[]`                        | `highlights` — **achievements**                                                                                                                                                |
+| branch                 | enum `CareerBranch` nullable           | `branch` — if null: open-source→`oss`, freelance/contract→`freelance`, else `main` (`CareerBranch::forEmploymentType`)                                                         |
+| version                | string nullable                        | `version` — if null: counted per branch from the oldest role: `v1.0.0`, `v2.0.0`… on `main`; `oss/1.0.0`, `freelance/1.0.0`… elsewhere                                         |
+| commit_hash            | string(7) nullable                     | `commit` — if null `substr(sha1("{id}:{role}:{organization}"), 0, 7)`                                                                                                          |
+| commit_message         | string nullable                        | `message` — if null: oldest `main` role → `init: first commit`; other `main` roles → `feat(career): join {org} as {role}`; other branches → `chore({branch}): {role} at {org}` |
+| is_visible, sort_order |                                        |                                                                                                                                                                                |
+
+Version and message need the whole career, so they are computed by
+`App\Support\Content\ChangelogMetadata::for($experiences)`; `branch` and `commit`
+are model accessors (`resolved_branch`, `resolved_commit`).
 
 Relations: `company()`, `skills()` (morphToMany `Skill` via `skillables` →
 `stack`), `projects()` hasMany (→ `projectIds`).
