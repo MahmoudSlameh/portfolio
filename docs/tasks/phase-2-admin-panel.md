@@ -53,12 +53,12 @@ test covers save + upload.
 
 ---
 
-## P2-04 · Education resource — `todo` ⭐ owner priority
+## P2-04 · Education resource — `done` ⭐ owner priority
 
-- [ ] Form per 04: qualification name, specialization, **grade**,
+- [x] Form per 04: qualification name, specialization, **grade**,
       institution (+ url, logo, location), **start + "currently studying" +
       optional end**, description, **achievements**, certificate upload.
-- [ ] Table + default sort.
+- [x] Table + default sort.
 
 **Acceptance**: current study shows "Present"; grade visible in table.
 
@@ -159,3 +159,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-02: App\Filament\Support\SingletonPage (abstract: fill from record, sticky save bar ⌘S, saveRelationships for Spatie uploads, DB transaction) + Pages\EditProfile (slug /admin/bio, 5 tabs). Tests: tests/Feature/Filament/EditProfilePageTest.php — use Repeater::fake() + internal item shape for simple repeaters in fillForm; actingAsAdmin() helper in tests/Pest.php.
 - 2026-09-24 — P2-05: CompanyResource: 2/3 + 1/3 form (brand, engagement, logo/logo_dark/wordmark, featured/visible), card-grid table (contentGrid, reorderable, kind/featured/visible filters, visit-website action). CompanyForm::quick() for create/edit-option forms. Local InitialsAvatar SVG for missing logos (no external avatar service). Relation managers (experiences/projects/testimonials) are added in P2-08 via relatedResource().
 - 2026-09-24 — P2-03: ExperienceForm: company select with logos (allowHtml) + create/edit option (CompanyForm::quick), organization fallback, job title, type, work-mode toggle buttons, country/city/optional address, month start/end + 'I currently work here' toggle, summary, achievements repeater, ordered stack (Fields::stack + SyncsStack, HasStack interface), collapsed changelog overrides with derived placeholders. Table: logo, title/org, type & mode badges, flag+country, period with Present badge, filters (type, mode, company, current), replicate. Projects relation manager comes with P2-08.
+- 2026-09-24 — P2-04: EducationForm: qualification, specialization, grade, institution (+url, country, city), month start/end + 'currently studying' toggle, description, achievements, logo + certificate uploads. Table with logo, grade badge, period/Present, 'currently studying' filter.
