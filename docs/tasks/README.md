@@ -33,7 +33,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P5    | [phase-5-quality-launch.md](phase-5-quality-launch.md)   | Tests hardening, cleanup, deployment              |
 
 > **Status (2026-09-24): all phases P0–P5 are done.** The owner still has to
-> decide the open questions in [09](../09-decisions.md#open-questions) (their
+> decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
 > defaults are implemented) and run the post-launch checks in
 > [10 § 8](../10-deployment.md#8-launch-checklist). Add new work as a new phase file
 > and new rows below.
