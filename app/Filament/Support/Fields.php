@@ -2,6 +2,7 @@
 
 namespace App\Filament\Support;
 
+use App\Models\Skill;
 use App\Support\Countries;
 use Carbon\CarbonImmutable;
 use Filament\Forms\Components\DatePicker;
@@ -13,6 +14,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
@@ -145,5 +147,29 @@ final class Fields
             ->label('Alt text')
             ->placeholder($placeholder)
             ->maxLength(255);
+    }
+
+    /**
+     * Ordered tech stack (skills). Saved by the page with {@see SyncsStack} so the chosen order is kept.
+     */
+    public static function stack(): Select
+    {
+        return Select::make('stack')
+            ->label('Tech stack')
+            ->multiple()
+            ->searchable()
+            ->preload()
+            ->options(fn (): array => Skill::query()->orderBy('name')->pluck('name', 'id')->all())
+            ->afterStateHydrated(function (Select $component, ?Model $record): void {
+                if ($record !== null && method_exists($record, 'skills')) {
+                    $component->state($record->skills()->pluck('skills.id')->map(fn (mixed $id): string => (string) $id)->all());
+                }
+            })
+            ->dehydrated(false)
+            ->createOptionForm([
+                TextInput::make('name')->required()->unique(Skill::class, 'name')->maxLength(255),
+            ])
+            ->createOptionUsing(fn (array $data): int => Skill::query()->create(['name' => $data['name']])->id)
+            ->helperText('Order matters: the first technologies are shown first.');
     }
 }

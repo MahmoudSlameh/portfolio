@@ -44,6 +44,13 @@ A task is **not done** until `composer ci:check` passes.
   `#[ObservedBy]` attribute.
 - Filament resources: keep form schema in `Schemas/*Form.php` and table in
   `Tables/*Table.php` (Filament 5 default layout).
+- Filament form rules learned the hard way: every `Repeater` gets
+  `->defaultItems(0)` (otherwise create pages start with an empty required
+  item); stacks use `Fields::stack()` + the `SyncsStack` page trait (keeps
+  order); images use `Fields::image()` (Spatie upload) + `Fields::alt()`;
+  month dates use `Fields::month()`; "current" roles/studies use
+  `Fields::currentToggle()`. Never call external services (e.g. avatar APIs)
+  from the panel — use `InitialsAvatar`.
 - Don't add a package when a small class does the job; when adding one,
   record it in [09-decisions.md](09-decisions.md).
 

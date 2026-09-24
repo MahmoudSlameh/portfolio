@@ -7,6 +7,7 @@ use App\Enums\EmploymentType;
 use App\Enums\WorkMode;
 use App\Models\Concerns\HasSkills;
 use App\Models\Concerns\HasVisibilityAndOrder;
+use App\Models\Contracts\HasStack;
 use App\Support\Content\ChangelogMetadata;
 use App\Support\Content\Location;
 use Carbon\CarbonImmutable;
@@ -59,7 +60,7 @@ use Illuminate\Support\Carbon;
     'address', 'start_date', 'end_date', 'summary', 'highlights', 'branch', 'version', 'commit_hash',
     'commit_message', 'is_visible', 'sort_order',
 ])]
-class Experience extends Model
+class Experience extends Model implements HasStack
 {
     /** @use HasFactory<ExperienceFactory> */
     use HasFactory, HasSkills, HasVisibilityAndOrder;

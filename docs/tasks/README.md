@@ -54,7 +54,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P1-09 | Seeders (admin, settings, DemoContentSeeder)                       | P1-08               | done   |
 | P2-01 | Panel configuration & shared building blocks                       | P1-02               | done   |
 | P2-02 | Profile & Bio page                                                 | P2-01               | done   |
-| P2-03 | Work experience resource                                           | P2-01, P1-03        | todo   |
+| P2-03 | Work experience resource                                           | P2-01, P1-03        | done   |
 | P2-04 | Education resource                                                 | P2-01, P1-03        | todo   |
 | P2-05 | Companies & clients resource                                       | P2-01, P1-03        | done   |
 | P2-06 | Certifications & testimonials                                      | P2-05               | todo   |

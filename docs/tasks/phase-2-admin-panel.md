@@ -38,15 +38,15 @@ test covers save + upload.
 
 ---
 
-## P2-03 · Work experience resource — `todo` ⭐ owner priority
+## P2-03 · Work experience resource — `done` ⭐ owner priority
 
-- [ ] Form per 04 (company select with create/edit option, organization
+- [x] Form per 04 (company select with create/edit option, organization
       fallback, job title, employment type, **work mode toggle buttons**,
       **country / city / optional address**, **start month + "currently work
       here" toggle + end month**, summary, **achievements repeater**, stack,
       changelog extras with derived placeholders).
-- [ ] Table, filters, default sort, projects relation manager.
-- [ ] Validation: end ≥ start; organization required without company.
+- [x] Table, filters, default sort, projects relation manager.
+- [x] Validation: end ≥ start; organization required without company.
 
 **Acceptance**: can create "Remote / Germany / no address / current" and
 "On-site / Syria / address / ended" experiences; table shows "Present" badge.
@@ -158,3 +158,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-01: Panel: Indigo/Zinc, Inter, SPA, collapsible sidebar, full width, ⌘K search, DB notifications (30s poll), unsaved-changes alerts, DB transactions, 6 navigation groups, 'View site' user-menu item, password reset + full profile page. Custom theme resources/css/filament/admin/theme.css (in vite inputs) so custom Blade views can use Tailwind. Shared builders: App\Filament\Support\Fields (country, month, currentToggle, slug/slugSource, visibilitySection) and Columns (period, visibility, duration). User::canAccessPanel uses config('portfolio.admin_emails') in production.
 - 2026-09-24 — P2-02: App\Filament\Support\SingletonPage (abstract: fill from record, sticky save bar ⌘S, saveRelationships for Spatie uploads, DB transaction) + Pages\EditProfile (slug /admin/bio, 5 tabs). Tests: tests/Feature/Filament/EditProfilePageTest.php — use Repeater::fake() + internal item shape for simple repeaters in fillForm; actingAsAdmin() helper in tests/Pest.php.
 - 2026-09-24 — P2-05: CompanyResource: 2/3 + 1/3 form (brand, engagement, logo/logo_dark/wordmark, featured/visible), card-grid table (contentGrid, reorderable, kind/featured/visible filters, visit-website action). CompanyForm::quick() for create/edit-option forms. Local InitialsAvatar SVG for missing logos (no external avatar service). Relation managers (experiences/projects/testimonials) are added in P2-08 via relatedResource().
+- 2026-09-24 — P2-03: ExperienceForm: company select with logos (allowHtml) + create/edit option (CompanyForm::quick), organization fallback, job title, type, work-mode toggle buttons, country/city/optional address, month start/end + 'I currently work here' toggle, summary, achievements repeater, ordered stack (Fields::stack + SyncsStack, HasStack interface), collapsed changelog overrides with derived placeholders. Table: logo, title/org, type & mode badges, flag+country, period with Present badge, filters (type, mode, company, current), replicate. Projects relation manager comes with P2-08.

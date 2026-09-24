@@ -8,6 +8,7 @@ use App\Models\Concerns\GeneratesSlug;
 use App\Models\Concerns\HasSkills;
 use App\Models\Concerns\HasSortOrder;
 use App\Models\Concerns\RegistersImageConversions;
+use App\Models\Contracts\HasStack;
 use App\Support\Media\MimeTypes;
 use Carbon\CarbonImmutable;
 use Database\Factories\ProjectFactory;
@@ -81,7 +82,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
     'meta_description', 'is_published', 'published_at', 'sort_order',
 ])]
 #[RouteKey('slug')]
-class Project extends Model implements HasMedia
+class Project extends Model implements HasMedia, HasStack
 {
     /** @use HasFactory<ProjectFactory> */
     use GeneratesSlug, HasFactory, HasSkills, HasSortOrder, InteractsWithMedia, RegistersImageConversions, SoftDeletes;

@@ -123,6 +123,7 @@ class EditProfile extends SingletonPage
                             ->description('The long bio on the About section — one paragraph per item.')
                             ->schema([
                                 Repeater::make('story')
+                                    ->defaultItems(0)
                                     ->hiddenLabel()
                                     ->simple(Textarea::make('paragraph')->rows(4)->required())
                                     ->reorderable()
@@ -145,6 +146,7 @@ class EditProfile extends SingletonPage
                             ->description('Big numbers in the hero ("8 years shipping software").')
                             ->schema([
                                 Repeater::make('stats')
+                                    ->defaultItems(0)
                                     ->hiddenLabel()
                                     ->schema([
                                         TextInput::make('value')->required()->placeholder('8'),
@@ -160,6 +162,7 @@ class EditProfile extends SingletonPage
                             ->description('"Building …", "Reading …", "Learning …".')
                             ->schema([
                                 Repeater::make('status')
+                                    ->defaultItems(0)
                                     ->hiddenLabel()
                                     ->schema([
                                         TextInput::make('label')->required()->placeholder('Building'),
@@ -173,6 +176,7 @@ class EditProfile extends SingletonPage
                         Section::make('Principles')
                             ->schema([
                                 Repeater::make('principles')
+                                    ->defaultItems(0)
                                     ->hiddenLabel()
                                     ->schema([
                                         TextInput::make('title')->required(),
