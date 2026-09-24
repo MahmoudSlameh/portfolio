@@ -58,7 +58,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P2-04 | Education resource                                                 | P2-01, P1-03        | done   |
 | P2-05 | Companies & clients resource                                       | P2-01, P1-03        | done   |
 | P2-06 | Certifications & testimonials                                      | P2-05               | done   |
-| P2-07 | Skills & categories                                                | P2-01, P1-04        | todo   |
+| P2-07 | Skills & categories                                                | P2-01, P1-04        | done   |
 | P2-08 | Projects resource                                                  | P2-05, P2-07, P1-05 | todo   |
 | P2-09 | Articles resource                                                  | P2-08, P1-06        | todo   |
 | P2-10 | Books, Uses, Socials, Now page                                     | P2-01, P1-06        | todo   |

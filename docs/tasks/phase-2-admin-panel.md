@@ -82,7 +82,7 @@ Simple (modal) resources per 04. **Acceptance**: CRUD + reorder + uploads.
 
 ---
 
-## P2-07 · Skills & categories — `todo`
+## P2-07 · Skills & categories — `done`
 
 Per 04 (grouped table, inline proficiency, reorder within group).
 **Acceptance**: reordering persists; skills without category flagged
@@ -161,3 +161,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-03: ExperienceForm: company select with logos (allowHtml) + create/edit option (CompanyForm::quick), organization fallback, job title, type, work-mode toggle buttons, country/city/optional address, month start/end + 'I currently work here' toggle, summary, achievements repeater, ordered stack (Fields::stack + SyncsStack, HasStack interface), collapsed changelog overrides with derived placeholders. Table: logo, title/org, type & mode badges, flag+country, period with Present badge, filters (type, mode, company, current), replicate. Projects relation manager comes with P2-08.
 - 2026-09-24 — P2-04: EducationForm: qualification, specialization, grade, institution (+url, country, city), month start/end + 'currently studying' toggle, description, achievements, logo + certificate uploads. Table with logo, grade badge, period/Present, 'currently studying' filter.
 - 2026-09-24 — P2-06: Simple (modal) resources: Certifications (badge, issued/expires with Expired badge, verify-link action, reorderable) and Testimonials (quote, author, company select with logos + quick create, avatar with InitialsAvatar fallback, reorderable).
+- 2026-09-24 — P2-07: SkillCategoryResource (simple, reorderable, skills count) + SkillResource (simple, grouped by category incl. 'Stack only', inline proficiency SelectColumn, usage via withCount experiences/projects, reorderable, stack-only filter). Skill::projects() added.

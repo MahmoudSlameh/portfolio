@@ -78,4 +78,12 @@ class Skill extends Model implements HasMedia
     {
         return $this->morphedByMany(Experience::class, 'skillable');
     }
+
+    /**
+     * @return MorphToMany<Project, $this>
+     */
+    public function projects(): MorphToMany
+    {
+        return $this->morphedByMany(Project::class, 'skillable');
+    }
 }
