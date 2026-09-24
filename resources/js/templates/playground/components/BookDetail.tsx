@@ -29,7 +29,7 @@ export function BookDetail({ book, onClose, className }: BookDetailProps) {
                 <span aria-hidden className="pg-float text-5xl">
                     📚
                 </span>
-                <p className="text-ink-muted max-w-xs text-base font-semibold">
+                <p className="max-w-xs text-base font-semibold text-ink-muted">
                     {p('books.pick')}
                 </p>
             </div>
@@ -63,27 +63,27 @@ export function BookDetail({ book, onClose, className }: BookDetailProps) {
                         type="button"
                         onClick={onClose}
                         aria-label={p('books.close')}
-                        className="border-edge bg-raised text-ink hover:bg-pop-red hover:text-on-pop inline-flex size-8 shrink-0 items-center justify-center rounded-full border-2"
+                        className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-raised text-ink hover:bg-pop-red hover:text-on-pop"
                     >
                         <X aria-hidden className="size-4" strokeWidth={2.5} />
                     </button>
                 </div>
                 <h3
                     lang="en"
-                    className="font-display text-ink text-2xl leading-tight font-extrabold [font-stretch:110%]"
+                    className="font-display text-2xl leading-tight font-extrabold text-ink [font-stretch:110%]"
                 >
                     {book.title}
                 </h3>
-                <p lang="en" className="text-ink-muted text-base font-semibold">
+                <p lang="en" className="text-base font-semibold text-ink-muted">
                     {book.author} · {book.publishedYear}
                 </p>
                 <p
                     lang="en"
-                    className="text-ink text-[0.9375rem] leading-relaxed"
+                    className="text-[0.9375rem] leading-relaxed text-ink"
                 >
                     {book.note}
                 </p>
-                <div className="text-ink-muted mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold">
+                <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-ink-muted">
                     {book.rating ? (
                         <span
                             role="img"

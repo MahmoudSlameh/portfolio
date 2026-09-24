@@ -9,16 +9,16 @@ export function ReadingChart({ perYear }: { perYear: BookStats['perYear'] }) {
     return (
         <figure
             aria-labelledby="per-year-caption"
-            className="border-line bg-raised border p-5 md:p-6"
+            className="border border-line bg-raised p-5 md:p-6"
         >
             <figcaption
                 id="per-year-caption"
-                className="eyebrow text-ink-subtle mb-6"
+                className="eyebrow mb-6 text-ink-subtle"
             >
                 {t('booksPage.perYear')}
             </figcaption>
             <ol
-                className="border-line-strong flex h-44 items-end gap-3 border-b"
+                className="flex h-44 items-end gap-3 border-b border-line-strong"
                 dir="ltr"
             >
                 {perYear.map((entry, index) => (
@@ -28,7 +28,7 @@ export function ReadingChart({ perYear }: { perYear: BookStats['perYear'] }) {
                     >
                         <span
                             aria-hidden
-                            className="text-ink font-mono text-xs"
+                            className="font-mono text-xs text-ink"
                         >
                             {entry.count}
                         </span>
@@ -38,7 +38,7 @@ export function ReadingChart({ perYear }: { perYear: BookStats['perYear'] }) {
                                 'w-full max-w-12 rounded-t-md',
                                 index === perYear.length - 1
                                     ? 'bg-signal'
-                                    : 'from-electric/70 to-aqua bg-gradient-to-t',
+                                    : 'bg-gradient-to-t from-electric/70 to-aqua',
                             )}
                             style={{
                                 height: `${(entry.count / max) * 100}%`,
@@ -58,7 +58,7 @@ export function ReadingChart({ perYear }: { perYear: BookStats['perYear'] }) {
                 {perYear.map((entry) => (
                     <li
                         key={entry.year}
-                        className="text-ink-subtle flex-1 text-center font-mono text-[0.6875rem]"
+                        className="flex-1 text-center font-mono text-[0.6875rem] text-ink-subtle"
                     >
                         ’{String(entry.year).slice(2)}
                     </li>

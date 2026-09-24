@@ -28,7 +28,7 @@ function CompanyCell({ company, index }: { company: Company; index: number }) {
                 target="_blank"
                 rel="noreferrer"
                 className={cn(
-                    'group bg-raised hover:text-on-pop flex h-full min-h-36 flex-col justify-between gap-4 p-5 transition-colors duration-200',
+                    'group flex h-full min-h-36 flex-col justify-between gap-4 bg-raised p-5 transition-colors duration-200 hover:text-on-pop',
                     popHoverBg[pop],
                 )}
             >
@@ -62,7 +62,7 @@ function CompanyCell({ company, index }: { company: Company; index: number }) {
                 </span>
                 <span
                     lang="en"
-                    className="text-ink-subtle group-hover:text-on-pop text-xs font-semibold"
+                    className="text-xs font-semibold text-ink-subtle group-hover:text-on-pop"
                 >
                     {company.industry} · {company.period}
                     <span className="sr-only"> {t('common.opensNewTab')}</span>
@@ -86,13 +86,13 @@ function NoteCard({
             <figure
                 style={{ rotate: `${tiltForIndex(index) * 0.6}deg` }}
                 className={cn(
-                    'pg-card pg-press text-on-pop relative flex h-full flex-col gap-5 p-6 pt-9',
+                    'pg-card pg-press relative flex h-full flex-col gap-5 p-6 pt-9 text-on-pop',
                     popBg[pop],
                 )}
             >
                 <span
                     aria-hidden
-                    className="border-edge bg-raised/80 absolute start-8 -top-3 h-6 w-20 rotate-[4deg] rounded-sm border-2"
+                    className="absolute start-8 -top-3 h-6 w-20 rotate-[4deg] rounded-sm border-2 border-edge bg-raised/80"
                 />
                 <blockquote
                     lang="en"
@@ -106,7 +106,7 @@ function NoteCard({
                 >
                     <span
                         aria-hidden
-                        className="border-edge bg-raised font-display text-ink inline-flex size-10 items-center justify-center rounded-full border-2 text-sm font-black"
+                        className="inline-flex size-10 items-center justify-center rounded-full border-2 border-edge bg-raised font-display text-sm font-black text-ink"
                     >
                         {testimonial.author
                             .split(' ')
@@ -152,14 +152,14 @@ export function ClientsWall({
                 title={p('clients.title')}
                 pop="purple"
                 aside={
-                    <p className="text-ink-muted max-w-sm text-base">
+                    <p className="max-w-sm text-base text-ink-muted">
                         {p('clients.intro')}
                     </p>
                 }
             />
             <ul
                 aria-label={t('clients.listLabel')}
-                className="pg-card bg-edge grid grid-cols-1 gap-[2px] overflow-hidden sm:grid-cols-2 lg:grid-cols-4"
+                className="pg-card grid grid-cols-1 gap-[2px] overflow-hidden bg-edge sm:grid-cols-2 lg:grid-cols-4"
             >
                 {companies.map((company, index) => (
                     <CompanyCell
@@ -170,7 +170,7 @@ export function ClientsWall({
                 ))}
             </ul>
 
-            <h3 className="pg-label text-ink mt-16 mb-8">
+            <h3 className="pg-label mt-16 mb-8 text-ink">
                 {p('clients.notes')}
             </h3>
             <ul className="grid gap-8 md:grid-cols-3">

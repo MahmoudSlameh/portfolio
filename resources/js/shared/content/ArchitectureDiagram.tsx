@@ -171,7 +171,7 @@ export function ArchitectureDiagram({
 
     return (
         <figure dir="ltr" lang="en">
-            <div className="border-line bg-paper overflow-x-auto border [background-image:radial-gradient(var(--line)_1px,transparent_1px)] [background-size:16px_16px]">
+            <div className="overflow-x-auto border border-line bg-paper [background-image:radial-gradient(var(--line)_1px,transparent_1px)] [background-size:16px_16px]">
                 <svg
                     role="img"
                     aria-labelledby={`${id}-title ${id}-desc`}
@@ -248,8 +248,8 @@ export function ArchitectureDiagram({
                         ))}
                 </svg>
             </div>
-            <figcaption className="text-ink-muted mt-3 flex gap-3 text-sm">
-                <span className="text-ink-subtle font-mono text-xs">Fig.</span>
+            <figcaption className="mt-3 flex gap-3 text-sm text-ink-muted">
+                <span className="font-mono text-xs text-ink-subtle">Fig.</span>
                 {architecture.caption}
             </figcaption>
         </figure>

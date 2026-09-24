@@ -21,7 +21,7 @@ export function SectionLabel({
     className,
 }: SectionLabelProps) {
     return (
-        <p className={cn('text-ink-subtle flex items-center gap-3', className)}>
+        <p className={cn('flex items-center gap-3 text-ink-subtle', className)}>
             <span
                 className={cn(
                     'eyebrow ltr-isolate rounded-full px-2 py-0.5 font-semibold',
@@ -92,12 +92,12 @@ export function Section({
                     <div className="col-span-4 md:col-span-9 lg:col-span-7">
                         <h2
                             id={headingId}
-                            className="font-display text-ink text-[2.25rem] leading-[1.02] sm:text-5xl lg:text-[3.5rem]"
+                            className="font-display text-[2.25rem] leading-[1.02] text-ink sm:text-5xl lg:text-[3.5rem]"
                         >
                             <GradientTitle text={title} />
                         </h2>
                         {intro && (
-                            <p className="text-ink-muted mt-5 max-w-xl text-base leading-relaxed md:text-lg">
+                            <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted md:text-lg">
                                 {intro}
                             </p>
                         )}

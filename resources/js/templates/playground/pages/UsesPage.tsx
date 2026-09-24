@@ -40,11 +40,11 @@ export function UsesPage({ groups }: UsesPageProps) {
                             <div className="pg-card overflow-hidden">
                                 <header
                                     className={cn(
-                                        'border-edge text-on-pop flex items-center gap-4 border-b-2 px-6 py-5',
+                                        'flex items-center gap-4 border-b-2 border-edge px-6 py-5 text-on-pop',
                                         popBg[pop],
                                     )}
                                 >
-                                    <span className="border-edge bg-raised text-ink inline-flex size-12 items-center justify-center rounded-xl border-2">
+                                    <span className="inline-flex size-12 items-center justify-center rounded-xl border-2 border-edge bg-raised text-ink">
                                         <Icon
                                             aria-hidden
                                             className="size-6"
@@ -57,14 +57,14 @@ export function UsesPage({ groups }: UsesPageProps) {
                                     >
                                         {group.title}
                                     </h2>
-                                    <span className="ltr-isolate border-edge bg-raised text-ink ms-auto rounded-full border-2 px-3 font-mono text-sm font-bold">
+                                    <span className="ltr-isolate ms-auto rounded-full border-2 border-edge bg-raised px-3 font-mono text-sm font-bold text-ink">
                                         {group.items.length}
                                     </span>
                                 </header>
                                 <ul
                                     lang="en"
                                     className={cn(
-                                        'bg-edge grid gap-[2px]',
+                                        'grid gap-[2px] bg-edge',
                                         groupIndex === 0 && 'md:grid-cols-2',
                                     )}
                                 >
@@ -79,10 +79,10 @@ export function UsesPage({ groups }: UsesPageProps) {
                                         >
                                             <div className="flex h-full items-start justify-between gap-4 p-5">
                                                 <div>
-                                                    <p className="text-ink text-lg font-bold">
+                                                    <p className="text-lg font-bold text-ink">
                                                         {item.name}
                                                     </p>
-                                                    <p className="text-ink-muted mt-1 text-[0.9375rem] leading-relaxed">
+                                                    <p className="mt-1 text-[0.9375rem] leading-relaxed text-ink-muted">
                                                         {item.description}
                                                     </p>
                                                 </div>
@@ -92,7 +92,7 @@ export function UsesPage({ groups }: UsesPageProps) {
                                                         target="_blank"
                                                         rel="noreferrer"
                                                         aria-label={`${p('uses.visit', { name: item.name })} ${t('common.opensNewTab')}`}
-                                                        className="pg-press border-edge bg-pop-yellow text-on-pop inline-flex size-10 shrink-0 items-center justify-center rounded-full border-2 shadow-[var(--pg-shadow)]"
+                                                        className="pg-press inline-flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow text-on-pop shadow-[var(--pg-shadow)]"
                                                     >
                                                         <ArrowUpRight
                                                             aria-hidden

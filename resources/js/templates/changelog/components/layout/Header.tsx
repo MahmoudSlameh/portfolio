@@ -39,7 +39,7 @@ export function Header({ profile, socials }: HeaderProps) {
                 'sticky top-0 z-40 border-b backdrop-blur-md transition-colors duration-300',
                 isScrolled
                     ? 'border-line bg-paper/85'
-                    : 'bg-paper/60 border-transparent',
+                    : 'border-transparent bg-paper/60',
             )}
         >
             <div className="shell flex h-[var(--header-height)] items-center gap-4">
@@ -55,10 +55,10 @@ export function Header({ profile, socials }: HeaderProps) {
                         {profile.initials}
                     </span>
                     <span className="flex min-w-0 flex-col leading-tight">
-                        <span className="text-ink truncate text-[0.9375rem] font-semibold">
+                        <span className="truncate text-[0.9375rem] font-semibold text-ink">
                             {profile.name}
                         </span>
-                        <span className="ltr-isolate text-ink-subtle xs:block hidden font-mono text-[0.625rem]">
+                        <span className="ltr-isolate hidden font-mono text-[0.625rem] text-ink-subtle xs:block">
                             changelog {profile.currentVersion}
                         </span>
                     </span>
@@ -73,7 +73,7 @@ export function Header({ profile, socials }: HeaderProps) {
                             <li key={item.to}>
                                 <Link
                                     to={item.to}
-                                    className="text-ink-muted hover:bg-surface hover:text-ink data-[status=active]:bg-electric/12 data-[status=active]:text-electric relative inline-flex h-9 items-center rounded-full px-3.5 text-sm transition-colors duration-200 data-[status=active]:font-medium"
+                                    className="relative inline-flex h-9 items-center rounded-full px-3.5 text-sm text-ink-muted transition-colors duration-200 hover:bg-surface hover:text-ink data-[status=active]:bg-electric/12 data-[status=active]:font-medium data-[status=active]:text-electric"
                                 >
                                     {t(item.key)}
                                 </Link>
@@ -88,7 +88,7 @@ export function Header({ profile, socials }: HeaderProps) {
                         onClick={openPalette}
                         aria-label={t('palette.open')}
                         aria-keyshortcuts="Control+K Meta+K"
-                        className="border-line text-ink-subtle hover:border-line-strong hover:text-ink hidden h-9 items-center gap-2 rounded-[4px] border px-2.5 text-[0.8125rem] transition-colors duration-200 sm:inline-flex"
+                        className="hidden h-9 items-center gap-2 rounded-[4px] border border-line px-2.5 text-[0.8125rem] text-ink-subtle transition-colors duration-200 hover:border-line-strong hover:text-ink sm:inline-flex"
                     >
                         <span className="ltr-isolate font-mono text-[0.6875rem]">
                             {shortcutLabel}

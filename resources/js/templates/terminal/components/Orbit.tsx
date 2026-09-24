@@ -11,12 +11,12 @@ export function Orbit({ className }: { className?: string }) {
             )}
         >
             <div className="tm-rotate relative size-[210px]">
-                <div className="border-tm-mint/60 size-[210px] rounded-full border" />
-                <div className="border-tm-mint/60 absolute top-1/2 left-1/2 size-[124px] -translate-x-1/2 -translate-y-1/2 rounded-full border">
-                    <span className="bg-tm-400 absolute top-[82%] left-[88%] size-2 rounded-full" />
+                <div className="size-[210px] rounded-full border border-tm-mint/60" />
+                <div className="absolute top-1/2 left-1/2 size-[124px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-tm-mint/60">
+                    <span className="absolute top-[82%] left-[88%] size-2 rounded-full bg-tm-400" />
                 </div>
-                <div className="border-tm-mint/60 absolute top-1/2 left-1/2 size-[82px] -translate-x-1/2 -translate-y-1/2 rounded-full border">
-                    <span className="bg-tm-400 absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full" />
+                <div className="absolute top-1/2 left-1/2 size-[82px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-tm-mint/60">
+                    <span className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full bg-tm-400" />
                 </div>
             </div>
         </div>

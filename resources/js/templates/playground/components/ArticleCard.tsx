@@ -23,7 +23,7 @@ export function ArticleCard({
         >
             <span
                 className={cn(
-                    'border-edge text-on-pop flex items-center justify-between gap-3 border-b-2 px-5 py-3',
+                    'flex items-center justify-between gap-3 border-b-2 border-edge px-5 py-3 text-on-pop',
                     popBg[pop],
                 )}
             >
@@ -33,7 +33,7 @@ export function ArticleCard({
                 >
                     {formatDate(article.publishedAt)}
                 </time>
-                <span className="border-edge bg-raised text-ink rounded-full border-2 px-2 font-mono text-[0.6875rem] font-bold">
+                <span className="rounded-full border-2 border-edge bg-raised px-2 font-mono text-[0.6875rem] font-bold text-ink">
                     {p('article.stickerRead', {
                         count: article.readingMinutes,
                     })}
@@ -42,13 +42,13 @@ export function ArticleCard({
             <span className="flex flex-1 flex-col gap-3 p-5">
                 <span
                     lang="en"
-                    className="font-display text-ink text-2xl leading-tight font-extrabold [font-stretch:110%]"
+                    className="font-display text-2xl leading-tight font-extrabold text-ink [font-stretch:110%]"
                 >
                     {article.title}
                 </span>
                 <span
                     lang="en"
-                    className="text-ink-muted text-[0.9375rem] leading-relaxed"
+                    className="text-[0.9375rem] leading-relaxed text-ink-muted"
                 >
                     {article.excerpt}
                 </span>
@@ -66,7 +66,7 @@ export function ArticleCard({
                     </span>
                     <span
                         aria-hidden
-                        className="border-edge bg-pop-yellow text-on-pop inline-flex size-9 items-center justify-center rounded-full border-2 transition-transform duration-300 group-hover:rotate-45"
+                        className="inline-flex size-9 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow text-on-pop transition-transform duration-300 group-hover:rotate-45"
                     >
                         <ArrowUpRight
                             className="size-4 rtl:-scale-x-100"

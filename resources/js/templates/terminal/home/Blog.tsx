@@ -47,7 +47,7 @@ export function Blog({
                         </li>
                     ))}
                 </ul>
-                <p className="text-tm-300 mt-8 mb-0 text-center">
+                <p className="mt-8 mb-0 text-center text-tm-300">
                     <Link
                         to="/writing"
                         className="text-tm-primary hover:underline"

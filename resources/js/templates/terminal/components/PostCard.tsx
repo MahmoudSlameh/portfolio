@@ -66,7 +66,7 @@ export function PostCard({
                 </span>
             </div>
             <div className="mt-6 text-center">
-                <p className="text-tm-400 mb-0 text-sm">
+                <p className="mb-0 text-sm text-tm-400">
                     <time dateTime={article.publishedAt}>
                         {formatDate(article.publishedAt)}
                     </time>{' '}
@@ -84,7 +84,7 @@ export function PostCard({
                         {article.title}
                     </Link>
                 </h3>
-                <p lang="en" className="text-tm-body mb-0 text-sm">
+                <p lang="en" className="mb-0 text-sm text-tm-body">
                     {article.excerpt}
                 </p>
             </div>

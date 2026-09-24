@@ -65,16 +65,16 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P2-11 | Inbox (contact messages)                                           | P2-01, P1-06        | done   |
 | P2-12 | Appearance (templates) & Site settings pages                       | P2-01, P1-02        | done   |
 | P2-13 | Dashboard widgets                                                  | P2-03…P2-11         | done   |
-| P3-01 | Frontend deps, folder structure, shared code port                  | P0-01               | todo   |
-| P3-02 | TemplateManager, shared props, Blade shell                         | P1-02, P3-01        | todo   |
-| P3-03 | Routes & controllers (all public pages)                            | P1-08, P3-02        | todo   |
-| P3-04 | Inertia app/SSR entry, page resolver, `SeoHead` stub               | P3-02               | todo   |
-| P3-05 | Port **Terminal** template                                         | P3-03, P3-04        | todo   |
-| P3-06 | Port **Changelog** template                                        | P3-03, P3-04        | todo   |
-| P3-07 | Port **Playground** template                                       | P3-03, P3-04        | todo   |
-| P3-08 | Contact form end-to-end                                            | P3-05, P2-11        | todo   |
-| P3-09 | Command palette & search index                                     | P3-05               | todo   |
-| P3-10 | Preview bar & template switching                                   | P3-05…P3-07, P2-12  | todo   |
+| P3-01 | Frontend deps, folder structure, shared code port                  | P0-01               | done   |
+| P3-02 | TemplateManager, shared props, Blade shell                         | P1-02, P3-01        | done   |
+| P3-03 | Routes & controllers (all public pages)                            | P1-08, P3-02        | done   |
+| P3-04 | Inertia app/SSR entry, page resolver, `SeoHead` stub               | P3-02               | done   |
+| P3-05 | Port **Terminal** template                                         | P3-03, P3-04        | done   |
+| P3-06 | Port **Changelog** template                                        | P3-03, P3-04        | done   |
+| P3-07 | Port **Playground** template                                       | P3-03, P3-04        | done   |
+| P3-08 | Contact form end-to-end                                            | P3-05, P2-11        | done   |
+| P3-09 | Command palette & search index                                     | P3-05               | done   |
+| P3-10 | Preview bar & template switching                                   | P3-05…P3-07, P2-12  | done   |
 | P4-01 | SSR production-ready                                               | P3-07               | todo   |
 | P4-02 | SeoData + SeoHead + per-page meta                                  | P4-01               | todo   |
 | P4-03 | JSON-LD                                                            | P4-02               | todo   |

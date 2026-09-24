@@ -23,7 +23,7 @@ export function ResponsiveImage({
             <div
                 aria-hidden
                 style={{ aspectRatio: fallbackAspect }}
-                className={cn('bg-surface block h-auto w-full', className)}
+                className={cn('block h-auto w-full bg-surface', className)}
             />
         );
     }
@@ -45,7 +45,7 @@ export function ResponsiveImage({
                     : { aspectRatio: fallbackAspect }
             }
             className={cn(
-                'bg-surface block h-auto w-full object-cover',
+                'block h-auto w-full bg-surface object-cover',
                 className,
             )}
         />

@@ -41,7 +41,7 @@ function StatsBoard({ stats }: { stats: BookStats }) {
                     <div
                         key={item.label}
                         className={cn(
-                            'pg-card text-on-pop flex flex-col-reverse justify-end gap-2 p-5',
+                            'pg-card flex flex-col-reverse justify-end gap-2 p-5 text-on-pop',
                             popBg[popForIndex(index)],
                         )}
                     >
@@ -68,7 +68,7 @@ function StatsBoard({ stats }: { stats: BookStats }) {
                         >
                             <span
                                 aria-hidden
-                                className="text-ink font-mono text-xs font-bold"
+                                className="font-mono text-xs font-bold text-ink"
                             >
                                 {entry.count}
                             </span>
@@ -78,13 +78,13 @@ function StatsBoard({ stats }: { stats: BookStats }) {
                                     height: `${Math.max(6, (entry.count / maxCount) * 100)}%`,
                                 }}
                                 className={cn(
-                                    'border-edge w-full rounded-t-lg border-2 transition-[height] duration-700',
+                                    'w-full rounded-t-lg border-2 border-edge transition-[height] duration-700',
                                     popBg[popForIndex(index)],
                                 )}
                             />
                             <span
                                 aria-hidden
-                                className="text-ink-subtle font-mono text-[0.625rem] font-bold"
+                                className="font-mono text-[0.625rem] font-bold text-ink-subtle"
                             >
                                 {String(entry.year).slice(2)}
                             </span>
@@ -122,20 +122,20 @@ function CoverGrid({
                         className={cn(
                             'pg-press block w-full scroll-mt-28 rounded-xl shadow-[var(--pg-shadow)]',
                             book.id === selectedId &&
-                                'ring-pop-blue ring-offset-paper ring-4 ring-offset-4',
+                                'ring-4 ring-pop-blue ring-offset-4 ring-offset-paper',
                         )}
                     >
                         <PopBookCover book={book} />
                     </button>
                     <p
                         lang="en"
-                        className="text-ink mt-3 text-sm leading-snug font-bold"
+                        className="mt-3 text-sm leading-snug font-bold text-ink"
                     >
                         {book.title}
                     </p>
                     <p
                         lang="en"
-                        className="text-ink-subtle text-xs font-semibold"
+                        className="text-xs font-semibold text-ink-subtle"
                     >
                         {book.author}
                     </p>
@@ -246,7 +246,7 @@ export function BooksPage({
                         <div
                             role="group"
                             aria-label={t('books.viewMode')}
-                            className="border-edge bg-raised flex rounded-full border-2 p-0.5"
+                            className="flex rounded-full border-2 border-edge bg-raised p-0.5"
                         >
                             {(['shelf', 'grid'] as const).map((mode) => {
                                 const Icon =
@@ -264,7 +264,7 @@ export function BooksPage({
                                                         : mode,
                                             })
                                         }
-                                        className="text-ink aria-pressed:bg-ink aria-pressed:text-paper inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-bold"
+                                        className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-bold text-ink aria-pressed:bg-ink aria-pressed:text-paper"
                                     >
                                         <Icon
                                             aria-hidden
@@ -292,7 +292,7 @@ export function BooksPage({
                     <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
                         <div className="min-w-0">
                             {view === 'shelf' ? (
-                                <div className="pg-card bg-surface overflow-hidden">
+                                <div className="pg-card overflow-hidden bg-surface">
                                     <BookPile
                                         books={visible}
                                         selectedId={selectedId}
@@ -301,7 +301,7 @@ export function BooksPage({
                                     />
                                     <div
                                         aria-hidden
-                                        className="border-edge bg-pop-purple h-4 border-t-2"
+                                        className="h-4 border-t-2 border-edge bg-pop-purple"
                                     />
                                 </div>
                             ) : (

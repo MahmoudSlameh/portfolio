@@ -25,7 +25,7 @@ export function SearchBox({
             </label>
             <Search
                 aria-hidden
-                className="text-ink pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2"
+                className="pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2 text-ink"
                 strokeWidth={2.5}
             />
             <input
@@ -41,7 +41,7 @@ export function SearchBox({
                     type="button"
                     onClick={() => onChange('')}
                     aria-label={t('common.clear')}
-                    className="border-edge bg-pop-yellow text-on-pop absolute end-3 top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full border-2"
+                    className="absolute end-3 top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow text-on-pop"
                 >
                     <X aria-hidden className="size-4" strokeWidth={2.5} />
                 </button>

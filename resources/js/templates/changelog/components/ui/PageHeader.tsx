@@ -22,7 +22,7 @@ export function PageHeader({
     aside,
 }: PageHeaderProps) {
     return (
-        <header className="border-line relative overflow-hidden border-b">
+        <header className="relative overflow-hidden border-b border-line">
             <div
                 aria-hidden
                 className="aurora opacity-[calc(var(--glow-opacity)*0.7)]"
@@ -44,10 +44,10 @@ export function PageHeader({
                     />
                 </div>
                 <div className="col-span-4 md:col-span-9 lg:col-span-6">
-                    <h1 className="animate-rise font-display text-ink text-5xl leading-[0.98] sm:text-6xl lg:text-7xl">
+                    <h1 className="animate-rise font-display text-5xl leading-[0.98] text-ink sm:text-6xl lg:text-7xl">
                         <GradientTitle text={title} />
                     </h1>
-                    <p className="text-ink-muted mt-6 max-w-xl text-lg leading-relaxed">
+                    <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted">
                         {intro}
                     </p>
                 </div>

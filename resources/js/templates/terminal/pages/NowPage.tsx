@@ -21,16 +21,16 @@ export function NowPage({ now }: NowPageProps) {
                 intro={t('now.intro')}
                 aside={
                     <>
-                        <span className="border-tm-border text-tm-300 border px-3 py-1">
+                        <span className="border border-tm-border px-3 py-1 text-tm-300">
                             {t('now.updated')} ·{' '}
                             <time dateTime={now.updatedAt}>
                                 {formatDate(now.updatedAt)}
                             </time>
                         </span>
-                        <span className="border-tm-border text-tm-300 inline-flex items-center gap-1.5 border px-3 py-1">
+                        <span className="inline-flex items-center gap-1.5 border border-tm-border px-3 py-1 text-tm-300">
                             <MapPin
                                 aria-hidden
-                                className="text-tm-primary size-4"
+                                className="size-4 text-tm-primary"
                             />
                             {now.location}
                         </span>
@@ -56,13 +56,13 @@ export function NowPage({ now }: NowPageProps) {
                                 key={entry.id}
                                 className="tm-box tm-hover-up rounded-md px-8 pt-12 pb-8"
                             >
-                                <span className="ltr-isolate text-tm-secondary text-sm">
+                                <span className="ltr-isolate text-sm text-tm-secondary">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
                                 <h3 className="my-3 text-[19px] font-medium">
                                     {entry.title}
                                 </h3>
-                                <p className="text-tm-300 mb-0 text-sm leading-relaxed">
+                                <p className="mb-0 text-sm leading-relaxed text-tm-300">
                                     {entry.body}
                                 </p>
                             </li>
@@ -117,7 +117,7 @@ export function NowPage({ now }: NowPageProps) {
                                     </Link>
                                     <p
                                         lang="en"
-                                        className="text-ink mt-3 mb-0 text-sm"
+                                        className="mt-3 mb-0 text-sm text-ink"
                                     >
                                         {book.title}
                                     </p>
@@ -134,18 +134,18 @@ export function NowPage({ now }: NowPageProps) {
                     <div>
                         <h2
                             id="now-availability"
-                            className="text-tm-400 mb-2 text-sm font-normal"
+                            className="mb-2 text-sm font-normal text-tm-400"
                         >
                             {t('now.availability')}
                         </h2>
-                        <p className="text-ink mb-0 text-xl">
+                        <p className="mb-0 text-xl text-ink">
                             {now.availability}
                         </p>
                     </div>
                     <Link
                         to="/"
                         hash="contact"
-                        className="text-tm-primary inline-flex items-center gap-2 font-medium hover:underline"
+                        className="inline-flex items-center gap-2 font-medium text-tm-primary hover:underline"
                     >
                         {t('hero.getInTouch')}
                         <ArrowUpRight

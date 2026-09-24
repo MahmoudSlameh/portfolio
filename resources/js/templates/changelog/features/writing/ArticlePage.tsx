@@ -25,7 +25,7 @@ function AdjacentArticle({
         return (
             <span
                 aria-hidden
-                className={cn(isNewer && 'md:border-line md:border-s')}
+                className={cn(isNewer && 'md:border-s md:border-line')}
             />
         );
 
@@ -38,11 +38,11 @@ function AdjacentArticle({
             className={cn(
                 'group flex flex-col gap-3 py-10',
                 isNewer
-                    ? 'border-line border-t md:items-end md:border-s md:border-t-0 md:ps-10 md:text-end'
+                    ? 'border-t border-line md:items-end md:border-s md:border-t-0 md:ps-10 md:text-end'
                     : 'md:pe-10',
             )}
         >
-            <span className="text-ink-subtle flex items-center gap-2 text-sm">
+            <span className="flex items-center gap-2 text-sm text-ink-subtle">
                 {!isNewer && (
                     <Icon aria-hidden className="size-4 rtl:-scale-x-100" />
                 )}
@@ -53,7 +53,7 @@ function AdjacentArticle({
             </span>
             <span
                 lang="en"
-                className="link-draw-target font-display text-ink text-3xl leading-tight md:text-4xl"
+                className="link-draw-target font-display text-3xl leading-tight text-ink md:text-4xl"
             >
                 {article.title}
             </span>
@@ -73,7 +73,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
         <>
             <ReadingProgress targetRef={articleRef} />
             <article ref={articleRef}>
-                <header className="border-line relative overflow-hidden border-b">
+                <header className="relative overflow-hidden border-b border-line">
                     <div
                         aria-hidden
                         className="aurora opacity-[calc(var(--glow-opacity)*0.7)]"
@@ -93,7 +93,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                         >
                             <Link
                                 to="/writing"
-                                className="group text-ink-muted hover:text-ink inline-flex items-center gap-2 text-sm"
+                                className="group inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink"
                             >
                                 <ArrowLeft
                                     aria-hidden
@@ -118,7 +118,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                                             search={{ tag }}
                                             className="inline-flex"
                                         >
-                                            <Tag className="hover:border-ink hover:text-ink transition-colors">
+                                            <Tag className="transition-colors hover:border-ink hover:text-ink">
                                                 #{tag}
                                             </Tag>
                                         </Link>
@@ -127,22 +127,22 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                             </ul>
                             <h1
                                 lang="en"
-                                className="font-display text-ink text-5xl leading-[0.98] tracking-[-0.015em] sm:text-6xl lg:text-7xl"
+                                className="font-display text-5xl leading-[0.98] tracking-[-0.015em] text-ink sm:text-6xl lg:text-7xl"
                             >
                                 {article.title}
                             </h1>
                             <p
                                 lang="en"
-                                className="text-ink-muted mt-6 max-w-2xl text-lg leading-relaxed md:text-xl"
+                                className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted md:text-xl"
                             >
                                 {article.excerpt}
                             </p>
-                            <dl className="border-line mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t pt-5">
+                            <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-5">
                                 <div>
                                     <dt className="eyebrow text-ink-subtle">
                                         {t('article.published')}
                                     </dt>
-                                    <dd className="text-ink mt-1 text-sm">
+                                    <dd className="mt-1 text-sm text-ink">
                                         <time dateTime={article.publishedAt}>
                                             {formatDate(article.publishedAt)}
                                         </time>
@@ -152,7 +152,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                                     <dt className="eyebrow text-ink-subtle">
                                         {t('article.readTime')}
                                     </dt>
-                                    <dd className="text-ink mt-1 text-sm">
+                                    <dd className="mt-1 text-sm text-ink">
                                         {t('writing.minRead', {
                                             count: article.readingMinutes,
                                         })}
@@ -177,10 +177,10 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                             aria-labelledby="related-projects"
                             className="lg:pt-2"
                         >
-                            <div className="border-line border-t pt-5 lg:sticky lg:top-[calc(var(--header-height)+2.5rem)] lg:border-t-0 lg:pt-0">
+                            <div className="border-t border-line pt-5 lg:sticky lg:top-[calc(var(--header-height)+2.5rem)] lg:border-t-0 lg:pt-0">
                                 <h2
                                     id="related-projects"
-                                    className="eyebrow text-ink-subtle mb-4"
+                                    className="eyebrow mb-4 text-ink-subtle"
                                 >
                                     {t('article.related')}
                                 </h2>
@@ -190,7 +190,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                                             <Link
                                                 to="/projects/$slug"
                                                 params={{ slug: project.slug }}
-                                                className="group font-display text-ink inline-flex items-center gap-2 text-2xl"
+                                                className="group inline-flex items-center gap-2 font-display text-2xl text-ink"
                                             >
                                                 <span
                                                     lang="en"
@@ -200,7 +200,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                                                 </span>
                                                 <ArrowUpRight
                                                     aria-hidden
-                                                    className="text-ink-subtle group-hover:text-signal-ink size-4 rtl:-scale-x-100"
+                                                    className="size-4 text-ink-subtle group-hover:text-signal-ink rtl:-scale-x-100"
                                                 />
                                             </Link>
                                         </li>
@@ -214,7 +214,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
 
             <nav
                 aria-label={t('article.adjacent')}
-                className="border-line border-t"
+                className="border-t border-line"
             >
                 <div className="shell grid md:grid-cols-2">
                     <AdjacentArticle

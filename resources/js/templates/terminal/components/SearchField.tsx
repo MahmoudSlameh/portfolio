@@ -25,7 +25,7 @@ export function SearchField({
             </label>
             <Search
                 aria-hidden
-                className="text-tm-400 pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2"
+                className="pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2 text-tm-400"
             />
             <input
                 id={id}
@@ -40,7 +40,7 @@ export function SearchField({
                     type="button"
                     onClick={() => onChange('')}
                     aria-label={t('common.clear')}
-                    className="text-tm-300 hover:text-ink absolute end-3 top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-md"
+                    className="absolute end-3 top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-tm-300 hover:text-ink"
                 >
                     <X aria-hidden className="size-4" />
                 </button>

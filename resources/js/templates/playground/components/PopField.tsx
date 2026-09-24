@@ -27,25 +27,25 @@ function FieldShell({
         <div className="flex flex-col gap-2">
             <label
                 htmlFor={id}
-                className="text-ink flex items-baseline justify-between gap-3 text-sm font-bold"
+                className="flex items-baseline justify-between gap-3 text-sm font-bold text-ink"
             >
                 {label}
                 {requiredLabel && (
-                    <span className="text-ink-subtle font-mono text-[0.6875rem] font-normal">
+                    <span className="font-mono text-[0.6875rem] font-normal text-ink-subtle">
                         {requiredLabel}
                     </span>
                 )}
             </label>
             {children}
             {hint && !error && (
-                <p id={`${id}-hint`} className="text-ink-subtle text-xs">
+                <p id={`${id}-hint`} className="text-xs text-ink-subtle">
                     {hint}
                 </p>
             )}
             {error && (
                 <p
                     id={`${id}-error`}
-                    className="text-danger flex items-center gap-1.5 text-sm font-semibold"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-danger"
                 >
                     <span aria-hidden>✗</span>
                     {error}

@@ -21,12 +21,19 @@ use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\UsesGroup;
 use App\Models\UsesItem;
+use App\Support\Seo\Seo;
+use App\Support\Templates\TemplateManager;
 use Carbon\CarbonImmutable;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(TemplateManager::class);
     }
 
     /**
@@ -45,6 +52,36 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureMorphMap();
+        $this->configureRateLimiting();
+        $this->configureErrorPages();
+    }
+
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('contact', fn (Request $request): Limit => Limit::perMinute(5)->by((string) $request->ip()));
+    }
+
+    /**
+     * Public 404s render the active template's NotFound page (the panel keeps Filament's pages).
+     */
+    protected function configureErrorPages(): void
+    {
+        Inertia::handleExceptionsUsing(function (ExceptionResponse $response): ?ExceptionResponse {
+            if ($response->statusCode() !== 404 || $response->request->is('admin', 'admin/*', 'livewire*', 'storage/*', 'up') || $response->request->expectsJson()) {
+                return null;
+            }
+
+            return $response
+                ->render(app(TemplateManager::class)->page('NotFound'), [
+                    'seo' => app(Seo::class)->page(
+                        title: 'Page not found',
+                        description: 'This page does not exist.',
+                        path: '/'.ltrim($response->request->path(), '/'),
+                        noindex: true,
+                    ),
+                ])
+                ->withSharedData();
+        });
     }
 
     /**

@@ -280,15 +280,15 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
             aria-labelledby={titleId}
             onClose={closePalette}
             onClick={handleBackdropClick}
-            className="dialog-panel border-line-strong bg-raised text-ink mx-auto mt-[10vh] mb-auto w-[min(40rem,calc(100vw-1.5rem))] overflow-hidden rounded-[6px] border p-0 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.45)]"
+            className="dialog-panel mx-auto mt-[10vh] mb-auto w-[min(40rem,calc(100vw-1.5rem))] overflow-hidden rounded-[6px] border border-line-strong bg-raised p-0 text-ink shadow-[0_24px_60px_-20px_rgb(0_0_0/0.45)]"
         >
             <h2 id={titleId} className="sr-only">
                 {t('palette.title')}
             </h2>
-            <div className="border-line flex items-center gap-3 border-b px-4">
+            <div className="flex items-center gap-3 border-b border-line px-4">
                 <Search
                     aria-hidden
-                    className="text-ink-subtle size-4 shrink-0"
+                    className="size-4 shrink-0 text-ink-subtle"
                 />
                 <input
                     ref={inputRef}
@@ -305,9 +305,9 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                     onKeyDown={handleKeyDown}
                     autoComplete="off"
                     spellCheck={false}
-                    className="text-ink placeholder:text-ink-subtle h-14 min-w-0 flex-1 bg-transparent text-base focus-visible:outline-none"
+                    className="h-14 min-w-0 flex-1 bg-transparent text-base text-ink placeholder:text-ink-subtle focus-visible:outline-none"
                 />
-                <kbd className="ltr-isolate border-line text-ink-subtle rounded-[3px] border px-1.5 py-0.5 font-mono text-[0.625rem]">
+                <kbd className="ltr-isolate rounded-[3px] border border-line px-1.5 py-0.5 font-mono text-[0.625rem] text-ink-subtle">
                     esc
                 </kbd>
             </div>
@@ -320,7 +320,7 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                 className="max-h-[min(60vh,26rem)] overflow-y-auto p-2"
             >
                 {flatResults.length === 0 && (
-                    <p className="text-ink-muted px-3 py-10 text-center text-sm">
+                    <p className="px-3 py-10 text-center text-sm text-ink-muted">
                         {t('palette.empty')}
                     </p>
                 )}
@@ -335,7 +335,7 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                         >
                             <p
                                 id={groupId}
-                                className="eyebrow text-ink-subtle px-3 pt-3 pb-1.5"
+                                className="eyebrow px-3 pt-3 pb-1.5 text-ink-subtle"
                             >
                                 {t(groupLabelKey(group))}
                             </p>
@@ -357,7 +357,7 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                                         className={cn(
                                             'flex items-center gap-3 rounded-[4px] px-3 py-2.5 text-[0.9375rem]',
                                             isActive
-                                                ? 'bg-electric/15 text-ink ring-electric/30 ring-1'
+                                                ? 'bg-electric/15 text-ink ring-1 ring-electric/30'
                                                 : 'text-ink',
                                         )}
                                     >
@@ -389,7 +389,7 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                                         {isActive && (
                                             <CornerDownLeft
                                                 aria-hidden
-                                                className="text-paper/70 size-3.5 shrink-0 rtl:-scale-x-100"
+                                                className="size-3.5 shrink-0 text-paper/70 rtl:-scale-x-100"
                                             />
                                         )}
                                     </div>
@@ -400,7 +400,7 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                 })}
             </div>
 
-            <div className="border-line text-ink-subtle flex items-center justify-between gap-4 border-t px-4 py-2.5 text-[0.6875rem]">
+            <div className="flex items-center justify-between gap-4 border-t border-line px-4 py-2.5 text-[0.6875rem] text-ink-subtle">
                 <p className="flex items-center gap-4">
                     <span className="flex items-center gap-1.5">
                         <kbd className="font-mono">↑↓</kbd>{' '}

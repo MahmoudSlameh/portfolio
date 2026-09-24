@@ -23,11 +23,11 @@ function EntryList({
     return (
         <section
             aria-labelledby={id}
-            className="editorial-grid border-line gap-y-6 border-t py-12"
+            className="editorial-grid gap-y-6 border-t border-line py-12"
         >
             <h2
                 id={id}
-                className="eyebrow text-ink-subtle col-span-4 md:col-span-3"
+                className="eyebrow col-span-4 text-ink-subtle md:col-span-3"
             >
                 {t(titleKey)}
             </h2>
@@ -37,14 +37,14 @@ function EntryList({
                         key={entry.id}
                         className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-2"
                     >
-                        <span className="ltr-isolate text-signal-ink pt-2 font-mono text-xs">
+                        <span className="ltr-isolate pt-2 font-mono text-xs text-signal-ink">
                             {String(index + 1).padStart(2, '0')}
                         </span>
                         <div>
-                            <h3 className="font-display text-ink text-3xl leading-tight">
+                            <h3 className="font-display text-3xl leading-tight text-ink">
                                 {entry.title}
                             </h3>
-                            <p className="text-ink-muted mt-2 text-[1.0625rem] leading-relaxed">
+                            <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink-muted">
                                 {entry.body}
                             </p>
                         </div>
@@ -67,12 +67,12 @@ export function NowPage({ now }: NowPageProps) {
                 title={t('now.title')}
                 intro={t('now.intro')}
                 aside={
-                    <dl className="border-line flex flex-col gap-4 border-t pt-4 lg:border-t-0 lg:pt-0">
+                    <dl className="flex flex-col gap-4 border-t border-line pt-4 lg:border-t-0 lg:pt-0">
                         <div>
                             <dt className="eyebrow text-ink-subtle">
                                 {t('now.updated')}
                             </dt>
-                            <dd className="text-ink mt-1 text-sm">
+                            <dd className="mt-1 text-sm text-ink">
                                 <time dateTime={now.updatedAt}>
                                     {formatDate(now.updatedAt)}
                                 </time>
@@ -82,7 +82,7 @@ export function NowPage({ now }: NowPageProps) {
                             <dt className="eyebrow text-ink-subtle">
                                 {t('now.location')}
                             </dt>
-                            <dd className="text-ink mt-1 text-sm">
+                            <dd className="mt-1 text-sm text-ink">
                                 {now.location}
                             </dd>
                         </div>
@@ -103,11 +103,11 @@ export function NowPage({ now }: NowPageProps) {
 
                 <section
                     aria-labelledby="now-reading"
-                    className="editorial-grid border-line gap-y-6 border-t py-12"
+                    className="editorial-grid gap-y-6 border-t border-line py-12"
                 >
                     <h2
                         id="now-reading"
-                        className="eyebrow text-ink-subtle col-span-4 md:col-span-3"
+                        className="eyebrow col-span-4 text-ink-subtle md:col-span-3"
                     >
                         {t('now.reading')}
                     </h2>
@@ -122,14 +122,14 @@ export function NowPage({ now }: NowPageProps) {
                                     <Link
                                         to="/books"
                                         hash={`book-${book.slug}`}
-                                        className="link-draw font-display text-ink text-2xl leading-tight"
+                                        className="link-draw font-display text-2xl leading-tight text-ink"
                                     >
                                         {book.title}
                                     </Link>
-                                    <p className="text-ink-muted mt-1 text-sm">
+                                    <p className="mt-1 text-sm text-ink-muted">
                                         {book.author}
                                     </p>
-                                    <p className="text-ink-subtle mt-3 line-clamp-3 text-sm leading-relaxed">
+                                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink-subtle">
                                         {book.note}
                                     </p>
                                 </div>
@@ -140,11 +140,11 @@ export function NowPage({ now }: NowPageProps) {
 
                 <section
                     aria-labelledby="now-availability"
-                    className="editorial-grid border-line gap-y-6 border-t py-12"
+                    className="editorial-grid gap-y-6 border-t border-line py-12"
                 >
                     <h2
                         id="now-availability"
-                        className="eyebrow text-ink-subtle col-span-4 md:col-span-3"
+                        className="eyebrow col-span-4 text-ink-subtle md:col-span-3"
                     >
                         {t('now.availability')}
                     </h2>
@@ -153,7 +153,7 @@ export function NowPage({ now }: NowPageProps) {
                             label={t('status.available')}
                             tone="signal"
                         />
-                        <p className="font-display text-ink text-[1.75rem] leading-snug md:text-[2rem]">
+                        <p className="font-display text-[1.75rem] leading-snug text-ink md:text-[2rem]">
                             {now.availability}
                         </p>
                         <Link

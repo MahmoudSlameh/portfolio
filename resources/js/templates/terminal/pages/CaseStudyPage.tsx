@@ -73,7 +73,7 @@ function AdjacentLink({
             params={{ slug: reference.slug }}
             className={`tm-box tm-hover-up flex flex-col gap-2 p-6 md:p-8 ${isNext ? 'md:items-end md:text-end' : ''}`}
         >
-            <span className="text-tm-400 flex items-center gap-2 text-sm">
+            <span className="flex items-center gap-2 text-sm text-tm-400">
                 {!isNext && (
                     <Icon aria-hidden className="size-4 rtl:-scale-x-100" />
                 )}
@@ -105,7 +105,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             key={paragraph}
                             className={
                                 index === 0
-                                    ? 'text-ink mb-0 text-xl leading-relaxed'
+                                    ? 'mb-0 text-xl leading-relaxed text-ink'
                                     : 'tm-prose mb-0'
                             }
                         >
@@ -120,7 +120,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
             titleKey: 'case.problem',
             visible: project.problem.length > 0,
             body: (
-                <div className="border-tm-secondary border-s-2 ps-6">
+                <div className="border-s-2 border-tm-secondary ps-6">
                     {project.problem.map((paragraph) => (
                         <p key={paragraph} className="tm-prose mb-4 last:mb-0">
                             {paragraph}
@@ -140,13 +140,13 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             key={step.title}
                             className="tm-box tm-hover-up rounded-md p-6"
                         >
-                            <span className="ltr-isolate text-tm-secondary text-sm">
+                            <span className="ltr-isolate text-sm text-tm-secondary">
                                 step_{String(index + 1).padStart(2, '0')}
                             </span>
                             <h3 className="my-3 text-[19px] font-medium">
                                 {step.title}
                             </h3>
-                            <p className="text-tm-300 mb-0 text-sm leading-relaxed">
+                            <p className="mb-0 text-sm leading-relaxed text-tm-300">
                                 {step.description}
                             </p>
                         </li>
@@ -179,7 +179,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             <h3 className="my-3 text-[19px] font-medium">
                                 {feature.title}
                             </h3>
-                            <p className="text-tm-300 mb-0 text-sm leading-relaxed">
+                            <p className="mb-0 text-sm leading-relaxed text-tm-300">
                                 {feature.description}
                             </p>
                         </li>
@@ -197,16 +197,16 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                         <details
                             key={challenge.title}
                             open={index === 0}
-                            className="group border-tm-border rounded-md border"
+                            className="group rounded-md border border-tm-border"
                         >
-                            <summary className="text-ink flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-ink [&::-webkit-details-marker]:hidden">
                                 {challenge.title}
                                 <ChevronDown
                                     aria-hidden
-                                    className="text-tm-primary size-5 shrink-0 transition-transform group-open:rotate-180"
+                                    className="size-5 shrink-0 text-tm-primary transition-transform group-open:rotate-180"
                                 />
                             </summary>
-                            <p className="border-tm-border text-tm-300 mb-0 border-t p-5 leading-relaxed">
+                            <p className="mb-0 border-t border-tm-border p-5 leading-relaxed text-tm-300">
                                 {challenge.description}
                             </p>
                         </details>
@@ -222,11 +222,11 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                 <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                     {project.metrics.map((metric) => (
                         <li key={metric.id}>
-                            <p className="ltr-isolate text-ink mb-1 text-[2.75rem] leading-none font-medium">
+                            <p className="ltr-isolate mb-1 text-[2.75rem] leading-none font-medium text-ink">
                                 <CountUp value={metric.value} />
                             </p>
-                            <p className="text-ink mb-1">{metric.label}</p>
-                            <p className="text-tm-300 mb-0 text-sm">
+                            <p className="mb-1 text-ink">{metric.label}</p>
+                            <p className="mb-0 text-sm text-tm-300">
                                 {metric.detail}
                             </p>
                         </li>
@@ -243,14 +243,14 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     {project.gallery.map((image) => (
                         <figure
                             key={image.src}
-                            className="tm-zoom border-tm-border overflow-hidden rounded-md border"
+                            className="tm-zoom overflow-hidden rounded-md border border-tm-border"
                         >
                             <ResponsiveImage
                                 image={image}
                                 sizes="(min-width: 768px) 45vw, 92vw"
                                 className="aspect-[4/3]"
                             />
-                            <figcaption className="border-tm-border text-tm-300 border-t p-4 text-sm">
+                            <figcaption className="border-t border-tm-border p-4 text-sm text-tm-300">
                                 {image.caption}
                             </figcaption>
                         </figure>
@@ -287,7 +287,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     >
                         <Link
                             to="/projects"
-                            className="text-tm-300 inline-flex items-center gap-2 hover:text-[#62a92b]"
+                            className="inline-flex items-center gap-2 text-tm-300 hover:text-[#62a92b]"
                         >
                             <ArrowLeft
                                 aria-hidden
@@ -297,7 +297,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                         </Link>
                     </nav>
                     <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
-                        <div className="border-tm-border overflow-hidden rounded-md border">
+                        <div className="overflow-hidden rounded-md border border-tm-border">
                             <ResponsiveImage
                                 image={project.cover}
                                 sizes="(min-width: 64rem) 40vw, 100vw"
@@ -322,33 +322,33 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             <p lang="en" className="text-tm-body">
                                 {project.tagline}
                             </p>
-                            <p className="border-tm-border text-tm-secondary mt-6 mb-4 border-b pb-4">
+                            <p className="mt-6 mb-4 border-b border-tm-border pb-4 text-tm-secondary">
                                 {c('case.info')}
                             </p>
                             <dl>
                                 {facts.map((fact) => (
                                     <div
                                         key={fact.label}
-                                        className="border-tm-border mb-4 flex justify-between gap-6 border-b pb-4"
+                                        className="mb-4 flex justify-between gap-6 border-b border-tm-border pb-4"
                                     >
                                         <dt className="text-ink">
                                             {fact.label}
                                         </dt>
                                         <dd
                                             lang="en"
-                                            className="text-tm-300 mb-0 text-end"
+                                            className="mb-0 text-end text-tm-300"
                                         >
                                             {fact.value}
                                         </dd>
                                     </div>
                                 ))}
-                                <div className="border-tm-border mb-4 flex justify-between gap-6 border-b pb-4">
+                                <div className="mb-4 flex justify-between gap-6 border-b border-tm-border pb-4">
                                     <dt className="text-ink">
                                         {t('case.stack')}
                                     </dt>
                                     <dd
                                         lang="en"
-                                        className="text-tm-300 mb-0 flex flex-wrap justify-end gap-x-2 text-end"
+                                        className="mb-0 flex flex-wrap justify-end gap-x-2 text-end text-tm-300"
                                     >
                                         {project.stack.map(
                                             (technology, index) => (
@@ -405,7 +405,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     className="hidden lg:block"
                 >
                     <div className="tm-box sticky top-8 p-5">
-                        <p className="text-tm-400 mb-3 text-sm">
+                        <p className="mb-3 text-sm text-tm-400">
                             {t('case.contents')}
                         </p>
                         <ol className="flex flex-col gap-1">
@@ -418,7 +418,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                                                 ? 'location'
                                                 : undefined
                                         }
-                                        className="text-tm-300 hover:text-ink aria-[current=location]:text-tm-primary flex gap-2 py-1 text-sm"
+                                        className="flex gap-2 py-1 text-sm text-tm-300 hover:text-ink aria-[current=location]:text-tm-primary"
                                     >
                                         <span className="ltr-isolate">
                                             {String(index + 1).padStart(2, '0')}

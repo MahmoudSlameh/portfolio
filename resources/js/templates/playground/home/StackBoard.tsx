@@ -20,8 +20,8 @@ function SkillChip({
     const p = usePlaygroundCopy();
 
     return (
-        <li className="border-edge bg-paper flex items-center justify-between gap-3 rounded-xl border-2 px-3 py-2.5">
-            <span lang="en" className="text-ink min-w-0 truncate font-semibold">
+        <li className="flex items-center justify-between gap-3 rounded-xl border-2 border-edge bg-paper px-3 py-2.5">
+            <span lang="en" className="min-w-0 truncate font-semibold text-ink">
                 {skill.name}
             </span>
             <span className="flex shrink-0 items-center gap-2">
@@ -37,7 +37,7 @@ function SkillChip({
                             <span
                                 key={level}
                                 className={cn(
-                                    'border-edge size-2.5 rounded-full border-[1.5px]',
+                                    'size-2.5 rounded-full border-[1.5px] border-edge',
                                     level <= (skill.proficiency ?? 0)
                                         ? popBg[popForIndex(groupIndex)]
                                         : 'bg-transparent',
@@ -47,7 +47,7 @@ function SkillChip({
                     </span>
                 )}
                 {skill.years !== null && (
-                    <span className="ltr-isolate text-ink-subtle w-12 text-end font-mono text-[0.6875rem] font-bold">
+                    <span className="ltr-isolate w-12 text-end font-mono text-[0.6875rem] font-bold text-ink-subtle">
                         {t('stack.years', { count: skill.years })}
                     </span>
                 )}
@@ -72,7 +72,7 @@ export function StackBoard({ groups }: { groups: SkillGroup[] }) {
                 title={p('stack.title')}
                 pop="blue"
                 aside={
-                    <p className="text-ink-muted max-w-sm text-base">
+                    <p className="max-w-sm text-base text-ink-muted">
                         {t('stack.intro')}
                     </p>
                 }
@@ -83,7 +83,7 @@ export function StackBoard({ groups }: { groups: SkillGroup[] }) {
                         <article className="pg-card h-full overflow-hidden">
                             <header
                                 className={cn(
-                                    'border-edge text-on-pop border-b-2 px-5 py-4',
+                                    'border-b-2 border-edge px-5 py-4 text-on-pop',
                                     popBg[popForIndex(index)],
                                 )}
                             >

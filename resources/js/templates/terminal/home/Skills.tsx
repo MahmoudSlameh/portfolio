@@ -61,12 +61,12 @@ export function Skills({ groups }: { groups: SkillGroup[] }) {
                         </Marquee>
                     </div>
 
-                    <div className="md:border-tm-border md:border-s">
-                        <ul className="marker:text-tm-300 mx-auto flex max-w-[500px] list-disc flex-col gap-4 ps-8">
+                    <div className="md:border-s md:border-tm-border">
+                        <ul className="mx-auto flex max-w-[500px] list-disc flex-col gap-4 ps-8 marker:text-tm-300">
                             {groups.map((group) => (
                                 <li key={group.category.id}>
                                     <span className="flex flex-col gap-1 md:flex-row md:gap-2">
-                                        <span className="text-ink text-nowrap">
+                                        <span className="text-nowrap text-ink">
                                             {group.category.label}:
                                         </span>
                                         <span lang="en" className="text-tm-300">

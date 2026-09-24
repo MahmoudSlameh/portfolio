@@ -164,7 +164,7 @@ function CommitRow({ row }: { row: GraphRow }) {
     return (
         <li className="flex">
             <GraphGutter row={row} />
-            <div className="border-line min-w-0 flex-1 border-b py-6 ps-3 md:ps-6">
+            <div className="min-w-0 flex-1 border-b border-line py-6 ps-3 md:ps-6">
                 <div className="grid gap-x-8 gap-y-3 md:grid-cols-[12rem_minmax(0,1fr)]">
                     <div className="flex flex-wrap items-center gap-2 md:flex-col md:items-start md:gap-2.5">
                         <span className="flex items-center gap-2">
@@ -176,18 +176,18 @@ function CommitRow({ row }: { row: GraphRow }) {
                             </span>
                         </span>
                         {row.isHead && (
-                            <span className="ltr-isolate bg-signal-soft text-signal-ink rounded-[3px] px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold">
+                            <span className="ltr-isolate rounded-[3px] bg-signal-soft px-1.5 py-0.5 font-mono text-[0.625rem] font-semibold text-signal-ink">
                                 {t('career.head')} → main
                             </span>
                         )}
                         {entry.branch !== 'main' && (
-                            <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                            <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                 ⎇ {t(`career.branch.${entry.branch}`)}
                             </span>
                         )}
-                        <span className="text-ink-muted text-[0.8125rem]">
+                        <span className="text-[0.8125rem] text-ink-muted">
                             <time dateTime={entry.start}>{range}</time>
-                            <span className="ltr-isolate text-ink-subtle ms-2 font-mono text-[0.6875rem]">
+                            <span className="ltr-isolate ms-2 font-mono text-[0.6875rem] text-ink-subtle">
                                 {formatDuration(
                                     durationInMonths(entry.start, entry.end),
                                 )}
@@ -196,17 +196,17 @@ function CommitRow({ row }: { row: GraphRow }) {
                     </div>
 
                     <div lang="en">
-                        <h3 className="font-display text-ink text-[1.625rem] leading-tight md:text-[2rem]">
+                        <h3 className="font-display text-[1.625rem] leading-tight text-ink md:text-[2rem]">
                             {entry.role}
                             <span className="text-ink-subtle">
                                 {' '}
                                 @ {entry.organization}
                             </span>
                         </h3>
-                        <p className="ltr-isolate text-ink-subtle mt-1.5 font-mono text-xs">
+                        <p className="ltr-isolate mt-1.5 font-mono text-xs text-ink-subtle">
                             {entry.message}
                         </p>
-                        <p className="text-ink-muted mt-3 max-w-2xl text-[0.9375rem] leading-relaxed">
+                        <p className="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-muted">
                             {entry.summary}
                         </p>
 
@@ -215,7 +215,7 @@ function CommitRow({ row }: { row: GraphRow }) {
                             aria-expanded={isExpanded}
                             aria-controls={detailsId}
                             onClick={() => setIsExpanded((current) => !current)}
-                            className="text-ink hover:text-signal-ink mt-4 inline-flex items-center gap-1.5 text-[0.8125rem] font-medium"
+                            className="mt-4 inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-ink hover:text-signal-ink"
                         >
                             <Plus
                                 aria-hidden
@@ -243,7 +243,7 @@ function CommitRow({ row }: { row: GraphRow }) {
                             <div className="overflow-hidden">
                                 <div className="grid gap-6 pt-5 lg:grid-cols-[minmax(0,1fr)_16rem]">
                                     <div>
-                                        <h4 className="eyebrow text-ink-subtle mb-3">
+                                        <h4 className="eyebrow mb-3 text-ink-subtle">
                                             {t('career.highlights')}
                                         </h4>
                                         <ul className="flex flex-col gap-2.5">
@@ -251,11 +251,11 @@ function CommitRow({ row }: { row: GraphRow }) {
                                                 (highlight) => (
                                                     <li
                                                         key={highlight}
-                                                        className="text-ink flex gap-3 text-[0.9375rem] leading-relaxed"
+                                                        className="flex gap-3 text-[0.9375rem] leading-relaxed text-ink"
                                                     >
                                                         <span
                                                             aria-hidden
-                                                            className="text-signal-ink font-mono"
+                                                            className="font-mono text-signal-ink"
                                                         >
                                                             +
                                                         </span>
@@ -267,7 +267,7 @@ function CommitRow({ row }: { row: GraphRow }) {
                                     </div>
                                     <div className="flex flex-col gap-5">
                                         <div>
-                                            <h4 className="eyebrow text-ink-subtle mb-3">
+                                            <h4 className="eyebrow mb-3 text-ink-subtle">
                                                 {t('career.stack')}
                                             </h4>
                                             <ul className="flex flex-wrap gap-1.5">
@@ -284,7 +284,7 @@ function CommitRow({ row }: { row: GraphRow }) {
                                         </div>
                                         {entry.projects.length > 0 && (
                                             <div>
-                                                <h4 className="eyebrow text-ink-subtle mb-2">
+                                                <h4 className="eyebrow mb-2 text-ink-subtle">
                                                     {t('career.projects')}
                                                 </h4>
                                                 <ul className="flex flex-col gap-1">
@@ -300,7 +300,7 @@ function CommitRow({ row }: { row: GraphRow }) {
                                                                     params={{
                                                                         slug: project.slug,
                                                                     }}
-                                                                    className="link-draw text-ink text-[0.9375rem] font-medium"
+                                                                    className="link-draw text-[0.9375rem] font-medium text-ink"
                                                                 >
                                                                     {
                                                                         project.title
@@ -330,7 +330,7 @@ function GraphLegend() {
     return (
         <ul
             aria-hidden
-            className="text-ink-subtle mb-6 flex flex-wrap gap-5 font-mono text-[0.6875rem]"
+            className="mb-6 flex flex-wrap gap-5 font-mono text-[0.6875rem] text-ink-subtle"
         >
             {LANE_ORDER.map((lane) => (
                 <li key={lane} className="ltr-isolate flex items-center gap-2">
@@ -357,7 +357,7 @@ export function CareerGraph({ entries }: { entries: CareerEntry[] }) {
             <GraphLegend />
             <ol
                 aria-label={t('career.graphLabel')}
-                className="border-line border-t"
+                className="border-t border-line"
             >
                 {rows.map((row) => (
                     <CommitRow key={row.entry.id} row={row} />

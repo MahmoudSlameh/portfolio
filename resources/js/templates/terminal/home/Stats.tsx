@@ -43,15 +43,15 @@ export function Stats({ profile }: { profile: Profile }) {
                             >
                                 <Icon
                                     aria-hidden
-                                    className="text-tm-primary mb-1 size-5"
+                                    className="mb-1 size-5 text-tm-primary"
                                 />
-                                <p className="ltr-isolate text-tm-300 mb-0 text-[50px] leading-[1.2]">
-                                    <span className="text-ink font-medium">
+                                <p className="ltr-isolate mb-0 text-[50px] leading-[1.2] text-tm-300">
+                                    <span className="font-medium text-ink">
                                         <CountUp value={counted} />
                                     </span>
                                     {suffix}
                                 </p>
-                                <p className="text-ink mb-0">{stat.label}</p>
+                                <p className="mb-0 text-ink">{stat.label}</p>
                             </li>
                         );
                     })}

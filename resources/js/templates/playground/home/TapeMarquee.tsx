@@ -10,7 +10,7 @@ function Tape({ items, className, reverse = false }: TapeProps) {
     return (
         <div
             className={cn(
-                'border-edge overflow-hidden border-y-2 py-3',
+                'overflow-hidden border-y-2 border-edge py-3',
                 className,
             )}
             dir="ltr"
@@ -24,7 +24,7 @@ function Tape({ items, className, reverse = false }: TapeProps) {
                         {items.map((item) => (
                             <li
                                 key={`${copyIndex}-${item}`}
-                                className="font-display flex items-center gap-6 pe-6 text-2xl font-black whitespace-nowrap uppercase [font-stretch:125%] md:text-3xl"
+                                className="flex items-center gap-6 pe-6 font-display text-2xl font-black whitespace-nowrap uppercase [font-stretch:125%] md:text-3xl"
                             >
                                 {item}
                                 <span aria-hidden>✺</span>
@@ -46,11 +46,11 @@ export function TapeMarquee({ items }: { items: string[] }) {
             <Tape
                 items={items}
                 reverse
-                className="bg-pop-pink text-on-pop absolute inset-x-[-5%] top-8 rotate-[3deg]"
+                className="absolute inset-x-[-5%] top-8 rotate-[3deg] bg-pop-pink text-on-pop"
             />
             <Tape
                 items={items}
-                className="bg-ink text-paper absolute inset-x-[-5%] top-12 rotate-[-2.5deg]"
+                className="absolute inset-x-[-5%] top-12 rotate-[-2.5deg] bg-ink text-paper"
             />
         </div>
     );

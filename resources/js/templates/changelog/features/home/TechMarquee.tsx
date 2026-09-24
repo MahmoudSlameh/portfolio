@@ -14,7 +14,7 @@ export function TechMarquee({ groups }: { groups: SkillGroup[] }) {
         <div
             aria-hidden
             dir="ltr"
-            className="border-line bg-surface/60 relative overflow-hidden border-y [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] py-4"
+            className="relative overflow-hidden border-y border-line bg-surface/60 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] py-4"
         >
             <ul className="marquee">
                 {loop.map((name, index) => (
@@ -22,7 +22,7 @@ export function TechMarquee({ groups }: { groups: SkillGroup[] }) {
                         key={`${name}-${index}`}
                         className="flex items-center gap-8 pe-8 whitespace-nowrap"
                     >
-                        <span className="font-display text-ink text-2xl font-semibold tracking-[-0.03em] md:text-3xl">
+                        <span className="font-display text-2xl font-semibold tracking-[-0.03em] text-ink md:text-3xl">
                             {name}
                         </span>
                         <span

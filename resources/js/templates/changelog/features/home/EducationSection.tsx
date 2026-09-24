@@ -26,7 +26,7 @@ export function EducationSection({
         >
             <div className="grid gap-12 md:grid-cols-2 md:gap-8 lg:gap-16">
                 <div>
-                    <h3 className="eyebrow border-line text-ink-subtle mb-4 border-b pb-3">
+                    <h3 className="eyebrow mb-4 border-b border-line pb-3 text-ink-subtle">
                         {t('education.degrees')}
                     </h3>
                     <ul>
@@ -34,26 +34,26 @@ export function EducationSection({
                             <li
                                 key={item.id}
                                 lang="en"
-                                className="border-line grid grid-cols-[5.5rem_minmax(0,1fr)] gap-4 border-b py-6"
+                                className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-4 border-b border-line py-6"
                             >
-                                <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                                <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                     {yearOf(item.start)}–
                                     {item.end
                                         ? yearOf(item.end).slice(2)
                                         : t('career.present')}
                                 </span>
                                 <div>
-                                    <p className="font-display text-ink text-2xl leading-tight">
+                                    <p className="font-display text-2xl leading-tight text-ink">
                                         {[item.degree, item.field]
                                             .filter(Boolean)
                                             .join(', ')}
                                     </p>
                                     {item.grade && (
-                                        <p className="text-signal-ink mt-1 font-mono text-xs">
+                                        <p className="mt-1 font-mono text-xs text-signal-ink">
                                             {item.grade}
                                         </p>
                                     )}
-                                    <p className="text-ink-muted mt-1 text-[0.9375rem]">
+                                    <p className="mt-1 text-[0.9375rem] text-ink-muted">
                                         {[item.institution, item.location]
                                             .filter(Boolean)
                                             .join(' · ')}
@@ -62,7 +62,7 @@ export function EducationSection({
                                         {item.notes.map((note) => (
                                             <li
                                                 key={note}
-                                                className="text-ink-muted flex gap-2 text-sm"
+                                                className="flex gap-2 text-sm text-ink-muted"
                                             >
                                                 <span
                                                     aria-hidden
@@ -81,26 +81,26 @@ export function EducationSection({
                 </div>
 
                 <div>
-                    <h3 className="eyebrow border-line text-ink-subtle mb-4 border-b pb-3">
+                    <h3 className="eyebrow mb-4 border-b border-line pb-3 text-ink-subtle">
                         {t('education.certifications')}
                     </h3>
                     <ul>
                         {certifications.map((certification) => (
                             <li
                                 key={certification.id}
-                                className="group border-line grid grid-cols-[5.5rem_minmax(0,1fr)_auto] items-start gap-4 border-b py-5"
+                                className="group grid grid-cols-[5.5rem_minmax(0,1fr)_auto] items-start gap-4 border-b border-line py-5"
                             >
-                                <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                                <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                     {certification.year}
                                 </span>
                                 <div lang="en">
-                                    <p className="text-ink text-[1.0625rem] leading-snug font-medium">
+                                    <p className="text-[1.0625rem] leading-snug font-medium text-ink">
                                         {certification.name}
                                     </p>
-                                    <p className="text-ink-muted mt-1 text-sm">
+                                    <p className="mt-1 text-sm text-ink-muted">
                                         {certification.issuer}
                                     </p>
-                                    <p className="ltr-isolate text-ink-subtle mt-1 font-mono text-[0.6875rem]">
+                                    <p className="ltr-isolate mt-1 font-mono text-[0.6875rem] text-ink-subtle">
                                         {certification.credentialId}
                                     </p>
                                 </div>
@@ -108,7 +108,7 @@ export function EducationSection({
                                     href={certification.url}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="text-ink-muted hover:text-ink inline-flex items-center gap-1 text-[0.8125rem] font-medium"
+                                    className="inline-flex items-center gap-1 text-[0.8125rem] font-medium text-ink-muted hover:text-ink"
                                 >
                                     <span className="link-draw-target">
                                         {t('education.verify')}

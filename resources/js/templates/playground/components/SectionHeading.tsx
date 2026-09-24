@@ -33,7 +33,7 @@ export function SectionHeading({
                 </Sticker>
                 <h2
                     id={`${id}-title`}
-                    className="pg-display text-ink max-w-4xl text-[clamp(2.25rem,6vw,4.75rem)]"
+                    className="pg-display max-w-4xl text-[clamp(2.25rem,6vw,4.75rem)] text-ink"
                 >
                     {title}
                 </h2>

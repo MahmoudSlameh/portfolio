@@ -57,11 +57,11 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
             ref={dialogRef}
             aria-label={t('nav.primary')}
             onClose={handleDialogClose}
-            className="dialog-panel bg-paper text-ink m-0 h-dvh max-h-none w-screen max-w-none p-0 backdrop:bg-transparent lg:hidden"
+            className="dialog-panel m-0 h-dvh max-h-none w-screen max-w-none bg-paper p-0 text-ink backdrop:bg-transparent lg:hidden"
         >
             <div className="shell flex h-full flex-col overflow-y-auto">
-                <div className="border-line flex h-[var(--header-height)] shrink-0 items-center justify-between border-b">
-                    <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                <div className="flex h-[var(--header-height)] shrink-0 items-center justify-between border-b border-line">
+                    <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                         ~/{profile.initials.toLowerCase()} ·{' '}
                         {profile.currentVersion}
                     </span>
@@ -80,14 +80,14 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                         <li>
                             <Link
                                 to="/"
-                                className="border-line font-display text-ink data-[status=active]:text-signal-ink flex items-baseline justify-between border-b py-3 text-4xl"
+                                className="flex items-baseline justify-between border-b border-line py-3 font-display text-4xl text-ink data-[status=active]:text-signal-ink"
                                 activeOptions={{
                                     exact: true,
                                     includeHash: false,
                                 }}
                             >
                                 {t('nav.home')}
-                                <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                                <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                     /
                                 </span>
                             </Link>
@@ -96,10 +96,10 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                             <li key={item.to}>
                                 <Link
                                     to={item.to}
-                                    className="border-line font-display text-ink data-[status=active]:text-signal-ink flex items-baseline justify-between border-b py-3 text-4xl"
+                                    className="flex items-baseline justify-between border-b border-line py-3 font-display text-4xl text-ink data-[status=active]:text-signal-ink"
                                 >
                                     {t(item.key)}
-                                    <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                                    <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                         {item.to}
                                     </span>
                                 </Link>
@@ -109,7 +109,7 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                 </nav>
 
                 <div className="pb-8">
-                    <p className="eyebrow text-ink-subtle mb-3">
+                    <p className="eyebrow mb-3 text-ink-subtle">
                         {t('palette.group.sections')}
                     </p>
                     <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
@@ -119,9 +119,9 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                                     to="/"
                                     hash={section.id}
                                     onClick={onClose}
-                                    className="text-ink-muted hover:text-ink flex items-baseline gap-2 py-1.5 text-[0.9375rem]"
+                                    className="flex items-baseline gap-2 py-1.5 text-[0.9375rem] text-ink-muted hover:text-ink"
                                 >
-                                    <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                                    <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                         {section.index}
                                     </span>
                                     {t(section.key)}
@@ -131,7 +131,7 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                     </ul>
                 </div>
 
-                <div className="border-line mt-auto flex flex-wrap items-center justify-between gap-4 border-t py-5">
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-4 border-t border-line py-5">
                     <div className="flex items-center gap-1">
                         <ThemeToggle />
                         <IconButton
@@ -154,7 +154,7 @@ export function MobileNav({ open, onClose, profile, socials }: MobileNavProps) {
                                     target="_blank"
                                     rel="noreferrer"
                                     aria-label={`${social.label} ${t('common.opensNewTab')}`}
-                                    className="text-ink-muted hover:bg-surface hover:text-ink inline-flex size-9 items-center justify-center rounded-[4px]"
+                                    className="inline-flex size-9 items-center justify-center rounded-[4px] text-ink-muted hover:bg-surface hover:text-ink"
                                 >
                                     <BrandIcon
                                         icon={social.icon}

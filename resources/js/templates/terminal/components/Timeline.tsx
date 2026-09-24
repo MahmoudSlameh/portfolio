@@ -27,15 +27,15 @@ export function Timeline({ items, className, spread = false }: TimelineProps) {
                 {items.map((item) => (
                     <li
                         key={item.id}
-                        className="marker:text-tm-300 relative z-[1]"
+                        className="relative z-[1] marker:text-tm-300"
                     >
                         <div className="flex gap-2">
-                            <p className="ltr-isolate text-tm-300 mb-0 shrink-0 text-nowrap">
+                            <p className="ltr-isolate mb-0 shrink-0 text-nowrap text-tm-300">
                                 {item.date}:
                             </p>
                             <div className="min-w-0">
                                 {item.title && (
-                                    <p className="text-tm-primary mb-0">
+                                    <p className="mb-0 text-tm-primary">
                                         {item.title}
                                     </p>
                                 )}
@@ -47,7 +47,7 @@ export function Timeline({ items, className, spread = false }: TimelineProps) {
             </ul>
             <span
                 aria-hidden
-                className="border-tm-border absolute start-[5px] top-6 z-0 h-[90%] border-s"
+                className="absolute start-[5px] top-6 z-0 h-[90%] border-s border-tm-border"
             />
             <span
                 aria-hidden

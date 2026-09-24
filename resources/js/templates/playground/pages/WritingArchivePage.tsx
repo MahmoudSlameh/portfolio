@@ -91,7 +91,7 @@ export function WritingArchivePage({
                     />
                     <p
                         aria-live="polite"
-                        className="text-ink-subtle font-mono text-xs font-bold"
+                        className="font-mono text-xs font-bold text-ink-subtle"
                     >
                         {t('common.results', { count: articles.length })}
                     </p>

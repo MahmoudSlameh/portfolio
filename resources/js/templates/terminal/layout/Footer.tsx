@@ -24,7 +24,7 @@ export function Footer({
 
     return (
         <footer className="tm-container">
-            <div className="border-tm-border border-t pt-6 pb-4 text-center">
+            <div className="border-t border-tm-border pt-6 pb-4 text-center">
                 <Link
                     to="/"
                     aria-label={t('nav.homeLabel', { name: profile.name })}
@@ -38,7 +38,7 @@ export function Footer({
                 </Link>
                 <ul
                     aria-label={t('hero.socialLabel')}
-                    className="text-ink flex justify-center gap-4"
+                    className="flex justify-center gap-4 text-ink"
                 >
                     {socials.map((social) => (
                         <li key={social.id}>
@@ -47,7 +47,7 @@ export function Footer({
                                 target="_blank"
                                 rel="noreferrer"
                                 aria-label={`${social.label} ${t('common.opensNewTab')}`}
-                                className="hover:text-tm-primary inline-flex transition-colors"
+                                className="inline-flex transition-colors hover:text-tm-primary"
                             >
                                 <BrandIcon
                                     icon={social.icon}
@@ -85,7 +85,7 @@ export function Footer({
                             <li key={item.to}>
                                 <Link
                                     to={item.to}
-                                    className="text-tm-400 hover:text-tm-primary transition-colors"
+                                    className="text-tm-400 transition-colors hover:text-tm-primary"
                                 >
                                     {t(item.key)}
                                 </Link>
@@ -93,7 +93,7 @@ export function Footer({
                         ))}
                     </ul>
                 </nav>
-                <p className="text-tm-400 mb-0 text-xs">
+                <p className="mb-0 text-xs text-tm-400">
                     <span className="ltr-isolate">
                         © {new Date().getFullYear()}
                     </span>{' '}

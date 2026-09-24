@@ -19,6 +19,10 @@
 | D13 | 2026-09-24 | Template preview (`?template=`) is **admin-only** (logged-in panel user); visitors always see the active template; preview pages are `noindex`                 | Owner answer Q01; no duplicate-content SEO issues                                             |
 | D14 | 2026-09-24 | Keep **all** public pages (Writing, Books, Uses, Now); `enabled_pages` toggles stay as an option, all on by default                                            | Owner answer Q02                                                                              |
 | D15 | 2026-09-24 | Production database **MySQL 8**. Dev/CI keep SQLite. Migrations must work on both (no DB defaults on `json` columns — set defaults in the model `$attributes`) | Owner answer Q05                                                                              |
+| D16 | 2026-09-24 | No cross-request caching of page content for now; props are built per request (a few cheap queries). `ContentCache` (versioned keys) exists for sitemap/feeds and a later response cache | Filament reorders/bulk updates bypass model events, so cached props could go stale; correctness first |
+| D17 | 2026-09-24 | Templates ported with a thin compatibility layer instead of rewriting: `@/lib/router` (TanStack-style `Link`/`useRouterState`/`useNavigate` on Inertia), `@/lib/content` (types + `submitContactMessage` → `POST /contact`), English-only `useTranslation` | Keeps the three templates visually and structurally identical to the reference; mechanical, low-risk port |
+| D18 | 2026-09-24 | One Tailwind stylesheet for all templates (template CSS is scoped by `[data-template]` and uses `@theme inline`); JS is still split per template by the Inertia page files | Tailwind 4 needs a single entry for the shared theme; CSS is small compared to JS |
+| D19 | 2026-09-24 | Theme (light/dark) persisted in a `theme` cookie (unencrypted) + localStorage so SSR renders the right theme without hydration mismatches | SSR-safe theming |
 
 ## Open questions for the owner
 

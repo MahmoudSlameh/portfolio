@@ -95,7 +95,7 @@ export function ClientsSection({
                     aria-label={t('clients.listLabel')}
                     aria-orientation="horizontal"
                     onKeyDown={handleKeyDown}
-                    className="border-line bg-line col-span-4 grid grid-cols-2 gap-px self-start border md:col-span-7 md:grid-cols-4"
+                    className="col-span-4 grid grid-cols-2 gap-px self-start border border-line bg-line md:col-span-7 md:grid-cols-4"
                 >
                     {companies.map((company, index) => {
                         const isSelected = index === selectedIndex;
@@ -139,7 +139,7 @@ export function ClientsSection({
                     role="tabpanel"
                     aria-labelledby={`client-tab-${selected.id}`}
                     tabIndex={0}
-                    className="border-line bg-raised col-span-4 flex flex-col border p-6 md:col-span-5 md:p-8"
+                    className="col-span-4 flex flex-col border border-line bg-raised p-6 md:col-span-5 md:p-8"
                 >
                     <div
                         key={selected.id}
@@ -158,32 +158,32 @@ export function ClientsSection({
                                     ? t('clients.employer')
                                     : t('clients.client')}
                             </Tag>
-                            <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                            <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                 {selected.period}
                             </span>
                         </div>
                         <p
                             lang="en"
-                            className="font-display text-ink mt-6 text-4xl leading-none"
+                            className="mt-6 font-display text-4xl leading-none text-ink"
                         >
                             {selected.name}
                         </p>
-                        <p lang="en" className="text-ink-subtle mt-2 text-sm">
+                        <p lang="en" className="mt-2 text-sm text-ink-subtle">
                             {selected.industry} · {selected.location}
                         </p>
                         <p
                             lang="en"
-                            className="text-ink-muted mt-5 text-[0.9375rem] leading-relaxed"
+                            className="mt-5 text-[0.9375rem] leading-relaxed text-ink-muted"
                         >
                             {selected.engagement}
                         </p>
                         {selectedTestimonial && (
                             <blockquote
                                 lang="en"
-                                className="border-signal text-ink mt-6 border-s-2 ps-4 text-[0.9375rem] leading-relaxed"
+                                className="mt-6 border-s-2 border-signal ps-4 text-[0.9375rem] leading-relaxed text-ink"
                             >
                                 “{selectedTestimonial.quote.split('. ')[0]}.”
-                                <footer className="text-ink-subtle mt-2 text-[0.8125rem]">
+                                <footer className="mt-2 text-[0.8125rem] text-ink-subtle">
                                     — {selectedTestimonial.author}
                                 </footer>
                             </blockquote>
@@ -192,7 +192,7 @@ export function ClientsSection({
                             href={selected.url ?? undefined}
                             target="_blank"
                             rel="noreferrer"
-                            className="group text-ink mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium"
+                            className="group mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-ink"
                         >
                             <span className="link-draw-target">
                                 {t('clients.visit')}
@@ -210,7 +210,7 @@ export function ClientsSection({
             </div>
 
             <div className="mt-20">
-                <h3 className="eyebrow text-ink-subtle mb-6">
+                <h3 className="eyebrow mb-6 text-ink-subtle">
                     {t('clients.testimonials')}
                 </h3>
                 <TestimonialCarousel testimonials={testimonials} />

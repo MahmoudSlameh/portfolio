@@ -45,13 +45,13 @@ export function WritingArchivePage({
                 intro={t('archiveWriting.intro')}
                 aside={
                     <>
-                        <span className="border-tm-border text-tm-300 border px-3 py-1">
+                        <span className="border border-tm-border px-3 py-1 text-tm-300">
                             <span className="ltr-isolate text-ink">
                                 {allArticles.length}
                             </span>{' '}
                             {t('archiveWriting.articles')}
                         </span>
-                        <span className="border-tm-border text-tm-300 border px-3 py-1">
+                        <span className="border border-tm-border px-3 py-1 text-tm-300">
                             <span className="ltr-isolate text-ink">
                                 {totalMinutes}
                             </span>{' '}
@@ -88,7 +88,7 @@ export function WritingArchivePage({
                             })),
                         ]}
                     />
-                    <p aria-live="polite" className="text-tm-400 mb-0 text-sm">
+                    <p aria-live="polite" className="mb-0 text-sm text-tm-400">
                         {t('common.results', { count: articles.length })}
                     </p>
                 </div>
@@ -98,17 +98,17 @@ export function WritingArchivePage({
                 {articles.length === 0 ? (
                     <EmptyState onReset={handleReset} />
                 ) : (
-                    <ul className="tm-box divide-tm-border divide-y">
+                    <ul className="tm-box divide-y divide-tm-border">
                         {articles.map((article) => (
                             <li
                                 key={article.id}
                                 className="group relative grid grid-cols-1 gap-3 p-6 transition-colors hover:bg-[var(--signal-soft)] md:grid-cols-[11rem_minmax(0,1fr)] md:gap-8 md:p-8"
                             >
-                                <p className="text-tm-300 mb-0">
+                                <p className="mb-0 text-tm-300">
                                     <time dateTime={article.publishedAt}>
                                         {formatDate(article.publishedAt)}
                                     </time>
-                                    <span className="text-tm-400 block text-sm">
+                                    <span className="block text-sm text-tm-400">
                                         {t('writing.minRead', {
                                             count: article.readingMinutes,
                                         })}
@@ -124,10 +124,10 @@ export function WritingArchivePage({
                                             {article.title}
                                         </Link>
                                     </h2>
-                                    <p className="text-tm-body mb-3">
+                                    <p className="mb-3 text-tm-body">
                                         {article.excerpt}
                                     </p>
-                                    <p className="text-tm-secondary mb-0 text-sm">
+                                    <p className="mb-0 text-sm text-tm-secondary">
                                         {article.tags
                                             .map((tag) => `#${tag}`)
                                             .join('  ')}

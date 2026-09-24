@@ -34,7 +34,7 @@ export function CopyButton({
             onClick={handleClick}
             aria-label={showLabel ? undefined : label}
             className={cn(
-                'border-line-strong text-ink hover:border-ink hover:bg-raised inline-flex h-9 items-center gap-2 rounded-[4px] border px-3 text-[0.8125rem] font-medium transition-colors duration-200',
+                'inline-flex h-9 items-center gap-2 rounded-[4px] border border-line-strong px-3 text-[0.8125rem] font-medium text-ink transition-colors duration-200 hover:border-ink hover:bg-raised',
                 className,
             )}
         >

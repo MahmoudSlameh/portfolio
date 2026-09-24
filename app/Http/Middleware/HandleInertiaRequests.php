@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SiteSetting;
+use App\Support\Content\PortfolioContent;
+use App\Support\Templates\TemplateManager;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -27,7 +30,7 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Define the props that are shared by default.
+     * Props shared with every public page (the SharedProps type in resources/js/types/shared.ts).
      *
      * @see https://inertiajs.com/shared-data
      *
@@ -35,12 +38,29 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $templates = app(TemplateManager::class);
+        $content = app(PortfolioContent::class);
+        $settings = SiteSetting::current();
+        $theme = $request->cookie('theme');
+
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
-            'auth' => [
-                'user' => $request->user(),
+            'site' => fn (): array => [
+                'name' => $settings->site_name,
+                'url' => rtrim((string) config('app.url'), '/'),
+                'enabledPages' => collect(SiteSetting::TOGGLEABLE_PAGES)
+                    ->mapWithKeys(fn (string $page): array => [$page => $settings->isPageEnabled($page)])
+                    ->all(),
             ],
+            'profile' => fn (): array => $content->profile(),
+            'socials' => fn (): array => $content->socials(),
+            'searchIndex' => inertia()->defer(fn (): array => $content->searchIndex())->once(),
+            'template' => fn (): array => [
+                'id' => $templates->current()->value,
+                'isPreview' => $templates->isPreview(),
+            ],
+            'theme' => in_array($theme, ['light', 'dark'], true) ? $theme : null,
+            'flash' => fn (): array => ['success' => $request->hasSession() ? $request->session()->get('success') : null],
         ];
     }
 }

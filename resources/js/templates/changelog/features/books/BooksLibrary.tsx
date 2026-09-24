@@ -90,7 +90,7 @@ export function BooksLibrary({
                     aria-label={t('booksPage.statsLabel')}
                     className="mb-16 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]"
                 >
-                    <dl className="border-line bg-line grid grid-cols-2 content-start gap-px border sm:grid-cols-3">
+                    <dl className="grid grid-cols-2 content-start gap-px border border-line bg-line sm:grid-cols-3">
                         {statItems.map((item, index) => (
                             <div
                                 key={item.label}
@@ -104,7 +104,7 @@ export function BooksLibrary({
                                 <dt className="eyebrow text-ink-subtle">
                                     {item.label}
                                 </dt>
-                                <dd className="ltr-isolate font-display text-ink mt-3 text-5xl leading-none">
+                                <dd className="ltr-isolate mt-3 font-display text-5xl leading-none text-ink">
                                     {item.value}
                                 </dd>
                             </div>
@@ -113,7 +113,7 @@ export function BooksLibrary({
                     <ReadingChart perYear={stats.perYear} />
                 </section>
 
-                <div className="border-line mb-10 flex flex-col gap-5 border-b pb-6">
+                <div className="mb-10 flex flex-col gap-5 border-b border-line pb-6">
                     <ShelfControls
                         books={booksInCategory}
                         status={status}
@@ -141,7 +141,7 @@ export function BooksLibrary({
                     />
                     <p
                         aria-live="polite"
-                        className="text-ink-subtle font-mono text-xs"
+                        className="font-mono text-xs text-ink-subtle"
                     >
                         {t('common.results', { count: visibleBooks.length })}
                     </p>

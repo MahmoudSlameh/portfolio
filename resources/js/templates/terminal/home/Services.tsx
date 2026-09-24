@@ -68,13 +68,13 @@ export function Services({
                                 >
                                     <Icon
                                         aria-hidden
-                                        className="text-ink size-6"
+                                        className="size-6 text-ink"
                                         strokeWidth={1.75}
                                     />
                                     <h3 className="my-4 text-[19px] font-medium">
                                         {group.category.label}
                                     </h3>
-                                    <p className="text-tm-300 mb-0 text-sm leading-relaxed">
+                                    <p className="mb-0 text-sm leading-relaxed text-tm-300">
                                         {group.category.description}{' '}
                                         {c('services.working')}{' '}
                                         {group.skills.map((skill, index) => (
@@ -95,7 +95,7 @@ export function Services({
                         })}
                     </ul>
 
-                    <p className="text-tm-300 mt-[60px] mb-4 text-center">
+                    <p className="mt-[60px] mb-4 text-center text-tm-300">
                         {profile.availability.note}{' '}
                         <a
                             href="#contact"

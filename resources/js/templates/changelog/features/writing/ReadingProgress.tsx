@@ -49,7 +49,7 @@ export function ReadingProgress({
             className="fixed inset-x-0 top-[var(--header-height)] z-30 h-0.5 bg-transparent"
         >
             <div
-                className="bg-signal h-full origin-left transition-transform duration-150 ease-out rtl:origin-right"
+                className="h-full origin-left bg-signal transition-transform duration-150 ease-out rtl:origin-right"
                 style={{ transform: `scaleX(${progress / 100})` }}
             />
         </div>

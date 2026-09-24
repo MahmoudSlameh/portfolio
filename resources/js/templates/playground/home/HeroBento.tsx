@@ -42,14 +42,14 @@ function AvailabilitySticker({
             whileDrag={{ scale: 1.12, rotate: 6, cursor: 'grabbing' }}
             initial={{ rotate: 8 }}
             className={cn(
-                'border-edge text-on-pop absolute end-5 top-5 z-10 flex cursor-grab touch-none flex-col items-center gap-1 rounded-full border-2 px-5 py-4 text-center shadow-[var(--pg-shadow)] select-none md:end-8 md:top-8',
+                'absolute end-5 top-5 z-10 flex cursor-grab touch-none flex-col items-center gap-1 rounded-full border-2 border-edge px-5 py-4 text-center text-on-pop shadow-[var(--pg-shadow)] select-none md:end-8 md:top-8',
                 popBg[pop],
             )}
         >
             <span className="flex items-center gap-2 text-sm font-bold">
                 <span aria-hidden className="relative flex size-2.5">
-                    <span className="bg-on-pop/60 absolute inset-0 animate-ping rounded-full" />
-                    <span className="bg-on-pop relative size-2.5 rounded-full" />
+                    <span className="absolute inset-0 animate-ping rounded-full bg-on-pop/60" />
+                    <span className="relative size-2.5 rounded-full bg-on-pop" />
                 </span>
                 {profile.availability.label}
             </span>
@@ -83,14 +83,14 @@ function IntroTile({
                 </Sticker>
                 <h1
                     id="hero-title"
-                    className="pg-display text-ink text-[clamp(3.25rem,10vw,8rem)]"
+                    className="pg-display text-[clamp(3.25rem,10vw,8rem)] text-ink"
                 >
                     {profile.name}
                 </h1>
-                <p className="text-ink-muted max-w-2xl text-xl leading-snug font-medium md:text-2xl">
+                <p className="max-w-2xl text-xl leading-snug font-medium text-ink-muted md:text-2xl">
                     {profile.headline}
                 </p>
-                <p className="border-edge bg-pop-yellow text-on-pop inline-flex flex-wrap items-center gap-x-3 gap-y-2 rounded-full border-2 px-4 py-2 text-base font-bold md:text-lg">
+                <p className="inline-flex flex-wrap items-center gap-x-3 gap-y-2 rounded-full border-2 border-edge bg-pop-yellow px-4 py-2 text-base font-bold text-on-pop md:text-lg">
                     <Sparkles
                         aria-hidden
                         className="size-5"
@@ -156,7 +156,7 @@ function PortraitTile({ profile }: { profile: Profile }) {
     const now = useNow();
 
     return (
-        <div className="pg-card bg-pop-blue relative overflow-hidden md:col-span-3 lg:col-span-4 lg:row-span-2">
+        <div className="pg-card relative overflow-hidden bg-pop-blue md:col-span-3 lg:col-span-4 lg:row-span-2">
             <ResponsiveImage
                 image={profile.portrait}
                 sizes="(min-width: 64rem) 30vw, (min-width: 48rem) 50vw, 100vw"
@@ -198,7 +198,7 @@ function StatTile({
         <Reveal delay={index * 80} className="md:col-span-3">
             <div
                 className={cn(
-                    'pg-card pg-press text-on-pop flex h-full flex-col justify-between gap-6 p-6',
+                    'pg-card pg-press flex h-full flex-col justify-between gap-6 p-6 text-on-pop',
                     popBg[pop],
                 )}
             >
@@ -219,10 +219,10 @@ function StatusTile({ profile }: { profile: Profile }) {
     return (
         <Reveal className="md:col-span-6 lg:col-span-7">
             <div className="pg-card h-full p-6">
-                <h2 className="pg-label text-ink mb-5 flex items-center gap-2">
+                <h2 className="pg-label mb-5 flex items-center gap-2 text-ink">
                     <span
                         aria-hidden
-                        className="bg-pop-red size-2.5 animate-pulse rounded-full"
+                        className="size-2.5 animate-pulse rounded-full bg-pop-red"
                     />
                     {p('hero.statusTitle')}
                 </h2>
@@ -230,7 +230,7 @@ function StatusTile({ profile }: { profile: Profile }) {
                     {profile.status.map((entry, index) => (
                         <div
                             key={entry.id}
-                            className="border-edge bg-paper rounded-xl border-2 p-4"
+                            className="rounded-xl border-2 border-edge bg-paper p-4"
                         >
                             <dt
                                 className={cn(
@@ -242,7 +242,7 @@ function StatusTile({ profile }: { profile: Profile }) {
                             >
                                 {entry.label}
                             </dt>
-                            <dd className="text-ink text-base leading-snug font-semibold">
+                            <dd className="text-base leading-snug font-semibold text-ink">
                                 {entry.value}
                             </dd>
                         </div>
@@ -258,10 +258,10 @@ function FreshTile({ profile }: { profile: Profile }) {
 
     return (
         <Reveal className="md:col-span-3 lg:col-span-5" delay={100}>
-            <div className="pg-card bg-pop-yellow text-on-pop relative h-full rotate-[1deg] p-6">
+            <div className="pg-card relative h-full rotate-[1deg] bg-pop-yellow p-6 text-on-pop">
                 <span
                     aria-hidden
-                    className="border-edge bg-pop-pink/80 absolute start-1/2 -top-3 h-6 w-24 -translate-x-1/2 rotate-[-3deg] rounded-sm border-2"
+                    className="absolute start-1/2 -top-3 h-6 w-24 -translate-x-1/2 rotate-[-3deg] rounded-sm border-2 border-edge bg-pop-pink/80"
                 />
                 <h2 className="pg-label mb-4">{p('hero.freshTitle')}</h2>
                 <ul className="flex flex-col gap-3">
@@ -272,7 +272,7 @@ function FreshTile({ profile }: { profile: Profile }) {
                         >
                             <span
                                 aria-hidden
-                                className="border-edge bg-raised text-ink mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2 text-xs"
+                                className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-raised text-xs text-ink"
                             >
                                 +
                             </span>

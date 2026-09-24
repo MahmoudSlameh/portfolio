@@ -25,20 +25,20 @@ export function AboutBlock({ profile }: { profile: Profile }) {
             />
             <div className="grid gap-10 lg:grid-cols-12">
                 <Reveal className="flex flex-col gap-6 lg:col-span-7">
-                    <p className="text-ink text-2xl leading-snug font-semibold md:text-3xl">
+                    <p className="text-2xl leading-snug font-semibold text-ink md:text-3xl">
                         {lead}
                     </p>
                     {rest.map((paragraph) => (
                         <p
                             key={paragraph}
-                            className="text-ink-muted text-lg leading-relaxed"
+                            className="text-lg leading-relaxed text-ink-muted"
                         >
                             {paragraph}
                         </p>
                     ))}
                 </Reveal>
                 <div className="lg:col-span-5">
-                    <h3 className="pg-label text-ink mb-5">
+                    <h3 className="pg-label mb-5 text-ink">
                         {p('about.principles')}
                     </h3>
                     <ol className="flex flex-col gap-4">
@@ -53,7 +53,7 @@ export function AboutBlock({ profile }: { profile: Profile }) {
                                         rotate: `${tiltForIndex(index) * 0.4}deg`,
                                     }}
                                     className={cn(
-                                        'pg-card pg-press text-on-pop flex gap-4 p-5',
+                                        'pg-card pg-press flex gap-4 p-5 text-on-pop',
                                         popBg[popForIndex(index)],
                                     )}
                                 >

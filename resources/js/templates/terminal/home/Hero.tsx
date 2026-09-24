@@ -79,12 +79,12 @@ export function Hero({
 
                         <div className="p-3 md:p-16 lg:p-0 lg:pe-16">
                             <div
-                                className="text-tm-secondary flex items-center"
+                                className="flex items-center text-tm-secondary"
                                 dir="ltr"
                             >
                                 &lt;span&gt;
                                 <span
-                                    className="text-ink inline-block"
+                                    className="inline-block text-ink"
                                     dir="ltr"
                                 >
                                     <span className="tm-typewriter text-base font-medium">
@@ -113,7 +113,7 @@ export function Hero({
                                 </span>
                             </h1>
 
-                            <p className="text-tm-secondary mb-10">
+                            <p className="mb-10 text-tm-secondary">
                                 <span dir="ltr">&lt;p&gt;</span>
                                 <span className="text-ink">
                                     {profile.headline}{' '}
@@ -153,18 +153,18 @@ export function Hero({
                                         />
                                     ))}
                                 </Marquee>
-                                <span className="text-tm-300 mb-2">
+                                <span className="mb-2 text-tm-300">
                                     {c('hero.more')}
                                 </span>
                             </div>
 
                             <a
                                 href="#contact"
-                                className="text-tm-300 mt-8 inline-flex items-center gap-2 font-medium transition-colors hover:text-[#62a92b]"
+                                className="mt-8 inline-flex items-center gap-2 font-medium text-tm-300 transition-colors hover:text-[#62a92b]"
                             >
                                 <Send
                                     aria-hidden
-                                    className="text-tm-primary size-5 rtl:-scale-x-100"
+                                    className="size-5 text-tm-primary rtl:-scale-x-100"
                                 />
                                 {c('hero.cta')}
                             </a>

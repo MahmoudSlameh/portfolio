@@ -22,7 +22,7 @@ const wordmarkClass: Record<WordmarkStyle, string> = {
 function CompanyTicker({ companies }: { companies: Company[] }) {
     const c = useTerminalCopy();
     return (
-        <div className="border-tm-border my-10 rounded-md border p-4">
+        <div className="my-10 rounded-md border border-tm-border p-4">
             <Marquee label={c('experience.companies')} duration={28}>
                 {companies.map((company) => (
                     <span
@@ -36,7 +36,7 @@ function CompanyTicker({ companies }: { companies: Company[] }) {
                             rel="noreferrer"
                             lang="en"
                             className={cn(
-                                'hover:text-tm-primary inline-flex whitespace-nowrap text-[#607b96] transition-colors',
+                                'inline-flex whitespace-nowrap text-[#607b96] transition-colors hover:text-tm-primary',
                                 wordmarkClass[company.wordmark],
                             )}
                         >
@@ -58,16 +58,16 @@ function Avatar({ profile }: { profile: Profile }) {
     return (
         <div
             aria-hidden
-            className="border-tm-mint relative flex size-[124px] shrink-0 items-center justify-center rounded-full border"
+            className="relative flex size-[124px] shrink-0 items-center justify-center rounded-full border border-tm-mint"
         >
-            <div className="border-tm-mint flex size-[82px] items-center justify-center rounded-full border">
+            <div className="flex size-[82px] items-center justify-center rounded-full border border-tm-mint">
                 <div className="relative size-10">
                     <img
                         src={src}
                         alt=""
                         className="size-10 rounded-full object-cover object-top"
                     />
-                    <span className="ring-tm-card absolute -end-0.5 bottom-0 size-2 rounded-full bg-[#a8ff53] ring-2" />
+                    <span className="absolute -end-0.5 bottom-0 size-2 rounded-full bg-[#a8ff53] ring-2 ring-tm-card" />
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@ export function Cooperation({
                                     <>
                                         <Icon
                                             aria-hidden
-                                            className="text-ink size-5 shrink-0"
+                                            className="size-5 shrink-0 text-ink"
                                         />
                                         <span className="text-tm-300">
                                             [{contact.label}]{' '}

@@ -40,7 +40,7 @@ function ProgressBar({
         <div
             aria-hidden
             title={t('article.progress')}
-            className="border-edge bg-raised fixed inset-x-0 top-0 z-50 h-2.5 border-b-2"
+            className="fixed inset-x-0 top-0 z-50 h-2.5 border-b-2 border-edge bg-raised"
         >
             <motion.div
                 style={{ scaleX }}
@@ -57,7 +57,7 @@ function Contents({ entries }: { entries: { id: string; text: string }[] }) {
 
     return (
         <nav aria-label={t('article.toc')} className="pg-card p-4">
-            <p className="pg-label text-ink mb-3">{t('article.toc')}</p>
+            <p className="pg-label mb-3 text-ink">{t('article.toc')}</p>
             <ol lang="en" className="flex flex-col gap-1">
                 {entries.map((entry, index) => (
                     <li key={entry.id}>
@@ -66,7 +66,7 @@ function Contents({ entries }: { entries: { id: string; text: string }[] }) {
                             aria-current={
                                 activeId === entry.id ? 'location' : undefined
                             }
-                            className="text-ink-muted hover:bg-pop-yellow/50 hover:text-ink aria-[current=location]:bg-ink aria-[current=location]:text-paper flex gap-2 rounded-lg px-2 py-1.5 text-sm leading-snug font-semibold"
+                            className="flex gap-2 rounded-lg px-2 py-1.5 text-sm leading-snug font-semibold text-ink-muted hover:bg-pop-yellow/50 hover:text-ink aria-[current=location]:bg-ink aria-[current=location]:text-paper"
                         >
                             <span className="ltr-isolate font-mono text-xs">
                                 {index + 1}.
@@ -97,7 +97,7 @@ function NeighbourCard({
             to="/writing/$slug"
             params={{ slug: article.slug }}
             className={cn(
-                'pg-card pg-press text-on-pop flex flex-col gap-3 p-6 md:p-8',
+                'pg-card pg-press flex flex-col gap-3 p-6 text-on-pop md:p-8',
                 isNewer
                     ? 'bg-pop-blue md:items-end md:text-end'
                     : 'bg-pop-yellow',
@@ -202,13 +202,13 @@ export function ArticlePage({ article }: ArticlePageProps) {
                         </div>
                         <h1
                             lang="en"
-                            className="pg-display pg-keep-case text-ink text-[clamp(2.75rem,7.5vw,6.5rem)]"
+                            className="pg-display pg-keep-case text-[clamp(2.75rem,7.5vw,6.5rem)] text-ink"
                         >
                             {article.title}
                         </h1>
                         <p
                             lang="en"
-                            className="text-ink-muted max-w-2xl text-xl leading-snug font-medium"
+                            className="max-w-2xl text-xl leading-snug font-medium text-ink-muted"
                         >
                             {article.excerpt}
                         </p>
@@ -240,7 +240,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                     </div>
                     {article.relatedProjects.length > 0 && (
                         <aside aria-labelledby="related-projects">
-                            <div className="pg-card bg-pop-purple text-on-pop p-5 lg:sticky lg:top-8">
+                            <div className="pg-card bg-pop-purple p-5 text-on-pop lg:sticky lg:top-8">
                                 <h2
                                     id="related-projects"
                                     className="pg-label mb-4"
@@ -253,7 +253,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                             <Link
                                                 to="/projects/$slug"
                                                 params={{ slug: project.slug }}
-                                                className="border-edge bg-raised text-ink hover:bg-pop-yellow hover:text-on-pop flex items-center justify-between gap-2 rounded-xl border-2 px-3 py-2 font-bold"
+                                                className="flex items-center justify-between gap-2 rounded-xl border-2 border-edge bg-raised px-3 py-2 font-bold text-ink hover:bg-pop-yellow hover:text-on-pop"
                                             >
                                                 <span lang="en">
                                                     {project.title}

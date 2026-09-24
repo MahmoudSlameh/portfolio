@@ -83,7 +83,7 @@ export function BookCover({ book, className }: BookCoverProps) {
             <span
                 aria-hidden
                 className={cn(
-                    'font-display relative text-[clamp(0.95rem,1.1vw+0.5rem,1.35rem)] leading-[1.05]',
+                    'relative font-display text-[clamp(0.95rem,1.1vw+0.5rem,1.35rem)] leading-[1.05]',
                     textOffset,
                 )}
                 style={textOnAccent ? { color: book.cover.ink } : undefined}
@@ -151,7 +151,7 @@ export function BookSpine({
             <span
                 aria-hidden
                 lang="en"
-                className="font-display max-h-[75%] overflow-hidden text-[0.9375rem] leading-none whitespace-nowrap [writing-mode:vertical-rl]"
+                className="max-h-[75%] overflow-hidden font-display text-[0.9375rem] leading-none whitespace-nowrap [writing-mode:vertical-rl]"
             >
                 {book.title}
             </span>

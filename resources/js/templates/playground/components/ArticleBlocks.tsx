@@ -25,12 +25,12 @@ function CodeCard({ block }: { block: CodeBlock }) {
             dir="ltr"
             className="pg-code pg-card my-10 overflow-hidden bg-[#121212] shadow-[var(--pg-shadow-lg)]"
         >
-            <figcaption className="border-edge bg-pop-yellow text-on-pop flex items-center justify-between gap-4 border-b-2 px-4 py-2">
+            <figcaption className="flex items-center justify-between gap-4 border-b-2 border-edge bg-pop-yellow px-4 py-2 text-on-pop">
                 <span className="flex items-center gap-3 font-mono text-xs font-bold">
                     <span aria-hidden className="flex gap-1.5">
-                        <span className="border-edge bg-pop-red size-3 rounded-full border-2" />
-                        <span className="border-edge bg-raised size-3 rounded-full border-2" />
-                        <span className="border-edge bg-pop-green size-3 rounded-full border-2" />
+                        <span className="size-3 rounded-full border-2 border-edge bg-pop-red" />
+                        <span className="size-3 rounded-full border-2 border-edge bg-raised" />
+                        <span className="size-3 rounded-full border-2 border-edge bg-pop-green" />
                     </span>
                     {block.filename ?? block.language}
                 </span>
@@ -38,7 +38,7 @@ function CodeCard({ block }: { block: CodeBlock }) {
                     type="button"
                     onClick={handleCopy}
                     aria-label={t('article.copyCode')}
-                    className="border-edge bg-raised text-ink inline-flex h-8 items-center gap-1.5 rounded-full border-2 px-3 font-mono text-xs font-bold"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-full border-2 border-edge bg-raised px-3 font-mono text-xs font-bold text-ink"
                 >
                     <Icon aria-hidden className="size-3.5" strokeWidth={2.5} />
                     <span aria-hidden>
@@ -72,11 +72,11 @@ function Heading({ block, index }: { block: HeadingBlock; index: number }) {
     return (
         <h2
             id={block.id}
-            className="group font-display text-ink mt-16 mb-6 flex scroll-mt-28 items-start gap-3 text-[2rem] leading-tight font-black [font-stretch:115%] md:text-[2.5rem]"
+            className="group mt-16 mb-6 flex scroll-mt-28 items-start gap-3 font-display text-[2rem] leading-tight font-black text-ink [font-stretch:115%] md:text-[2.5rem]"
         >
             <span
                 aria-hidden
-                className="border-edge bg-pop-green text-on-pop mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-lg border-2 font-mono text-sm"
+                className="mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-lg border-2 border-edge bg-pop-green font-mono text-sm text-on-pop"
             >
                 {index}
             </span>
@@ -85,7 +85,7 @@ function Heading({ block, index }: { block: HeadingBlock; index: number }) {
                 type="button"
                 onClick={handleCopyLink}
                 aria-label={`${t('article.copyHeading')}: ${block.text}`}
-                className="border-edge bg-raised text-ink mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full border-2 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+                className="mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-raised text-ink opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
             >
                 <Hash aria-hidden className="size-4" strokeWidth={2.5} />
             </button>
@@ -105,7 +105,7 @@ function Block({
     switch (block.type) {
         case 'paragraph':
             return isFirst ? (
-                <p className="text-ink first-letter:border-edge first-letter:bg-pop-yellow first-letter:font-display first-letter:text-on-pop mb-8 text-[1.5rem] leading-snug font-semibold first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:px-3 first-letter:text-6xl first-letter:leading-none first-letter:font-black md:text-[1.75rem]">
+                <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
                     {block.text}
                 </p>
             ) : (
@@ -117,10 +117,10 @@ function Block({
             return <CodeCard block={block} />;
         case 'quote':
             return (
-                <blockquote className="pg-card bg-pop-pink text-on-pop my-12 rotate-[-1deg] p-6 md:p-10">
+                <blockquote className="pg-card my-12 rotate-[-1deg] bg-pop-pink p-6 text-on-pop md:p-10">
                     <span
                         aria-hidden
-                        className="font-display block text-7xl leading-none font-black"
+                        className="block font-display text-7xl leading-none font-black"
                     >
                         “
                     </span>
@@ -140,11 +140,11 @@ function Block({
                     {block.items.map((item) => (
                         <li
                             key={item}
-                            className="text-ink-muted flex gap-3 text-[1.0625rem] leading-relaxed"
+                            className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
                         >
                             <span
                                 aria-hidden
-                                className="border-edge bg-pop-blue mt-2 size-3 shrink-0 rotate-45 border-2"
+                                className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
                             />
                             {item}
                         </li>
@@ -153,7 +153,7 @@ function Block({
             );
         case 'callout':
             return (
-                <aside className="pg-card bg-pop-yellow text-on-pop my-10 flex gap-4 p-6">
+                <aside className="pg-card my-10 flex gap-4 bg-pop-yellow p-6 text-on-pop">
                     <span aria-hidden className="text-3xl">
                         💡
                     </span>

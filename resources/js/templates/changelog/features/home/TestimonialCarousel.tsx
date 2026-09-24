@@ -40,7 +40,7 @@ export function TestimonialCarousel({
             aria-roledescription="carousel"
             aria-label={t('clients.testimonials')}
             onKeyDown={handleKeyDown}
-            className="editorial-grid border-line gap-y-8 border-t pt-10"
+            className="editorial-grid gap-y-8 border-t border-line pt-10"
         >
             <div className="col-span-4 md:col-span-9">
                 <div
@@ -71,7 +71,7 @@ export function TestimonialCarousel({
                         >
                             <blockquote
                                 lang="en"
-                                className="font-display text-ink text-[1.625rem] leading-[1.25] md:text-[2.25rem]"
+                                className="font-display text-[1.625rem] leading-[1.25] text-ink md:text-[2.25rem]"
                             >
                                 <span aria-hidden className="text-signal-ink">
                                     “
@@ -85,13 +85,13 @@ export function TestimonialCarousel({
                                 lang="en"
                                 className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1"
                             >
-                                <span className="text-ink text-[0.9375rem] font-semibold">
+                                <span className="text-[0.9375rem] font-semibold text-ink">
                                     {current.author}
                                 </span>
-                                <span className="text-ink-muted text-sm">
+                                <span className="text-sm text-ink-muted">
                                     {current.role}, {current.company?.name}
                                 </span>
-                                <span className="text-ink-subtle font-mono text-[0.6875rem]">
+                                <span className="font-mono text-[0.6875rem] text-ink-subtle">
                                     {current.relation}
                                 </span>
                             </figcaption>
@@ -105,7 +105,7 @@ export function TestimonialCarousel({
                     <IconButton
                         label={t('carousel.previous')}
                         onClick={handlePrevious}
-                        className="border-line-strong border"
+                        className="border border-line-strong"
                         tooltipSide="top"
                     >
                         <ArrowLeft
@@ -116,7 +116,7 @@ export function TestimonialCarousel({
                     <IconButton
                         label={t('carousel.next')}
                         onClick={handleNext}
-                        className="border-line-strong border"
+                        className="border border-line-strong"
                         tooltipSide="top"
                     >
                         <ArrowRight
@@ -126,7 +126,7 @@ export function TestimonialCarousel({
                     </IconButton>
                 </div>
                 <div className="flex items-center gap-3">
-                    <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                    <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                         {String(index + 1).padStart(2, '0')} /{' '}
                         {String(total).padStart(2, '0')}
                     </span>
@@ -150,8 +150,8 @@ export function TestimonialCarousel({
                                     className={cn(
                                         'h-1 rounded-full transition-all duration-300',
                                         dotIndex === index
-                                            ? 'bg-signal w-6'
-                                            : 'bg-line-strong hover:bg-electric w-1.5',
+                                            ? 'w-6 bg-signal'
+                                            : 'w-1.5 bg-line-strong hover:bg-electric',
                                     )}
                                 />
                             </button>

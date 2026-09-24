@@ -20,53 +20,53 @@ function UsesGroupSection({
         <section
             ref={revealRef}
             aria-labelledby={headingId}
-            className="reveal editorial-grid border-line gap-y-6 border-t py-12 md:py-16"
+            className="reveal editorial-grid gap-y-6 border-t border-line py-12 md:py-16"
         >
             <div className="col-span-4 md:col-span-4">
-                <p className="ltr-isolate text-signal-ink font-mono text-xs">
+                <p className="ltr-isolate font-mono text-xs text-signal-ink">
                     {String(index + 1).padStart(2, '0')}
                 </p>
                 <h2
                     id={headingId}
-                    className="font-display text-ink mt-3 text-4xl leading-none md:text-5xl"
+                    className="mt-3 font-display text-4xl leading-none text-ink md:text-5xl"
                 >
                     {group.title}
                 </h2>
-                <p className="text-ink-subtle mt-3 font-mono text-xs">
+                <p className="mt-3 font-mono text-xs text-ink-subtle">
                     {t('common.results', { count: group.items.length })}
                 </p>
             </div>
             <ul
                 lang="en"
-                className="border-line col-span-4 border-t md:col-span-8 md:border-t-0"
+                className="col-span-4 border-t border-line md:col-span-8 md:border-t-0"
             >
                 {group.items.map((item) => (
                     <li
                         key={item.id}
-                        className="border-line grid gap-1 border-b py-5 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8 md:first:pt-0"
+                        className="grid gap-1 border-b border-line py-5 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8 md:first:pt-0"
                     >
                         {item.url ? (
                             <a
                                 href={item.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="group text-ink inline-flex items-start gap-1.5 self-start font-medium"
+                                className="group inline-flex items-start gap-1.5 self-start font-medium text-ink"
                             >
                                 <span className="link-draw-target">
                                     {item.name}
                                 </span>
                                 <ArrowUpRight
                                     aria-hidden
-                                    className="text-ink-subtle group-hover:text-signal-ink mt-0.5 size-3.5 shrink-0"
+                                    className="mt-0.5 size-3.5 shrink-0 text-ink-subtle group-hover:text-signal-ink"
                                 />
                                 <span className="sr-only">
                                     {t('common.opensNewTab')}
                                 </span>
                             </a>
                         ) : (
-                            <p className="text-ink font-medium">{item.name}</p>
+                            <p className="font-medium text-ink">{item.name}</p>
                         )}
-                        <p className="text-ink-muted text-[0.9375rem] leading-relaxed">
+                        <p className="text-[0.9375rem] leading-relaxed text-ink-muted">
                             {item.description}
                         </p>
                     </li>

@@ -25,7 +25,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
         <article
             lang="en"
             onPointerMove={handleSpotlightMove}
-            className="group card-lift border-line bg-raised hover:border-electric/40 relative flex h-full flex-col overflow-hidden rounded-2xl border"
+            className="group card-lift relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-raised hover:border-electric/40"
         >
             <div
                 aria-hidden
@@ -45,7 +45,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                         'group-hover:opacity-80',
                     )}
                 />
-                <span className="version-label bg-raised/85 absolute start-3 top-3 border-transparent backdrop-blur-md">
+                <span className="version-label absolute start-3 top-3 border-transparent bg-raised/85 backdrop-blur-md">
                     {project.version}
                 </span>
             </div>
@@ -60,13 +60,13 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                         >
                             {t(`category.${project.category}`)}
                         </span>
-                        <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                        <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                             {project.year}
                         </span>
                     </span>
                     <ProjectStatusBadge status={project.status} />
                 </div>
-                <h3 className="font-display text-ink text-[1.75rem] leading-tight">
+                <h3 className="font-display text-[1.75rem] leading-tight text-ink">
                     <Link
                         to="/projects/$slug"
                         params={{ slug: project.slug }}
@@ -75,7 +75,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                         {project.title}
                     </Link>
                 </h3>
-                <p className="text-ink-muted text-[0.9375rem] leading-relaxed">
+                <p className="text-[0.9375rem] leading-relaxed text-ink-muted">
                     {project.tagline}
                 </p>
                 <div className="mt-auto flex items-end justify-between gap-4 pt-2">
@@ -91,7 +91,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
                     </ul>
                     <span
                         aria-hidden
-                        className="border-line text-ink-subtle group-hover:bg-signal group-hover:text-on-signal inline-flex size-9 shrink-0 items-center justify-center rounded-full border transition-all duration-300 group-hover:rotate-45 group-hover:border-transparent rtl:-scale-x-100"
+                        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-all duration-300 group-hover:rotate-45 group-hover:border-transparent group-hover:bg-signal group-hover:text-on-signal rtl:-scale-x-100"
                     >
                         <ArrowUpRight className="size-4" />
                     </span>
@@ -99,7 +99,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
             </div>
             <span
                 aria-hidden
-                className="ring-signal-ink pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-2 ring-inset group-has-[:focus-visible]:opacity-100"
+                className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-2 ring-signal-ink ring-inset group-has-[:focus-visible]:opacity-100"
             />
         </article>
     );

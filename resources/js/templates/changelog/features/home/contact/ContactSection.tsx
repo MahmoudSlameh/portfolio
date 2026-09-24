@@ -1,3 +1,4 @@
+import { useToast } from '@/providers/ToastProvider';
 import {
     useEffect,
     useRef,
@@ -44,12 +45,12 @@ function ContactAside({ profile }: { profile: Profile }) {
     return (
         <aside className="flex flex-col gap-8">
             <div>
-                <p className="eyebrow text-ink-subtle mb-3">
+                <p className="eyebrow mb-3 text-ink-subtle">
                     {t('contact.orEmail')}
                 </p>
                 <a
                     href={`mailto:${profile.email}`}
-                    className="link-draw ltr-isolate font-display text-ink text-[1.75rem] sm:text-3xl"
+                    className="link-draw ltr-isolate font-display text-[1.75rem] text-ink sm:text-3xl"
                 >
                     {profile.email}
                 </a>
@@ -61,9 +62,9 @@ function ContactAside({ profile }: { profile: Profile }) {
                     />
                 </div>
             </div>
-            <dl className="border-line grid gap-6 border-t pt-6">
+            <dl className="grid gap-6 border-t border-line pt-6">
                 <div>
-                    <dt className="eyebrow text-ink-subtle mb-2">
+                    <dt className="eyebrow mb-2 text-ink-subtle">
                         {t('contact.availability')}
                     </dt>
                     <dd>
@@ -71,26 +72,26 @@ function ContactAside({ profile }: { profile: Profile }) {
                             label={profile.availability.label}
                             tone="signal"
                         />
-                        <p className="text-ink-muted mt-2 text-[0.9375rem] leading-relaxed">
+                        <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-muted">
                             {profile.availability.note}
                         </p>
                     </dd>
                 </div>
                 <div>
-                    <dt className="eyebrow text-ink-subtle mb-2">
+                    <dt className="eyebrow mb-2 text-ink-subtle">
                         {t('contact.timezone')}
                     </dt>
                     <dd className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="text-ink text-[0.9375rem]">
+                        <span className="text-[0.9375rem] text-ink">
                             {profile.location}
                         </span>
                         <time
                             dateTime={now.toISOString()}
-                            className="ltr-isolate text-ink font-mono text-sm"
+                            className="ltr-isolate font-mono text-sm text-ink"
                         >
                             {formatTime(now, profile.timezone)}
                         </time>
-                        <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                        <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                             {profile.timezoneLabel}
                         </span>
                     </dd>
@@ -119,22 +120,22 @@ function ContactSuccess({
     return (
         <div
             role="status"
-            className="animate-rise border-signal/40 bg-signal-soft flex flex-col items-start gap-5 border p-8"
+            className="animate-rise flex flex-col items-start gap-5 border border-signal/40 bg-signal-soft p-8"
         >
             <p
                 aria-hidden
-                className="ltr-isolate text-signal-ink font-mono text-xs"
+                className="ltr-isolate font-mono text-xs text-signal-ink"
             >
                 ✓ merged · {messageId}
             </p>
             <h3
                 ref={headingRef}
                 tabIndex={-1}
-                className="font-display text-ink text-4xl leading-tight focus-visible:outline-none"
+                className="font-display text-4xl leading-tight text-ink focus-visible:outline-none"
             >
                 {t('contact.successTitle')}
             </h3>
-            <p className="text-ink-muted max-w-md text-[0.9375rem] leading-relaxed">
+            <p className="max-w-md text-[0.9375rem] leading-relaxed text-ink-muted">
                 {t('contact.successBody', { name, id: messageId })}
             </p>
             <Button variant="secondary" onClick={onReset}>
@@ -150,6 +151,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
     const [errors, setErrors] = useState<ContactErrors>({});
     const [hasAttempted, setHasAttempted] = useState(false);
     const [status, setStatus] = useState<FormStatus>('idle');
+    const { notify: notifyFailure } = useToast();
     const [messageId, setMessageId] = useState('');
     const summaryRef = useRef<HTMLDivElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -186,7 +188,14 @@ export function ContactSection({ profile }: { profile: Profile }) {
 
         setErrors({});
         setStatus('submitting');
-        const response = await submitContactMessage(result.data);
+        let response: Awaited<ReturnType<typeof submitContactMessage>>;
+        try {
+            response = await submitContactMessage(result.data);
+        } catch {
+            setStatus('idle');
+            notifyFailure(t('contact.failed'));
+            return;
+        }
         setMessageId(response.id);
         setStatus('success');
     };
@@ -236,7 +245,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
                                     ref={summaryRef}
                                     tabIndex={-1}
                                     role="alert"
-                                    className="border-danger/40 bg-danger-soft text-danger focus-visible:outline-danger border px-4 py-3 text-sm"
+                                    className="border border-danger/40 bg-danger-soft px-4 py-3 text-sm text-danger focus-visible:outline-danger"
                                 >
                                     <p className="font-medium">
                                         {t('contact.errorSummary', {
@@ -339,7 +348,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
                                         ? t('contact.sending')
                                         : t('contact.submit')}
                                 </Button>
-                                <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                                <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                     git push origin inbox
                                 </span>
                             </div>

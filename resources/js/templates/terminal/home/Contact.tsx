@@ -1,3 +1,4 @@
+import { useToast } from '@/providers/ToastProvider';
 import {
     ArrowUpRight,
     Check,
@@ -46,7 +47,7 @@ type FormStatus = 'idle' | 'submitting' | 'success';
 function FieldError({ id, message }: { id: string; message?: string }) {
     if (!message) return null;
     return (
-        <p id={id} className="text-danger mt-1.5 mb-0 text-sm">
+        <p id={id} className="mt-1.5 mb-0 text-sm text-danger">
             {message}
         </p>
     );
@@ -67,13 +68,13 @@ function InfoItem({
         <li className="relative mb-4 flex items-center">
             <span
                 aria-hidden
-                className="border-tm-border bg-tm-card inline-flex size-16 shrink-0 items-center justify-center rounded-lg border"
+                className="inline-flex size-16 shrink-0 items-center justify-center rounded-lg border border-tm-border bg-tm-card"
             >
-                <Icon className="text-tm-primary size-[26px]" />
+                <Icon className="size-[26px] text-tm-primary" />
             </span>
             <span className="flex min-w-0 flex-col ps-4">
                 <span className="text-tm-400">{label}</span>
-                <span className="text-ink text-[19px] font-medium break-words">
+                <span className="text-[19px] font-medium break-words text-ink">
                     {href ? (
                         <a
                             href={href}
@@ -99,6 +100,7 @@ export function Contact({ profile }: { profile: Profile }) {
     const [errors, setErrors] = useState<ContactErrors>({});
     const [hasAttempted, setHasAttempted] = useState(false);
     const [status, setStatus] = useState<FormStatus>('idle');
+    const { notify: notifyFailure } = useToast();
     const [messageId, setMessageId] = useState('');
     const summaryRef = useRef<HTMLDivElement>(null);
     const successRef = useRef<HTMLHeadingElement>(null);
@@ -142,7 +144,14 @@ export function Contact({ profile }: { profile: Profile }) {
         }
         setErrors({});
         setStatus('submitting');
-        const response = await submitContactMessage(result.data);
+        let response: Awaited<ReturnType<typeof submitContactMessage>>;
+        try {
+            response = await submitContactMessage(result.data);
+        } catch {
+            setStatus('idle');
+            notifyFailure(t('contact.failed'));
+            return;
+        }
         setMessageId(response.id);
         setStatus('success');
         window.requestAnimationFrame(() => successRef.current?.focus());
@@ -166,7 +175,7 @@ export function Contact({ profile }: { profile: Profile }) {
                 <div className="lg:pe-6">
                     <h2
                         id="contact-title"
-                        className="text-tm-primary mb-4 text-[clamp(1.75rem,3vw,2.1875rem)] font-medium"
+                        className="mb-4 text-[clamp(1.75rem,3vw,2.1875rem)] font-medium text-tm-primary"
                     >
                         {c('contact.title')}
                     </h2>
@@ -182,7 +191,7 @@ export function Contact({ profile }: { profile: Profile }) {
                             >
                                 <Check className="size-6" />
                             </span>
-                            <p className="ltr-isolate text-tm-400 mb-0 text-sm">
+                            <p className="ltr-isolate mb-0 text-sm text-tm-400">
                                 {messageId}
                             </p>
                             <h3
@@ -192,7 +201,7 @@ export function Contact({ profile }: { profile: Profile }) {
                             >
                                 {t('contact.successTitle')}
                             </h3>
-                            <p className="text-tm-300 mb-2 max-w-md">
+                            <p className="mb-2 max-w-md text-tm-300">
                                 {t('contact.successBody', {
                                     name: values.name.trim(),
                                     id: messageId,
@@ -201,7 +210,7 @@ export function Contact({ profile }: { profile: Profile }) {
                             <button
                                 type="button"
                                 onClick={handleReset}
-                                className="text-ink inline-flex items-center gap-2 font-medium hover:text-[#62a92b]"
+                                className="inline-flex items-center gap-2 font-medium text-ink hover:text-[#62a92b]"
                             >
                                 {t('contact.sendAnother')}
                                 <ArrowUpRight
@@ -224,7 +233,7 @@ export function Contact({ profile }: { profile: Profile }) {
                                     ref={summaryRef}
                                     tabIndex={-1}
                                     role="alert"
-                                    className="border-danger bg-danger-soft text-danger mb-4 rounded-lg border px-4 py-3 text-sm"
+                                    className="mb-4 rounded-lg border border-danger bg-danger-soft px-4 py-3 text-sm text-danger"
                                 >
                                     <p className="mb-1 font-medium">
                                         {t('contact.errorSummary', {
@@ -354,7 +363,7 @@ export function Contact({ profile }: { profile: Profile }) {
                                         disabled={status === 'submitting'}
                                         aria-busy={status === 'submitting'}
                                         className={cn(
-                                            'text-ink inline-flex items-center gap-2 rounded-md px-6 py-4 text-sm font-bold transition-colors hover:text-[#62a92b]',
+                                            'inline-flex items-center gap-2 rounded-md px-6 py-4 text-sm font-bold text-ink transition-colors hover:text-[#62a92b]',
                                             status === 'submitting' &&
                                                 'opacity-60',
                                         )}
@@ -395,7 +404,7 @@ export function Contact({ profile }: { profile: Profile }) {
                         >
                             {formatTime(now, profile.timezone)}
                         </time>{' '}
-                        <span className="ltr-isolate text-tm-300 text-base">
+                        <span className="ltr-isolate text-base text-tm-300">
                             {profile.timezoneLabel}
                         </span>
                     </InfoItem>

@@ -33,7 +33,7 @@ export function Education({
                 >
                     <BookMarked
                         aria-hidden
-                        className="text-tm-primary size-7 shrink-0"
+                        className="size-7 shrink-0 text-tm-primary"
                     />
                     {c('resume.education')}
                 </h2>
@@ -53,12 +53,12 @@ export function Education({
                                     .filter(Boolean)
                                     .join(', ')}
                                 {entry.grade && (
-                                    <span className="text-tm-primary mt-1 block text-sm">
+                                    <span className="mt-1 block text-sm text-tm-primary">
                                         {entry.grade}
                                     </span>
                                 )}
                                 {entry.notes[0] && (
-                                    <span className="text-tm-300 mt-1 block text-sm">
+                                    <span className="mt-1 block text-sm text-tm-300">
                                         {entry.notes[0]}
                                     </span>
                                 )}
@@ -78,7 +78,7 @@ export function Education({
                 >
                     <ScanLine
                         aria-hidden
-                        className="text-tm-primary size-7 shrink-0"
+                        className="size-7 shrink-0 text-tm-primary"
                     />
                     {c('resume.certifications')}
                 </h2>

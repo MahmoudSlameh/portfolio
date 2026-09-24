@@ -17,21 +17,21 @@ export function ArticleRow({
     const { t } = useTranslation();
 
     return (
-        <article className="group border-line hover:bg-raised/60 relative border-b py-7 transition-colors duration-300 md:py-8">
+        <article className="group relative border-b border-line py-7 transition-colors duration-300 hover:bg-raised/60 md:py-8">
             <div className="editorial-grid items-baseline gap-y-3">
                 <p className="col-span-2 md:col-span-2">
                     <time
                         dateTime={article.publishedAt}
-                        className="ltr-isolate text-ink-subtle font-mono text-xs"
+                        className="ltr-isolate font-mono text-xs text-ink-subtle"
                     >
                         {formatIsoDate(article.publishedAt)}
                     </time>
                 </p>
-                <p className="text-ink-subtle col-span-2 text-end font-mono text-xs md:order-last md:col-span-2">
+                <p className="col-span-2 text-end font-mono text-xs text-ink-subtle md:order-last md:col-span-2">
                     {t('writing.minRead', { count: article.readingMinutes })}
                 </p>
                 <div lang="en" className="col-span-4 md:col-span-6">
-                    <Heading className="font-display text-ink text-[1.75rem] leading-tight md:text-[2rem]">
+                    <Heading className="font-display text-[1.75rem] leading-tight text-ink md:text-[2rem]">
                         <Link
                             to="/writing/$slug"
                             params={{ slug: article.slug }}
@@ -40,7 +40,7 @@ export function ArticleRow({
                             {article.title}
                         </Link>
                     </Heading>
-                    <p className="text-ink-muted mt-2 max-w-xl text-[0.9375rem] leading-relaxed">
+                    <p className="mt-2 max-w-xl text-[0.9375rem] leading-relaxed text-ink-muted">
                         {article.excerpt}
                     </p>
                 </div>
@@ -51,7 +51,7 @@ export function ArticleRow({
                         </li>
                     ))}
                     <li aria-hidden className="ms-auto hidden md:block">
-                        <ArrowUpRight className="text-ink-subtle size-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 rtl:-scale-x-100" />
+                        <ArrowUpRight className="size-4 text-ink-subtle opacity-0 transition-opacity duration-300 group-hover:opacity-100 rtl:-scale-x-100" />
                     </li>
                 </ul>
             </div>

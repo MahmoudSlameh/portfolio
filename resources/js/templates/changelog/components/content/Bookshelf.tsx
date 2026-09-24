@@ -26,7 +26,7 @@ function Rating({ rating }: { rating: Book['rating'] }) {
         <span
             role="img"
             aria-label={t('books.rating', { rating })}
-            className="ltr-isolate text-ink font-mono text-xs tracking-[0.15em]"
+            className="ltr-isolate font-mono text-xs tracking-[0.15em] text-ink"
         >
             {'★'.repeat(rating)}
             <span className="text-line-strong">{'★'.repeat(5 - rating)}</span>
@@ -56,7 +56,7 @@ function BookMeta({
             />
             <Rating rating={book.rating} />
             {!compact && book.finishedAt && (
-                <span className="text-ink-subtle text-[0.8125rem]">
+                <span className="text-[0.8125rem] text-ink-subtle">
                     {t('books.finished', {
                         date: formatMonth(book.finishedAt),
                     })}
@@ -70,8 +70,8 @@ function BookDetail({ book }: { book: Book }) {
     const { t } = useTranslation();
 
     return (
-        <div aria-live="polite" className="border-line bg-raised border p-6">
-            <p className="eyebrow text-ink-subtle mb-5">
+        <div aria-live="polite" className="border border-line bg-raised p-6">
+            <p className="eyebrow mb-5 text-ink-subtle">
                 {t('books.selected')}
             </p>
             <div
@@ -81,20 +81,20 @@ function BookDetail({ book }: { book: Book }) {
             >
                 <BookCover book={book} />
                 <div lang="en" className="min-w-0">
-                    <p className="font-display text-ink text-2xl leading-tight">
+                    <p className="font-display text-2xl leading-tight text-ink">
                         {book.title}
                     </p>
-                    <p className="text-ink-muted mt-1 text-sm">{book.author}</p>
-                    <p className="ltr-isolate text-ink-subtle mt-2 font-mono text-[0.6875rem]">
+                    <p className="mt-1 text-sm text-ink-muted">{book.author}</p>
+                    <p className="ltr-isolate mt-2 font-mono text-[0.6875rem] text-ink-subtle">
                         {book.publishedYear} · {book.pages}p
                     </p>
                 </div>
             </div>
-            <div className="border-line mt-5 flex flex-col gap-3 border-t pt-5">
+            <div className="mt-5 flex flex-col gap-3 border-t border-line pt-5">
                 <BookMeta book={book} />
                 <p
                     lang="en"
-                    className="text-ink-muted text-[0.9375rem] leading-relaxed"
+                    className="text-[0.9375rem] leading-relaxed text-ink-muted"
                 >
                     {book.note}
                 </p>
@@ -121,7 +121,7 @@ export function Bookshelf({
 
     if (mode === 'grid') {
         return (
-            <ul className="xs:grid-cols-3 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 lg:grid-cols-6">
+            <ul className="grid grid-cols-2 gap-x-5 gap-y-10 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                 {books.map((book) => (
                     <li
                         key={book.id}
@@ -133,13 +133,13 @@ export function Bookshelf({
                         </div>
                         <p
                             lang="en"
-                            className="text-ink mt-4 text-[0.9375rem] leading-snug font-medium"
+                            className="mt-4 text-[0.9375rem] leading-snug font-medium text-ink"
                         >
                             {book.title}
                         </p>
                         <p
                             lang="en"
-                            className="text-ink-subtle mt-0.5 mb-2.5 text-[0.8125rem]"
+                            className="mt-0.5 mb-2.5 text-[0.8125rem] text-ink-subtle"
                         >
                             {book.author}
                         </p>
@@ -174,11 +174,11 @@ export function Bookshelf({
                 </div>
                 <div
                     aria-hidden
-                    className="bg-ink h-2.5 rounded-[1px] shadow-[0_10px_18px_-10px_rgb(0_0_0/0.55)]"
+                    className="h-2.5 rounded-[1px] bg-ink shadow-[0_10px_18px_-10px_rgb(0_0_0/0.55)]"
                 />
                 <div
                     aria-hidden
-                    className="from-ink/15 mx-4 h-2 bg-gradient-to-b to-transparent"
+                    className="mx-4 h-2 bg-gradient-to-b from-ink/15 to-transparent"
                 />
             </div>
             {selected && <BookDetail book={selected} />}

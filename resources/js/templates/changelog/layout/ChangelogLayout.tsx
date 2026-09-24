@@ -16,7 +16,7 @@ export function ChangelogLayout({
         <>
             <a
                 href="#main"
-                className="bg-ink text-paper fixed start-4 top-3 z-[60] -translate-y-20 rounded-[4px] px-4 py-2 text-sm font-medium transition-transform focus-visible:translate-y-0"
+                className="fixed start-4 top-3 z-[60] -translate-y-20 rounded-[4px] bg-ink px-4 py-2 text-sm font-medium text-paper transition-transform focus-visible:translate-y-0"
             >
                 {t('nav.skip')}
             </a>

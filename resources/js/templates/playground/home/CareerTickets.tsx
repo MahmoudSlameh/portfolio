@@ -20,14 +20,14 @@ function Ticket({ entry }: { entry: CareerEntry }) {
         <li className="pg-card flex flex-col overflow-visible">
             <div
                 className={cn(
-                    'border-edge text-on-pop flex items-center justify-between gap-3 rounded-t-[1.1rem] border-b-2 px-5 py-3',
+                    'flex items-center justify-between gap-3 rounded-t-[1.1rem] border-b-2 border-edge px-5 py-3 text-on-pop',
                     popBg[pop],
                 )}
             >
                 <span className="pg-label">
                     {t(`career.branch.${entry.branch}`)}
                 </span>
-                <span className="ltr-isolate border-edge bg-raised text-ink rounded-full border-2 px-2 font-mono text-xs font-bold">
+                <span className="ltr-isolate rounded-full border-2 border-edge bg-raised px-2 font-mono text-xs font-bold text-ink">
                     {entry.version}
                 </span>
             </div>
@@ -36,13 +36,13 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                 <div>
                     <h3
                         lang="en"
-                        className="font-display text-ink text-2xl leading-tight font-extrabold [font-stretch:112%]"
+                        className="font-display text-2xl leading-tight font-extrabold text-ink [font-stretch:112%]"
                     >
                         {entry.role}
                     </h3>
                     <p
                         lang="en"
-                        className="text-ink-muted mt-1 text-base font-semibold"
+                        className="mt-1 text-base font-semibold text-ink-muted"
                     >
                         {entry.organization} · {entry.location}
                     </p>
@@ -52,7 +52,7 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                         <dt className="pg-label text-ink-subtle">
                             {p('career.boarding')}
                         </dt>
-                        <dd className="text-ink mt-1 font-mono text-sm font-bold">
+                        <dd className="mt-1 font-mono text-sm font-bold text-ink">
                             {formatMonth(entry.start)}
                         </dd>
                     </div>
@@ -60,7 +60,7 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                         <dt className="pg-label text-ink-subtle">
                             {p('career.arrival')}
                         </dt>
-                        <dd className="text-ink mt-1 font-mono text-sm font-bold">
+                        <dd className="mt-1 font-mono text-sm font-bold text-ink">
                             {entry.end
                                 ? formatMonth(entry.end)
                                 : t('career.present')}
@@ -75,9 +75,9 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                 <p
                     lang="en"
                     dir="ltr"
-                    className="text-ink-muted font-mono text-xs leading-relaxed"
+                    className="font-mono text-xs leading-relaxed text-ink-muted"
                 >
-                    <span className="text-ink font-bold">{entry.commit}</span>{' '}
+                    <span className="font-bold text-ink">{entry.commit}</span>{' '}
                     {entry.message}
                 </p>
                 <button
@@ -100,19 +100,19 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                     lang="en"
                     className="flex flex-col gap-4"
                 >
-                    <p className="text-ink-muted text-[0.9375rem] leading-relaxed">
+                    <p className="text-[0.9375rem] leading-relaxed text-ink-muted">
                         {entry.summary}
                     </p>
                     <ul className="flex flex-col gap-2">
                         {entry.highlights.map((highlight) => (
                             <li
                                 key={highlight}
-                                className="text-ink flex gap-2 text-sm leading-relaxed"
+                                className="flex gap-2 text-sm leading-relaxed text-ink"
                             >
                                 <span
                                     aria-hidden
                                     className={cn(
-                                        'border-edge mt-1.5 size-2 shrink-0 rounded-full border',
+                                        'mt-1.5 size-2 shrink-0 rounded-full border border-edge',
                                         popBg[pop],
                                     )}
                                 />
@@ -140,7 +140,7 @@ function Ticket({ entry }: { entry: CareerEntry }) {
                                     <Link
                                         to="/projects/$slug"
                                         params={{ slug: project.slug }}
-                                        className="text-ink hover:decoration-pop-blue text-sm font-bold underline decoration-2 underline-offset-4"
+                                        className="text-sm font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-pop-blue"
                                     >
                                         {project.title} ↗
                                     </Link>
@@ -186,7 +186,7 @@ export function CareerTickets({ entries }: { entries: CareerEntry[] }) {
                     pop="pink"
                     aside={
                         <div className="flex flex-col items-start gap-4 md:items-end">
-                            <p className="text-ink-muted max-w-sm text-base md:text-end">
+                            <p className="max-w-sm text-base text-ink-muted md:text-end">
                                 {t('career.intro')}
                             </p>
                             <div className="flex gap-2">

@@ -31,7 +31,7 @@ function ProjectCard({ project }: { project: Project }) {
                 </span>
             </div>
             <div className="flex flex-1 flex-col gap-3 px-1 pt-5 pb-2">
-                <p className="ltr-isolate text-tm-400 mb-0 text-sm">
+                <p className="ltr-isolate mb-0 text-sm text-tm-400">
                     {project.year} · {project.version}
                 </p>
                 <h2 lang="en" className="mb-0 text-xl font-medium">
@@ -45,7 +45,7 @@ function ProjectCard({ project }: { project: Project }) {
                 </h2>
                 <p
                     lang="en"
-                    className="text-tm-body mb-0 text-sm leading-relaxed"
+                    className="mb-0 text-sm leading-relaxed text-tm-body"
                 >
                     {project.tagline}
                 </p>
@@ -53,7 +53,7 @@ function ProjectCard({ project }: { project: Project }) {
                     {project.stack.slice(0, 4).map((tech) => (
                         <li
                             key={tech}
-                            className="border-tm-border text-tm-300 border px-2.5 py-0.5 text-xs"
+                            className="border border-tm-border px-2.5 py-0.5 text-xs text-tm-300"
                         >
                             {tech}
                         </li>
@@ -78,12 +78,12 @@ function ProjectTable({ projects }: { projects: Project[] }) {
         <div className="tm-box overflow-x-auto">
             <table className="w-full min-w-[44rem] border-collapse text-start">
                 <thead>
-                    <tr className="border-tm-border border-b">
+                    <tr className="border-b border-tm-border">
                         {columns.map((key) => (
                             <th
                                 key={key}
                                 scope="col"
-                                className="text-tm-400 px-5 py-4 text-start text-sm font-normal"
+                                className="px-5 py-4 text-start text-sm font-normal text-tm-400"
                             >
                                 {t(key)}
                             </th>
@@ -94,9 +94,9 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                     {projects.map((project) => (
                         <tr
                             key={project.id}
-                            className="border-tm-border border-b last:border-b-0 hover:bg-[var(--signal-soft)]"
+                            className="border-b border-tm-border last:border-b-0 hover:bg-[var(--signal-soft)]"
                         >
-                            <td className="ltr-isolate text-tm-300 px-5 py-4">
+                            <td className="ltr-isolate px-5 py-4 text-tm-300">
                                 {project.year}
                             </td>
                             <th
@@ -112,20 +112,20 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                                     {project.title}
                                     <ArrowUpRight
                                         aria-hidden
-                                        className="text-tm-primary size-4"
+                                        className="size-4 text-tm-primary"
                                     />
                                 </Link>
                             </th>
-                            <td className="text-ink px-5 py-4">
+                            <td className="px-5 py-4 text-ink">
                                 {t(`category.${project.category}`)}
                             </td>
                             <td
                                 lang="en"
-                                className="text-tm-300 px-5 py-4 text-sm"
+                                className="px-5 py-4 text-sm text-tm-300"
                             >
                                 {project.stack.slice(0, 3).join(', ')}
                             </td>
-                            <td className="text-tm-secondary px-5 py-4">
+                            <td className="px-5 py-4 text-tm-secondary">
                                 {t(`projectStatus.${project.status}`)}
                             </td>
                         </tr>
@@ -173,7 +173,7 @@ export function ProjectArchivePage({
                 title={t('projects.title')}
                 intro={t('projects.intro')}
                 aside={
-                    <span className="ltr-isolate border-tm-border text-tm-300 border px-3 py-1">
+                    <span className="ltr-isolate border border-tm-border px-3 py-1 text-tm-300">
                         {c('page.count', { count: total })}
                     </span>
                 }
@@ -287,7 +287,7 @@ export function ProjectArchivePage({
                             </div>
                         </div>
                     </div>
-                    <p aria-live="polite" className="text-tm-400 mb-0 text-sm">
+                    <p aria-live="polite" className="mb-0 text-sm text-tm-400">
                         <span className="text-tm-primary">$</span> ls projects |
                         wc -l →{' '}
                         {t('common.results', { count: projects.length })}

@@ -16,7 +16,7 @@ function DegreeCard({ entry, index }: { entry: Education; index: number }) {
             >
                 <header
                     className={cn(
-                        'border-edge text-on-pop flex items-center justify-between gap-3 border-b-2 px-6 py-4',
+                        'flex items-center justify-between gap-3 border-b-2 border-edge px-6 py-4 text-on-pop',
                         popBg[popForIndex(index + 2)],
                     )}
                 >
@@ -30,16 +30,16 @@ function DegreeCard({ entry, index }: { entry: Education; index: number }) {
                     </span>
                 </header>
                 <div className="flex flex-col gap-3 px-6 pb-6">
-                    <h3 className="font-display text-ink text-2xl leading-tight font-extrabold [font-stretch:112%]">
+                    <h3 className="font-display text-2xl leading-tight font-extrabold text-ink [font-stretch:112%]">
                         {entry.degree}
                     </h3>
-                    <p className="text-ink-muted text-base font-semibold">
+                    <p className="text-base font-semibold text-ink-muted">
                         {[entry.field, entry.institution]
                             .filter(Boolean)
                             .join(' · ')}
                     </p>
                     {entry.grade && (
-                        <p className="text-ink font-mono text-sm font-bold">
+                        <p className="font-mono text-sm font-bold text-ink">
                             {entry.grade}
                         </p>
                     )}
@@ -47,7 +47,7 @@ function DegreeCard({ entry, index }: { entry: Education; index: number }) {
                         {entry.notes.map((note) => (
                             <li
                                 key={note}
-                                className="text-ink-muted text-sm leading-relaxed"
+                                className="text-sm leading-relaxed text-ink-muted"
                             >
                                 ✦ {note}
                             </li>
@@ -76,13 +76,13 @@ function CertificationStamp({
                 rel="noreferrer"
                 style={{ rotate: `${tiltForIndex(index) * 1.5}deg` }}
                 className={cn(
-                    'pg-press group border-edge text-on-pop relative flex aspect-square w-full max-w-52 flex-col items-center justify-center gap-1 rounded-full border-2 p-6 text-center shadow-[var(--pg-shadow)]',
+                    'pg-press group relative flex aspect-square w-full max-w-52 flex-col items-center justify-center gap-1 rounded-full border-2 border-edge p-6 text-center text-on-pop shadow-[var(--pg-shadow)]',
                     popBg[popForIndex(index)],
                 )}
             >
                 <span
                     aria-hidden
-                    className="pg-spin-slow border-on-pop/50 absolute inset-2 rounded-full border-2 border-dashed"
+                    className="pg-spin-slow absolute inset-2 rounded-full border-2 border-dashed border-on-pop/50"
                 />
                 <span className="ltr-isolate font-mono text-xs font-bold">
                     {certification.year}
@@ -128,7 +128,7 @@ export function SchoolBadges({
             />
             <div className="grid gap-12 lg:grid-cols-12">
                 <div className="lg:col-span-6">
-                    <h3 className="pg-label text-ink mb-5">
+                    <h3 className="pg-label mb-5 text-ink">
                         {t('education.degrees')}
                     </h3>
                     <ul className="grid gap-5">
@@ -142,7 +142,7 @@ export function SchoolBadges({
                     </ul>
                 </div>
                 <div className="lg:col-span-6">
-                    <h3 className="pg-label text-ink mb-5">
+                    <h3 className="pg-label mb-5 text-ink">
                         {t('education.certifications')}
                     </h3>
                     <ul className="grid grid-cols-2 gap-6">

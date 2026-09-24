@@ -62,14 +62,14 @@ export function PopBookCover({
                 color: book.cover.ink,
             }}
             className={cn(
-                'border-edge relative isolate flex aspect-[2/3] w-full flex-col justify-between overflow-hidden rounded-xl border-2 p-[10%]',
+                'relative isolate flex aspect-[2/3] w-full flex-col justify-between overflow-hidden rounded-xl border-2 border-edge p-[10%]',
                 className,
             )}
         >
             <CoverShape book={book} />
             <span
                 aria-hidden
-                className="font-display relative text-[clamp(0.9rem,1vw+0.55rem,1.3rem)] leading-[1.02] font-extrabold [font-stretch:115%]"
+                className="relative font-display text-[clamp(0.9rem,1vw+0.55rem,1.3rem)] leading-[1.02] font-extrabold [font-stretch:115%]"
             >
                 {book.title}
             </span>

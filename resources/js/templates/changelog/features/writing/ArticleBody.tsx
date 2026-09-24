@@ -24,14 +24,14 @@ function CodeSample({ block }: { block: CodeBlock }) {
     return (
         <figure
             dir="ltr"
-            className="code-block not-prose border-line bg-raised my-8 overflow-hidden rounded-[4px] border"
+            className="code-block not-prose my-8 overflow-hidden rounded-[4px] border border-line bg-raised"
         >
-            <figcaption className="border-line bg-surface flex items-center justify-between gap-4 border-b px-4 py-2">
-                <span className="text-ink-subtle flex items-center gap-3 font-mono text-[0.6875rem]">
+            <figcaption className="flex items-center justify-between gap-4 border-b border-line bg-surface px-4 py-2">
+                <span className="flex items-center gap-3 font-mono text-[0.6875rem] text-ink-subtle">
                     <span className="flex gap-1.5" aria-hidden>
-                        <span className="bg-line-strong size-2 rounded-full" />
-                        <span className="bg-line-strong size-2 rounded-full" />
-                        <span className="bg-line-strong size-2 rounded-full" />
+                        <span className="size-2 rounded-full bg-line-strong" />
+                        <span className="size-2 rounded-full bg-line-strong" />
+                        <span className="size-2 rounded-full bg-line-strong" />
                     </span>
                     {block.filename ?? block.language}
                 </span>
@@ -39,7 +39,7 @@ function CodeSample({ block }: { block: CodeBlock }) {
                     type="button"
                     onClick={handleCopy}
                     aria-label={t('article.copyCode')}
-                    className="text-ink-muted hover:bg-raised hover:text-ink inline-flex h-7 items-center gap-1.5 rounded-[3px] px-2 font-mono text-[0.6875rem]"
+                    className="inline-flex h-7 items-center gap-1.5 rounded-[3px] px-2 font-mono text-[0.6875rem] text-ink-muted hover:bg-raised hover:text-ink"
                 >
                     <Icon aria-hidden className="size-3.5" />
                     <span aria-hidden>
@@ -73,14 +73,14 @@ function SectionHeading({ block }: { block: HeadingBlock }) {
     return (
         <h2
             id={block.id}
-            className="group font-display text-ink relative mt-14 mb-5 scroll-mt-28 text-[2rem] leading-tight md:text-[2.375rem]"
+            className="group relative mt-14 mb-5 scroll-mt-28 font-display text-[2rem] leading-tight text-ink md:text-[2.375rem]"
         >
             {block.text}
             <button
                 type="button"
                 onClick={handleCopyLink}
                 aria-label={`${t('article.copyHeading')}: ${block.text}`}
-                className="text-ink-subtle hover:bg-surface hover:text-ink ms-3 inline-flex size-7 translate-y-[-0.2em] items-center justify-center rounded-[3px] align-middle opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+                className="ms-3 inline-flex size-7 translate-y-[-0.2em] items-center justify-center rounded-[3px] align-middle text-ink-subtle opacity-0 transition-opacity group-hover:opacity-100 hover:bg-surface hover:text-ink focus-visible:opacity-100"
             >
                 <Link2 aria-hidden className="size-4" />
             </button>
@@ -92,11 +92,11 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
     switch (block.type) {
         case 'paragraph':
             return isFirst ? (
-                <p className="font-display text-ink mb-6 text-[1.625rem] leading-[1.35] md:text-[1.875rem]">
+                <p className="mb-6 font-display text-[1.625rem] leading-[1.35] text-ink md:text-[1.875rem]">
                     {block.text}
                 </p>
             ) : (
-                <p className="text-ink-muted mb-6 text-[1.0625rem] leading-[1.8] md:text-[1.125rem]">
+                <p className="mb-6 text-[1.0625rem] leading-[1.8] text-ink-muted md:text-[1.125rem]">
                     {block.text}
                 </p>
             );
@@ -106,16 +106,16 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
             return <CodeSample block={block} />;
         case 'quote':
             return (
-                <blockquote className="border-line bg-surface/70 relative my-10 rounded-2xl border p-6 ps-8 md:p-8 md:ps-10">
+                <blockquote className="relative my-10 rounded-2xl border border-line bg-surface/70 p-6 ps-8 md:p-8 md:ps-10">
                     <span
                         aria-hidden
                         className="absolute inset-y-6 start-0 w-1 rounded-full bg-[image:var(--gradient-brand)]"
                     />
-                    <p className="font-display text-ink text-[1.75rem] leading-snug">
+                    <p className="font-display text-[1.75rem] leading-snug text-ink">
                         {block.text}
                     </p>
                     {block.cite && (
-                        <footer className="text-ink-subtle mt-3 font-mono text-xs">
+                        <footer className="mt-3 font-mono text-xs text-ink-subtle">
                             — {block.cite}
                         </footer>
                     )}
@@ -127,11 +127,11 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
                     {block.items.map((item) => (
                         <li
                             key={item}
-                            className="text-ink-muted flex gap-3 text-[1.0625rem] leading-relaxed"
+                            className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
                         >
                             <span
                                 aria-hidden
-                                className="bg-ink-subtle mt-[0.7em] h-px w-3 shrink-0"
+                                className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
                             />
                             {item}
                         </li>
@@ -140,11 +140,11 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
             );
         case 'callout':
             return (
-                <aside className="border-line bg-surface my-8 border p-5 md:p-6">
-                    <p className="eyebrow text-signal-ink mb-2">
+                <aside className="my-8 border border-line bg-surface p-5 md:p-6">
+                    <p className="eyebrow mb-2 text-signal-ink">
                         {block.title}
                     </p>
-                    <p className="text-ink text-[1rem] leading-relaxed">
+                    <p className="text-[1rem] leading-relaxed text-ink">
                         {block.text}
                     </p>
                 </aside>

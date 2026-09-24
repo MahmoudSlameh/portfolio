@@ -30,10 +30,10 @@ function BookNote({
     if (!book) {
         return (
             <div className="tm-box flex min-h-64 flex-col items-center justify-center gap-2 border-dashed p-8 text-center">
-                <p className="text-tm-300 mb-0">
+                <p className="mb-0 text-tm-300">
                     <span className="text-tm-primary">$</span> cat note.md
                 </p>
-                <p className="text-tm-400 mb-0 max-w-xs">{c('books.pick')}</p>
+                <p className="mb-0 max-w-xs text-tm-400">{c('books.pick')}</p>
             </div>
         );
     }
@@ -47,14 +47,14 @@ function BookNote({
             <BookCover book={book} className="w-32 shrink-0 self-start" />
             <div className="flex min-w-0 flex-1 flex-col gap-3">
                 <div className="flex items-start justify-between gap-3">
-                    <span className="text-tm-secondary text-sm">
+                    <span className="text-sm text-tm-secondary">
                         {t(`readingStatus.${book.status}`)}
                     </span>
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label={c('books.close')}
-                        className="border-tm-border text-tm-300 hover:text-ink inline-flex size-8 shrink-0 items-center justify-center rounded-md border"
+                        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-tm-border text-tm-300 hover:text-ink"
                     >
                         <X aria-hidden className="size-4" />
                     </button>
@@ -62,13 +62,13 @@ function BookNote({
                 <h2 lang="en" className="mb-0 text-xl font-medium">
                     {book.title}
                 </h2>
-                <p lang="en" className="text-tm-300 mb-0 text-sm">
+                <p lang="en" className="mb-0 text-sm text-tm-300">
                     {book.author} · {book.publishedYear}
                 </p>
-                <p lang="en" className="text-ink mb-0 text-sm leading-relaxed">
+                <p lang="en" className="mb-0 text-sm leading-relaxed text-ink">
                     {book.note}
                 </p>
-                <div className="text-tm-300 mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+                <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-tm-300">
                     {book.rating ? (
                         <span
                             role="img"
@@ -166,17 +166,17 @@ export function BooksPage({
                     >
                         {figures.map((figure) => (
                             <li key={figure.label}>
-                                <p className="ltr-isolate text-ink mb-0 text-[2.5rem] leading-tight font-medium">
+                                <p className="ltr-isolate mb-0 text-[2.5rem] leading-tight font-medium text-ink">
                                     {figure.value}
                                 </p>
-                                <p className="text-tm-300 mb-0 text-sm">
+                                <p className="mb-0 text-sm text-tm-300">
                                     {figure.label}
                                 </p>
                             </li>
                         ))}
                     </ul>
                     <figure className="m-0">
-                        <figcaption className="text-tm-400 mb-3 text-sm">
+                        <figcaption className="mb-3 text-sm text-tm-400">
                             {t('booksPage.perYear')}
                         </figcaption>
                         <ol className="flex h-28 items-end gap-2" dir="ltr">
@@ -198,7 +198,7 @@ export function BooksPage({
                                     />
                                     <span
                                         aria-hidden
-                                        className="text-tm-400 text-[0.625rem]"
+                                        className="text-[0.625rem] text-tm-400"
                                     >
                                         {String(entry.year).slice(2)}
                                     </span>
@@ -286,20 +286,20 @@ export function BooksPage({
                                         className={cn(
                                             'tm-hover-up block w-full scroll-mt-10 rounded-md text-start',
                                             book.id === selectedId &&
-                                                'ring-tm-primary ring-2 ring-offset-4 ring-offset-[var(--paper)]',
+                                                'ring-2 ring-tm-primary ring-offset-4 ring-offset-[var(--paper)]',
                                         )}
                                     >
                                         <BookCover book={book} />
                                     </button>
                                     <p
                                         lang="en"
-                                        className="text-ink mt-3 mb-0 text-sm leading-snug"
+                                        className="mt-3 mb-0 text-sm leading-snug text-ink"
                                     >
                                         {book.title}
                                     </p>
                                     <p
                                         lang="en"
-                                        className="text-tm-400 mb-0 text-xs"
+                                        className="mb-0 text-xs text-tm-400"
                                     >
                                         {book.author}
                                     </p>

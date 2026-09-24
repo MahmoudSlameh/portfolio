@@ -35,7 +35,7 @@ export function PageHeader({
                             </span>
                         </h1>
                         {intro && (
-                            <p className="text-tm-300 mt-4 mb-0 max-w-2xl">
+                            <p className="mt-4 mb-0 max-w-2xl text-tm-300">
                                 {intro}
                             </p>
                         )}

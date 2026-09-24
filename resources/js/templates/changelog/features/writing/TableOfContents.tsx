@@ -46,8 +46,8 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
 
     return (
         <nav aria-label={t('article.toc')}>
-            <p className="eyebrow text-ink-subtle mb-4">{t('article.toc')}</p>
-            <ol lang="en" className="border-line flex flex-col border-s">
+            <p className="eyebrow mb-4 text-ink-subtle">{t('article.toc')}</p>
+            <ol lang="en" className="flex flex-col border-s border-line">
                 {entries.map((entry, index) => {
                     const isActive = entry.id === activeId;
                     return (
@@ -59,10 +59,10 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
                                     '-ms-px flex gap-3 border-s py-1.5 ps-4 text-sm leading-snug transition-colors',
                                     isActive
                                         ? 'border-signal text-ink'
-                                        : 'text-ink-muted hover:border-ink-subtle hover:text-ink border-transparent',
+                                        : 'border-transparent text-ink-muted hover:border-ink-subtle hover:text-ink',
                                 )}
                             >
-                                <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                                <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
                                 {entry.text}

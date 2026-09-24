@@ -35,7 +35,7 @@ export function AboutSection({ profile }: { profile: Profile }) {
                             />
                         </div>
                     </div>
-                    <figcaption className="text-ink-subtle mt-4 flex items-center justify-between font-mono text-[0.6875rem]">
+                    <figcaption className="mt-4 flex items-center justify-between font-mono text-[0.6875rem] text-ink-subtle">
                         <span>
                             {t('about.portraitCaption', {
                                 location: profile.location || profile.name,
@@ -51,7 +51,7 @@ export function AboutSection({ profile }: { profile: Profile }) {
                 </figure>
 
                 <div className="col-span-4 md:col-span-7 md:col-start-6 lg:col-span-6 lg:col-start-6">
-                    <p className="font-display text-ink text-[1.625rem] leading-[1.3] md:text-[2rem]">
+                    <p className="font-display text-[1.625rem] leading-[1.3] text-ink md:text-[2rem]">
                         {lede}
                     </p>
                     <div className="prose-editorial mt-8">
@@ -63,22 +63,22 @@ export function AboutSection({ profile }: { profile: Profile }) {
             </div>
 
             <div className="mt-20 md:mt-24">
-                <h3 className="eyebrow text-ink-subtle mb-6">
+                <h3 className="eyebrow mb-6 text-ink-subtle">
                     {t('about.principles')}
                 </h3>
-                <ol className="border-line bg-line grid gap-px border sm:grid-cols-2 lg:grid-cols-5">
+                <ol className="grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
                     {profile.principles.map((principle, index) => (
                         <li
                             key={principle.id}
-                            className="bg-paper hover:bg-raised flex flex-col gap-4 p-6 transition-colors duration-300"
+                            className="flex flex-col gap-4 bg-paper p-6 transition-colors duration-300 hover:bg-raised"
                         >
-                            <span className="ltr-isolate text-signal-ink font-mono text-xs">
+                            <span className="ltr-isolate font-mono text-xs text-signal-ink">
                                 {String(index + 1).padStart(2, '0')}
                             </span>
-                            <p className="font-display text-ink text-2xl leading-tight">
+                            <p className="font-display text-2xl leading-tight text-ink">
                                 {principle.title}
                             </p>
-                            <p className="text-ink-muted text-[0.9375rem] leading-relaxed">
+                            <p className="text-[0.9375rem] leading-relaxed text-ink-muted">
                                 {principle.body}
                             </p>
                         </li>

@@ -11,7 +11,7 @@ export function StatusStrip({ profile }: { profile: Profile }) {
     return (
         <section
             aria-label={t('status.label')}
-            className="border-line bg-surface border-y"
+            className="border-y border-line bg-surface"
         >
             <div className="shell">
                 <dl className="no-scrollbar flex snap-x gap-0 overflow-x-auto">
@@ -29,7 +29,7 @@ export function StatusStrip({ profile }: { profile: Profile }) {
                     {profile.status.map((entry) => (
                         <div
                             key={entry.id}
-                            className="border-line flex max-w-[20rem] shrink-0 snap-start flex-col justify-center gap-1.5 border-s py-4 ps-6 pe-8"
+                            className="flex max-w-[20rem] shrink-0 snap-start flex-col justify-center gap-1.5 border-s border-line py-4 ps-6 pe-8"
                         >
                             <dt className="eyebrow text-ink-subtle">
                                 {entry.label}
@@ -46,18 +46,18 @@ export function StatusStrip({ profile }: { profile: Profile }) {
                             </dd>
                         </div>
                     ))}
-                    <div className="border-line ms-auto flex shrink-0 snap-start flex-col justify-center gap-1.5 border-s py-4 ps-6">
+                    <div className="ms-auto flex shrink-0 snap-start flex-col justify-center gap-1.5 border-s border-line py-4 ps-6">
                         <dt className="eyebrow text-ink-subtle">
                             {t('status.localTime')}
                         </dt>
-                        <dd className="text-ink flex items-baseline gap-2 text-[0.875rem] font-medium">
+                        <dd className="flex items-baseline gap-2 text-[0.875rem] font-medium text-ink">
                             <time
                                 dateTime={now.toISOString()}
                                 className="ltr-isolate font-mono"
                             >
                                 {formatTime(now, profile.timezone)}
                             </time>
-                            <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                            <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                 {profile.timezoneLabel}
                             </span>
                         </dd>

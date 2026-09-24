@@ -22,7 +22,7 @@ export function GlowCard({
         <Tag
             {...rest}
             className={cn(
-                'border-tm-border relative overflow-hidden rounded-lg border',
+                'relative overflow-hidden rounded-lg border border-tm-border',
                 className,
             )}
         >

@@ -52,7 +52,7 @@ function CaseSection({
             <div className="mb-8 flex items-center gap-4">
                 <span
                     className={cn(
-                        'pg-display ltr-isolate border-edge text-on-pop inline-flex size-14 shrink-0 items-center justify-center rounded-full border-2 text-xl',
+                        'pg-display ltr-isolate inline-flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-edge text-xl text-on-pop',
                         popBg[popForIndex(index)],
                     )}
                 >
@@ -60,7 +60,7 @@ function CaseSection({
                 </span>
                 <h2
                     id={`${id}-heading`}
-                    className="pg-display text-ink text-[clamp(2rem,5vw,3.5rem)]"
+                    className="pg-display text-[clamp(2rem,5vw,3.5rem)] text-ink"
                 >
                     {title}
                 </h2>
@@ -87,7 +87,7 @@ function buildSections(
                             key={paragraph}
                             className={cn(
                                 index === 0
-                                    ? 'text-ink text-2xl leading-snug font-semibold lg:col-span-2'
+                                    ? 'text-2xl leading-snug font-semibold text-ink lg:col-span-2'
                                     : 'pg-prose',
                             )}
                         >
@@ -102,7 +102,7 @@ function buildSections(
             titleKey: 'case.problem',
             visible: project.problem.length > 0,
             render: () => (
-                <div className="pg-card bg-pop-red text-on-pop flex flex-col gap-4 p-6 md:p-10">
+                <div className="pg-card flex flex-col gap-4 bg-pop-red p-6 text-on-pop md:p-10">
                     {project.problem.map((paragraph, index) => (
                         <p
                             key={paragraph}
@@ -136,10 +136,10 @@ function buildSections(
                             >
                                 {stepLabel(index + 1)}
                             </Sticker>
-                            <h3 className="text-ink text-xl font-bold">
+                            <h3 className="text-xl font-bold text-ink">
                                 {step.title}
                             </h3>
-                            <p className="text-ink-muted text-base leading-relaxed">
+                            <p className="text-base leading-relaxed text-ink-muted">
                                 {step.description}
                             </p>
                         </li>
@@ -171,7 +171,7 @@ function buildSections(
                         <li
                             key={feature.title}
                             className={cn(
-                                'pg-card pg-press text-on-pop flex flex-col gap-2 p-6',
+                                'pg-card pg-press flex flex-col gap-2 p-6 text-on-pop',
                                 popBg[popForIndex(index)],
                             )}
                         >
@@ -201,11 +201,11 @@ function buildSections(
                             open={index === 0}
                             className="pg-card group overflow-hidden"
                         >
-                            <summary className="text-ink flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-lg font-bold md:p-6 [&::-webkit-details-marker]:hidden">
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-lg font-bold text-ink md:p-6 [&::-webkit-details-marker]:hidden">
                                 {challenge.title}
                                 <span
                                     aria-hidden
-                                    className="border-edge bg-pop-yellow text-on-pop inline-flex size-9 shrink-0 items-center justify-center rounded-full border-2 transition-transform duration-300 group-open:rotate-180"
+                                    className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow text-on-pop transition-transform duration-300 group-open:rotate-180"
                                 >
                                     <ChevronDown
                                         className="size-5"
@@ -213,7 +213,7 @@ function buildSections(
                                     />
                                 </span>
                             </summary>
-                            <p className="border-edge text-ink-muted border-t-2 p-5 text-base leading-relaxed md:p-6">
+                            <p className="border-t-2 border-edge p-5 text-base leading-relaxed text-ink-muted md:p-6">
                                 {challenge.description}
                             </p>
                         </details>
@@ -231,7 +231,7 @@ function buildSections(
                         <div
                             key={metric.id}
                             className={cn(
-                                'pg-card text-on-pop flex flex-col gap-2 p-6',
+                                'pg-card flex flex-col gap-2 p-6 text-on-pop',
                                 popBg[popForIndex(index + 2)],
                             )}
                         >
@@ -266,9 +266,9 @@ function buildSections(
                             <ResponsiveImage
                                 image={image}
                                 sizes="(min-width: 1024px) 40vw, (min-width: 768px) 45vw, 92vw"
-                                className="border-edge aspect-[4/3] rounded-lg border-2"
+                                className="aspect-[4/3] rounded-lg border-2 border-edge"
                             />
-                            <figcaption className="text-ink-muted mt-3 px-1 font-mono text-xs leading-relaxed font-bold">
+                            <figcaption className="mt-3 px-1 font-mono text-xs leading-relaxed font-bold text-ink-muted">
                                 {image.caption}
                             </figcaption>
                         </figure>
@@ -297,7 +297,7 @@ function buildSections(
                     </ul>
                     {project.links.length > 0 && (
                         <div>
-                            <h3 className="pg-label text-ink mb-4">
+                            <h3 className="pg-label mb-4 text-ink">
                                 {t('case.links')}
                             </h3>
                             <ul className="flex flex-wrap gap-3">
@@ -441,13 +441,13 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                         </div>
                         <h1
                             lang="en"
-                            className="pg-display text-ink text-[clamp(3rem,9vw,7.5rem)]"
+                            className="pg-display text-[clamp(3rem,9vw,7.5rem)] text-ink"
                         >
                             {project.title}
                         </h1>
                         <p
                             lang="en"
-                            className="text-ink-muted max-w-xl text-xl leading-snug font-semibold md:text-2xl"
+                            className="max-w-xl text-xl leading-snug font-semibold text-ink-muted md:text-2xl"
                         >
                             {project.tagline}
                         </p>
@@ -455,7 +455,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     <div className="relative">
                         <div
                             className={cn(
-                                'border-edge absolute inset-0 translate-x-3 translate-y-3 rotate-[3deg] rounded-[1.5rem] border-2',
+                                'absolute inset-0 translate-x-3 translate-y-3 rotate-[3deg] rounded-[1.5rem] border-2 border-edge',
                                 popBg[pop],
                             )}
                         />
@@ -467,7 +467,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                                 className="aspect-[4/3]"
                             />
                         </div>
-                        <span className="ltr-isolate border-edge bg-raised font-display text-ink absolute end-6 -top-4 rotate-[8deg] rounded-full border-2 px-4 py-2 text-2xl font-black shadow-[var(--pg-shadow)]">
+                        <span className="ltr-isolate absolute end-6 -top-4 rotate-[8deg] rounded-full border-2 border-edge bg-raised px-4 py-2 font-display text-2xl font-black text-ink shadow-[var(--pg-shadow)]">
                             {project.year}
                         </span>
                     </div>
@@ -481,7 +481,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                         <div
                             key={fact.label}
                             className={cn(
-                                'pg-card text-on-pop p-5',
+                                'pg-card p-5 text-on-pop',
                                 popBg[popForIndex(index + 3)],
                             )}
                         >
@@ -512,7 +512,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                                             ? 'location'
                                             : undefined
                                     }
-                                    className="text-ink hover:bg-pop-yellow hover:text-on-pop aria-[current=location]:bg-ink aria-[current=location]:text-paper inline-flex h-9 items-center rounded-full px-4 text-sm font-bold whitespace-nowrap transition-colors"
+                                    className="inline-flex h-9 items-center rounded-full px-4 text-sm font-bold whitespace-nowrap text-ink transition-colors hover:bg-pop-yellow hover:text-on-pop aria-[current=location]:bg-ink aria-[current=location]:text-paper"
                                 >
                                     {t(section.titleKey)}
                                 </a>
@@ -541,7 +541,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     >
                         <h2
                             id="related-writing"
-                            className="pg-label text-ink mb-6"
+                            className="pg-label mb-6 text-ink"
                         >
                             {t('case.relatedWriting')}
                         </h2>

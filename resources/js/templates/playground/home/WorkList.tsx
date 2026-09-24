@@ -106,7 +106,7 @@ export function WorkList({ projects }: { projects: Project[] }) {
                         return (
                             <li
                                 key={project.id}
-                                className="border-edge border-b-2 last:border-b-0"
+                                className="border-b-2 border-edge last:border-b-0"
                             >
                                 <Link
                                     to="/projects/$slug"
@@ -114,15 +114,15 @@ export function WorkList({ projects }: { projects: Project[] }) {
                                     onPointerEnter={() => setHovered(project)}
                                     onFocus={() => setHovered(null)}
                                     className={cn(
-                                        'group hover:text-on-pop grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-4 py-5 transition-colors duration-200 md:gap-8 md:px-8 md:py-7',
+                                        'group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-4 py-5 transition-colors duration-200 hover:text-on-pop md:gap-8 md:px-8 md:py-7',
                                         popHoverBg[pop],
                                     )}
                                 >
-                                    <span className="ltr-isolate text-ink-subtle group-hover:text-on-pop font-mono text-sm font-bold">
+                                    <span className="ltr-isolate font-mono text-sm font-bold text-ink-subtle group-hover:text-on-pop">
                                         {String(index + 1).padStart(2, '0')}
                                     </span>
                                     <span className="flex min-w-0 flex-col gap-2 md:flex-row md:items-center md:gap-6">
-                                        <span className="border-edge block aspect-[16/10] w-28 shrink-0 overflow-hidden rounded-lg border-2 md:hidden">
+                                        <span className="block aspect-[16/10] w-28 shrink-0 overflow-hidden rounded-lg border-2 border-edge md:hidden">
                                             <ResponsiveImage
                                                 image={project.cover}
                                                 sizes="7rem"
@@ -132,13 +132,13 @@ export function WorkList({ projects }: { projects: Project[] }) {
                                         <span className="min-w-0">
                                             <span
                                                 lang="en"
-                                                className="pg-display pg-keep-case text-ink group-hover:text-on-pop block text-[clamp(1.75rem,4vw,3.25rem)]"
+                                                className="pg-display pg-keep-case block text-[clamp(1.75rem,4vw,3.25rem)] text-ink group-hover:text-on-pop"
                                             >
                                                 {project.title}
                                             </span>
                                             <span
                                                 lang="en"
-                                                className="text-ink-muted group-hover:text-on-pop mt-1 block text-base"
+                                                className="mt-1 block text-base text-ink-muted group-hover:text-on-pop"
                                             >
                                                 {project.tagline}
                                             </span>
@@ -182,7 +182,7 @@ export function WorkList({ projects }: { projects: Project[] }) {
                                     stiffness: 320,
                                     damping: 22,
                                 }}
-                                className="border-edge pointer-events-none absolute top-0 left-0 z-20 hidden w-72 -translate-x-1/2 -translate-y-[115%] overflow-hidden rounded-2xl border-2 shadow-[var(--pg-shadow-lg)] [@media(hover:hover)]:md:block"
+                                className="pointer-events-none absolute top-0 left-0 z-20 hidden w-72 -translate-x-1/2 -translate-y-[115%] overflow-hidden rounded-2xl border-2 border-edge shadow-[var(--pg-shadow-lg)] [@media(hover:hover)]:md:block"
                             >
                                 <ResponsiveImage
                                     image={hovered.cover}

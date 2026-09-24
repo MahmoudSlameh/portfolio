@@ -14,15 +14,15 @@ export function EmptyState({
     onAction,
 }: EmptyStateProps) {
     return (
-        <div className="border-line-strong flex flex-col items-start gap-4 border border-dashed px-6 py-12 md:items-center md:text-center">
+        <div className="flex flex-col items-start gap-4 border border-dashed border-line-strong px-6 py-12 md:items-center md:text-center">
             <p
                 aria-hidden
-                className="ltr-isolate text-ink-subtle font-mono text-xs"
+                className="ltr-isolate font-mono text-xs text-ink-subtle"
             >
                 $ grep --results 0
             </p>
-            <p className="font-display text-ink text-3xl">{title}</p>
-            <p className="text-ink-muted max-w-md">{body}</p>
+            <p className="font-display text-3xl text-ink">{title}</p>
+            <p className="max-w-md text-ink-muted">{body}</p>
             {actionLabel && onAction && (
                 <Button variant="secondary" size="sm" onClick={onAction}>
                     {actionLabel}

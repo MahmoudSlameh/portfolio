@@ -105,11 +105,11 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                                         onKeyDown={(event) =>
                                             handleKeyDown(event, index)
                                         }
-                                        className="tm-tech border-tm-border flex items-center gap-4 rounded-lg border p-4 text-start transition-colors"
+                                        className="tm-tech flex items-center gap-4 rounded-lg border border-tm-border p-4 text-start transition-colors"
                                     >
                                         <span
                                             aria-hidden
-                                            className="ltr-isolate bg-tm-tile inline-flex size-12 shrink-0 items-center justify-center rounded-md text-lg font-medium"
+                                            className="ltr-isolate inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-tm-tile text-lg font-medium"
                                             style={{ color: tintFor(name) }}
                                         >
                                             {monogram(name)}
@@ -117,7 +117,7 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                                         <span className="flex min-w-0 flex-col">
                                             <span
                                                 lang="en"
-                                                className="text-ink truncate text-2xl leading-tight"
+                                                className="truncate text-2xl leading-tight text-ink"
                                             >
                                                 {name}
                                             </span>
@@ -146,24 +146,24 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                             >
                                 {active.role}
                             </h3>
-                            <p lang="en" className="text-tm-300 mb-0 text-sm">
+                            <p lang="en" className="mb-0 text-sm text-tm-300">
                                 {active.organization} · {active.location}
                             </p>
                             <ul
                                 lang="en"
-                                className="marker:text-ink mt-6 list-disc ps-5"
+                                className="mt-6 list-disc ps-5 marker:text-ink"
                             >
                                 {active.highlights.map((highlight) => (
                                     <li
                                         key={highlight}
-                                        className="text-ink mb-4 leading-relaxed"
+                                        className="mb-4 leading-relaxed text-ink"
                                     >
                                         {highlight}
                                     </li>
                                 ))}
                             </ul>
                             {active.projects.length > 0 && (
-                                <p className="text-tm-300 mb-0">
+                                <p className="mb-0 text-tm-300">
                                     {t('career.projects')}:{' '}
                                     {active.projects.map((project, index) => (
                                         <span key={project.slug}>
@@ -188,7 +188,7 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                                             search={{ tech: technology }}
                                             lang="en"
                                             className={cn(
-                                                'border-tm-border text-tm-300 hover:text-ink inline-flex border px-4 py-1 transition-colors',
+                                                'inline-flex border border-tm-border px-4 py-1 text-tm-300 transition-colors hover:text-ink',
                                             )}
                                         >
                                             {technology}

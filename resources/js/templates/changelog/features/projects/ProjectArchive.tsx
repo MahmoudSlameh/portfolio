@@ -32,11 +32,11 @@ function ProjectTable({ projects }: { projects: Project[] }) {
         'eyebrow py-3 pe-4 text-start font-medium text-ink-subtle';
 
     return (
-        <div className="border-line overflow-x-auto border-t">
+        <div className="overflow-x-auto border-t border-line">
             <table className="w-full min-w-[46rem] border-collapse">
                 <caption className="sr-only">{t('projects.title')}</caption>
                 <thead>
-                    <tr className="border-line border-b">
+                    <tr className="border-b border-line">
                         <th scope="col" className={headerClass}>
                             {t('table.year')}
                         </th>
@@ -58,9 +58,9 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                     {projects.map((project) => (
                         <tr
                             key={project.id}
-                            className="group border-line hover:bg-raised border-b transition-colors"
+                            className="group border-b border-line transition-colors hover:bg-raised"
                         >
-                            <td className="ltr-isolate text-ink-subtle py-4 pe-4 align-top font-mono text-xs">
+                            <td className="ltr-isolate py-4 pe-4 align-top font-mono text-xs text-ink-subtle">
                                 {project.year}
                             </td>
                             <th
@@ -71,15 +71,15 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                                 <Link
                                     to="/projects/$slug"
                                     params={{ slug: project.slug }}
-                                    className="link-draw font-display text-ink text-2xl leading-tight"
+                                    className="link-draw font-display text-2xl leading-tight text-ink"
                                 >
                                     {project.title}
                                 </Link>
-                                <p className="text-ink-muted mt-1 max-w-sm text-sm">
+                                <p className="mt-1 max-w-sm text-sm text-ink-muted">
                                     {project.tagline}
                                 </p>
                             </th>
-                            <td className="text-ink-muted py-4 pe-4 align-top text-sm">
+                            <td className="py-4 pe-4 align-top text-sm text-ink-muted">
                                 {t(`category.${project.category}`)}
                             </td>
                             <td className="py-4 pe-4 align-top">
@@ -148,12 +148,12 @@ export function ProjectArchive({
                 title={t('projects.title')}
                 intro={t('projects.intro')}
                 aside={
-                    <dl className="border-line grid grid-cols-2 gap-4 border-t pt-4 lg:border-t-0 lg:pt-0">
+                    <dl className="grid grid-cols-2 gap-4 border-t border-line pt-4 lg:border-t-0 lg:pt-0">
                         <div>
                             <dt className="eyebrow text-ink-subtle">
                                 {t('table.project')}
                             </dt>
-                            <dd className="ltr-isolate font-display text-ink text-5xl">
+                            <dd className="ltr-isolate font-display text-5xl text-ink">
                                 {total}
                             </dd>
                         </div>
@@ -161,7 +161,7 @@ export function ProjectArchive({
                             <dt className="eyebrow text-ink-subtle">
                                 {t('projects.techLabel')}
                             </dt>
-                            <dd className="ltr-isolate font-display text-ink text-5xl">
+                            <dd className="ltr-isolate font-display text-5xl text-ink">
                                 {facets.technologies.length}
                             </dd>
                         </div>
@@ -215,7 +215,7 @@ export function ProjectArchive({
                             ]}
                         />
                     </div>
-                    <div className="border-line flex flex-wrap items-center justify-between gap-4 border-b pb-5">
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5">
                         <FilterGroup
                             label={t('work.filterLabel')}
                             options={categoryOptions}
@@ -230,7 +230,7 @@ export function ProjectArchive({
                         <div className="flex items-center gap-4">
                             <p
                                 aria-live="polite"
-                                className="text-ink-subtle font-mono text-xs"
+                                className="font-mono text-xs text-ink-subtle"
                             >
                                 {t('common.results', {
                                     count: projects.length,

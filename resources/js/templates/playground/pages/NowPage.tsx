@@ -46,7 +46,7 @@ export function NowPage({ now }: NowPageProps) {
                 <section aria-labelledby="now-focus">
                     <h2
                         id="now-focus"
-                        className="pg-display text-ink mb-8 text-5xl"
+                        className="pg-display mb-8 text-5xl text-ink"
                     >
                         {t('now.focus')}
                     </h2>
@@ -57,17 +57,17 @@ export function NowPage({ now }: NowPageProps) {
                                     <span
                                         aria-hidden
                                         className={cn(
-                                            'pg-display ltr-isolate border-edge text-on-pop inline-flex size-16 shrink-0 items-center justify-center rounded-2xl border-2 text-2xl',
+                                            'pg-display ltr-isolate inline-flex size-16 shrink-0 items-center justify-center rounded-2xl border-2 border-edge text-2xl text-on-pop',
                                             popBg[popForIndex(index)],
                                         )}
                                     >
                                         {String(index + 1).padStart(2, '0')}
                                     </span>
                                     <div>
-                                        <h3 className="text-ink text-2xl leading-tight font-bold">
+                                        <h3 className="text-2xl leading-tight font-bold text-ink">
                                             {entry.title}
                                         </h3>
-                                        <p className="text-ink-muted mt-2 text-base leading-relaxed">
+                                        <p className="mt-2 text-base leading-relaxed text-ink-muted">
                                             {entry.body}
                                         </p>
                                     </div>
@@ -80,7 +80,7 @@ export function NowPage({ now }: NowPageProps) {
                 <section aria-labelledby="now-learning">
                     <h2
                         id="now-learning"
-                        className="pg-display text-ink mb-8 text-5xl"
+                        className="pg-display mb-8 text-5xl text-ink"
                     >
                         {t('now.learning')}
                     </h2>
@@ -92,13 +92,13 @@ export function NowPage({ now }: NowPageProps) {
                                         rotate: `${tiltForIndex(index) * 0.7}deg`,
                                     }}
                                     className={cn(
-                                        'pg-card pg-press text-on-pop relative h-full p-6 pt-9',
+                                        'pg-card pg-press relative h-full p-6 pt-9 text-on-pop',
                                         popBg[popForIndex(index + 3)],
                                     )}
                                 >
                                     <span
                                         aria-hidden
-                                        className="border-edge bg-raised/80 absolute start-1/2 -top-3 h-6 w-20 -translate-x-1/2 rotate-[-4deg] rounded-sm border-2"
+                                        className="absolute start-1/2 -top-3 h-6 w-20 -translate-x-1/2 rotate-[-4deg] rounded-sm border-2 border-edge bg-raised/80"
                                     />
                                     <h3 className="text-xl font-bold">
                                         {entry.title}
@@ -117,7 +117,7 @@ export function NowPage({ now }: NowPageProps) {
                         aria-labelledby="now-reading"
                         className="pg-card p-6"
                     >
-                        <h2 id="now-reading" className="pg-label text-ink mb-6">
+                        <h2 id="now-reading" className="pg-label mb-6 text-ink">
                             {t('now.reading')}
                         </h2>
                         <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3">
@@ -135,7 +135,7 @@ export function NowPage({ now }: NowPageProps) {
                                     </Link>
                                     <p
                                         lang="en"
-                                        className="text-ink mt-3 text-sm font-bold"
+                                        className="mt-3 text-sm font-bold text-ink"
                                     >
                                         {book.title}
                                     </p>
@@ -145,7 +145,7 @@ export function NowPage({ now }: NowPageProps) {
                     </section>
                     <section
                         aria-labelledby="now-availability"
-                        className="pg-card bg-pop-green text-on-pop flex flex-col items-start justify-between gap-6 p-6 md:p-8"
+                        className="pg-card flex flex-col items-start justify-between gap-6 bg-pop-green p-6 text-on-pop md:p-8"
                     >
                         <div>
                             <h2 id="now-availability" className="pg-label mb-3">

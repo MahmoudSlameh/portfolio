@@ -17,12 +17,12 @@ export function Metric({
 }: MetricProps) {
     return (
         <div className={cn('flex flex-col gap-2', className)}>
-            <dt className="text-ink-muted order-2 text-sm leading-snug">
+            <dt className="order-2 text-sm leading-snug text-ink-muted">
                 {label}
             </dt>
             <dd
                 className={cn(
-                    'ltr-isolate font-display text-ink order-1 self-start leading-none tracking-tight',
+                    'ltr-isolate order-1 self-start font-display leading-none tracking-tight text-ink',
                     size === 'lg'
                         ? 'text-5xl md:text-6xl'
                         : 'text-4xl md:text-[2.75rem]',
@@ -31,7 +31,7 @@ export function Metric({
                 {value}
             </dd>
             {detail && (
-                <dd className="text-ink-subtle order-3 font-mono text-[0.6875rem]">
+                <dd className="order-3 font-mono text-[0.6875rem] text-ink-subtle">
                     {detail}
                 </dd>
             )}

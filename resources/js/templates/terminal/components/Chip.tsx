@@ -32,7 +32,7 @@ export function ChipGroup<T extends string>({
                 >
                     {option.label}
                     {option.count !== undefined && (
-                        <span className="ltr-isolate text-tm-400 text-xs">
+                        <span className="ltr-isolate text-xs text-tm-400">
                             {option.count}
                         </span>
                     )}
@@ -52,7 +52,7 @@ export function Tag({
     return (
         <span
             className={cn(
-                'border-tm-border text-tm-300 inline-flex border px-3 py-1',
+                'inline-flex border border-tm-border px-3 py-1 text-tm-300',
                 className,
             )}
         >

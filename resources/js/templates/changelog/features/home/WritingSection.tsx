@@ -20,7 +20,7 @@ export function WritingSection({ articles }: { articles: ArticleSummary[] }) {
             action={
                 <Link
                     to="/writing"
-                    className="group text-ink inline-flex items-center gap-2 text-sm font-medium"
+                    className="group inline-flex items-center gap-2 text-sm font-medium text-ink"
                 >
                     <span className="link-draw-target">
                         {t('writing.viewAll')}
@@ -32,7 +32,7 @@ export function WritingSection({ articles }: { articles: ArticleSummary[] }) {
                 </Link>
             }
         >
-            <div className="border-line border-t">
+            <div className="border-t border-line">
                 {articles.map((article) => (
                     <ArticleRow key={article.id} article={article} />
                 ))}

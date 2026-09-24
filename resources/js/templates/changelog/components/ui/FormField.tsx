@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 const controlClasses = (hasError: boolean): string =>
     cn(
-        'bg-raised text-ink placeholder:text-ink-subtle w-full rounded-[4px] border px-3.5 text-[0.9375rem] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-1',
+        'w-full rounded-[4px] border bg-raised px-3.5 text-[0.9375rem] text-ink transition-colors duration-200 placeholder:text-ink-subtle focus-visible:outline-2 focus-visible:outline-offset-1',
         hasError
             ? 'border-danger focus-visible:outline-danger'
             : 'border-line-strong hover:border-ink-subtle focus-visible:border-ink',
@@ -38,7 +38,7 @@ function FieldShell({
         <div className="flex flex-col gap-2">
             <label
                 htmlFor={id}
-                className="text-ink flex items-baseline justify-between gap-3 text-sm font-medium"
+                className="flex items-baseline justify-between gap-3 text-sm font-medium text-ink"
             >
                 <span>{label}</span>
                 {required && requiredLabel && (
@@ -51,7 +51,7 @@ function FieldShell({
             {hint && !error && (
                 <p
                     id={`${id}-hint`}
-                    className="text-ink-subtle text-[0.8125rem]"
+                    className="text-[0.8125rem] text-ink-subtle"
                 >
                     {hint}
                 </p>
@@ -59,7 +59,7 @@ function FieldShell({
             {error && (
                 <p
                     id={`${id}-error`}
-                    className="text-danger flex items-center gap-1.5 text-[0.8125rem] font-medium"
+                    className="flex items-center gap-1.5 text-[0.8125rem] font-medium text-danger"
                 >
                     <span aria-hidden className="font-mono">
                         !
@@ -215,7 +215,7 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
                     </select>
                     <span
                         aria-hidden
-                        className="text-ink-subtle pointer-events-none absolute inset-y-0 end-3.5 flex items-center font-mono text-xs"
+                        className="pointer-events-none absolute inset-y-0 end-3.5 flex items-center font-mono text-xs text-ink-subtle"
                     >
                         ▾
                     </span>

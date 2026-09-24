@@ -38,7 +38,7 @@ function Neighbour({
             params={{ slug: article.slug }}
             className={`tm-box tm-hover-up flex flex-col gap-2 p-6 md:p-8 ${isNewer ? 'md:items-end md:text-end' : ''}`}
         >
-            <span className="text-tm-400 flex items-center gap-2 text-sm">
+            <span className="flex items-center gap-2 text-sm text-tm-400">
                 {!isNewer && (
                     <Icon aria-hidden className="size-4 rtl:-scale-x-100" />
                 )}
@@ -47,7 +47,7 @@ function Neighbour({
                     <Icon aria-hidden className="size-4 rtl:-scale-x-100" />
                 )}
             </span>
-            <span lang="en" className="text-ink text-xl font-medium">
+            <span lang="en" className="text-xl font-medium text-ink">
                 {article.title}
             </span>
         </Link>
@@ -106,7 +106,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                         >
                             <Link
                                 to="/writing"
-                                className="text-tm-300 inline-flex items-center gap-2 hover:text-[#62a92b]"
+                                className="inline-flex items-center gap-2 text-tm-300 hover:text-[#62a92b]"
                             >
                                 <ArrowLeft
                                     aria-hidden
@@ -117,7 +117,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                             <button
                                 type="button"
                                 onClick={handleCopyLink}
-                                className="text-tm-300 inline-flex items-center gap-2 hover:text-[#62a92b]"
+                                className="inline-flex items-center gap-2 text-tm-300 hover:text-[#62a92b]"
                             >
                                 <LinkIcon aria-hidden className="size-4" />
                                 {copied
@@ -146,7 +146,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                             </h1>
                             <p
                                 lang="en"
-                                className="text-tm-body mx-auto max-w-2xl"
+                                className="mx-auto max-w-2xl text-tm-body"
                             >
                                 {article.excerpt}
                             </p>
@@ -175,7 +175,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                 aria-label={t('article.toc')}
                                 className="tm-box sticky top-8 p-5"
                             >
-                                <p className="text-tm-400 mb-3 text-sm">
+                                <p className="mb-3 text-sm text-tm-400">
                                     {t('article.toc')}
                                 </p>
                                 <ol lang="en" className="flex flex-col gap-1">
@@ -188,7 +188,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                                         ? 'location'
                                                         : undefined
                                                 }
-                                                className="text-tm-300 hover:text-ink aria-[current=location]:text-tm-primary block py-1 text-sm leading-snug"
+                                                className="block py-1 text-sm leading-snug text-tm-300 hover:text-ink aria-[current=location]:text-tm-primary"
                                             >
                                                 # {entry.text}
                                             </a>
@@ -210,7 +210,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                             <div className="tm-box p-5 lg:sticky lg:top-8">
                                 <h2
                                     id="related-projects"
-                                    className="text-tm-400 mb-4 text-sm font-normal"
+                                    className="mb-4 text-sm font-normal text-tm-400"
                                 >
                                     {t('article.related')}
                                 </h2>
@@ -220,7 +220,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                             <Link
                                                 to="/projects/$slug"
                                                 params={{ slug: project.slug }}
-                                                className="border-tm-border text-ink flex items-center justify-between gap-2 border-b pb-2 hover:text-[#62a92b]"
+                                                className="flex items-center justify-between gap-2 border-b border-tm-border pb-2 text-ink hover:text-[#62a92b]"
                                             >
                                                 <span lang="en">
                                                     {project.title}

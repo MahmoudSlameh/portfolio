@@ -54,7 +54,7 @@ function SocialLinks({
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${social.label} ${t('common.opensNewTab')}`}
-                        className="hover:text-tm-primary inline-flex transition-colors"
+                        className="inline-flex transition-colors hover:text-tm-primary"
                     >
                         <BrandIcon icon={social.icon} className="size-[18px]" />
                     </a>
@@ -138,23 +138,23 @@ function ContactPanel({
         <>
             <h2 className="mb-5 text-[1.75rem]">{c('menu.title')}</h2>
             <div className="border-t border-[#62a92b] pt-6">
-                <p className="text-tm-200 mb-6 font-medium">
+                <p className="mb-6 font-medium text-tm-200">
                     {profile.availability.note}
                 </p>
                 <dl className="mb-7 flex flex-col gap-3">
                     {rows.map((row) => (
                         <div key={row.label}>
-                            <dt className="text-tm-400 text-lg">{row.label}</dt>
-                            <dd className="text-ink mb-0">{row.value}</dd>
+                            <dt className="text-lg text-tm-400">{row.label}</dt>
+                            <dd className="mb-0 text-ink">{row.value}</dd>
                         </div>
                     ))}
                 </dl>
-                <p className="text-tm-400 mb-2 text-lg">{c('nav.pages')}</p>
+                <p className="mb-2 text-lg text-tm-400">{c('nav.pages')}</p>
                 <PagesList onNavigate={onNavigate} className="mb-7" />
-                <p className="text-tm-400 mb-2 text-lg">{c('nav.social')}</p>
+                <p className="mb-2 text-lg text-tm-400">{c('nav.social')}</p>
                 <SocialLinks
                     socials={socials}
-                    className="text-ink flex gap-3"
+                    className="flex gap-3 text-ink"
                 />
             </div>
         </>
@@ -176,7 +176,7 @@ function PagesList({
                     <Link
                         to={item.to}
                         onClick={onNavigate}
-                        className="border-tm-border text-ink block border-b py-3 hover:text-[#62a92b] [&.active]:text-[#62a92b]"
+                        className="block border-b border-tm-border py-3 text-ink hover:text-[#62a92b] [&.active]:text-[#62a92b]"
                     >
                         {t(item.key)}
                     </Link>
@@ -331,12 +331,12 @@ export function Header({
                                 isHome={isHome}
                                 active={activeId === section.id}
                                 onNavigate={closePanel}
-                                className="border-tm-border text-ink block border-b py-3 hover:text-[#62a92b]"
+                                className="block border-b border-tm-border py-3 text-ink hover:text-[#62a92b]"
                             />
                         </li>
                     ))}
                 </ul>
-                <p className="text-tm-400 mt-8 mb-2 text-sm">
+                <p className="mt-8 mb-2 text-sm text-tm-400">
                     {c('nav.pages')}
                 </p>
                 <PagesList onNavigate={closePanel} />
@@ -347,7 +347,7 @@ export function Header({
                             closePanel();
                             openPalette();
                         }}
-                        className="border-tm-border text-ink inline-flex h-10 items-center gap-2 rounded-md border px-3 text-sm"
+                        className="inline-flex h-10 items-center gap-2 rounded-md border border-tm-border px-3 text-sm text-ink"
                     >
                         <Search aria-hidden className="size-4" />
                         {c('nav.search')}
@@ -355,7 +355,7 @@ export function Header({
                 </div>
                 <SocialLinks
                     socials={socials}
-                    className="text-ink mt-8 flex gap-4"
+                    className="mt-8 flex gap-4 text-ink"
                 />
             </Drawer>
         </header>

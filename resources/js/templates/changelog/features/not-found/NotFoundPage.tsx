@@ -36,11 +36,11 @@ export function NotFoundPage() {
                     </p>
                     <h1
                         id="not-found-title"
-                        className="font-display text-ink mt-6 text-6xl leading-[0.95] tracking-[-0.02em] sm:text-7xl lg:text-8xl"
+                        className="mt-6 font-display text-6xl leading-[0.95] tracking-[-0.02em] text-ink sm:text-7xl lg:text-8xl"
                     >
                         {t('notFound.title')}
                     </h1>
-                    <p className="text-ink-muted mt-8 max-w-lg text-lg leading-relaxed">
+                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-ink-muted">
                         {t('notFound.body')}
                     </p>
                     <div className="mt-10 flex flex-wrap gap-3">
@@ -59,9 +59,9 @@ export function NotFoundPage() {
                 <div className="col-span-4 md:col-span-5 lg:col-span-4 lg:col-start-9">
                     <div
                         dir="ltr"
-                        className="border-line bg-raised border font-mono text-[0.75rem] leading-relaxed"
+                        className="border border-line bg-raised font-mono text-[0.75rem] leading-relaxed"
                     >
-                        <p className="border-line text-ink-subtle border-b px-4 py-2.5">
+                        <p className="border-b border-line px-4 py-2.5 text-ink-subtle">
                             ~/changelog — zsh
                         </p>
                         <div className="space-y-1 px-4 py-4">
@@ -69,11 +69,11 @@ export function NotFoundPage() {
                                 <span className="text-signal-ink">$</span> git
                                 checkout {pathname}
                             </p>
-                            <p className="text-danger break-all">
+                            <p className="break-all text-danger">
                                 error: pathspec &apos;{pathname}&apos; did not
                                 match any file(s) known to git
                             </p>
-                            <p className="text-ink pt-3">
+                            <p className="pt-3 text-ink">
                                 <span className="text-signal-ink">$</span>{' '}
                                 {t('notFound.log')}
                             </p>
@@ -82,7 +82,7 @@ export function NotFoundPage() {
                                     <li key={route.commit}>
                                         <Link
                                             to={route.to}
-                                            className="group text-ink-muted hover:text-ink flex gap-3"
+                                            className="group flex gap-3 text-ink-muted hover:text-ink"
                                         >
                                             <span className="text-[#85570f] dark:text-[#f0c56b]">
                                                 {route.commit}

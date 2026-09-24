@@ -30,7 +30,7 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
                 params={{ slug: project.slug }}
                 className="pg-card pg-press group flex h-full flex-col overflow-hidden"
             >
-                <span className="border-edge relative block overflow-hidden border-b-2">
+                <span className="relative block overflow-hidden border-b-2 border-edge">
                     <ResponsiveImage
                         image={project.cover}
                         sizes="(min-width: 80rem) 28vw, (min-width: 48rem) 45vw, 100vw"
@@ -41,20 +41,20 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
                             {t(`category.${project.category}`)}
                         </Sticker>
                     </span>
-                    <span className="ltr-isolate border-edge bg-raised text-ink absolute end-3 bottom-3 rounded-full border-2 px-2.5 font-mono text-xs font-bold">
+                    <span className="ltr-isolate absolute end-3 bottom-3 rounded-full border-2 border-edge bg-raised px-2.5 font-mono text-xs font-bold text-ink">
                         {project.year}
                     </span>
                 </span>
                 <span className="flex flex-1 flex-col gap-3 p-5">
                     <span
                         lang="en"
-                        className="pg-display pg-keep-case text-ink text-3xl"
+                        className="pg-display pg-keep-case text-3xl text-ink"
                     >
                         {project.title}
                     </span>
                     <span
                         lang="en"
-                        className="text-ink-muted text-[0.9375rem] leading-relaxed"
+                        className="text-[0.9375rem] leading-relaxed text-ink-muted"
                     >
                         {project.tagline}
                     </span>
@@ -78,7 +78,7 @@ function ProjectTable({ projects }: { projects: Project[] }) {
         <div className="pg-card overflow-x-auto">
             <table className="w-full min-w-[44rem] border-collapse text-start">
                 <thead>
-                    <tr className="border-edge bg-ink text-paper border-b-2">
+                    <tr className="border-b-2 border-edge bg-ink text-paper">
                         {(
                             [
                                 'table.year',
@@ -102,9 +102,9 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                     {projects.map((project) => (
                         <tr
                             key={project.id}
-                            className="border-edge hover:bg-pop-yellow/40 border-b-2 last:border-b-0"
+                            className="border-b-2 border-edge last:border-b-0 hover:bg-pop-yellow/40"
                         >
-                            <td className="ltr-isolate text-ink px-5 py-4 font-mono text-sm font-bold">
+                            <td className="ltr-isolate px-5 py-4 font-mono text-sm font-bold text-ink">
                                 {project.year}
                             </td>
                             <th scope="row" className="px-5 py-4 text-start">
@@ -112,7 +112,7 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                                     to="/projects/$slug"
                                     params={{ slug: project.slug }}
                                     lang="en"
-                                    className="font-display text-ink hover:decoration-pop-blue text-lg font-extrabold underline decoration-2 underline-offset-4"
+                                    className="font-display text-lg font-extrabold text-ink underline decoration-2 underline-offset-4 hover:decoration-pop-blue"
                                 >
                                     {project.title}
                                 </Link>
@@ -129,11 +129,11 @@ function ProjectTable({ projects }: { projects: Project[] }) {
                             </td>
                             <td
                                 lang="en"
-                                className="text-ink-muted px-5 py-4 text-sm"
+                                className="px-5 py-4 text-sm text-ink-muted"
                             >
                                 {project.stack.slice(0, 3).join(' · ')}
                             </td>
-                            <td className="text-ink px-5 py-4 text-sm font-semibold">
+                            <td className="px-5 py-4 text-sm font-semibold text-ink">
                                 {t(`projectStatus.${project.status}`)}
                             </td>
                         </tr>
@@ -269,7 +269,7 @@ export function ProjectArchivePage({
                             <div
                                 role="group"
                                 aria-label={t('projects.viewLabel')}
-                                className="border-edge bg-raised flex rounded-full border-2 p-0.5"
+                                className="flex rounded-full border-2 border-edge bg-raised p-0.5"
                             >
                                 {(['grid', 'table'] as const).map((mode) => {
                                     const Icon =
@@ -287,7 +287,7 @@ export function ProjectArchivePage({
                                                             : mode,
                                                 })
                                             }
-                                            className="text-ink aria-pressed:bg-ink aria-pressed:text-paper inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-bold"
+                                            className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-bold text-ink aria-pressed:bg-ink aria-pressed:text-paper"
                                         >
                                             <Icon
                                                 aria-hidden
@@ -307,7 +307,7 @@ export function ProjectArchivePage({
                     </div>
                     <p
                         aria-live="polite"
-                        className="text-ink-subtle font-mono text-xs font-bold"
+                        className="font-mono text-xs font-bold text-ink-subtle"
                     >
                         {t('common.results', { count: projects.length })}
                     </p>

@@ -58,7 +58,7 @@ export function Dock() {
             aria-label={p('dock.label')}
             className="fixed inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 flex justify-center px-3"
         >
-            <ul className="pg-card bg-raised flex items-center gap-1 rounded-full p-1.5">
+            <ul className="pg-card flex items-center gap-1 rounded-full bg-raised p-1.5">
                 {dockItems.map((item) => {
                     const Icon = item.icon;
                     return (
@@ -69,7 +69,7 @@ export function Dock() {
                                     exact: item.to === '/',
                                     includeSearch: false,
                                 }}
-                                className="group text-ink aria-[current=page]:border-edge aria-[current=page]:text-on-pop flex min-h-12 min-w-12 flex-col items-center justify-center gap-0.5 rounded-full border-2 border-transparent px-2.5 transition-[background-color,transform] duration-200 hover:-translate-y-1 sm:flex-row sm:gap-2 sm:px-4"
+                                className="group flex min-h-12 min-w-12 flex-col items-center justify-center gap-0.5 rounded-full border-2 border-transparent px-2.5 text-ink transition-[background-color,transform] duration-200 hover:-translate-y-1 aria-[current=page]:border-edge aria-[current=page]:text-on-pop sm:flex-row sm:gap-2 sm:px-4"
                                 activeProps={{
                                     className: cn(item.activeClass),
                                 }}

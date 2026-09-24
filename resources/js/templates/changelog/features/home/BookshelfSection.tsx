@@ -39,7 +39,7 @@ export function BookshelfSection({ books }: { books: Book[] }) {
             action={
                 <Link
                     to="/books"
-                    className="group text-ink inline-flex items-center gap-2 text-sm font-medium"
+                    className="group inline-flex items-center gap-2 text-sm font-medium text-ink"
                 >
                     <span className="link-draw-target">
                         {t('books.viewAll')}

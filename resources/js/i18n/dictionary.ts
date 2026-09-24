@@ -187,6 +187,8 @@ const en = {
     'contact.availability': 'Availability',
     'contact.timezone': 'Timezone',
     'contact.required': 'required',
+    'contact.failed':
+        'Your message could not be sent. Please try again or email me directly.',
 
     'footer.signoff': 'Thanks for reading the changelog.',
     'footer.builtWith': 'Set in Bricolage Grotesque, Geist and JetBrains Mono.',

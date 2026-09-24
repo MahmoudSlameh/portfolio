@@ -53,7 +53,7 @@ function ProjectSlide({
             inert={!active}
             className="w-full shrink-0 px-px"
         >
-            <div className="border-tm-border bg-tm-card mt-12 grid grid-cols-1 gap-10 border p-4 md:p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12 lg:p-12">
+            <div className="mt-12 grid grid-cols-1 gap-10 border border-tm-border bg-tm-card p-4 md:p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12 lg:p-12">
                 <Link
                     to="/projects/$slug"
                     params={{ slug: project.slug }}
@@ -73,16 +73,16 @@ function ProjectSlide({
                     </h3>
                     <p className="text-tm-body">{project.summary}</p>
                     <ul className="mt-6">
-                        <li className="border-tm-border text-tm-secondary mb-4 border-b pb-4">
+                        <li className="mb-4 border-b border-tm-border pb-4 text-tm-secondary">
                             {c('projects.info')}
                         </li>
                         {rows.map((row) => (
                             <li
                                 key={row.label}
-                                className="border-tm-border mb-4 flex justify-between gap-6 border-b pb-4"
+                                className="mb-4 flex justify-between gap-6 border-b border-tm-border pb-4"
                             >
                                 <span className="text-ink">{row.label}</span>
-                                <span className="text-tm-300 text-end">
+                                <span className="text-end text-tm-300">
                                     {row.value}
                                 </span>
                             </li>
@@ -241,7 +241,7 @@ export function ProjectsSlider({
                         )}
                     </div>
 
-                    <p className="text-tm-300 mt-6 mb-0 text-sm">
+                    <p className="mt-6 mb-0 text-sm text-tm-300">
                         <Link to="/projects" className="hover:text-[#62a92b]">
                             {t('work.viewArchive')} →
                         </Link>

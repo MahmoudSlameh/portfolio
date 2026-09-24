@@ -79,7 +79,7 @@ function Heading({ block }: { block: HeadingBlock }) {
                 type="button"
                 onClick={handleCopyLink}
                 aria-label={`${t('article.copyHeading')}: ${block.text}`}
-                className="border-tm-border text-tm-300 mt-1 inline-flex size-8 shrink-0 items-center justify-center rounded-md border opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+                className="mt-1 inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-tm-border text-tm-300 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
             >
                 <Hash aria-hidden className="size-4" />
             </button>
@@ -94,7 +94,7 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
                 <p
                     className={
                         isFirst
-                            ? 'text-ink mb-8 text-xl leading-relaxed'
+                            ? 'mb-8 text-xl leading-relaxed text-ink'
                             : 'tm-prose mb-6'
                     }
                 >
@@ -107,13 +107,13 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
             return <CodeCard block={block} />;
         case 'quote':
             return (
-                <blockquote className="border-tm-primary my-10 border-s-2 ps-6">
-                    <p className="text-ink text-xl leading-relaxed">
+                <blockquote className="my-10 border-s-2 border-tm-primary ps-6">
+                    <p className="text-xl leading-relaxed text-ink">
                         <span className="text-tm-secondary">&gt; </span>
                         {block.text}
                     </p>
                     {block.cite && (
-                        <footer className="text-tm-300 mt-3 text-sm">
+                        <footer className="mt-3 text-sm text-tm-300">
                             — {block.cite}
                         </footer>
                     )}
@@ -121,7 +121,7 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
             );
         case 'list':
             return (
-                <ul className="marker:text-tm-primary mb-8 list-disc ps-6">
+                <ul className="mb-8 list-disc ps-6 marker:text-tm-primary">
                     {block.items.map((item) => (
                         <li key={item} className="tm-prose mb-2">
                             {item}
@@ -134,13 +134,13 @@ function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
                 <aside className="tm-box my-10 flex gap-4 p-6">
                     <Lightbulb
                         aria-hidden
-                        className="text-tm-primary size-6 shrink-0"
+                        className="size-6 shrink-0 text-tm-primary"
                     />
                     <div>
-                        <p className="text-ink mb-1 font-medium">
+                        <p className="mb-1 font-medium text-ink">
                             {block.title}
                         </p>
-                        <p className="text-tm-300 mb-0 leading-relaxed">
+                        <p className="mb-0 leading-relaxed text-tm-300">
                             {block.text}
                         </p>
                     </div>

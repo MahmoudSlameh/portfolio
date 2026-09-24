@@ -21,10 +21,10 @@ export function TopBar({ profile }: { profile: Profile }) {
                 aria-label={t('nav.homeLabel', { name: profile.name })}
                 className="group inline-flex items-center gap-3"
             >
-                <span className="pg-press pg-press-target pg-wobble border-edge bg-pop-yellow font-display text-on-pop inline-flex size-11 items-center justify-center rounded-full border-2 text-sm font-black [font-stretch:125%] shadow-[var(--pg-shadow)]">
+                <span className="pg-press pg-press-target pg-wobble inline-flex size-11 items-center justify-center rounded-full border-2 border-edge bg-pop-yellow font-display text-sm font-black text-on-pop [font-stretch:125%] shadow-[var(--pg-shadow)]">
                     {profile.initials}
                 </span>
-                <span className="font-display text-ink hidden text-lg leading-none font-extrabold [font-stretch:115%] sm:block">
+                <span className="hidden font-display text-lg leading-none font-extrabold text-ink [font-stretch:115%] sm:block">
                     {profile.name}
                 </span>
             </Link>
@@ -42,7 +42,7 @@ export function TopBar({ profile }: { profile: Profile }) {
                 >
                     <Search aria-hidden className="size-4" strokeWidth={2.5} />
                     <span className="hidden md:inline">{p('top.search')}</span>
-                    <kbd className="ltr-isolate border-edge hidden rounded-md border-2 px-1.5 font-mono text-[0.625rem] leading-5 lg:inline">
+                    <kbd className="ltr-isolate hidden rounded-md border-2 border-edge px-1.5 font-mono text-[0.625rem] leading-5 lg:inline">
                         ⌘K
                     </kbd>
                 </button>

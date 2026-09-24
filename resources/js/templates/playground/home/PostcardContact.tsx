@@ -45,9 +45,9 @@ function PostageStamp({ profile }: { profile: Profile }) {
     return (
         <div
             aria-hidden
-            className="border-edge bg-raised relative rotate-[4deg] rounded-md border-2 p-1.5 shadow-[var(--pg-shadow)]"
+            className="relative rotate-[4deg] rounded-md border-2 border-edge bg-raised p-1.5 shadow-[var(--pg-shadow)]"
         >
-            <div className="border-edge bg-pop-red text-on-pop flex size-24 flex-col items-center justify-center rounded-sm border-2 border-dashed">
+            <div className="flex size-24 flex-col items-center justify-center rounded-sm border-2 border-dashed border-edge bg-pop-red text-on-pop">
                 <span className="font-display text-3xl font-black [font-stretch:125%]">
                     {profile.initials}
                 </span>
@@ -76,7 +76,7 @@ function AddressSide({ profile }: { profile: Profile }) {
             <div className="flex items-start justify-between gap-4">
                 <div
                     aria-hidden
-                    className="border-ink-subtle text-ink-subtle flex size-24 rotate-[-12deg] items-center justify-center rounded-full border-2 border-dashed p-2 text-center font-mono text-[0.5625rem] leading-tight font-bold uppercase"
+                    className="flex size-24 rotate-[-12deg] items-center justify-center rounded-full border-2 border-dashed border-ink-subtle p-2 text-center font-mono text-[0.5625rem] leading-tight font-bold text-ink-subtle uppercase"
                 >
                     {p('contact.postmark', { city: profile.location })}
                 </div>
@@ -87,7 +87,7 @@ function AddressSide({ profile }: { profile: Profile }) {
                 <p className="pg-label text-ink-subtle">{p('contact.to')}</p>
                 <a
                     href={`mailto:${profile.email}`}
-                    className="ltr-isolate border-edge font-display text-ink hover:text-signal-ink border-b-2 pb-2 text-xl font-extrabold break-all [font-stretch:110%] md:text-2xl"
+                    className="ltr-isolate border-b-2 border-edge pb-2 font-display text-xl font-extrabold break-all text-ink [font-stretch:110%] hover:text-signal-ink md:text-2xl"
                 >
                     {profile.email}
                 </a>
@@ -107,22 +107,22 @@ function AddressSide({ profile }: { profile: Profile }) {
             </div>
 
             <dl className="flex flex-col gap-4">
-                <div className="border-line-strong/40 border-b-2 border-dashed pb-3">
+                <div className="border-b-2 border-dashed border-line-strong/40 pb-3">
                     <dt className="pg-label text-ink-subtle">
                         {t('contact.availability')}
                     </dt>
-                    <dd className="text-ink mt-1 font-semibold">
+                    <dd className="mt-1 font-semibold text-ink">
                         {profile.availability.label}
                     </dd>
-                    <dd className="text-ink-muted text-sm">
+                    <dd className="text-sm text-ink-muted">
                         {profile.availability.note}
                     </dd>
                 </div>
-                <div className="border-line-strong/40 border-b-2 border-dashed pb-3">
+                <div className="border-b-2 border-dashed border-line-strong/40 pb-3">
                     <dt className="pg-label text-ink-subtle">
                         {t('contact.timezone')}
                     </dt>
-                    <dd className="text-ink mt-1 flex flex-wrap items-baseline gap-2 font-semibold">
+                    <dd className="mt-1 flex flex-wrap items-baseline gap-2 font-semibold text-ink">
                         {profile.location}
                         <time
                             dateTime={now.toISOString()}
@@ -130,7 +130,7 @@ function AddressSide({ profile }: { profile: Profile }) {
                         >
                             {formatTime(now, profile.timezone)}
                         </time>
-                        <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                        <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                             {profile.timezoneLabel}
                         </span>
                     </dd>
@@ -164,21 +164,21 @@ function DeliveredCard({
         >
             <span
                 aria-hidden
-                className="pg-stamp-in border-pop-green font-display text-pop-green absolute end-6 top-6 rounded-xl border-4 px-4 py-2 text-3xl font-black uppercase [font-stretch:125%]"
+                className="pg-stamp-in absolute end-6 top-6 rounded-xl border-4 border-pop-green px-4 py-2 font-display text-3xl font-black text-pop-green uppercase [font-stretch:125%]"
             >
                 ✓ {p('contact.sentStamp')}
             </span>
-            <p className="ltr-isolate text-ink-subtle font-mono text-xs font-bold">
+            <p className="ltr-isolate font-mono text-xs font-bold text-ink-subtle">
                 {messageId}
             </p>
             <h3
                 ref={headingRef}
                 tabIndex={-1}
-                className="pg-display pg-keep-case text-ink max-w-md text-4xl focus-visible:outline-none md:text-5xl"
+                className="pg-display pg-keep-case max-w-md text-4xl text-ink focus-visible:outline-none md:text-5xl"
             >
                 {t('contact.successTitle')}
             </h3>
-            <p className="text-ink-muted max-w-md text-base leading-relaxed">
+            <p className="max-w-md text-base leading-relaxed text-ink-muted">
                 {t('contact.successBody', { name, id: messageId })}
             </p>
             <PopButton tone="yellow" onClick={onReset}>
@@ -195,6 +195,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
     const [errors, setErrors] = useState<ContactErrors>({});
     const [hasAttempted, setHasAttempted] = useState(false);
     const [status, setStatus] = useState<FormStatus>('idle');
+    const { notify: notifyFailure } = useToast();
     const [messageId, setMessageId] = useState('');
     const summaryRef = useRef<HTMLDivElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -228,7 +229,14 @@ export function PostcardContact({ profile }: { profile: Profile }) {
 
         setErrors({});
         setStatus('submitting');
-        const response = await submitContactMessage(result.data);
+        let response: Awaited<ReturnType<typeof submitContactMessage>>;
+        try {
+            response = await submitContactMessage(result.data);
+        } catch {
+            setStatus('idle');
+            notifyFailure(t('contact.failed'));
+            return;
+        }
         setMessageId(response.id);
         setStatus('success');
     };
@@ -258,13 +266,13 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                 title={p('contact.title')}
                 pop="blue"
                 aside={
-                    <p className="text-ink-muted max-w-sm text-base">
+                    <p className="max-w-sm text-base text-ink-muted">
                         {t('contact.intro')}
                     </p>
                 }
             />
-            <div className="pg-card bg-raised grid overflow-hidden shadow-[var(--pg-shadow-lg)] lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-                <div className="border-edge border-b-2 border-dashed lg:border-e-2 lg:border-b-0">
+            <div className="pg-card grid overflow-hidden bg-raised shadow-[var(--pg-shadow-lg)] lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+                <div className="border-b-2 border-dashed border-edge lg:border-e-2 lg:border-b-0">
                     {status === 'success' ? (
                         <DeliveredCard
                             name={values.name.trim()}
@@ -286,7 +294,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                                     ref={summaryRef}
                                     tabIndex={-1}
                                     role="alert"
-                                    className="border-danger bg-danger-soft text-danger rounded-xl border-2 px-4 py-3 text-sm"
+                                    className="rounded-xl border-2 border-danger bg-danger-soft px-4 py-3 text-sm text-danger"
                                 >
                                     <p className="font-bold">
                                         {t('contact.errorSummary', {
@@ -344,7 +352,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                                 id="contact-topic"
                                 className="flex flex-col gap-3"
                             >
-                                <legend className="text-ink mb-2 text-sm font-bold">
+                                <legend className="mb-2 text-sm font-bold text-ink">
                                     {p('contact.topicLegend')}
                                 </legend>
                                 <div className="flex flex-wrap gap-2">

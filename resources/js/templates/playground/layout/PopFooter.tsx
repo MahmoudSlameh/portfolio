@@ -27,7 +27,7 @@ export function PopFooter({
     };
 
     return (
-        <footer className="border-edge bg-ink text-paper mt-24 overflow-hidden border-t-2 pt-14 pb-36">
+        <footer className="mt-24 overflow-hidden border-t-2 border-edge bg-ink pt-14 pb-36 text-paper">
             <div
                 aria-hidden
                 className="overflow-hidden whitespace-nowrap"
@@ -100,10 +100,10 @@ export function PopFooter({
                         />
                         {p('footer.top')}
                     </button>
-                    <p className="text-paper/70 font-mono text-xs">
+                    <p className="font-mono text-xs text-paper/70">
                         © {year} {name}. {t('footer.rights')}
                     </p>
-                    <p className="text-paper/70 font-mono text-xs">
+                    <p className="font-mono text-xs text-paper/70">
                         {p('footer.builtWith')}
                     </p>
                 </div>

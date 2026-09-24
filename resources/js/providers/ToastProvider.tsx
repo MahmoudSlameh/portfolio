@@ -41,10 +41,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 className="pointer-events-none fixed inset-x-0 bottom-6 z-[70] flex justify-center px-4"
             >
                 {message && (
-                    <p className="bg-ink text-paper shadow-lift flex [animation:dialog-in_200ms_ease] items-center gap-2 rounded-full px-4 py-2 text-sm font-medium">
+                    <p className="flex [animation:dialog-in_200ms_ease] items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper shadow-lift">
                         <Check
                             aria-hidden
-                            className="text-signal size-4"
+                            className="size-4 text-signal"
                             strokeWidth={2.5}
                         />
                         {message}

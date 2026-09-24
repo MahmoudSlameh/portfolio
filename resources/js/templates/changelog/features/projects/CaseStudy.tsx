@@ -28,15 +28,15 @@ function CaseSection({ id, index, titleKey, children }: CaseSectionProps) {
             ref={revealRef}
             id={id}
             aria-labelledby={`${id}-heading`}
-            className="reveal border-line scroll-mt-28 border-t py-12 md:py-16"
+            className="reveal scroll-mt-28 border-t border-line py-12 md:py-16"
         >
             <div className="mb-8 flex items-baseline gap-4">
-                <span className="ltr-isolate text-signal-ink font-mono text-xs">
+                <span className="ltr-isolate font-mono text-xs text-signal-ink">
                     {String(index).padStart(2, '0')}
                 </span>
                 <h2
                     id={`${id}-heading`}
-                    className="font-display text-ink text-4xl leading-none md:text-5xl"
+                    className="font-display text-4xl leading-none text-ink md:text-5xl"
                 >
                     {t(titleKey)}
                 </h2>
@@ -88,7 +88,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                             key={paragraph}
                             className={cn(
                                 index === 0
-                                    ? 'font-display text-ink text-[1.75rem] leading-snug'
+                                    ? 'font-display text-[1.75rem] leading-snug text-ink'
                                     : 'prose-editorial',
                             )}
                         >
@@ -103,7 +103,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
             titleKey: 'case.approach',
             visible: project.approach.length > 0,
             render: () => (
-                <ol className="border-line bg-line grid gap-px border md:grid-cols-2">
+                <ol className="grid gap-px border border-line bg-line md:grid-cols-2">
                     {project.approach.map((step, index) => (
                         <li
                             key={step.title}
@@ -114,13 +114,13 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                     'md:col-span-2',
                             )}
                         >
-                            <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                            <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                 step.{index + 1}
                             </span>
-                            <h3 className="text-ink mt-3 text-lg font-semibold">
+                            <h3 className="mt-3 text-lg font-semibold text-ink">
                                 {step.title}
                             </h3>
-                            <p className="text-ink-muted mt-2 text-[0.9375rem] leading-relaxed">
+                            <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-muted">
                                 {step.description}
                             </p>
                         </li>
@@ -146,12 +146,12 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                     {project.features.map((feature) => (
                         <li
                             key={feature.title}
-                            className="border-signal border-s-2 ps-4"
+                            className="border-s-2 border-signal ps-4"
                         >
-                            <h3 className="text-ink font-semibold">
+                            <h3 className="font-semibold text-ink">
                                 {feature.title}
                             </h3>
-                            <p className="text-ink-muted mt-1 text-[0.9375rem] leading-relaxed">
+                            <p className="mt-1 text-[0.9375rem] leading-relaxed text-ink-muted">
                                 {feature.description}
                             </p>
                         </li>
@@ -170,7 +170,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                             key={challenge.title}
                             className="grid gap-2 md:grid-cols-[14rem_minmax(0,1fr)] md:gap-8"
                         >
-                            <h3 className="font-display text-ink text-2xl leading-tight">
+                            <h3 className="font-display text-2xl leading-tight text-ink">
                                 {challenge.title}
                             </h3>
                             <p className="prose-editorial">
@@ -186,19 +186,19 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
             titleKey: 'case.metrics',
             visible: project.metrics.length > 0,
             render: () => (
-                <dl className="border-line bg-line grid grid-cols-2 gap-px border lg:grid-cols-4">
+                <dl className="grid grid-cols-2 gap-px border border-line bg-line lg:grid-cols-4">
                     {project.metrics.map((metric) => (
                         <div
                             key={metric.id}
-                            className="bg-paper flex flex-col gap-2 p-5 md:p-6"
+                            className="flex flex-col gap-2 bg-paper p-5 md:p-6"
                         >
-                            <dt className="text-ink order-2 text-sm font-medium">
+                            <dt className="order-2 text-sm font-medium text-ink">
                                 {metric.label}
                             </dt>
-                            <dd className="ltr-isolate font-display text-ink order-1 self-start text-5xl leading-none">
+                            <dd className="ltr-isolate order-1 self-start font-display text-5xl leading-none text-ink">
                                 {metric.value}
                             </dd>
-                            <dd className="text-ink-subtle order-3 font-mono text-[0.6875rem]">
+                            <dd className="order-3 font-mono text-[0.6875rem] text-ink-subtle">
                                 {metric.detail}
                             </dd>
                         </div>
@@ -214,7 +214,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                 <div className="grid gap-6 md:grid-cols-2">
                     {project.gallery.map((image, index) => (
                         <figure key={image.src}>
-                            <div className="group border-line relative overflow-hidden rounded-2xl border">
+                            <div className="group relative overflow-hidden rounded-2xl border border-line">
                                 <ResponsiveImage
                                     image={image}
                                     sizes="(min-width: 1024px) 32vw, (min-width: 768px) 45vw, 92vw"
@@ -228,8 +228,8 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                     )}
                                 />
                             </div>
-                            <figcaption className="text-ink-muted mt-3 flex gap-3 text-sm leading-relaxed">
-                                <span className="ltr-isolate text-ink-subtle shrink-0 font-mono text-xs">
+                            <figcaption className="mt-3 flex gap-3 text-sm leading-relaxed text-ink-muted">
+                                <span className="ltr-isolate shrink-0 font-mono text-xs text-ink-subtle">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>
                                 {image.caption}
@@ -253,7 +253,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                     search={{ tech: technology }}
                                     className="inline-flex"
                                 >
-                                    <Tag className="hover:border-ink hover:text-ink px-2 py-1 text-xs transition-colors">
+                                    <Tag className="px-2 py-1 text-xs transition-colors hover:border-ink hover:text-ink">
                                         {technology}
                                     </Tag>
                                 </Link>
@@ -262,20 +262,20 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                     </ul>
                     {project.links.length > 0 && (
                         <div>
-                            <h3 className="eyebrow text-ink-subtle mb-3">
+                            <h3 className="eyebrow mb-3 text-ink-subtle">
                                 {t('case.links')}
                             </h3>
-                            <ul className="border-line border-t">
+                            <ul className="border-t border-line">
                                 {project.links.map((link) => (
                                     <li key={link.url}>
                                         <a
                                             href={link.url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="group border-line text-ink flex items-center justify-between gap-4 border-b py-3"
+                                            className="group flex items-center justify-between gap-4 border-b border-line py-3 text-ink"
                                         >
                                             <span className="flex items-baseline gap-3">
-                                                <span className="text-ink-subtle w-16 font-mono text-[0.6875rem]">
+                                                <span className="w-16 font-mono text-[0.6875rem] text-ink-subtle">
                                                     {linkLabels[link.kind]}
                                                 </span>
                                                 <span className="link-draw-target font-medium">
@@ -284,7 +284,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                             </span>
                                             <ArrowUpRight
                                                 aria-hidden
-                                                className="text-ink-subtle group-hover:text-signal-ink size-4"
+                                                className="size-4 text-ink-subtle group-hover:text-signal-ink"
                                             />
                                             <span className="sr-only">
                                                 {t('common.opensNewTab')}
@@ -304,7 +304,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
 
     return (
         <article>
-            <header className="border-line relative overflow-hidden border-b">
+            <header className="relative overflow-hidden border-b border-line">
                 <div aria-hidden className="aurora">
                     <span />
                     <span />
@@ -321,7 +321,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                     >
                         <Link
                             to="/projects"
-                            className="group text-ink-muted hover:text-ink inline-flex items-center gap-2 text-sm"
+                            className="group inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink"
                         >
                             <ArrowLeft
                                 aria-hidden
@@ -340,19 +340,19 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                 <span className="eyebrow text-signal-ink">
                                     {t(`category.${project.category}`)}
                                 </span>
-                                <span className="ltr-isolate text-ink-subtle font-mono text-xs">
+                                <span className="ltr-isolate font-mono text-xs text-ink-subtle">
                                     {project.year}
                                 </span>
                                 <ProjectStatusBadge status={project.status} />
                             </p>
-                            <h1 className="font-display text-ink mt-5 text-6xl leading-[0.92] tracking-[-0.02em] sm:text-7xl lg:text-8xl">
+                            <h1 className="mt-5 font-display text-6xl leading-[0.92] tracking-[-0.02em] text-ink sm:text-7xl lg:text-8xl">
                                 {project.title}
                             </h1>
-                            <p className="font-display text-ink-muted mt-6 max-w-2xl text-[1.75rem] leading-snug md:text-[2rem]">
+                            <p className="mt-6 max-w-2xl font-display text-[1.75rem] leading-snug text-ink-muted md:text-[2rem]">
                                 {project.tagline}
                             </p>
                         </div>
-                        <dl className="border-line col-span-4 grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t pt-5 md:col-span-4 md:grid-cols-1 lg:grid-cols-2">
+                        <dl className="col-span-4 grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-line pt-5 md:col-span-4 md:grid-cols-1 lg:grid-cols-2">
                             {[
                                 { label: t('case.role'), value: project.role },
                                 { label: t('case.team'), value: project.team },
@@ -373,7 +373,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                     </dt>
                                     <dd
                                         lang="en"
-                                        className="text-ink mt-1.5 text-[0.9375rem] leading-snug"
+                                        className="mt-1.5 text-[0.9375rem] leading-snug text-ink"
                                     >
                                         {item.value}
                                     </dd>
@@ -385,7 +385,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
             </header>
 
             <div className="shell pt-10">
-                <div className="border-line shadow-lift relative overflow-hidden rounded-3xl border">
+                <div className="relative overflow-hidden rounded-3xl border border-line shadow-lift">
                     <ResponsiveImage
                         image={project.cover}
                         sizes="(min-width: 1440px) 1344px, 100vw"
@@ -402,17 +402,17 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                         aria-label={t('case.contents')}
                         className="sticky top-[calc(var(--header-height)+2rem)] pt-12"
                     >
-                        <p className="eyebrow text-ink-subtle mb-4">
+                        <p className="eyebrow mb-4 text-ink-subtle">
                             {t('case.contents')}
                         </p>
-                        <ol className="border-line flex flex-col gap-2 border-s">
+                        <ol className="flex flex-col gap-2 border-s border-line">
                             {visibleSections.map((section, index) => (
                                 <li key={section.id}>
                                     <a
                                         href={`#${section.id}`}
-                                        className="text-ink-muted hover:border-ink hover:text-ink -ms-px flex items-baseline gap-3 border-s border-transparent ps-4 text-sm"
+                                        className="-ms-px flex items-baseline gap-3 border-s border-transparent ps-4 text-sm text-ink-muted hover:border-ink hover:text-ink"
                                     >
-                                        <span className="ltr-isolate text-ink-subtle font-mono text-[0.6875rem]">
+                                        <span className="ltr-isolate font-mono text-[0.6875rem] text-ink-subtle">
                                             {String(index + 1).padStart(2, '0')}
                                         </span>
                                         {t(section.titleKey)}
@@ -438,11 +438,11 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                     {project.relatedArticles.length > 0 && (
                         <section
                             aria-labelledby="related-writing"
-                            className="border-line border-t py-12"
+                            className="border-t border-line py-12"
                         >
                             <h2
                                 id="related-writing"
-                                className="eyebrow text-ink-subtle mb-4"
+                                className="eyebrow mb-4 text-ink-subtle"
                             >
                                 {t('case.relatedWriting')}
                             </h2>
@@ -452,7 +452,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                         <Link
                                             to="/writing/$slug"
                                             params={{ slug: article.slug }}
-                                            className="link-draw font-display text-ink text-2xl"
+                                            className="link-draw font-display text-2xl text-ink"
                                         >
                                             {article.title}
                                         </Link>
@@ -466,7 +466,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
 
             <nav
                 aria-label={t('case.adjacent')}
-                className="border-line border-t"
+                className="border-t border-line"
             >
                 <div className="shell grid md:grid-cols-2">
                     {[
@@ -491,11 +491,11 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                 className={cn(
                                     'group flex flex-col gap-3 py-10 md:py-14',
                                     align === 'end'
-                                        ? 'border-line border-t md:items-end md:border-s md:border-t-0 md:ps-10 md:text-end'
+                                        ? 'border-t border-line md:items-end md:border-s md:border-t-0 md:ps-10 md:text-end'
                                         : 'md:pe-10',
                                 )}
                             >
-                                <span className="text-ink-subtle flex items-center gap-2 text-sm">
+                                <span className="flex items-center gap-2 text-sm text-ink-subtle">
                                     {align === 'start' && (
                                         <Icon
                                             aria-hidden
@@ -512,7 +512,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                 </span>
                                 <span
                                     lang="en"
-                                    className="link-draw-target font-display text-ink text-4xl md:text-5xl"
+                                    className="link-draw-target font-display text-4xl text-ink md:text-5xl"
                                 >
                                     {reference.title}
                                 </span>
@@ -523,7 +523,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                 aria-hidden
                                 className={cn(
                                     align === 'end' &&
-                                        'md:border-line md:border-s',
+                                        'md:border-s md:border-line',
                                 )}
                             />
                         ),

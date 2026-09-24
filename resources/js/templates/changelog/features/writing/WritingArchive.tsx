@@ -60,12 +60,12 @@ export function WritingArchive({
                 title={t('archiveWriting.title')}
                 intro={t('archiveWriting.intro')}
                 aside={
-                    <dl className="border-line grid grid-cols-2 gap-4 border-t pt-4 lg:border-t-0 lg:pt-0">
+                    <dl className="grid grid-cols-2 gap-4 border-t border-line pt-4 lg:border-t-0 lg:pt-0">
                         <div>
                             <dt className="eyebrow text-ink-subtle">
                                 {t('archiveWriting.articles')}
                             </dt>
-                            <dd className="ltr-isolate font-display text-ink text-5xl">
+                            <dd className="ltr-isolate font-display text-5xl text-ink">
                                 {allArticles.length}
                             </dd>
                         </div>
@@ -73,7 +73,7 @@ export function WritingArchive({
                             <dt className="eyebrow text-ink-subtle">
                                 {t('archiveWriting.minutes')}
                             </dt>
-                            <dd className="ltr-isolate font-display text-ink text-5xl">
+                            <dd className="ltr-isolate font-display text-5xl text-ink">
                                 {totalMinutes}
                             </dd>
                         </div>
@@ -81,7 +81,7 @@ export function WritingArchive({
                 }
             />
             <div className="shell py-12 md:py-16">
-                <div className="border-line mb-8 flex flex-col gap-5 border-b pb-6">
+                <div className="mb-8 flex flex-col gap-5 border-b border-line pb-6">
                     <SearchInput
                         id="article-search"
                         label={t('archiveWriting.searchLabel')}
@@ -102,7 +102,7 @@ export function WritingArchive({
                         />
                         <p
                             aria-live="polite"
-                            className="text-ink-subtle font-mono text-xs"
+                            className="font-mono text-xs text-ink-subtle"
                         >
                             {t('common.results', { count: articles.length })}
                         </p>

@@ -36,6 +36,21 @@ every template (except the removed language toggle).
 | `ImageAsset` + `imageUrl()` (`/images/{base}-{w}.webp`)         | `ImageData` from Spatie media (see [05](05-media.md))                                                                                                              |
 | `sessionStorage`/`localStorage` template keys                   | Server-side (session) — see Preview                                                                                                                                |
 
+## As built (P3)
+
+- Compatibility layer (decision D17): `resources/js/lib/router.tsx`,
+  `resources/js/lib/content.ts`, English-only `hooks/useTranslation.ts`,
+  `providers/PreferencesProvider.tsx` (theme only, cookie-backed — D19).
+- Inertia pages are generated thin wrappers in `resources/js/pages/<template>/<Page>.tsx`
+  (`SeoHead` + template component + `Page.layout = withTemplateLayout(Layout)`).
+- `shared/inertia/withTemplateLayout.tsx` passes the shared `profile`, `socials` and the deferred
+  `searchIndex` to the template Layout and shows the admin `PreviewBar` while previewing.
+- `shared/inertia/useSearchChange.ts` implements `onSearchChange` with `router.get(..., { only, preserveState, replace })`.
+- `shared/ui/CompanyLogo.tsx` renders uploaded company logos (dark variant aware) on the clients walls,
+  falling back to the template wordmark.
+- Images are `ImageData | null`; `ResponsiveImage` renders a neutral placeholder when nothing was uploaded.
+- One stylesheet `resources/css/app.css` → `resources/js/styles/main.css` (D18).
+
 ## Target structure in `resources/js`
 
 ```

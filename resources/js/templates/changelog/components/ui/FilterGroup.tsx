@@ -32,7 +32,7 @@ export function FilterGroup<T extends string>({
             className={cn(
                 'flex flex-wrap items-center',
                 variant === 'segmented'
-                    ? 'border-line gap-0 rounded-full border p-0.5'
+                    ? 'gap-0 rounded-full border border-line p-0.5'
                     : 'gap-1.5',
                 className,
             )}
@@ -51,7 +51,7 @@ export function FilterGroup<T extends string>({
                             isActive
                                 ? variant === 'segmented'
                                     ? 'bg-signal text-on-signal shadow-[0_6px_18px_-8px_var(--glow-lime)]'
-                                    : 'bg-signal text-on-signal border-transparent shadow-[0_6px_18px_-8px_var(--glow-lime)]'
+                                    : 'border-transparent bg-signal text-on-signal shadow-[0_6px_18px_-8px_var(--glow-lime)]'
                                 : variant === 'segmented'
                                   ? 'text-ink-muted hover:text-ink'
                                   : 'border-line text-ink-muted hover:border-electric/50 hover:bg-electric/10 hover:text-electric',

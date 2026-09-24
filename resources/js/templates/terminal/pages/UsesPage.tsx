@@ -37,10 +37,10 @@ export function UsesPage({ groups }: UsesPageProps) {
                             >
                                 <Icon
                                     aria-hidden
-                                    className="text-tm-primary size-7"
+                                    className="size-7 text-tm-primary"
                                 />
                                 {group.title}
-                                <span className="ltr-isolate text-tm-400 ms-auto text-base font-normal">
+                                <span className="ltr-isolate ms-auto text-base font-normal text-tm-400">
                                     [{group.items.length}]
                                 </span>
                             </h2>
@@ -51,13 +51,13 @@ export function UsesPage({ groups }: UsesPageProps) {
                                 {group.items.map((item) => (
                                     <li
                                         key={item.id}
-                                        className="border-tm-border flex items-start justify-between gap-4 border-b py-4"
+                                        className="flex items-start justify-between gap-4 border-b border-tm-border py-4"
                                     >
                                         <div>
-                                            <p className="text-ink mb-1">
+                                            <p className="mb-1 text-ink">
                                                 {item.name}
                                             </p>
-                                            <p className="text-tm-300 mb-0 text-sm leading-relaxed">
+                                            <p className="mb-0 text-sm leading-relaxed text-tm-300">
                                                 {item.description}
                                             </p>
                                         </div>
@@ -67,7 +67,7 @@ export function UsesPage({ groups }: UsesPageProps) {
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 aria-label={`${item.name} ${t('common.opensNewTab')}`}
-                                                className="border-tm-border text-tm-300 hover:border-tm-primary hover:text-tm-primary inline-flex size-9 shrink-0 items-center justify-center rounded-md border transition-colors"
+                                                className="inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-tm-border text-tm-300 transition-colors hover:border-tm-primary hover:text-tm-primary"
                                             >
                                                 <ArrowUpRight
                                                     aria-hidden

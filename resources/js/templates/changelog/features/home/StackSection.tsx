@@ -63,13 +63,13 @@ export function StackSection({ groups }: { groups: SkillGroup[] }) {
                     <div
                         key={category.id}
                         onPointerMove={handleSpotlightMove}
-                        className="group card-lift border-line bg-raised/60 relative flex flex-col overflow-hidden rounded-2xl border p-6 md:p-7"
+                        className="group card-lift relative flex flex-col overflow-hidden rounded-2xl border border-line bg-raised/60 p-6 md:p-7"
                     >
                         <div
                             aria-hidden
                             className="card-spotlight pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                         />
-                        <div className="border-line relative mb-4 flex flex-col gap-2 border-b pb-4">
+                        <div className="relative mb-4 flex flex-col gap-2 border-b border-line pb-4">
                             <span
                                 aria-hidden
                                 className={cn(
@@ -77,10 +77,10 @@ export function StackSection({ groups }: { groups: SkillGroup[] }) {
                                     accentFill[accentForIndex(groupIndex)],
                                 )}
                             />
-                            <h3 className="font-display text-ink text-[1.75rem] leading-none">
+                            <h3 className="font-display text-[1.75rem] leading-none text-ink">
                                 {category.label}
                             </h3>
-                            <p className="text-ink-subtle text-[0.8125rem]">
+                            <p className="text-[0.8125rem] text-ink-subtle">
                                 {category.description}
                             </p>
                         </div>
@@ -88,17 +88,17 @@ export function StackSection({ groups }: { groups: SkillGroup[] }) {
                             {skills.map((skill) => (
                                 <li
                                     key={skill.id}
-                                    className="border-line flex flex-col gap-2 border-b border-dashed py-3 last:border-b-0"
+                                    className="flex flex-col gap-2 border-b border-dashed border-line py-3 last:border-b-0"
                                 >
                                     <span className="flex items-baseline justify-between gap-3">
                                         <span
                                             lang="en"
-                                            className="text-ink text-[0.9375rem]"
+                                            className="text-[0.9375rem] text-ink"
                                         >
                                             {skill.name}
                                         </span>
                                         {skill.years !== null && (
-                                            <span className="text-ink-subtle shrink-0 font-mono text-[0.6875rem]">
+                                            <span className="shrink-0 font-mono text-[0.6875rem] text-ink-subtle">
                                                 {t('stack.years', {
                                                     count: skill.years,
                                                 })}

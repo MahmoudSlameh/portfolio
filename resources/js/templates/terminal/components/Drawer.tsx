@@ -32,7 +32,7 @@ export function Drawer({ open, onClose, side, label, children }: DrawerProps) {
                 if (event.target === event.currentTarget) onClose();
             }}
             className={cn(
-                'tm-drawer bg-tm-card text-ink fixed inset-y-0 m-0 h-dvh max-h-none w-[340px] max-w-[88vw] overflow-y-auto p-[30px]',
+                'tm-drawer fixed inset-y-0 m-0 h-dvh max-h-none w-[340px] max-w-[88vw] overflow-y-auto bg-tm-card p-[30px] text-ink',
                 side === 'start'
                     ? 'tm-drawer-start start-0 end-auto'
                     : 'tm-drawer-end start-auto end-0',
@@ -43,7 +43,7 @@ export function Drawer({ open, onClose, side, label, children }: DrawerProps) {
                     type="button"
                     onClick={onClose}
                     aria-label={t('nav.close')}
-                    className="hover:bg-tm-tile inline-flex size-10 items-center justify-center rounded-md text-[#62a92b]"
+                    className="inline-flex size-10 items-center justify-center rounded-md text-[#62a92b] hover:bg-tm-tile"
                 >
                     <X aria-hidden className="size-5" />
                 </button>

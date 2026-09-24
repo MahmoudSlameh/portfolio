@@ -45,7 +45,7 @@ export function NotFoundPage() {
         >
             <div
                 ref={boardRef}
-                className="pg-card bg-surface relative flex min-h-[26rem] items-center justify-center gap-3 overflow-hidden p-8 md:gap-6"
+                className="pg-card relative flex min-h-[26rem] items-center justify-center gap-3 overflow-hidden bg-surface p-8 md:gap-6"
                 dir="ltr"
             >
                 {DIGITS.map((digit, index) => (
@@ -65,7 +65,7 @@ export function NotFoundPage() {
                             delay: index * 0.08,
                         }}
                         className={cn(
-                            'pg-display border-edge text-on-pop inline-flex h-40 w-28 cursor-grab touch-none items-center justify-center rounded-3xl border-2 text-[7rem] shadow-[var(--pg-shadow-lg)] select-none sm:h-56 sm:w-40 sm:text-[10rem]',
+                            'pg-display inline-flex h-40 w-28 cursor-grab touch-none items-center justify-center rounded-3xl border-2 border-edge text-[7rem] text-on-pop shadow-[var(--pg-shadow-lg)] select-none sm:h-56 sm:w-40 sm:text-[10rem]',
                             popBg[digit.pop],
                         )}
                     >
@@ -82,11 +82,11 @@ export function NotFoundPage() {
             <div className="mt-10 flex flex-col items-center gap-5 text-center">
                 <h1
                     id="not-found-title"
-                    className="pg-display pg-keep-case text-ink text-[clamp(2.5rem,6vw,4.5rem)]"
+                    className="pg-display pg-keep-case text-[clamp(2.5rem,6vw,4.5rem)] text-ink"
                 >
                     {p('notFound.title')}
                 </h1>
-                <p className="text-ink-muted max-w-xl text-lg">
+                <p className="max-w-xl text-lg text-ink-muted">
                     {p('notFound.body')}
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">

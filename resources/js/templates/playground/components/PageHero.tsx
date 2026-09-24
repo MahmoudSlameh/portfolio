@@ -24,13 +24,13 @@ export function PageHero({
         <header className="pg-shell pt-8 pb-10 md:pt-14 md:pb-14">
             <div
                 className={cn(
-                    'pg-card text-on-pop relative overflow-hidden px-6 py-10 md:px-12 md:py-16',
+                    'pg-card relative overflow-hidden px-6 py-10 text-on-pop md:px-12 md:py-16',
                     popBg[pop],
                 )}
             >
                 <span
                     aria-hidden
-                    className="pg-spin-slow border-on-pop/40 pointer-events-none absolute -end-16 -top-16 size-56 rounded-full border-2 border-dashed"
+                    className="pg-spin-slow pointer-events-none absolute -end-16 -top-16 size-56 rounded-full border-2 border-dashed border-on-pop/40"
                 />
                 <div className="relative flex flex-col items-start gap-6">
                     <div className="flex flex-wrap items-center gap-3">

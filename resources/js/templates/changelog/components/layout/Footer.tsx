@@ -26,15 +26,15 @@ export function Footer({ profile, socials }: FooterProps) {
     };
 
     return (
-        <footer className="border-line bg-surface border-t">
+        <footer className="border-t border-line bg-surface">
             <div className="shell editorial-grid gap-y-12 py-16 md:py-20">
                 <div className="col-span-4 md:col-span-7">
-                    <p className="font-display text-ink text-4xl leading-[1.05] sm:text-5xl">
+                    <p className="font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
                         {t('footer.signoff')}
                     </p>
                     <a
                         href={`mailto:${profile.email}`}
-                        className="link-draw ltr-isolate text-signal-ink mt-6 inline-block font-mono text-sm"
+                        className="link-draw ltr-isolate mt-6 inline-block font-mono text-sm text-signal-ink"
                     >
                         {profile.email}
                     </a>
@@ -73,7 +73,7 @@ export function Footer({ profile, socials }: FooterProps) {
                                 href={social.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="group text-ink-muted hover:text-ink inline-flex items-center gap-2"
+                                className="group inline-flex items-center gap-2 text-ink-muted hover:text-ink"
                             >
                                 <BrandIcon
                                     icon={social.icon}
@@ -90,7 +90,7 @@ export function Footer({ profile, socials }: FooterProps) {
                     ))}
                 </ul>
 
-                <div className="border-line text-ink-subtle col-span-4 flex flex-col gap-4 border-t pt-6 text-[0.8125rem] md:col-span-12 md:flex-row md:items-center md:justify-between">
+                <div className="col-span-4 flex flex-col gap-4 border-t border-line pt-6 text-[0.8125rem] text-ink-subtle md:col-span-12 md:flex-row md:items-center md:justify-between">
                     <p>
                         © {year} {profile.name}. {t('footer.rights')}{' '}
                         <span className="hidden md:inline">
@@ -104,7 +104,7 @@ export function Footer({ profile, socials }: FooterProps) {
                         <button
                             type="button"
                             onClick={handleBackToTop}
-                            className="text-ink-muted hover:text-ink inline-flex items-center gap-1.5 font-medium"
+                            className="inline-flex items-center gap-1.5 font-medium text-ink-muted hover:text-ink"
                         >
                             <ArrowUp aria-hidden className="size-3.5" />
                             {t('footer.backToTop')}

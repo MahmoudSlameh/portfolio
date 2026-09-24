@@ -20,7 +20,7 @@ export function Tooltip({
             <span
                 aria-hidden
                 className={cn(
-                    'bg-ink text-paper pointer-events-none absolute start-1/2 z-50 -translate-x-1/2 rounded-[3px] px-2 py-1 text-[0.6875rem] font-medium whitespace-nowrap opacity-0 transition-opacity duration-150 group-focus-within/tooltip:opacity-100 group-hover/tooltip:opacity-100 rtl:translate-x-1/2',
+                    'pointer-events-none absolute start-1/2 z-50 -translate-x-1/2 rounded-[3px] bg-ink px-2 py-1 text-[0.6875rem] font-medium whitespace-nowrap text-paper opacity-0 transition-opacity duration-150 group-focus-within/tooltip:opacity-100 group-hover/tooltip:opacity-100 rtl:translate-x-1/2',
                     side === 'bottom' ? 'top-full mt-2' : 'bottom-full mb-2',
                 )}
             >
@@ -55,7 +55,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
                 type={type}
                 aria-label={label}
                 className={cn(
-                    'text-ink-muted hover:bg-surface hover:text-ink inline-flex size-9 items-center justify-center rounded-[4px] transition-colors duration-200',
+                    'inline-flex size-9 items-center justify-center rounded-[4px] text-ink-muted transition-colors duration-200 hover:bg-surface hover:text-ink',
                     className,
                 )}
                 {...props}

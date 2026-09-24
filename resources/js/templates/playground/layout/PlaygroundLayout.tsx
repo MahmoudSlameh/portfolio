@@ -17,7 +17,7 @@ export function PlaygroundLayout({
         <>
             <a
                 href="#main"
-                className="border-edge bg-pop-yellow text-on-pop fixed start-4 top-3 z-[60] -translate-y-24 rounded-full border-2 px-5 py-2.5 text-sm font-bold transition-transform focus-visible:translate-y-0"
+                className="fixed start-4 top-3 z-[60] -translate-y-24 rounded-full border-2 border-edge bg-pop-yellow px-5 py-2.5 text-sm font-bold text-on-pop transition-transform focus-visible:translate-y-0"
             >
                 {t('nav.skip')}
             </a>
