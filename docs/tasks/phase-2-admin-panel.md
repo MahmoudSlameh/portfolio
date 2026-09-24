@@ -102,11 +102,11 @@ entered through the UI.
 
 ---
 
-## P2-09 · Articles resource — `todo`
+## P2-09 · Articles resource — `done`
 
-- [ ] Builder with all 7 block types (04), body images collection + image
+- [x] Builder with all 7 block types (04), body images collection + image
       block select.
-- [ ] Draft/Published tabs with counts; reading time placeholder.
+- [x] Draft/Published tabs with counts; reading time placeholder.
 
 **Acceptance**: an article equal to `ledgers-are-just-logs` can be entered;
 drafts are not public (verified in P3).
@@ -163,3 +163,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-06: Simple (modal) resources: Certifications (badge, issued/expires with Expired badge, verify-link action, reorderable) and Testimonials (quote, author, company select with logos + quick create, avatar with InitialsAvatar fallback, reorderable).
 - 2026-09-24 — P2-07: SkillCategoryResource (simple, reorderable, skills count) + SkillResource (simple, grouped by category incl. 'Stack only', inline proficiency SelectColumn, usage via withCount experiences/projects, reorderable, stack-only filter). Skill::projects() added.
 - 2026-09-24 — P2-08: ProjectForm: tabs (Basics, Story, Architecture with node/edge repeaters — edge selects read ../../nodes, Metrics & links, Gallery = relationship repeater with per-image Spatie upload + alt + caption, SEO with length hints) + fixed side column (cover 16:9 + alt, publishing/schedule, featured). Table: cover thumb, badges, stack, featured toggle, published/scheduled icon, filters incl. trashed, replicate (as draft copy), restore/force delete, 'View' on site. Relation managers via relatedResource: Company → experiences/projects/testimonials, Experience → projects (associate/dissociate). Tests: upload inside a repeater must be passed as an array in fillForm.
+- 2026-09-24 — P2-09: ArticleForm: Builder with paragraph/heading(anchor)/code(CodeEditor, language-aware)/quote/list/callout/image blocks; image block picks from body_images media (thumbnails, allowHtml) — upload, save, then place. Side: status toggle, publish date, reading time, related projects, cover+alt, images, SEO. List tabs All/Published/Drafts with counts; scheduled shown as warning badge; tag filter (whereJsonContains); View on site.
