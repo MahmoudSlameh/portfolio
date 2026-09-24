@@ -2,8 +2,9 @@
 
 ## Source of truth
 
-`Reference-Frontend/` is a standalone Vite + TanStack Router SPA with mock
-data. It contains three templates:
+`Reference-Frontend/` was a standalone Vite + TanStack Router SPA with mock
+data. It was ported into `resources/js` and removed in P5-03 (restore it with
+`git checkout eb06a9a -- Reference-Frontend` if you need to compare). It contained three templates:
 
 | Id           | Name       | Style                                                                | Fonts                                      |
 | ------------ | ---------- | -------------------------------------------------------------------- | ------------------------------------------ |
@@ -11,8 +12,8 @@ data. It contains three templates:
 | `playground` | Playground | Playful bento, stickers, tickets, dock navigation                    | see `templates/playground/index.ts`        |
 | `terminal`   | Terminal   | Dark dev-terminal, mono type, slider, services                       | DM Mono (+ IBM Plex Sans Arabic → drop)    |
 
-Run it to look at the designs:
-`cd Reference-Frontend && npm install && npm run dev` then
+To look at the original designs, restore the folder as above, then run
+`cd Reference-Frontend && npm install && npm run dev` and open
 `/?template=terminal`, `/?template=playground`, `/?template=changelog`.
 
 **The port must be visually identical** to the reference for every page of

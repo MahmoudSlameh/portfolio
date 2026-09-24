@@ -59,7 +59,7 @@ app/
     Seo/SeoData.php, Seo/JsonLd.php
     Media/ImageData.php             # Media → { src, srcSet, width, height, alt }
 database/
-  migrations/ factories/ seeders/ (DemoContentSeeder imports Reference-Frontend data)
+  migrations/ factories/ seeders/ (DemoContentSeeder imports the demo JSON + images in database/seeders)
 resources/
   js/
     app.tsx  ssr.tsx

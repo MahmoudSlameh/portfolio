@@ -37,7 +37,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
 /**
- * Server-side port of Reference-Frontend/src/lib/content.ts: every query the templates need,
+ * Server-side port of the reference templates' content helpers (src/lib/content.ts): every query the templates need,
  * returned in the exact shapes of resources/js/types/content.ts.
  *
  * @phpstan-type ProjectFilters array{featured?: bool|null, search?: string|null, category?: string|null, tech?: string|null, sort?: 'newest'|'oldest'|null}

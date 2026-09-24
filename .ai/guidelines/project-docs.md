@@ -13,5 +13,6 @@ Before doing any work:
    criteria.
 3. Keep docs and task statuses updated in the same commit as the code.
 
-`Reference-Frontend/` is the design source of truth for the three public
-templates (changelog, playground, terminal) — port it, don't redesign it.
+The three public templates (changelog, playground, terminal) were ported from
+a reference design that was removed after the port (see docs/09-decisions.md, D24);
+keep their look — extend them, don't redesign them.

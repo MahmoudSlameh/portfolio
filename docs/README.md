@@ -7,7 +7,7 @@
 ## ملخص سريع (Arabic summary)
 
 مشروع Portfolio شخصي مبني على **Laravel 13 + Filament 5 (لوحة التحكم) + Inertia 3 + React 19 (الواجهة) مع SSR لدعم الـ SEO**.
-الواجهة الأمامية فيها 3 قوالب (`changelog` · `playground` · `terminal`) منقولة من مجلد `Reference-Frontend/`.
+الواجهة الأمامية فيها 3 قوالب (`changelog` · `playground` · `terminal`) منقولة من مجلد `Reference-Frontend/` (انحذف بعد النقل، آخر commit فيه `eb06a9a`).
 من لوحة التحكم بتختار القالب الفعّال، وبتدير **كل** المحتوى: البروفايل والـ Bio، الخبرات، الدراسة، الشركات والعملاء، المشاريع، المقالات، الكتب، المهارات… وكل الصور عن طريق **Spatie Media Library**.
 اللغة الوحيدة هي **الإنكليزية**.
 
@@ -36,7 +36,7 @@
    (`SpatieMediaLibraryFileUpload` / `SpatieMediaLibraryImageColumn`). Never
    store image paths in plain string columns.
 3. **English only.** No locale switching, no RTL, no `Localized<T>` objects —
-   the `en`/`ar` structures in `Reference-Frontend` are flattened to plain
+   the `en`/`ar` structures of the reference design were flattened to plain
    values when ported.
 4. **SEO first.** Every public page is server-side rendered (Inertia SSR) and
    ships its title, description, canonical, Open Graph and JSON-LD in the
@@ -53,7 +53,8 @@
 composer install
 cp .env.example .env && php artisan key:generate
 touch database/database.sqlite
-php artisan migrate --seed          # seeds demo content from Reference-Frontend
+php artisan migrate --seed          # admin user + settings
+php artisan db:seed --class=DemoContentSeeder   # optional demo portfolio
 php artisan storage:link
 npm install
 composer dev                        # serve + queue + vite

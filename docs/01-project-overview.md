@@ -65,9 +65,9 @@ Management for **everything** the templates display — see
   with no resources.
 - `Reference-Frontend/` — a standalone Vite + TanStack Router SPA containing the
   **three templates** and all mock data (`src/data/*.ts`) and types
-  (`src/types/content.ts`). This is the **design source of truth**; it is
-  ported into `resources/js` and the data model is derived from it. It is
-  deleted at the end of the project (task P5).
+  (`src/types/content.ts`). It was the design source of truth, was ported into
+  `resources/js`, and was **removed in P5-03** (last present in commit
+  `eb06a9a`, see D24).
 - `filament/spatie-laravel-media-library-plugin` has been added to
   `composer.json` / `composer.lock` (run `composer install` to fetch it).
 

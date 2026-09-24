@@ -1,7 +1,7 @@
 # 03 · Data model
 
-Derived from `Reference-Frontend/src/types/content.ts` and
-`Reference-Frontend/src/data/*.ts`, extended with the owner's requirements and
+Derived from the reference design's `src/types/content.ts` and
+`src/data/*.ts` (the `Reference-Frontend/` folder, removed in P5-03), extended with the owner's requirements and
 flattened to **English only** (every `Localized<T>` becomes `T`).
 
 Conventions for every content table unless stated otherwise:
@@ -409,7 +409,7 @@ export interface CareerEntry extends Experience {
 }
 ```
 
-Every other derived type from `Reference-Frontend/src/lib/content.ts`
+Every other derived type from the reference `src/lib/content.ts`
 (`SkillGroup`, `ProjectDetail`, `ArticleSummary`, `ArticleDetail`,
 `BookStats`, `TestimonialEntry`, `NowDetail`, `SearchIndex`, `ProjectFacets`)
 is computed **in PHP** with the same algorithm and returned as props.
@@ -419,9 +419,9 @@ is computed **in PHP** with the same algorithm and returned as props.
 - `DatabaseSeeder` → `AdminUserSeeder` (from `ADMIN_EMAIL` / `ADMIN_PASSWORD`
   env) + `SiteSettingSeeder`.
 - `DemoContentSeeder` (optional, `php artisan db:seed --class=DemoContentSeeder`)
-  imports the reference portfolio from `database/seeders/data/*.json` (exported
-  from `Reference-Frontend/src/data/*.ts` by `node scripts/export-reference-data.cjs`,
-  English values only) and attaches images from `database/seeders/images/*.webp`
+  imports the reference portfolio from `database/seeders/data/*.json` (a one-off
+  export of the reference design's `src/data/*.ts`, English values only; the
+  export script was removed with the reference in P5-03) and attaches images from `database/seeders/images/*.webp`
   (largest width of each reference image). Idempotent: `updateOrCreate` on natural
   keys (slug, credential id, role + start month…); images only added to empty
   collections.

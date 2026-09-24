@@ -1,6 +1,6 @@
 /**
  * Content shapes sent by Laravel (app/Http/Resources) to the templates.
- * Ported from Reference-Frontend/src/types/content.ts — English only, images from Spatie Media Library.
+ * Ported from the reference templates' src/types/content.ts — English only, images from Spatie Media Library.
  * Keep in sync with the PHP resources (guarded by tests/Feature/ResourceShapesTest.php).
  */
 

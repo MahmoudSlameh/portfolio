@@ -26,8 +26,8 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 
 /**
- * Imports the demo portfolio from Reference-Frontend (exported to database/seeders/data/*.json,
- * images in database/seeders/images). Safe to run repeatedly.
+ * Imports the demo portfolio (database/seeders/data/*.json, images in database/seeders/images),
+ * originally exported from the reference templates. Safe to run repeatedly.
  */
 class DemoContentSeeder extends Seeder
 {

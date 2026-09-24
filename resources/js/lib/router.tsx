@@ -1,6 +1,6 @@
 /**
  * A small TanStack-Router-compatible API (Link, useRouterState, useNavigate) on top of Inertia,
- * so the templates ported from Reference-Frontend keep their navigation code unchanged.
+ * so the templates ported from the reference design keep their navigation code unchanged.
  */
 import { Link as InertiaLink, router, usePage } from '@inertiajs/react';
 import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react';
