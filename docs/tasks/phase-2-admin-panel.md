@@ -122,11 +122,11 @@ socials simple resource, `EditNowPage` singleton).
 
 ---
 
-## P2-11 · Inbox (contact messages) — `todo`
+## P2-11 · Inbox (contact messages) — `done`
 
-- [ ] Read-only resource, unread tab/badge, view infolist, mark read/unread,
+- [x] Read-only resource, unread tab/badge, view infolist, mark read/unread,
       reply (mailto) action.
-- [ ] `NewContactMessage` notification (database + mail, queued).
+- [x] `NewContactMessage` notification (database + mail, queued).
 
 **Acceptance**: creating a `ContactMessage` notifies admins; badge count
 updates.
@@ -165,3 +165,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-08: ProjectForm: tabs (Basics, Story, Architecture with node/edge repeaters — edge selects read ../../nodes, Metrics & links, Gallery = relationship repeater with per-image Spatie upload + alt + caption, SEO with length hints) + fixed side column (cover 16:9 + alt, publishing/schedule, featured). Table: cover thumb, badges, stack, featured toggle, published/scheduled icon, filters incl. trashed, replicate (as draft copy), restore/force delete, 'View' on site. Relation managers via relatedResource: Company → experiences/projects/testimonials, Experience → projects (associate/dissociate). Tests: upload inside a repeater must be passed as an array in fillForm.
 - 2026-09-24 — P2-09: ArticleForm: Builder with paragraph/heading(anchor)/code(CodeEditor, language-aware)/quote/list/callout/image blocks; image block picks from body_images media (thumbnails, allowHtml) — upload, save, then place. Side: status toggle, publish date, reading time, related projects, cover+alt, images, SEO. List tabs All/Published/Drafts with counts; scheduled shown as warning badge; tag filter (whereJsonContains); View on site.
 - 2026-09-24 — P2-10: Books (reading status toggles, finished month + star rating only when read, cover image OR generated cover with live preview — resources/views/filament/components/book-cover-preview.blade.php, inline styles), Uses groups (relationship repeater items with image), Socials (simple, label auto from platform, http/https/mailto links, reorderable), EditNowPage singleton (focus/learning repeaters, picked reading books, View /now).
+- 2026-09-24 — P2-11: ContactMessageResource: read-only (list + view), Unread/All tabs (opens on Unread when there are some), unread rows highlighted/bold, view page marks as read, reply (mailto, stamps replied_at), mark read/unread, bulk mark read, sidebar badge. ContactMessageObserver (#[ObservedBy]) → Filament database notification to all users + queued NewContactMessage mail to contact_recipient ?: profile email ?: ADMIN_EMAIL.

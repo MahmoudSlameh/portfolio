@@ -62,7 +62,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P2-08 | Projects resource                                                  | P2-05, P2-07, P1-05 | done   |
 | P2-09 | Articles resource                                                  | P2-08, P1-06        | done   |
 | P2-10 | Books, Uses, Socials, Now page                                     | P2-01, P1-06        | done   |
-| P2-11 | Inbox (contact messages)                                           | P2-01, P1-06        | todo   |
+| P2-11 | Inbox (contact messages)                                           | P2-01, P1-06        | done   |
 | P2-12 | Appearance (templates) & Site settings pages                       | P2-01, P1-02        | todo   |
 | P2-13 | Dashboard widgets                                                  | P2-03…P2-11         | todo   |
 | P3-01 | Frontend deps, folder structure, shared code port                  | P0-01               | todo   |

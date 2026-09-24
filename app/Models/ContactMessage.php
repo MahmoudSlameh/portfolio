@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\ContactTopic;
+use App\Observers\ContactMessageObserver;
 use Carbon\CarbonImmutable;
 use Database\Factories\ContactMessageFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
+#[ObservedBy(ContactMessageObserver::class)]
 #[Fillable(['name', 'email', 'topic', 'message', 'ip_address', 'user_agent', 'read_at', 'replied_at'])]
 class ContactMessage extends Model
 {
