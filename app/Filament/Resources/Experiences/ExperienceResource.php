@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Experiences;
 use App\Filament\Resources\Experiences\Pages\CreateExperience;
 use App\Filament\Resources\Experiences\Pages\EditExperience;
 use App\Filament\Resources\Experiences\Pages\ListExperiences;
+use App\Filament\Resources\Experiences\RelationManagers\ProjectsRelationManager;
 use App\Filament\Resources\Experiences\Schemas\ExperienceForm;
 use App\Filament\Resources\Experiences\Tables\ExperiencesTable;
 use App\Models\Experience;
@@ -44,7 +45,7 @@ class ExperienceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProjectsRelationManager::class,
         ];
     }
 

@@ -90,12 +90,12 @@ Per 04 (grouped table, inline proficiency, reorder within group).
 
 ---
 
-## P2-08 · Projects resource — `todo`
+## P2-08 · Projects resource — `done`
 
-- [ ] Tabs: Basics, Story, Architecture, Metrics & links, Gallery
+- [x] Tabs: Basics, Story, Architecture, Metrics & links, Gallery
       (relationship repeater with per-image alt/caption), SEO.
-- [ ] Edge selects populated from node ids (`Get`).
-- [ ] Soft deletes + restore; view-on-site action.
+- [x] Edge selects populated from node ids (`Get`).
+- [x] Soft deletes + restore; view-on-site action.
 
 **Acceptance**: a project equal to the reference `ledgerline` can be fully
 entered through the UI.
@@ -162,3 +162,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-04: EducationForm: qualification, specialization, grade, institution (+url, country, city), month start/end + 'currently studying' toggle, description, achievements, logo + certificate uploads. Table with logo, grade badge, period/Present, 'currently studying' filter.
 - 2026-09-24 — P2-06: Simple (modal) resources: Certifications (badge, issued/expires with Expired badge, verify-link action, reorderable) and Testimonials (quote, author, company select with logos + quick create, avatar with InitialsAvatar fallback, reorderable).
 - 2026-09-24 — P2-07: SkillCategoryResource (simple, reorderable, skills count) + SkillResource (simple, grouped by category incl. 'Stack only', inline proficiency SelectColumn, usage via withCount experiences/projects, reorderable, stack-only filter). Skill::projects() added.
+- 2026-09-24 — P2-08: ProjectForm: tabs (Basics, Story, Architecture with node/edge repeaters — edge selects read ../../nodes, Metrics & links, Gallery = relationship repeater with per-image Spatie upload + alt + caption, SEO with length hints) + fixed side column (cover 16:9 + alt, publishing/schedule, featured). Table: cover thumb, badges, stack, featured toggle, published/scheduled icon, filters incl. trashed, replicate (as draft copy), restore/force delete, 'View' on site. Relation managers via relatedResource: Company → experiences/projects/testimonials, Experience → projects (associate/dissociate). Tests: upload inside a repeater must be passed as an array in fillForm.
