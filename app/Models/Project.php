@@ -9,6 +9,7 @@ use App\Models\Concerns\HasSkills;
 use App\Models\Concerns\HasSortOrder;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Support\Media\MimeTypes;
+use Carbon\CarbonImmutable;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -60,7 +62,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $meta_title
  * @property string|null $meta_description
  * @property bool $is_published
- * @property Carbon|null $published_at
+ * @property CarbonImmutable|null $published_at
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -68,6 +70,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Company|null $company
  * @property-read Experience|null $experience
  * @property-read Collection<int, ProjectGalleryItem> $galleryItems
+ * @property-read Collection<int, Article> $articles
  * @property-read Collection<int, Skill> $skills
  * @property-read list<string> $stack
  */
@@ -120,7 +123,7 @@ class Project extends Model implements HasMedia
             'metrics' => 'array',
             'links' => 'array',
             'is_published' => 'boolean',
-            'published_at' => 'datetime',
+            'published_at' => 'immutable_datetime',
             'sort_order' => 'integer',
         ];
     }
@@ -180,6 +183,14 @@ class Project extends Model implements HasMedia
     public function experience(): BelongsTo
     {
         return $this->belongsTo(Experience::class);
+    }
+
+    /**
+     * @return BelongsToMany<Article, $this>
+     */
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class);
     }
 
     /**

@@ -20,7 +20,7 @@ Conventions for every content table unless stated otherwise:
 ## Entity overview
 
 ```
-Profile (singleton) ─┐       SiteSetting (singleton)      NowPage (singleton) ─┬─< now_page_book >── Book
+Profile (singleton) ─┐       SiteSetting (singleton)      NowPage (singleton) ─┬─< book_now_page >── Book
                      │
 Company ─┬─< Experience >─┬─< skillables >── Skill >── SkillCategory
          │                └─< Project >──┬─< skillables
@@ -127,7 +127,7 @@ Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`
 | learning     | json `[{title, body}]` | `learning`     |
 | updated_at   | timestamp              | `updatedAt`    |
 
-Relation: `readingBooks()` belongsToMany `Book` via `now_page_book`
+Relation: `readingBooks()` belongsToMany `Book` via `book_now_page`
 (`now_page_id`, `book_id`, `sort_order`) → `readingBookIds`. Default: when the
 pivot is empty, fall back to books with status `reading`.
 

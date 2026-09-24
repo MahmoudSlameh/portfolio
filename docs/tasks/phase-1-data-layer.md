@@ -86,12 +86,12 @@ metrics, links, 2 gallery items with fake images.
 
 ---
 
-## P1-06 · Content models — `todo`
+## P1-06 · Content models — `done`
 
-- [ ] `articles` (SoftDeletes, `body` json, `tags` json) + `article_project`.
-- [ ] `books`, `uses_groups`, `uses_items`, `socials`, `contact_messages`,
-      `now_page_book`.
-- [ ] `Article::readingMinutes()` — same algorithm as
+- [x] `articles` (SoftDeletes, `body` json, `tags` json) + `article_project`.
+- [x] `books`, `uses_groups`, `uses_items`, `socials`, `contact_messages`,
+      `book_now_page`.
+- [x] `Article::readingMinutes()` — same algorithm as
       `Reference-Frontend/src/lib/content.ts#countWords` (220 wpm).
 
 **Acceptance**: reading time test matches the reference result for the
@@ -154,3 +154,4 @@ twice → no duplicates; every template page later renders like the reference.
 - 2026-09-24 — P1-03: Company/Experience/Education/Certification/Testimonial + factories (states: current, remote, openSource, client, hidden). HasVisibilityAndOrder concern (#[Scope]), #[RouteKey('slug')] on Company, App\Support\Countries (symfony/intl, flags), Support\Content\Location, Support\Content\ChangelogMetadata. Experience skills() comes in P1-04.
 - 2026-09-24 — P1-04: skill_categories, skills (stack-only when no category), skillables morph pivot with sort_order; HasSkills (skills(), syncSkillsInOrder(), stack). Also: GeneratesSlug/HasSortOrder concerns and an enforced morph map (short aliases in media/skillables).
 - 2026-09-24 — P1-05: projects (SoftDeletes, json story/architecture/metrics/links, published()/featured() scopes, scheduled publishing via published_at) + project_gallery_items (own image/alt/caption, touches project). Architecture shape documented as phpstan-type on Project.
+- 2026-09-24 — P1-06: articles (Builder body [{type,data}], wordCount/readingMinutes match the reference: fixture tests/Fixtures/ledgers-article.json = 340 words / 2 min; publishing stamps published_at), article_project, books, uses groups/items, socials, contact_messages (unread scope, mark read/unread), book_now_page pivot + NowPage::currentlyReading() fallback. Datetime casts are immutable_datetime (app uses CarbonImmutable).
