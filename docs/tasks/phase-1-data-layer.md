@@ -74,12 +74,12 @@ order.
 
 ---
 
-## P1-05 · Projects — `todo`
+## P1-05 · Projects — `done`
 
-- [ ] `projects` (SoftDeletes) + `project_gallery_items` (HasMedia `image`).
-- [ ] Casts for json fields; `Architecture` json validated shape (value
+- [x] `projects` (SoftDeletes) + `project_gallery_items` (HasMedia `image`).
+- [x] Casts for json fields; `Architecture` json validated shape (value
       object or array shape docblock).
-- [ ] Scopes `published()`, `featured()`; route key `slug`.
+- [x] Scopes `published()`, `featured()`; route key `slug`.
 
 **Acceptance**: factory creates a complete project incl. architecture,
 metrics, links, 2 gallery items with fake images.
@@ -153,3 +153,4 @@ twice → no duplicates; every template page later renders like the reference.
 - 2026-09-24 — P1-02: IsSingleton + RegistersImageConversions (thumb/webp/og) concerns, App\Support\Media\MimeTypes. DB defaults are mirrored in model $attributes (create() does not refresh). NowPage books pivot left for P1-06. Media smoke test passes (GD WebP).
 - 2026-09-24 — P1-03: Company/Experience/Education/Certification/Testimonial + factories (states: current, remote, openSource, client, hidden). HasVisibilityAndOrder concern (#[Scope]), #[RouteKey('slug')] on Company, App\Support\Countries (symfony/intl, flags), Support\Content\Location, Support\Content\ChangelogMetadata. Experience skills() comes in P1-04.
 - 2026-09-24 — P1-04: skill_categories, skills (stack-only when no category), skillables morph pivot with sort_order; HasSkills (skills(), syncSkillsInOrder(), stack). Also: GeneratesSlug/HasSortOrder concerns and an enforced morph map (short aliases in media/skillables).
+- 2026-09-24 — P1-05: projects (SoftDeletes, json story/architecture/metrics/links, published()/featured() scopes, scheduled publishing via published_at) + project_gallery_items (own image/alt/caption, touches project). Architecture shape documented as phpstan-type on Project.

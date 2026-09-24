@@ -43,6 +43,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Experience> $experiences
  * @property-read Collection<int, Testimonial> $testimonials
+ * @property-read Collection<int, Project> $projects
  * @property-read string|null $location_label
  * @property-read string|null $resolved_period
  */
@@ -106,6 +107,14 @@ class Company extends Model implements HasMedia
     public function testimonials(): HasMany
     {
         return $this->hasMany(Testimonial::class);
+    }
+
+    /**
+     * @return HasMany<Project, $this>
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 
     /**

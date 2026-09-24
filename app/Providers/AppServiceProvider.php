@@ -8,6 +8,8 @@ use App\Models\Education;
 use App\Models\Experience;
 use App\Models\NowPage;
 use App\Models\Profile;
+use App\Models\Project;
+use App\Models\ProjectGalleryItem;
 use App\Models\SiteSetting;
 use App\Models\Skill;
 use App\Models\SkillCategory;
@@ -56,6 +58,8 @@ class AppServiceProvider extends ServiceProvider
             'testimonial' => Testimonial::class,
             'skill_category' => SkillCategory::class,
             'skill' => Skill::class,
+            'project' => Project::class,
+            'project_gallery_item' => ProjectGalleryItem::class,
         ]);
     }
 

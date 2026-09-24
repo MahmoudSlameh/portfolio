@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -43,6 +44,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Company|null $company
+ * @property-read Collection<int, Project> $projects
  * @property-read Collection<int, Skill> $skills
  * @property-read list<string> $stack
  * @property-read bool $is_current
@@ -95,6 +97,14 @@ class Experience extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * @return HasMany<Project, $this>
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 
     /**
