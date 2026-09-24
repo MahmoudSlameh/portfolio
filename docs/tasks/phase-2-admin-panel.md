@@ -133,12 +133,12 @@ updates.
 
 ---
 
-## P2-12 · Appearance & Site settings — `todo`
+## P2-12 · Appearance & Site settings — `done`
 
-- [ ] `Appearance` page: template cards (screenshots in
+- [x] `Appearance` page: template cards (screenshots in
       `public/templates/<id>.webp` — take them from the reference app),
       Activate (confirm) + Preview actions (admin-only preview).
-- [ ] `SiteSettings` page: General / SEO / Advanced tabs; "Rebuild caches"
+- [x] `SiteSettings` page: General / SEO / Advanced tabs; "Rebuild caches"
       action.
 
 **Acceptance**: activating a template changes what `/` renders (after P3);
@@ -166,3 +166,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-09: ArticleForm: Builder with paragraph/heading(anchor)/code(CodeEditor, language-aware)/quote/list/callout/image blocks; image block picks from body_images media (thumbnails, allowHtml) — upload, save, then place. Side: status toggle, publish date, reading time, related projects, cover+alt, images, SEO. List tabs All/Published/Drafts with counts; scheduled shown as warning badge; tag filter (whereJsonContains); View on site.
 - 2026-09-24 — P2-10: Books (reading status toggles, finished month + star rating only when read, cover image OR generated cover with live preview — resources/views/filament/components/book-cover-preview.blade.php, inline styles), Uses groups (relationship repeater items with image), Socials (simple, label auto from platform, http/https/mailto links, reorderable), EditNowPage singleton (focus/learning repeaters, picked reading books, View /now).
 - 2026-09-24 — P2-11: ContactMessageResource: read-only (list + view), Unread/All tabs (opens on Unread when there are some), unread rows highlighted/bold, view page marks as read, reply (mailto, stamps replied_at), mark read/unread, bulk mark read, sidebar badge. ContactMessageObserver (#[ObservedBy]) → Filament database notification to all users + queued NewContactMessage mail to contact_recipient ?: profile email ?: ADMIN_EMAIL.
+- 2026-09-24 — P2-12: Appearance page built from schema components (no custom Blade): card per Template with screenshot (public/templates/*.webp, captured from Reference-Frontend with Playwright), Active badge, 'activate' page action with arguments (confirmation, flushes ContentCache), Preview link (admin-only preview per D13 — no public-preview toggle). SiteSettings singleton: General (site name, separator, contact recipient, page toggles), SEO (default description, X handle, indexable, default OG image 1.91:1, verification codes), Advanced (analytics snippet, favicon); 'Rebuild caches'. New App\Support\Content\ContentCache (versioned keys; flush = bump version).
