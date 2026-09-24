@@ -7,6 +7,7 @@ use App\Enums\EmploymentType;
 use App\Enums\WorkMode;
 use App\Models\Concerns\HasSkills;
 use App\Models\Concerns\HasVisibilityAndOrder;
+use App\Support\Content\ChangelogMetadata;
 use App\Support\Content\Location;
 use Carbon\CarbonImmutable;
 use Database\Factories\ExperienceFactory;
@@ -154,5 +155,32 @@ class Experience extends Model
     {
         return Attribute::get(fn (): string => $this->commit_hash
             ?? substr(sha1("{$this->id}:{$this->role}:{$this->organization}"), 0, 7));
+    }
+
+    /**
+     * @var array{branch: CareerBranch, version: string, commit: string, message: string}|null
+     */
+    protected ?array $changelogMetadata = null;
+
+    /**
+     * Attach metadata computed for the whole career (see ChangelogMetadata::for()).
+     *
+     * @param  array{branch: CareerBranch, version: string, commit: string, message: string}  $metadata
+     */
+    public function withChangelog(array $metadata): static
+    {
+        $this->changelogMetadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * Changelog metadata attached for the whole career, or computed for this role alone.
+     *
+     * @return array{branch: CareerBranch, version: string, commit: string, message: string}
+     */
+    public function changelog(): array
+    {
+        return $this->changelogMetadata ?? ChangelogMetadata::for([$this])[$this->id];
     }
 }

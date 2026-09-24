@@ -99,31 +99,31 @@ metrics, links, 2 gallery items with fake images.
 
 ---
 
-## P1-07 · Derived-data support classes — `todo`
+## P1-07 · Derived-data support classes — `done`
 
 Port `Reference-Frontend/src/lib/content.ts` to PHP (`app/Support/Content`):
 
-- [ ] `CareerQuery` → `CareerEntry[]` (sorted by start desc, company, project refs).
-- [ ] `ProjectQuery` (filters: featured, search, category, tech, sort) +
+- [x] `CareerQuery` → `CareerEntry[]` (sorted by start desc, company, project refs).
+- [x] `ProjectQuery` (filters: featured, search, category, tech, sort) +
       `ProjectFacets`; `ProjectDetail` (prev/next by year desc, related articles).
-- [ ] `ArticleQuery` (search, tag) + tags list; `ArticleDetail` (prev/next,
+- [x] `ArticleQuery` (search, tag) + tags list; `ArticleDetail` (prev/next,
       related projects).
-- [ ] `BookQuery` + `BookStats` (per-year counts, averages).
-- [ ] `SkillGroups`, `SearchIndex`, `NowDetail`.
+- [x] `BookQuery` + `BookStats` (per-year counts, averages).
+- [x] `SkillGroups`, `SearchIndex`, `NowDetail`.
 
 **Acceptance**: Pest tests replicate the reference behaviour (sorting,
 filters, prev/next, stats) using DemoContent-like factories.
 
 ---
 
-## P1-08 · API Resources + `ImageData` — `todo`
+## P1-08 · API Resources + `ImageData` — `done`
 
-- [ ] `app/Support/Media/ImageData.php` (see 05).
-- [ ] One `JsonResource` per TS interface in `resources/js/types/content.ts`
+- [x] `app/Support/Media/ImageData.php` (see 05).
+- [x] One `JsonResource` per TS interface in `resources/js/types/content.ts`
       (port the TS file first, removing `Localized`, changing `ImageAsset` →
       `ImageData`, `Education.start/end` → `string`/`string|null`).
-- [ ] Dates serialized `YYYY-MM` (month fields) / ISO date (publishedAt).
-- [ ] Resource keys are **camelCase** exactly like the TS interfaces.
+- [x] Dates serialized `YYYY-MM` (month fields) / ISO date (publishedAt).
+- [x] Resource keys are **camelCase** exactly like the TS interfaces.
 
 **Acceptance**: snapshot-style tests assert key sets of each resource equal
 the TS interface keys (keep a PHP array of expected keys per resource).
@@ -155,3 +155,5 @@ twice → no duplicates; every template page later renders like the reference.
 - 2026-09-24 — P1-04: skill_categories, skills (stack-only when no category), skillables morph pivot with sort_order; HasSkills (skills(), syncSkillsInOrder(), stack). Also: GeneratesSlug/HasSortOrder concerns and an enforced morph map (short aliases in media/skillables).
 - 2026-09-24 — P1-05: projects (SoftDeletes, json story/architecture/metrics/links, published()/featured() scopes, scheduled publishing via published_at) + project_gallery_items (own image/alt/caption, touches project). Architecture shape documented as phpstan-type on Project.
 - 2026-09-24 — P1-06: articles (Builder body [{type,data}], wordCount/readingMinutes match the reference: fixture tests/Fixtures/ledgers-article.json = 340 words / 2 min; publishing stamps published_at), article_project, books, uses groups/items, socials, contact_messages (unread scope, mark read/unread), book_now_page pivot + NowPage::currentlyReading() fallback. Datetime casts are immutable_datetime (app uses CarbonImmutable).
+- 2026-09-24 — P1-07: Implemented as one class App\Support\Content\PortfolioContent (1:1 port of lib/content.ts: career, skillGroups, projects+facets+detail, articles+tags+detail, books+stats, education, certifications, testimonials, uses, now, searchIndex) + Support\Content\ArticleBody (Builder → ArticleBlock union). Filtering runs on collections (tiny dataset, same semantics as the reference).
+- 2026-09-24 — P1-08: resources/js/types/content.ts is the contract (English-only, ImageData, workMode/address/grade/institutionUrl added; Education start/end = YYYY-MM|null). 14 JsonResources + App\Support\Media\ImageData. tests/Support/TypeScriptInterfaces parses content.ts; expect()->toMatchInterface('X') asserts exact keys.

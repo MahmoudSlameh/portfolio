@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\TypeScriptInterfaces;
 use Tests\TestCase;
 
 /*
@@ -29,8 +30,18 @@ pest()->extend(TestCase::class)
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+/*
+ * Asserts an array has exactly the properties of a TypeScript interface in
+ * resources/js/types/content.ts (all required keys, optional keys allowed, nothing else).
+ */
+expect()->extend('toMatchInterface', function (string $interface) {
+    $keys = TypeScriptInterfaces::keys($interface);
+    $actual = array_keys($this->value);
+
+    expect(array_values(array_diff($keys['required'], $actual)))->toBe([], "{$interface}: missing keys")
+        ->and(array_values(array_diff($actual, [...$keys['required'], ...$keys['optional']])))->toBe([], "{$interface}: unexpected keys");
+
+    return $this;
 });
 
 /*
