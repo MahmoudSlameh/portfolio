@@ -64,12 +64,12 @@ test covers save + upload.
 
 ---
 
-## P2-05 · Companies & clients resource — `todo` ⭐ owner priority
+## P2-05 · Companies & clients resource — `done` ⭐ owner priority
 
-- [ ] Form: **name, logo (svg/png/webp), website link**, kind, industry,
+- [x] Form: **name, logo (svg/png/webp), website link**, kind, industry,
       location, engagement, period label, wordmark fallback, featured.
-- [ ] Card-grid table, reorderable; relation managers.
-- [ ] `CompanyForm::quick()` reused by Experience/Project/Testimonial selects.
+- [x] Card-grid table, reorderable; relation managers.
+- [x] `CompanyForm::quick()` reused by Experience/Project/Testimonial selects.
 
 **Acceptance**: logo shows in the table and in the experience select option
 labels (`->getOptionLabelFromRecordUsing` / `allowHtml`).
@@ -157,3 +157,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 
 - 2026-09-24 — P2-01: Panel: Indigo/Zinc, Inter, SPA, collapsible sidebar, full width, ⌘K search, DB notifications (30s poll), unsaved-changes alerts, DB transactions, 6 navigation groups, 'View site' user-menu item, password reset + full profile page. Custom theme resources/css/filament/admin/theme.css (in vite inputs) so custom Blade views can use Tailwind. Shared builders: App\Filament\Support\Fields (country, month, currentToggle, slug/slugSource, visibilitySection) and Columns (period, visibility, duration). User::canAccessPanel uses config('portfolio.admin_emails') in production.
 - 2026-09-24 — P2-02: App\Filament\Support\SingletonPage (abstract: fill from record, sticky save bar ⌘S, saveRelationships for Spatie uploads, DB transaction) + Pages\EditProfile (slug /admin/bio, 5 tabs). Tests: tests/Feature/Filament/EditProfilePageTest.php — use Repeater::fake() + internal item shape for simple repeaters in fillForm; actingAsAdmin() helper in tests/Pest.php.
+- 2026-09-24 — P2-05: CompanyResource: 2/3 + 1/3 form (brand, engagement, logo/logo_dark/wordmark, featured/visible), card-grid table (contentGrid, reorderable, kind/featured/visible filters, visit-website action). CompanyForm::quick() for create/edit-option forms. Local InitialsAvatar SVG for missing logos (no external avatar service). Relation managers (experiences/projects/testimonials) are added in P2-08 via relatedResource().
