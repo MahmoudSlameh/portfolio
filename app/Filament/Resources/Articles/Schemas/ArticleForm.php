@@ -40,7 +40,7 @@ class ArticleForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(['default' => 1, 'lg' => 3])->schema([
+            Grid::make(['default' => 1, 'lg' => 3])->columnSpanFull()->schema([
                 Group::make([
                     Section::make()->columns(2)->schema([
                         Fields::slugSource('title', 'Title')->columnSpanFull(),

@@ -64,7 +64,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P2-10 | Books, Uses, Socials, Now page                                     | P2-01, P1-06        | done   |
 | P2-11 | Inbox (contact messages)                                           | P2-01, P1-06        | done   |
 | P2-12 | Appearance (templates) & Site settings pages                       | P2-01, P1-02        | done   |
-| P2-13 | Dashboard widgets                                                  | P2-03…P2-11         | todo   |
+| P2-13 | Dashboard widgets                                                  | P2-03…P2-11         | done   |
 | P3-01 | Frontend deps, folder structure, shared code port                  | P0-01               | todo   |
 | P3-02 | TemplateManager, shared props, Blade shell                         | P1-02, P3-01        | todo   |
 | P3-03 | Routes & controllers (all public pages)                            | P1-08, P3-02        | todo   |

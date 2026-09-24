@@ -8,6 +8,7 @@ use App\Filament\Support\Columns;
 use App\Models\Experience;
 use App\Support\Countries;
 use App\Support\Media\InitialsAvatar;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -67,9 +68,11 @@ class ExperiencesTable
                     ),
             ])
             ->recordActions([
-                EditAction::make(),
-                ReplicateAction::make()->excludeAttributes(['projects_count']),
-                DeleteAction::make(),
+                EditAction::make()->iconButton(),
+                ActionGroup::make([
+                    ReplicateAction::make()->excludeAttributes(['projects_count']),
+                    DeleteAction::make(),
+                ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

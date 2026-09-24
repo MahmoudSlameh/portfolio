@@ -51,6 +51,12 @@ A task is **not done** until `composer ci:check` passes.
   month dates use `Fields::month()`; "current" roles/studies use
   `Fields::currentToggle()`. Never call external services (e.g. avatar APIs)
   from the panel — use `InitialsAvatar`.
+- Resource forms default to 2 columns: the top-level layout `Grid`/`Tabs` must
+  call `->columnSpanFull()` or the whole form is squeezed into half the width.
+- Panel avatars use `App\Filament\AvatarProviders\InitialsAvatarProvider`
+  (local SVG) instead of Filament's default ui-avatars.com provider.
+- Visually check new screens (Playwright screenshot against `php artisan serve`
+  with the demo seed) — tests don't catch layout problems.
 - Don't add a package when a small class does the job; when adding one,
   record it in [09-decisions.md](09-decisions.md).
 

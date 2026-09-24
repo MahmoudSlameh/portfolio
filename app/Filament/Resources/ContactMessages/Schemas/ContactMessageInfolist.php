@@ -14,7 +14,7 @@ class ContactMessageInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(['default' => 1, 'lg' => 3])->schema([
+            Grid::make(['default' => 1, 'lg' => 3])->columnSpanFull()->schema([
                 Section::make('Message')
                     ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                     ->columnSpan(['lg' => 2])

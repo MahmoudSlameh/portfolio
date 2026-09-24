@@ -51,10 +51,11 @@ class EditProfile extends SingletonPage
     {
         return $schema->components([
             Tabs::make('Profile')
+                ->columnSpanFull()
                 ->persistTabInQueryString()
                 ->tabs([
                     Tab::make('Identity')->icon(Heroicon::OutlinedUserCircle)->schema([
-                        Grid::make(['default' => 1, 'lg' => 3])->schema([
+                        Grid::make(['default' => 1, 'lg' => 3])->columnSpanFull()->schema([
                             Group::make([
                                 Section::make('Who you are')
                                     ->description('Shown in the hero, the header and search results.')

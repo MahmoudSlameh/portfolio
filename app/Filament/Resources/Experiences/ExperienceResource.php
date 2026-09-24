@@ -28,6 +28,8 @@ class ExperienceResource extends Resource
 
     protected static ?string $modelLabel = 'experience';
 
+    protected static ?string $pluralModelLabel = 'work experience';
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'role';

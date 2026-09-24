@@ -146,7 +146,7 @@ test asserts `active_template` updated + cache flushed.
 
 ---
 
-## P2-13 · Dashboard widgets — `todo`
+## P2-13 · Dashboard widgets — `done`
 
 Stats overview, latest messages, content health checklist, quick links (04).
 **Acceptance**: widgets render with empty and seeded databases.
@@ -167,3 +167,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-10: Books (reading status toggles, finished month + star rating only when read, cover image OR generated cover with live preview — resources/views/filament/components/book-cover-preview.blade.php, inline styles), Uses groups (relationship repeater items with image), Socials (simple, label auto from platform, http/https/mailto links, reorderable), EditNowPage singleton (focus/learning repeaters, picked reading books, View /now).
 - 2026-09-24 — P2-11: ContactMessageResource: read-only (list + view), Unread/All tabs (opens on Unread when there are some), unread rows highlighted/bold, view page marks as read, reply (mailto, stamps replied_at), mark read/unread, bulk mark read, sidebar badge. ContactMessageObserver (#[ObservedBy]) → Filament database notification to all users + queued NewContactMessage mail to contact_recipient ?: profile email ?: ADMIN_EMAIL.
 - 2026-09-24 — P2-12: Appearance page built from schema components (no custom Blade): card per Template with screenshot (public/templates/*.webp, captured from Reference-Frontend with Playwright), Active badge, 'activate' page action with arguments (confirmation, flushes ContentCache), Preview link (admin-only preview per D13 — no public-preview toggle). SiteSettings singleton: General (site name, separator, contact recipient, page toggles), SEO (default description, X handle, indexable, default OG image 1.91:1, verification codes), Advanced (analytics snippet, favicon); 'Rebuild caches'. New App\Support\Content\ContentCache (versioned keys; flush = bump version).
+- 2026-09-24 — P2-13: Custom App\Filament\Pages\Dashboard (header quick links: View site, Edit profile, New article, New project; 2 columns) + widgets PortfolioStats (projects/articles/unread messages with 8-week chart/books this year), LatestMessages (table), ContentHealth (11 checks with Fix links; resources/views/filament/widgets/content-health.blade.php). Visual pass with Playwright screenshots → fixed full-width layouts (columnSpanFull) and replaced Filament's external avatar provider.

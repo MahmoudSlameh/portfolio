@@ -29,7 +29,7 @@ class BookForm
         $isRead = fn (Get $get): bool => $get('status') === ReadingStatus::Read->value || $get('status') === ReadingStatus::Read;
 
         return $schema->components([
-            Grid::make(['default' => 1, 'lg' => 3])->schema([
+            Grid::make(['default' => 1, 'lg' => 3])->columnSpanFull()->schema([
                 Group::make([
                     Section::make('Book')->icon(Heroicon::OutlinedBookOpen)->columns(2)->schema([
                         Fields::slugSource('title', 'Title')->live(onBlur: true),

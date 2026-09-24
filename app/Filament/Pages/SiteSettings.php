@@ -62,7 +62,7 @@ class SiteSettings extends SingletonPage
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Tabs::make('Settings')->persistTabInQueryString()->tabs([
+            Tabs::make('Settings')->columnSpanFull()->persistTabInQueryString()->tabs([
                 Tab::make('General')->icon(Heroicon::OutlinedGlobeAlt)->schema([
                     Section::make()->columns(2)->schema([
                         TextInput::make('site_name')

@@ -11,7 +11,7 @@ use Livewire\Livewire;
 beforeEach(fn () => actingAsAdmin());
 
 test('certifications can be listed, created and edited in modals', function () {
-    $existing = Certification::factory()->create(['expires_at' => now()->subYear()]);
+    $existing = Certification::factory()->create(['issued_at' => now()->subYears(3), 'expires_at' => now()->subYear()]);
 
     Livewire::test(ManageCertifications::class)
         ->assertCanSeeTableRecords([$existing])

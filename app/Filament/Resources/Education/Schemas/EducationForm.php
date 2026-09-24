@@ -20,7 +20,7 @@ class EducationForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(['default' => 1, 'lg' => 3])->schema([
+            Grid::make(['default' => 1, 'lg' => 3])->columnSpanFull()->schema([
                 Group::make([
                     Section::make('Qualification')
                         ->icon(Heroicon::OutlinedAcademicCap)

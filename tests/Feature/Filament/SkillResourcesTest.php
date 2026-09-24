@@ -45,7 +45,7 @@ test('skill names are unique', function () {
 });
 
 test('categories show their skill count', function () {
-    $category = SkillCategory::factory()->has(Skill::factory()->count(2))->create();
+    $category = SkillCategory::factory()->has(Skill::factory()->count(2))->create(['name' => 'Languages', 'slug' => 'languages']);
 
     Livewire::test(ManageSkillCategories::class)
         ->assertCanSeeTableRecords([$category])
