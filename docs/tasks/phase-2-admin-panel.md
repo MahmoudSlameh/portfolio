@@ -76,7 +76,7 @@ labels (`->getOptionLabelFromRecordUsing` / `allowHtml`).
 
 ---
 
-## P2-06 · Certifications & testimonials — `todo`
+## P2-06 · Certifications & testimonials — `done`
 
 Simple (modal) resources per 04. **Acceptance**: CRUD + reorder + uploads.
 
@@ -160,3 +160,4 @@ Stats overview, latest messages, content health checklist, quick links (04).
 - 2026-09-24 — P2-05: CompanyResource: 2/3 + 1/3 form (brand, engagement, logo/logo_dark/wordmark, featured/visible), card-grid table (contentGrid, reorderable, kind/featured/visible filters, visit-website action). CompanyForm::quick() for create/edit-option forms. Local InitialsAvatar SVG for missing logos (no external avatar service). Relation managers (experiences/projects/testimonials) are added in P2-08 via relatedResource().
 - 2026-09-24 — P2-03: ExperienceForm: company select with logos (allowHtml) + create/edit option (CompanyForm::quick), organization fallback, job title, type, work-mode toggle buttons, country/city/optional address, month start/end + 'I currently work here' toggle, summary, achievements repeater, ordered stack (Fields::stack + SyncsStack, HasStack interface), collapsed changelog overrides with derived placeholders. Table: logo, title/org, type & mode badges, flag+country, period with Present badge, filters (type, mode, company, current), replicate. Projects relation manager comes with P2-08.
 - 2026-09-24 — P2-04: EducationForm: qualification, specialization, grade, institution (+url, country, city), month start/end + 'currently studying' toggle, description, achievements, logo + certificate uploads. Table with logo, grade badge, period/Present, 'currently studying' filter.
+- 2026-09-24 — P2-06: Simple (modal) resources: Certifications (badge, issued/expires with Expired badge, verify-link action, reorderable) and Testimonials (quote, author, company select with logos + quick create, avatar with InitialsAvatar fallback, reorderable).
