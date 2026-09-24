@@ -1,0 +1,77 @@
+# 08 · Conventions
+
+## Commands
+
+| Purpose | Command |
+|---------|---------|
+| Dev (server + queue + vite) | `composer dev` |
+| PHP format | `composer lint` (Pint, `laravel` preset) · check: `composer lint:check` |
+| PHP static analysis | `composer types:check` (Larastan level 7) |
+| PHP tests | `php artisan test` (Pest 5) — `composer test` runs lint + types + tests |
+| JS lint/format | `npm run check` / `npm run check:fix` (vite-plus) |
+| TS types | `npm run types:check` |
+| Everything CI runs | `composer ci:check` |
+| Build | `npm run build` · with SSR `npm run build:ssr` |
+| Filament resource | `php artisan make:filament-resource Experience --generate --view` |
+| Filament page | `php artisan make:filament-page EditProfile` |
+
+A task is **not done** until `composer ci:check` passes.
+
+## PHP / Laravel
+
+- Follow the style of the starter kit: PHP 8 attributes on models
+  (`#[Fillable]`, `#[Hidden]`), typed properties, `casts()` method, docblock
+  `@property` annotations for Larastan.
+- Enums in `app/Enums`, string-backed, implementing Filament `HasLabel`,
+  `HasColor`, `HasIcon` where shown as badges.
+- Models: `HasFactory`; every model gets a factory (used by tests).
+  Scopes: `visible()`, `ordered()`, `published()`.
+- Controllers stay thin: query → resource → `Inertia::render`. Put derived
+  computations (career entries, book stats, reading time, search index) in
+  small classes under `app/Support/Content/*` or model accessors.
+- Validation in Form Requests. No `$request->all()` mass assignment.
+- Cache busting via model observers (`app/Observers`) registered with the
+  `#[ObservedBy]` attribute.
+- Filament resources: keep form schema in `Schemas/*Form.php` and table in
+  `Tables/*Table.php` (Filament 5 default layout).
+- Don't add a package when a small class does the job; when adding one,
+  record it in [09-decisions.md](09-decisions.md).
+
+## TypeScript / React
+
+- Formatting per `vite.config.ts` `fmt` (4 spaces, single quotes, semicolons,
+  width 80). The reference code uses 2 spaces — reformat on port with
+  `npm run check:fix`.
+- Path alias `@/*` → `resources/js/*` (same as reference `@/*` → `src/*`,
+  so imports port 1:1).
+- Types for server data live in `resources/js/types/content.ts` and must
+  match the PHP API Resources exactly.
+- No data fetching in components; everything arrives as Inertia props.
+- SSR-safe code only (no browser globals during render).
+
+## Testing (Pest)
+
+- Feature test per public route × per template (dataset over
+  `Template::cases()`): status 200, component name, required props, SEO prop.
+- Filament tests with `livewire()` helpers: list/create/edit/delete per
+  resource, validation rules (e.g. end date ≥ start date), media upload
+  (`UploadedFile::fake()->image()`), singleton pages save.
+- Unit tests for derived logic: experience branch/version/commit
+  derivation, reading time, book stats, company period label, `TemplateManager`
+  preview rules, sitemap content.
+
+## Git workflow
+
+- Branch per phase or task (`feature/p1-data-layer`), small commits, message
+  style `feat(admin): experience resource` / `fix(seo): ...` / `docs: ...`.
+- Update the task status in `docs/tasks/*.md` **in the same commit** as the
+  work.
+- Never commit `.env`, `database/database.sqlite`, `storage/app/public/*`
+  (media), `public/build`, `bootstrap/ssr`.
+
+## Definition of done (every task)
+
+1. Acceptance criteria in the task file are met.
+2. Tests added/updated; `composer ci:check` green.
+3. Docs updated if behaviour or schema changed (docs are the contract).
+4. Task checkbox ticked + status board in `docs/tasks/README.md` updated.
