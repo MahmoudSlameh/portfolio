@@ -5,6 +5,7 @@ use App\Filament\Pages\Appearance;
 use App\Filament\Pages\SiteSettings;
 use App\Models\SiteSetting;
 use App\Support\Content\ContentCache;
+use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 
 beforeEach(fn () => actingAsAdmin());
@@ -28,8 +29,8 @@ test('activating a template updates the site settings and flushes the content ca
     });
 
     Livewire::test(Appearance::class)
-        ->callAction('activate', arguments: ['template' => 'playground'])
-        ->assertNotified();
+        ->callAction(TestAction::make('activate_playground')->schemaComponent('template-playground'))
+        ->assertNotified('Playground is now live');
 
     ContentCache::remember('probe', function () use (&$calls) {
         return ++$calls;
@@ -37,6 +38,32 @@ test('activating a template updates the site settings and flushes the content ca
 
     expect(SiteSetting::current()->active_template)->toBe(Template::Playground)
         ->and($calls)->toBe(2);
+});
+
+test('every card activates its own template and the active one is disabled', function (Template $template) {
+    SiteSetting::current()->update(['active_template' => Template::Changelog]);
+
+    $page = Livewire::test(Appearance::class)
+        ->assertActionExists(TestAction::make("activate_{$template->value}")->schemaComponent("template-{$template->value}"));
+
+    if ($template === Template::Changelog) {
+        $page->assertActionDisabled(TestAction::make('activate_changelog')->schemaComponent('template-changelog'));
+
+        return;
+    }
+
+    $page->callAction(TestAction::make("activate_{$template->value}")->schemaComponent("template-{$template->value}"))
+        ->assertNotified("{$template->getLabel()} is now live");
+
+    expect(SiteSetting::current()->active_template)->toBe($template);
+})->with(Template::cases());
+
+test('the rendered activate buttons mount a distinct action per template', function () {
+    $html = Livewire::test(Appearance::class)->html();
+
+    foreach (Template::cases() as $template) {
+        expect($html)->toContain("mountAction('activate_{$template->value}'");
+    }
 });
 
 test('site settings can be saved, including page toggles', function () {

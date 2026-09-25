@@ -42,6 +42,7 @@ class Appearance extends Page
         return $schema->components([
             Grid::make(['default' => 1, 'md' => 2, 'xl' => 3])->schema(array_map(
                 fn (Template $template): Section => Section::make($template->getLabel())
+                    ->key("template-{$template->value}")
                     ->description($template->getDescription())
                     ->icon($template === $active ? Heroicon::OutlinedCheckBadge : null)
                     ->iconColor('success')
@@ -52,7 +53,7 @@ class Appearance extends Page
                             ->imageHeight('auto'),
                     ])
                     ->footer([
-                        $this->activateAction()->arguments(['template' => $template->value]),
+                        $this->activateAction($template),
                         $this->previewAction($template),
                     ]),
                 Template::cases(),
@@ -60,39 +61,26 @@ class Appearance extends Page
         ]);
     }
 
-    public function activateAction(): Action
+    /**
+     * One action per template (unique name) so each card's button mounts its own template.
+     */
+    private function activateAction(Template $template): Action
     {
-        return Action::make('activate')
-            ->label(fn (array $arguments): string => self::isActive($arguments) ? 'Active' : 'Activate')
-            ->icon(fn (array $arguments): Heroicon => self::isActive($arguments) ? Heroicon::OutlinedCheck : Heroicon::OutlinedBolt)
-            ->disabled(fn (array $arguments): bool => self::isActive($arguments))
-            ->requiresConfirmation()
-            ->modalHeading(fn (array $arguments): string => 'Activate the '.self::template($arguments)->getLabel().' template?')
-            ->modalDescription('Every visitor will see the site in this template right away.')
-            ->action(function (array $arguments): void {
-                $template = self::template($arguments);
+        $isActive = fn (): bool => SiteSetting::current()->active_template === $template;
 
+        return Action::make("activate_{$template->value}")
+            ->label(fn (): string => $isActive() ? 'Active' : 'Activate')
+            ->icon(fn (): Heroicon => $isActive() ? Heroicon::OutlinedCheck : Heroicon::OutlinedBolt)
+            ->disabled($isActive)
+            ->requiresConfirmation()
+            ->modalHeading("Activate the {$template->getLabel()} template?")
+            ->modalDescription('Every visitor will see the site in this template right away.')
+            ->action(function () use ($template): void {
                 SiteSetting::current()->update(['active_template' => $template]);
                 ContentCache::flush();
 
                 Notification::make()->success()->title("{$template->getLabel()} is now live")->send();
             });
-    }
-
-    /**
-     * @param  array<string, mixed>  $arguments
-     */
-    private static function template(array $arguments): Template
-    {
-        return Template::tryFrom((string) ($arguments['template'] ?? '')) ?? Template::default();
-    }
-
-    /**
-     * @param  array<string, mixed>  $arguments
-     */
-    private static function isActive(array $arguments): bool
-    {
-        return SiteSetting::current()->active_template === self::template($arguments);
     }
 
     private function previewAction(Template $template): Action

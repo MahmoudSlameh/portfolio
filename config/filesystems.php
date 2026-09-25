@@ -33,7 +33,7 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            'serve' => false, // private files are never served over HTTP; public media goes through the "public" disk + storage:link
             'throw' => false,
             'report' => false,
         ],
