@@ -1,0 +1,120 @@
+{
+    "name": "Adam Rahman",
+    "initials": "AR",
+    "role": "Staff Software Engineer",
+    "headline": "I build calm, well-typed systems for money, freight and health — and the teams that keep them running.",
+    "focusAreas": [
+        "payment ledgers",
+        "design systems",
+        "event-driven platforms",
+        "right-to-left interfaces",
+        "developer tooling"
+    ],
+    "summary": "Eleven years across platform, product and design-systems work. Currently leading the payments platform at Tessellate, where I care about ledgers that balance, interfaces that explain themselves, and releases nobody has to stay up for.",
+    "location": "Cairo, Egypt",
+    "timezone": "Africa/Cairo",
+    "timezoneLabel": "EET · UTC+2/+3",
+    "email": "hello@adamrahman.dev",
+    "currentVersion": "v5.2.0",
+    "updatedAt": "2026-09-12",
+    "availability": {
+        "status": "limited",
+        "label": "Open to advisory work",
+        "note": "Taking one advisory engagement for Q1 2027. Not looking for full-time roles."
+    },
+    "latestRelease": {
+        "added": [
+            "Multi-currency settlement in Ledgerline v3",
+            "Staff engineering guild, 14 members"
+        ],
+        "changed": ["Mentoring shifted from 1:1 to design-review office hours"],
+        "removed": ["Nightly batch reconciliation — replaced by streaming"]
+    },
+    "stats": [
+        {
+            "id": "years",
+            "value": "11",
+            "label": "years shipping software"
+        },
+        {
+            "id": "releases",
+            "value": "140+",
+            "label": "production releases led"
+        },
+        {
+            "id": "engineers",
+            "value": "23",
+            "label": "engineers mentored"
+        },
+        {
+            "id": "volume",
+            "value": "$2.1B",
+            "label": "annual volume on my ledger"
+        }
+    ],
+    "status": [
+        {
+            "id": "building",
+            "label": "Building",
+            "value": "Ledgerline v3 settlement engine",
+            "tone": "signal"
+        },
+        {
+            "id": "reading",
+            "label": "Reading",
+            "value": "Designing Data-Intensive Applications, 2nd ed.",
+            "tone": "neutral"
+        },
+        {
+            "id": "learning",
+            "label": "Learning",
+            "value": "Formal methods with TLA+",
+            "tone": "neutral"
+        },
+        {
+            "id": "shipped",
+            "label": "Last shipped",
+            "value": "Atlas 4.1 — RTL tokens",
+            "tone": "neutral"
+        }
+    ],
+    "story": [
+        "I started writing software in a Cairo agency basement, building checkout flows for merchants who had never sold online. That job taught me the first rule I still work by: the system is only as good as the moment it fails in front of a real person.",
+        "Since then I have moved down the stack and back up again — from interfaces to event pipelines to ledgers — mostly following the problems that kept people up at night. At Lattice Freight that meant replacing a polling tracker with a streaming one. At Halcyon it meant a triage queue that nurses trusted enough to stop printing.",
+        "Today I lead the payments platform at Tessellate. I spend my weeks on architecture reviews, sharp-edged migrations and the unglamorous work of making the right thing the easy thing. Outside of work I maintain Quire, an open-source typesetting engine, and read far more than my shelf can hold."
+    ],
+    "principles": [
+        {
+            "id": "boring",
+            "title": "Boring is a feature",
+            "body": "Pick the dull technology, then spend the novelty budget on the problem itself."
+        },
+        {
+            "id": "types",
+            "title": "Make illegal states unrepresentable",
+            "body": "Types, schemas and constraints are the cheapest documentation that never goes stale."
+        },
+        {
+            "id": "reversible",
+            "title": "Prefer reversible decisions",
+            "body": "Feature flags, dual writes and small releases turn scary launches into routine ones."
+        },
+        {
+            "id": "write",
+            "title": "Write it down first",
+            "body": "A two-page design doc saves two weeks of confident, parallel misunderstanding."
+        },
+        {
+            "id": "people",
+            "title": "Systems are people",
+            "body": "On-call rotations, onboarding and review culture are architecture too."
+        }
+    ],
+    "portrait": {
+        "base": "portrait",
+        "widths": [432, 864],
+        "width": 864,
+        "height": 1152,
+        "alt": "Black-and-white portrait of Adam Rahman in a charcoal sweater, looking off-camera in soft window light."
+    }
+}

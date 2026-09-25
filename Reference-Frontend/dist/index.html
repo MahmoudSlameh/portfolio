@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0a1a" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      data-template-fonts="changelog"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500;600&family=Readex+Pro:wght@300..700&display=swap"
+    />
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.dataset.template = 'changelog';
+        try {
+          var cachedTemplate = sessionStorage.getItem('portfolio:template-preview') || localStorage.getItem('portfolio:template');
+          if (cachedTemplate) root.dataset.template = cachedTemplate;
+          var theme = localStorage.getItem('changelog:theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var resolved = theme === 'dark' || theme === 'light' ? theme : prefersDark ? 'dark' : 'light';
+          root.dataset.theme = resolved;
+          root.style.colorScheme = resolved;
+          var locale = localStorage.getItem('changelog:locale');
+          if (locale === 'ar') {
+            root.lang = 'ar';
+            root.dir = 'rtl';
+          }
+        } catch (error) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-Cn0c6vzl.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-hePW80VL.js">
+    <link rel="modulepreload" crossorigin href="/assets/link-BC2J5x0T.js">
+    <link rel="modulepreload" crossorigin href="/assets/useTemplate-B00SPEwP.js">
+    <link rel="modulepreload" crossorigin href="/assets/preload-helper-r-KTXcys.js">
+    <link rel="modulepreload" crossorigin href="/assets/seo-bKiNl0je.js">
+    <link rel="modulepreload" crossorigin href="/assets/schemas-BA0PC4gF.js">
+    <link rel="modulepreload" crossorigin href="/assets/searchSchemas-D6yTJSdp.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-Cl6X-QBh.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
