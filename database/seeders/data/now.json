@@ -1,0 +1,35 @@
+{
+    "updatedAt": "2026-09-12",
+    "location": "Cairo, with a week in Dubai each month",
+    "focus": [
+        {
+            "id": "settlement",
+            "title": "Multi-currency settlement",
+            "body": "Shipping Ledgerline v3, which settles 14 currencies continuously instead of in nightly batches. The last three currencies go live in October."
+        },
+        {
+            "id": "guild",
+            "title": "Growing staff engineers",
+            "body": "Running a monthly staff guild and writing a short internal handbook on design reviews that people actually enjoy."
+        },
+        {
+            "id": "quire",
+            "title": "Quire 1.0",
+            "body": "Stabilising the plugin API so Quire can reach 1.0 before the end of the year."
+        }
+    ],
+    "learning": [
+        {
+            "id": "tla",
+            "title": "TLA+",
+            "body": "Modelling the settlement state machine to find the race conditions before production does."
+        },
+        {
+            "id": "calligraphy",
+            "title": "Arabic calligraphy",
+            "body": "Weekly naskh lessons. Humbling, analogue and very good for Quire’s kashida rules."
+        }
+    ],
+    "readingBookIds": ["ddia", "crafting-interpreters"],
+    "availability": "I am taking one advisory engagement for Q1 2027 — architecture reviews, platform strategy or ledger design. I am not looking for a full-time role."
+}

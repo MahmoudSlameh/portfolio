@@ -1,0 +1,87 @@
+{
+    "body": [
+        {
+            "type": "paragraph",
+            "data": {
+                "text": "Every engineer who has worked near money eventually has the same realisation: a ledger is an append-only log with a very strict schema. Once you see it that way, most of the hard problems — auditing, history, reconciliation — become questions about logs, which we know how to answer."
+            }
+        },
+        {
+            "type": "heading",
+            "data": {
+                "id": "invariants-first",
+                "text": "Start with invariants, not tables"
+            }
+        },
+        {
+            "type": "paragraph",
+            "data": {
+                "text": "Before we designed a single table for Ledgerline, we wrote down the rules finance would never allow us to break. There were only four, and the most important one fits in a sentence: every journal must sum to zero."
+            }
+        },
+        {
+            "type": "code",
+            "data": {
+                "language": "ts",
+                "filename": "journal.ts",
+                "code": "type Minor = bigint & { readonly __brand: 'Minor' };\n\ninterface Entry {\n  accountId: string;\n  currency: 'USD' | 'EUR' | 'AED' | 'EGP';\n  amount: Minor;\n}\n\nexport function assertBalanced(entries: readonly Entry[]): void {\n  const totals = new Map<string, bigint>();\n  for (const { currency, amount } of entries) {\n    totals.set(currency, (totals.get(currency) ?? 0n) + amount);\n  }\n  for (const [currency, total] of totals) {\n    if (total !== 0n) throw new Error(`Unbalanced ${currency} journal: ${total}`);\n  }\n}"
+            }
+        },
+        {
+            "type": "paragraph",
+            "data": {
+                "text": "The same rule also lives in the database as a deferred constraint trigger. Types catch mistakes at build time; constraints catch the ones that slip through at three in the morning."
+            }
+        },
+        {
+            "type": "heading",
+            "data": {
+                "id": "derive-balances",
+                "text": "Never store what you can derive"
+            }
+        },
+        {
+            "type": "paragraph",
+            "data": {
+                "text": "A stored balance is a cache, and caches drift. In Ledgerline, balances are projections of the journal stream. They can be rebuilt from zero, which means historical balances are a query, not a forensic investigation."
+            }
+        },
+        {
+            "type": "code",
+            "data": {
+                "language": "sql",
+                "filename": "balance_at.sql",
+                "code": "select account_id,\n       currency,\n       sum(amount) as balance\nfrom ledger.entries\nwhere account_id = $1\n  and posted_at <= $2\ngroup by account_id, currency;"
+            }
+        },
+        {
+            "type": "callout",
+            "data": {
+                "title": "A rule of thumb",
+                "text": "If a support engineer cannot answer “what was the balance then?” without paging you, your ledger is storing state it should be deriving."
+            }
+        },
+        {
+            "type": "heading",
+            "data": {
+                "id": "corrections",
+                "text": "Corrections are new facts"
+            }
+        },
+        {
+            "type": "paragraph",
+            "data": {
+                "text": "Nothing in a ledger is ever edited. A wrong entry is reversed by an equal and opposite one, with a pointer to the original. It feels bureaucratic until the first audit, when it feels like a superpower."
+            }
+        },
+        {
+            "type": "quote",
+            "data": {
+                "text": "The log is the truth. Everything else is an opinion about the log.",
+                "cite": "Ledgerline design doc, v1"
+            }
+        }
+    ],
+    "expectedWords": 340,
+    "expectedMinutes": 2
+}
