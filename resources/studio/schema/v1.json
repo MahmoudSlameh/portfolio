@@ -1,0 +1,779 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "studio/v1",
+    "title": "Template Spec (studio/v1)",
+    "description": "A studio template: design tokens, layout, the sections of each page and optional scoped CSS. Content never lives here; it comes from the panel.",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "const": "studio/v1"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+        },
+        "tokens": {
+            "type": "object",
+            "properties": {
+                "colors": {
+                    "type": "object",
+                    "properties": {
+                        "light": {
+                            "type": "object",
+                            "properties": {
+                                "bg": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "surface": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "muted": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "accent": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "border": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                }
+                            },
+                            "required": [
+                                "bg",
+                                "surface",
+                                "text",
+                                "muted",
+                                "accent",
+                                "border"
+                            ],
+                            "additionalProperties": false
+                        },
+                        "dark": {
+                            "type": "object",
+                            "properties": {
+                                "bg": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "surface": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "muted": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "accent": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                },
+                                "border": {
+                                    "type": "string",
+                                    "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+                                }
+                            },
+                            "required": [
+                                "bg",
+                                "surface",
+                                "text",
+                                "muted",
+                                "accent",
+                                "border"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "light",
+                        "dark"
+                    ],
+                    "additionalProperties": false
+                },
+                "fonts": {
+                    "type": "object",
+                    "properties": {
+                        "display": {
+                            "enum": [
+                                "geist",
+                                "bricolage-grotesque",
+                                "space-grotesk",
+                                "archivo",
+                                "jetbrains-mono",
+                                "space-mono",
+                                "dm-mono",
+                                "system-sans",
+                                "system-serif",
+                                "system-mono"
+                            ]
+                        },
+                        "body": {
+                            "enum": [
+                                "geist",
+                                "bricolage-grotesque",
+                                "space-grotesk",
+                                "archivo",
+                                "jetbrains-mono",
+                                "space-mono",
+                                "dm-mono",
+                                "system-sans",
+                                "system-serif",
+                                "system-mono"
+                            ]
+                        },
+                        "mono": {
+                            "enum": [
+                                "jetbrains-mono",
+                                "space-mono",
+                                "dm-mono",
+                                "system-mono"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "display",
+                        "body",
+                        "mono"
+                    ],
+                    "additionalProperties": false
+                },
+                "radius": {
+                    "enum": [
+                        "none",
+                        "sm",
+                        "md",
+                        "lg",
+                        "full"
+                    ]
+                },
+                "density": {
+                    "enum": [
+                        "compact",
+                        "comfortable",
+                        "airy"
+                    ]
+                },
+                "shadow": {
+                    "enum": [
+                        "none",
+                        "soft",
+                        "hard"
+                    ]
+                },
+                "motion": {
+                    "enum": [
+                        "none",
+                        "subtle",
+                        "lively"
+                    ]
+                }
+            },
+            "required": [
+                "colors",
+                "fonts",
+                "radius",
+                "density",
+                "shadow",
+                "motion"
+            ],
+            "additionalProperties": false
+        },
+        "layout": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "bar-sticky",
+                                "floating-pill",
+                                "sidebar",
+                                "minimal"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "footer": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "minimal",
+                                "columns",
+                                "big-name"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "container": {
+                    "enum": [
+                        "narrow",
+                        "default",
+                        "wide"
+                    ]
+                }
+            },
+            "required": [
+                "header",
+                "footer",
+                "container"
+            ],
+            "additionalProperties": false
+        },
+        "pages": {
+            "type": "object",
+            "properties": {
+                "home": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 16,
+                    "description": "Home page sections in display order; each section at most once.",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "hero"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "centered",
+                                            "split-portrait",
+                                            "editorial",
+                                            "terminal"
+                                        ]
+                                    },
+                                    "props": {
+                                        "type": "object",
+                                        "properties": {
+                                            "showAvailability": {
+                                                "type": "boolean"
+                                            },
+                                            "showSocials": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": [],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "about"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "prose",
+                                            "columns"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "stats"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "inline",
+                                            "cards"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "skills"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "chips",
+                                            "grid",
+                                            "bars"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "career"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "timeline",
+                                            "cards",
+                                            "table"
+                                        ]
+                                    },
+                                    "props": {
+                                        "type": "object",
+                                        "properties": {
+                                            "limit": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 20
+                                            }
+                                        },
+                                        "required": [],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "projects"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "grid",
+                                            "bento",
+                                            "list",
+                                            "slider"
+                                        ]
+                                    },
+                                    "props": {
+                                        "type": "object",
+                                        "properties": {
+                                            "limit": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 12
+                                            }
+                                        },
+                                        "required": [],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "clients"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "logos",
+                                            "marquee"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "testimonials"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "carousel",
+                                            "wall"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "education"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "list",
+                                            "cards"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "writing"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "list",
+                                            "cards"
+                                        ]
+                                    },
+                                    "props": {
+                                        "type": "object",
+                                        "properties": {
+                                            "limit": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 12
+                                            }
+                                        },
+                                        "required": [],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "books"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "shelf",
+                                            "covers"
+                                        ]
+                                    },
+                                    "props": {
+                                        "type": "object",
+                                        "properties": {
+                                            "limit": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 24
+                                            }
+                                        },
+                                        "required": [],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "section": {
+                                        "const": "contact"
+                                    },
+                                    "variant": {
+                                        "enum": [
+                                            "card",
+                                            "split",
+                                            "minimal"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "section",
+                                    "variant"
+                                ],
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
+                },
+                "projects": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "grid",
+                                "list",
+                                "table"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "caseStudy": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "longform",
+                                "sidebar"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "writing": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "list",
+                                "cards"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "article": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "centered",
+                                "wide"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "books": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "shelf",
+                                "grid"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "uses": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "columns",
+                                "list"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "now": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "notes",
+                                "timeline"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                },
+                "notFound": {
+                    "type": "object",
+                    "properties": {
+                        "variant": {
+                            "enum": [
+                                "big-number",
+                                "minimal"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "variant"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "home",
+                "projects",
+                "caseStudy",
+                "writing",
+                "article",
+                "books",
+                "uses",
+                "now",
+                "notFound"
+            ],
+            "additionalProperties": false
+        },
+        "copy": {
+            "type": "object",
+            "properties": {
+                "heroKicker": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "heroCta": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "aboutHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "skillsHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "careerHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "projectsHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "clientsHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "testimonialsHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "educationHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "writingHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "booksHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                },
+                "contactHeading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                },
+                "contactIntro": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                },
+                "footerNote": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                }
+            },
+            "required": [],
+            "additionalProperties": false
+        },
+        "css": {
+            "type": "string",
+            "maxLength": 40960,
+            "description": "CSS scoped to the template; sanitised on save (no @import, no external url(), no scripts)."
+        }
+    },
+    "required": [
+        "$schema",
+        "name",
+        "tokens",
+        "layout",
+        "pages"
+    ],
+    "additionalProperties": false
+}

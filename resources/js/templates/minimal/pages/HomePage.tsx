@@ -118,6 +118,24 @@ export function HomePage({
                                 <p className="mt-1 text-ink-muted">
                                     {entry.summary}
                                 </p>
+                                {/* Achievements stay folded under the summary (native, no JS needed). */}
+                                {entry.highlights.length > 0 && (
+                                    <details className="mt-2 text-ink-muted">
+                                        <summary className="mn-link cursor-pointer text-sm">
+                                            View achievements (
+                                            {entry.highlights.length})
+                                        </summary>
+                                        <ul className="mt-2 list-disc ps-5">
+                                            {entry.highlights.map(
+                                                (highlight) => (
+                                                    <li key={highlight}>
+                                                        {highlight}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </details>
+                                )}
                             </li>
                         ))}
                     </ol>

@@ -1,5 +1,6 @@
 import { Link } from '@/lib/router';
 import { CompanyLogo } from '@/shared/ui/CompanyLogo';
+import { ChevronDown } from 'lucide-react';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { CareerEntry } from '@/lib/content';
@@ -16,6 +17,12 @@ export function Experience({ career }: { career: CareerEntry[] }) {
     const c = useTerminalCopy();
     const baseId = useId();
     const [activeIndex, setActiveIndex] = useState(0);
+    const [showAchievements, setShowAchievements] = useState(false);
+    // A newly selected role starts with its achievements folded, under its summary.
+    const selectRole = (index: number): void => {
+        setActiveIndex(index);
+        setShowAchievements(false);
+    };
     const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const active = career[activeIndex];
     const earliest = career.reduce(
@@ -43,7 +50,7 @@ export function Experience({ career }: { career: CareerEntry[] }) {
         if (event.key === 'End') next = career.length - 1;
         if (next === null) return;
         event.preventDefault();
-        setActiveIndex(next);
+        selectRole(next);
         tabRefs.current[next]?.focus();
     };
 
@@ -102,7 +109,7 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                                         aria-selected={selected}
                                         aria-controls={`${baseId}-panel`}
                                         tabIndex={selected ? 0 : -1}
-                                        onClick={() => setActiveIndex(index)}
+                                        onClick={() => selectRole(index)}
                                         onKeyDown={(event) =>
                                             handleKeyDown(event, index)
                                         }
@@ -159,21 +166,75 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                             <p lang="en" className="mb-0 text-sm text-tm-300">
                                 {active.organization} · {active.location}
                             </p>
-                            <ul
-                                lang="en"
-                                className="mt-6 list-disc ps-5 marker:text-ink"
-                            >
-                                {active.highlights.map((highlight) => (
-                                    <li
-                                        key={highlight}
-                                        className="mb-4 leading-relaxed text-ink"
+                            {active.summary && (
+                                <p
+                                    lang="en"
+                                    className="mt-6 mb-0 leading-relaxed text-ink"
+                                >
+                                    {active.summary}
+                                </p>
+                            )}
+                            {active.highlights.length > 0 && (
+                                <>
+                                    <button
+                                        type="button"
+                                        aria-expanded={showAchievements}
+                                        aria-controls={`${baseId}-achievements`}
+                                        onClick={() =>
+                                            setShowAchievements(
+                                                (current) => !current,
+                                            )
+                                        }
+                                        className="mt-4 inline-flex items-center gap-2 text-sm text-tm-primary hover:text-ink"
                                     >
-                                        {highlight}
-                                    </li>
-                                ))}
-                            </ul>
+                                        <ChevronDown
+                                            aria-hidden
+                                            className={cn(
+                                                'size-4 transition-transform duration-300',
+                                                showAchievements &&
+                                                    'rotate-180',
+                                            )}
+                                        />
+                                        {showAchievements
+                                            ? c('experience.hideAchievements')
+                                            : c(
+                                                  'experience.showAchievements',
+                                              )}{' '}
+                                        ({active.highlights.length})
+                                    </button>
+                                    {/* Animated height: rows go from 0fr to 1fr. */}
+                                    <div
+                                        id={`${baseId}-achievements`}
+                                        inert={!showAchievements}
+                                        className={cn(
+                                            'grid transition-[grid-template-rows,opacity] duration-500 ease-out',
+                                            showAchievements
+                                                ? 'grid-rows-[1fr] opacity-100'
+                                                : 'grid-rows-[0fr] opacity-0',
+                                        )}
+                                    >
+                                        <div className="overflow-hidden">
+                                            <ul
+                                                lang="en"
+                                                className="mt-4 list-disc ps-5 marker:text-tm-primary"
+                                            >
+                                                {active.highlights.map(
+                                                    (highlight) => (
+                                                        <li
+                                                            key={highlight}
+                                                            className="mb-4 leading-relaxed text-ink"
+                                                        >
+                                                            {highlight}
+                                                        </li>
+                                                    ),
+                                                )}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                             {active.projects.length > 0 && (
-                                <p className="mb-0 text-tm-300">
+                                <p className="mt-6 mb-0 text-tm-300">
                                     {t('career.projects')}:{' '}
                                     {active.projects.map((project, index) => (
                                         <span key={project.slug}>

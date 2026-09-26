@@ -7,14 +7,14 @@ Decision: D25.
 
 ---
 
-## P8-01 · Spec schema `studio/v1` + validator — `todo`
+## P8-01 · Spec schema `studio/v1` + validator — `done`
 
-- [ ] `resources/studio/schema/v1.json` and `App\Support\Studio\SpecValidator`
+- [x] `resources/studio/schema/v1.json` and `App\Support\Studio\SpecValidator`
       (sections, variants, props, copy keys and lengths, fonts allow-list,
       colour formats); precise error messages (path + reason).
-- [ ] TS types `resources/js/templates/studio/spec.ts` kept in sync (test
+- [x] TS types `resources/js/templates/studio/spec.ts` kept in sync (test
       compares the schema's enums with the section catalogue).
-- [ ] `config/studio.php`: fonts allow-list, limits.
+- [x] `config/studio.php`: fonts allow-list, limits.
 
 **Acceptance**: unit tests with valid and invalid fixtures.
 
@@ -56,3 +56,15 @@ the template test matrix includes it.
 ---
 
 ## Notes
+
+- 2026-09-26 — P8-01: `SpecCatalogue` (single source of truth) +
+  `config/studio.php` (fonts that ship with the app, limits);
+  `SpecValidator` with path + reason errors (closed objects, unique home
+  sections, typed props with ranges, plain-text copy, hex colours, mono
+  fonts only for `mono`), `SpecValidationResult`, `InvalidSpecException`;
+  `SpecSchema` → `resources/studio/schema/v1.json` and the engine catalogue
+  `resources/js/templates/studio/catalogue.ts`, both written by
+  `php artisan studio:generate` (checked by a test and `--check`);
+  `spec.ts` types derived from the catalogue. The design example used
+  `inter`, which the app does not ship; it now uses `geist`. Tests:
+  `tests/Feature/Studio/SpecValidatorTest.php` (36 cases).

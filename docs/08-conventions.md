@@ -2,19 +2,20 @@
 
 ## Commands
 
-| Purpose                     | Command                                                                 |
-| --------------------------- | ----------------------------------------------------------------------- |
-| Dev (server + queue + vite) | `composer dev`                                                          |
-| PHP format                  | `composer lint` (Pint, `laravel` preset) · check: `composer lint:check` |
-| PHP static analysis         | `composer types:check` (Larastan level 7)                               |
-| PHP tests                   | `php artisan test` (Pest 5) — `composer test` runs lint + types + tests |
-| JS lint/format              | `npm run check` / `npm run check:fix` (vite-plus)                       |
-| TS types                    | `npm run types:check`                                                   |
-| Everything CI runs          | `composer ci:check`                                                     |
-| Build                       | `npm run build` · with SSR `npm run build:ssr`                          |
-| Filament resource           | `php artisan make:filament-resource Experience --generate --view`       |
-| Filament page               | `php artisan make:filament-page EditProfile`                            |
-| New public-site template    | `php artisan make:template <id> [--from=minimal]` (see 11 §2)           |
+| Purpose                     | Command                                                                             |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| Dev (server + queue + vite) | `composer dev`                                                                      |
+| PHP format                  | `composer lint` (Pint, `laravel` preset) · check: `composer lint:check`             |
+| PHP static analysis         | `composer types:check` (Larastan level 7)                                           |
+| PHP tests                   | `php artisan test` (Pest 5) — `composer test` runs lint + types + tests             |
+| JS lint/format              | `npm run check` / `npm run check:fix` (vite-plus)                                   |
+| TS types                    | `npm run types:check`                                                               |
+| Everything CI runs          | `composer ci:check`                                                                 |
+| Build                       | `npm run build` · with SSR `npm run build:ssr`                                      |
+| Filament resource           | `php artisan make:filament-resource Experience --generate --view`                   |
+| Filament page               | `php artisan make:filament-page EditProfile`                                        |
+| New public-site template    | `php artisan make:template <id> [--from=minimal]` (see 11 §2)                       |
+| Studio spec schema          | `php artisan studio:generate` after changing `SpecCatalogue` or `config/studio.php` |
 
 A task is **not done** until `composer ci:check` passes.
 
