@@ -7,7 +7,7 @@ use App\Support\Studio\SpecValidator;
 
 function validSpec(): array
 {
-    return json_decode((string) file_get_contents(base_path('tests/Fixtures/studio/neon-brutalist.json')), true);
+    return json_decode((string) file_get_contents(base_path('resources/studio/examples/neon-brutalist.json')), true);
 }
 
 /**

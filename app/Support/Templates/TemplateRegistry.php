@@ -2,6 +2,8 @@
 
 namespace App\Support\Templates;
 
+use Closure;
+use Illuminate\Database\QueryException;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -18,18 +20,66 @@ final class TemplateRegistry
      */
     private ?array $templates = null;
 
+    /**
+     * @var array<string, TemplateDefinition>|null
+     */
+    private ?array $studioTemplates = null;
+
+    /**
+     * @param  (Closure(): iterable<TemplateDefinition>)|null  $studio  Ready studio templates (from the database)
+     */
     public function __construct(
         private readonly string $path,
         private readonly string $defaultId,
         private readonly string $cachePath,
+        private readonly ?Closure $studio = null,
     ) {}
 
     /**
-     * @return array<string, TemplateDefinition> keyed by id, sorted by id
+     * Code templates (sorted by id), then ready studio templates (newest first).
+     *
+     * @return array<string, TemplateDefinition> keyed by id
      */
     public function all(): array
     {
+        return [...$this->code(), ...$this->studio()];
+    }
+
+    /**
+     * @return array<string, TemplateDefinition>
+     */
+    public function code(): array
+    {
         return $this->templates ??= $this->load();
+    }
+
+    /**
+     * @return array<string, TemplateDefinition>
+     */
+    public function studio(): array
+    {
+        if ($this->studioTemplates === null) {
+            $this->studioTemplates = [];
+
+            try {
+                foreach ($this->studio !== null ? ($this->studio)() : [] as $template) {
+                    $this->studioTemplates[$template->id] = $template;
+                }
+            } catch (QueryException $exception) {
+                // Deployed before `php artisan migrate`: keep serving the code templates.
+                report($exception);
+            }
+        }
+
+        return $this->studioTemplates;
+    }
+
+    /**
+     * Re-read studio templates on next use (called when one is saved or deleted).
+     */
+    public function forgetStudioTemplates(): void
+    {
+        $this->studioTemplates = null;
     }
 
     /**
@@ -56,7 +106,7 @@ final class TemplateRegistry
     public function default(): TemplateDefinition
     {
         return $this->find($this->defaultId)
-            ?? array_values($this->all())[0]
+            ?? array_values($this->code())[0]
             ?? throw new RuntimeException("No templates found in {$this->path}.");
     }
 
@@ -107,6 +157,7 @@ final class TemplateRegistry
 
     public function cache(): void
     {
+        // Only code templates are cached; studio templates live in the database.
         $manifests = array_map(fn (TemplateDefinition $template): array => $template->toArray(), $this->discover());
 
         file_put_contents($this->cachePath, '<?php return '.var_export($manifests, true).';'.PHP_EOL);

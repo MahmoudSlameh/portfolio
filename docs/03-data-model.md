@@ -384,6 +384,12 @@ Never exposed to the frontend.
 
 ---
 
+## Studio templates
+
+`studio_templates` and `studio_template_versions` (templates stored as a
+Template Spec, rendered by the `studio` engine): see
+[12 §4](12-ai-templates.md#4-data-model-p8p9--built-in-p8-03).
+
 ## Frontend shapes (API Resources)
 
 Each model has a `JsonResource` in `app/Http/Resources` returning **exactly**

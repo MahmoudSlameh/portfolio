@@ -26,12 +26,12 @@ Decision: D25.
 **Acceptance**: unit tests with malicious fixtures (`@import`, `url(http…)`,
 `</style>`, unscoped selectors, `expression()`).
 
-## P8-03 · Models, migrations, enums — `todo`
+## P8-03 · Models, migrations, enums — `done`
 
-- [ ] `StudioTemplate`, `StudioTemplateVersion` (+ factories, morph map
+- [x] `StudioTemplate`, `StudioTemplateVersion` (+ factories, morph map
       aliases), enums `StudioSource`, `StudioStatus`, media collections
       `reference` and `screenshot`.
-- [ ] Registry (P7-01) lists ready studio templates as `studio:<ulid>`.
+- [x] Registry (P7-01) lists ready studio templates as `studio:<ulid>`.
 
 ## P8-04 · `studio` React engine — `todo`
 
@@ -76,3 +76,14 @@ the template test matrix includes it.
   expression(), javascript:, behavior, -moz-binding, `</style>` in selectors
   and values, unbalanced braces, nested rules, HTML comments, size cap,
   stability, the example spec). Sanitising on save is wired in P8-03/P8-05.
+- 2026-09-26 — P8-03: migration (`studio_templates` with ULID key,
+  `studio_template_versions` with `notes`), enums `StudioStatus`,
+  `StudioSource`, models + factory (`ready()`, `failed()`, `generating()`),
+  morph aliases, media collections. `addVersion()` validates and sanitises
+  before storing; `activate()` switches/rolls back. `TemplateDefinition`
+  gains `kind`, `namespace()`, nullable `screenshot` + `screenshotUrl()`,
+  `forStudio()`; the registry merges ready studio templates (not cached,
+  refreshed on save/delete); `page()` and `data-template` use the
+  namespace; Appearance keys are colon-free and cards without a screenshot
+  show a note. Tests: `tests/Feature/Studio/StudioTemplateTest.php`.
+  The registry catches a missing table (deployed before `migrate`) and keeps serving the code templates. Studio templates only render once the engine exists (P8-04).

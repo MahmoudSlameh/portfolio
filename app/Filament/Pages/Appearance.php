@@ -44,13 +44,15 @@ class Appearance extends Page
         return $schema->components([
             Grid::make(['default' => 1, 'md' => 2, 'xl' => 3])->schema(array_map(
                 fn (TemplateDefinition $template): Section => Section::make($template->label)
-                    ->key("template-{$template->id}")
+                    ->key('template-'.self::key($template))
                     ->description($template->description)
                     ->icon($template->id === $active ? Heroicon::OutlinedCheckBadge : null)
                     ->iconColor('success')
                     ->afterHeader($template->id === $active ? [Text::make('Active')->badge()->color('success')] : [])
-                    ->schema([
-                        Image::make(asset($template->screenshot), "{$template->label} template preview")
+                    ->schema($template->screenshotUrl() === null ? [
+                        Text::make($template->isStudio() ? 'Studio template · no screenshot yet' : 'No screenshot')->color('gray'),
+                    ] : [
+                        Image::make($template->screenshotUrl(), "{$template->label} template preview")
                             ->imageWidth('100%')
                             ->imageHeight('auto'),
                     ])
@@ -70,7 +72,7 @@ class Appearance extends Page
     {
         $isActive = fn (): bool => app(TemplateManager::class)->active()->id === $template->id;
 
-        return Action::make("activate_{$template->id}")
+        return Action::make('activate_'.self::key($template))
             ->label(fn (): string => $isActive() ? 'Active' : 'Activate')
             ->icon(fn (): Heroicon => $isActive() ? Heroicon::OutlinedCheck : Heroicon::OutlinedBolt)
             ->disabled($isActive)
@@ -87,10 +89,18 @@ class Appearance extends Page
 
     private function previewAction(TemplateDefinition $template): Action
     {
-        return Action::make("preview_{$template->id}")
+        return Action::make('preview_'.self::key($template))
             ->label('Preview')
             ->icon(Heroicon::OutlinedEye)
             ->color('gray')
             ->url(url('/?template='.$template->id), shouldOpenInNewTab: true);
+    }
+
+    /**
+     * A key safe for Livewire action names and schema keys (studio ids contain a colon).
+     */
+    public static function key(TemplateDefinition $template): string
+    {
+        return str_replace(':', '-', $template->id);
     }
 }

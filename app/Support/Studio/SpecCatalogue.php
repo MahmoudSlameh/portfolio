@@ -135,6 +135,18 @@ final class SpecCatalogue
         return array_keys(array_filter(self::fonts(), fn (array $font): bool => in_array($kind, $font['kinds'], true)));
     }
 
+    /**
+     * The example spec shipped with the app (resources/studio/examples): a valid starting point for
+     * a new template, the factories and the tests.
+     *
+     * @return array<string, mixed>
+     */
+    public static function example(): array
+    {
+        /** @var array<string, mixed> */
+        return json_decode((string) file_get_contents(resource_path('studio/examples/neon-brutalist.json')), true, flags: JSON_THROW_ON_ERROR);
+    }
+
     public static function limit(string $key): int
     {
         return (int) config("studio.limits.{$key}");

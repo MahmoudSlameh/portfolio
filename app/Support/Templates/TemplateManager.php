@@ -76,7 +76,7 @@ final class TemplateManager
      */
     public function page(string $name): string
     {
-        return "{$this->current()->id}/{$name}";
+        return "{$this->current()->namespace()}/{$name}";
     }
 
     public function canPreview(): bool
