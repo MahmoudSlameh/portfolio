@@ -106,7 +106,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P7-02  | Kit: shared hooks & components                                     | P7-01               | done   |
 | P7-03  | `minimal` starter template                                         | P7-02               | done   |
 | P7-04  | `php artisan make:template`                                        | P7-03               | done   |
-| P7-05  | `/dev/templates` gallery (local only)                              | P7-01               | todo   |
+| P7-05  | `/dev/templates` gallery (local only)                              | P7-01               | done   |
 | P7-06  | Guide: building a template                                         | P7-04               | todo   |
 | P8-01  | Spec schema `studio/v1` + validator                                | P7-01               | todo   |
 | P8-02  | CSS sanitiser                                                      | —                   | todo   |

@@ -195,6 +195,10 @@ php artisan make:template retro --from=terminal        # or start from any exist
 composer dev                                           # then preview /?template=magazine
 ```
 
+While you work, open <http://localhost:8000/dev/templates> (local only) to
+see every page of every template side by side, light or dark, desktop or
+mobile.
+
 It copies the template into `resources/js/templates/<id>/` with its nine
 Inertia pages, renames the layout and the CSS scope, writes the
 `template.json` manifest, adds a placeholder screenshot and imports the

@@ -124,11 +124,26 @@ A deliberately plain template (system fonts, one CSS file, no animation)
 whose files are heavily commented: which props each page receives, which kit
 hook to use, what must not be done. `make:template` copies it by default.
 
-### 5. Template gallery for development
+### 5. Template gallery for development — _built in P7-05_
 
-`/dev/templates` (registered only when `app()->isLocal()`): every page of
-every template rendered with the demo seeder data, side by side, light and
-dark. Used while building a template and for screenshots.
+`/dev/templates` (`App\Http\Controllers\Dev\TemplateGalleryController`,
+Blade view `resources/views/dev/templates.blade.php`):
+
+- **Compare all**: one page (Home, archives, a case study, an article, Books,
+  Uses, Now, 404) rendered by every template side by side.
+- **One template**: every page of that template.
+- Light or dark, desktop (1280 × 800) or mobile (390 × 844), scaled down.
+- Each frame is the real site at `<path>?_template=<id>&_theme=<light|dark>`:
+  a **stateless** override (no session, so frames never affect each other or
+  the owner's preview), without the preview bar, always `noindex`. The theme
+  is rendered on the server (`TemplateManager::theme()`), so no cookie is
+  written.
+- Enabled by `portfolio.templates.dev_gallery`: `TEMPLATE_GALLERY` in `.env`,
+  default **on only when `APP_ENV=local`**. Otherwise the route is a 404 and
+  `?_template=` / `?_theme=` are ignored.
+- With no published content it shows a hint to run `DemoContentSeeder`.
+- `php artisan serve` handles one request at a time; set
+  `PHP_CLI_SERVER_WORKERS=4` in `.env` so the frames load in parallel.
 
 ### 6. Rules for template authors
 
