@@ -24,6 +24,7 @@ use App\Models\UsesItem;
 use App\Support\Seo\Seo;
 use App\Support\Templates\TemplateManager;
 use Carbon\CarbonImmutable;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
@@ -54,6 +55,18 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMorphMap();
         $this->configureRateLimiting();
         $this->configureErrorPages();
+        $this->configureMediaUploads();
+    }
+
+    /**
+     * Panel uploads go to the media-library disk (MEDIA_DISK). Without this, Filament falls back to
+     * FILESYSTEM_DISK ("local" = private), so uploaded images got URLs that are never served.
+     */
+    protected function configureMediaUploads(): void
+    {
+        SpatieMediaLibraryFileUpload::configureUsing(
+            fn (SpatieMediaLibraryFileUpload $upload): SpatieMediaLibraryFileUpload => $upload->disk(config('media-library.disk_name')),
+        );
     }
 
     protected function configureRateLimiting(): void

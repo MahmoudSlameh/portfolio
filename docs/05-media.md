@@ -21,6 +21,9 @@ php artisan storage:link
 `config/media-library.php`:
 
 - `disk_name` → `env('MEDIA_DISK', 'public')` (S3/R2 in prod is a one-line change).
+  Every `SpatieMediaLibraryFileUpload` in the panel is pinned to this disk in
+  `AppServiceProvider::configureMediaUploads()`; otherwise Filament would fall
+  back to `FILESYSTEM_DISK` (`local`, private) and uploads would never be served.
 - `queue_conversions_by_default` → `true` (conversions on the queue; `composer dev`
   already runs `queue:listen`).
 - `image_driver` → `imagick` if available, otherwise `gd` (must support WebP).
