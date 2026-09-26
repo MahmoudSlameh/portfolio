@@ -6,15 +6,15 @@ Decision: D26.
 
 ---
 
-## P7-01 · Template registry replaces the `Template` enum — `todo`
+## P7-01 · Template registry replaces the `Template` enum — `done`
 
-- [ ] `TemplateDefinition` value object + `TemplateRegistry` (code templates
+- [x] `TemplateDefinition` value object + `TemplateRegistry` (code templates
       from `resources/js/templates/*/template.json`, cached).
-- [ ] `template.json` for changelog, playground, terminal (values moved from
+- [x] `template.json` for changelog, playground, terminal (values moved from
       the enum).
-- [ ] `SiteSetting.active_template` → plain string validated by the
+- [x] `SiteSetting.active_template` → plain string validated by the
       registry; unknown value falls back to the default template.
-- [ ] `TemplateManager`, `Appearance`, `app.blade.php`, `HandleInertiaRequests`
+- [x] `TemplateManager`, `Appearance`, `app.blade.php`, `HandleInertiaRequests`
       and the Pest datasets use the registry. Delete `App\Enums\Template`.
 
 **Acceptance**: no visible change; all existing tests green; a test adds a
@@ -59,3 +59,15 @@ passes with the new template in the matrix (test in CI with a temp dir).
 ---
 
 ## Notes
+
+- 2026-09-26 — P7-01: `TemplateRegistry` + `TemplateDefinition` read
+  `resources/js/templates/<id>/template.json`; `App\Enums\Template` deleted.
+  `active_template` is a plain string; unknown ids fall back to the default
+  (config `portfolio.templates.default`). New `template:cache` /
+  `template:clear` commands run with `optimize` / `optimize:clear`. The
+  shared `template` prop now also carries `name`, so `PreviewBar` no longer
+  hard-codes labels. Tests: `tests/Unit/TemplateRegistryTest.php`
+  (discovery, fallback, invalid manifests, cache, nine page files per
+  template), fallback feature test, commands test; the `templates` dataset
+  lives in `tests/Pest.php` (`templateIds()`). `composer ci:check` green
+  (185 tests).

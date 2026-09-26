@@ -192,8 +192,9 @@ Today, adding a template means:
    [`resources/js/templates/types.ts`](resources/js/templates/types.ts).
 2. Add the thin Inertia wrappers in `resources/js/pages/<id>/`. Copy an
    existing template's wrappers.
-3. Register it in `App\Enums\Template` (label, description, fonts to
-   preload, screenshot) and add `public/templates/<id>.webp`.
+3. Add a `template.json` manifest next to it (id, name, description,
+   fonts to preload, screenshot) and `public/templates/<id>.webp`. The
+   template is discovered automatically; no PHP change is needed.
 4. Run `composer ci:check`. The test suite renders every page of every
    template automatically.
 
@@ -201,8 +202,7 @@ This is being made much easier (phase P7, design in
 [docs/11-template-kit.md](docs/11-template-kit.md)):
 `php artisan make:template <id>` scaffolding, a commented `minimal` starter
 template, shared hooks (`useContactForm`, `useArchiveFilters`,
-`useSiteSearch`, …) and auto-discovered `template.json` manifests instead
-of the enum.
+`useSiteSearch`, …).
 
 ## Testing & code quality
 

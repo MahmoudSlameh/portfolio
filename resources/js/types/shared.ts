@@ -1,6 +1,7 @@
 import type { Profile, SearchIndex, Social } from '@/types/content';
 
-export type TemplateId = 'changelog' | 'playground' | 'terminal';
+/** A template id from the registry (`resources/js/templates/<id>/template.json`). */
+export type TemplateId = string;
 
 export type ToggleablePage = 'writing' | 'books' | 'uses' | 'now';
 
@@ -18,6 +19,8 @@ export interface SharedProps {
     searchIndex?: SearchIndex;
     template: {
         id: TemplateId;
+        /** Display name from the template manifest. */
+        name: string;
         isPreview: boolean;
     };
     theme: 'light' | 'dark' | null;

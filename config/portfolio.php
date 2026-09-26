@@ -46,4 +46,20 @@ return [
 
     'cache_ttl' => (int) env('PORTFOLIO_CACHE_TTL', 60 * 60 * 24),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Templates
+    |--------------------------------------------------------------------------
+    |
+    | Code templates are discovered from `<path>/<id>/template.json` (see
+    | docs/11-template-kit.md). The default is used on a fresh install and
+    | whenever the active template no longer exists.
+    |
+    */
+
+    'templates' => [
+        'path' => resource_path('js/templates'),
+        'default' => 'changelog',
+    ],
+
 ];

@@ -38,7 +38,6 @@ All enums are string-backed and implement Filament `HasLabel` (+ `HasColor` /
 
 | Enum                   | Cases                                                                                                               | Source                               |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `Template`             | `changelog`, `playground`, `terminal`                                                                               | `templates/types.ts`                 |
 | `CompanyKind`          | `employer`, `client`                                                                                                | `CompanyKind`                        |
 | `WordmarkStyle`        | `serif`, `serif-italic`, `mono`, `sans-bold`, `sans-light`, `spaced`                                                | used when no logo is uploaded        |
 | `EmploymentType`       | `full-time`, `part-time`, `contract`, `freelance`, `open-source`, `internship`                                      | `EmploymentType` (+ `part-time`)     |
@@ -103,7 +102,7 @@ Media: `portrait` (single image), `resume` (single PDF, optional),
 
 | Column                   | Type                                     | Notes                                                        |
 | ------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
-| active_template          | enum `Template` default `changelog`      | **the switch the owner uses**                                |
+| active_template          | string (template id) default `changelog` | **the switch the owner uses**                                |
 | site_name                | string                                   | e.g. "Mahmoud Slameh" / brand title used in `<title>` suffix |
 | title_separator          | string default `—`                       |                                                              |
 | meta_description         | string(300)                              | default description                                          |

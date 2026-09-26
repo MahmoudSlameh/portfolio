@@ -6,7 +6,7 @@
     $favicon = $settings->getFirstMediaUrl('favicon');
 @endphp
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-template="{{ $template->value }}" data-theme="{{ $theme ?? 'light' }}" style="color-scheme: {{ $theme ?? 'light' }}">
+<html lang="en" dir="ltr" data-template="{{ $template->id }}" data-theme="{{ $theme ?? 'light' }}" style="color-scheme: {{ $theme ?? 'light' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -34,7 +34,7 @@
         @endif
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-        @foreach ($template->preloadFonts() as $font)
+        @foreach ($template->preloadFonts as $font)
             <link rel="preload" href="{{ Vite::asset($font) }}" as="font" type="font/woff2" crossorigin>
         @endforeach
 

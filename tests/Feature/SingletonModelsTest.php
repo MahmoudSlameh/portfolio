@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\AvailabilityStatus;
-use App\Enums\Template;
 use App\Models\NowPage;
 use App\Models\Profile;
 use App\Models\SiteSetting;
@@ -46,7 +45,7 @@ test('profile initials are derived from the name unless set', function () {
 test('site settings default to the changelog template with every page enabled', function () {
     $settings = SiteSetting::current();
 
-    expect($settings->active_template)->toBe(Template::Changelog)
+    expect($settings->active_template)->toBe('changelog')
         ->and($settings->indexable)->toBeTrue();
 
     foreach (SiteSetting::TOGGLEABLE_PAGES as $page) {

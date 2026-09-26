@@ -8,12 +8,11 @@ The goal: anyone who clones the repository can add a template in an
 afternoon, with **one command, one contract and a set of shared building
 blocks**, and never has to touch Laravel code to do it.
 
-## Today (before P7)
+## Today
 
-- Templates are hard-coded in `App\Enums\Template` (label, description,
-  preload fonts, screenshot). `SiteSetting.active_template` is cast to that
-  enum, so a new template means editing the enum, `styles/main.css`,
-  `public/templates/` and nine page files by hand
+- **Done (P7-01):** templates are discovered from `template.json` manifests
+  by `TemplateRegistry` (§1). The `Template` enum is gone; a new template
+  still needs its nine page files written by hand
   (see [06 § Adding a new template later](06-frontend-templates.md#adding-a-new-template-later)).
 - Behaviour that every template needs (contact form submission, archive
   filters, search) is re-implemented inside each template.
@@ -29,19 +28,25 @@ Two kinds of templates share one registry:
 | **Code**   | `resources/js/templates/<id>/` + `template.json` manifest         | Developers (PRs to this repo, or local forks)                                 |
 | **Studio** | Database row (`studio_templates`) rendered by the `studio` engine | The owner, from the panel (by hand or with AI) — see [12](12-ai-templates.md) |
 
-- `App\Support\Templates\TemplateRegistry` returns `TemplateDefinition`
-  value objects (`id`, `label`, `description`, `preloadFonts`,
-  `screenshotUrl`, `kind`, `inertiaNamespace`).
+- `App\Support\Templates\TemplateRegistry` (singleton) returns
+  `TemplateDefinition` value objects (`id`, `label`, `description`,
+  `preloadFonts`, `screenshot`, `author`). _Built in P7-01._
     - Code templates are discovered from
-      `resources/js/templates/*/template.json` (cached with
-      `php artisan optimize`; the cache is rebuilt on deploy).
-    - Studio templates are read from the database, id format
-      `studio:<ulid>`, Inertia namespace `studio`.
-- `site_settings.active_template` stays a string column; the enum cast is
-  removed and the value is validated against the registry. An unknown value
-  (deleted template) falls back to the default code template.
-- `TemplateManager`, `Appearance`, `app.blade.php` and the Pest template
-  matrix read from the registry instead of `Template::cases()`.
+      `resources/js/templates/<id>/template.json` (path and default id in
+      `config/portfolio.php` → `templates`). A manifest whose `id` does not
+      match its folder, or with a missing field, throws with the file name.
+    - `php artisan template:cache` writes the manifests to
+      `bootstrap/cache/templates.php` and `template:clear` removes it; both are
+      hooked into `php artisan optimize` / `optimize:clear`.
+    - _P8:_ studio templates are read from the database, id format
+      `studio:<ulid>`, Inertia namespace `studio` (adds `kind` to the
+      definition).
+- `site_settings.active_template` is a plain string column (no cast). An
+  unknown value (deleted template) falls back to the default template in
+  `TemplateManager::active()`.
+- `TemplateManager`, `Appearance`, `app.blade.php`, the shared `template`
+  prop (`id`, `name`, `isPreview`) and the Pest `templates` dataset read from
+  the registry.
 
 `template.json` (one per code template):
 

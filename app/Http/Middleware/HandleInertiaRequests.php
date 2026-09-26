@@ -56,7 +56,8 @@ class HandleInertiaRequests extends Middleware
             'socials' => fn (): array => $content->socials(),
             'searchIndex' => inertia()->defer(fn (): array => $content->searchIndex())->once(),
             'template' => fn (): array => [
-                'id' => $templates->current()->value,
+                'id' => $templates->current()->id,
+                'name' => $templates->current()->label,
                 'isPreview' => $templates->isPreview(),
             ],
             'theme' => in_array($theme, ['light', 'dark'], true) ? $theme : null,

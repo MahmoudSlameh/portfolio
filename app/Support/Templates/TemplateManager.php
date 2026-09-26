@@ -2,7 +2,6 @@
 
 namespace App\Support\Templates;
 
-use App\Enums\Template;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -21,16 +20,21 @@ final class TemplateManager
     /**
      * Resolved template per request object (the manager may outlive a single request).
      *
-     * @var array<int, Template>
+     * @var array<int, TemplateDefinition>
      */
     private array $resolved = [];
 
-    public function active(): Template
+    public function __construct(private readonly TemplateRegistry $registry) {}
+
+    /**
+     * The template activated in the panel, or the default one when it no longer exists.
+     */
+    public function active(): TemplateDefinition
     {
-        return SiteSetting::current()->active_template;
+        return $this->registry->find(SiteSetting::current()->active_template) ?? $this->registry->default();
     }
 
-    public function current(): Template
+    public function current(): TemplateDefinition
     {
         $request = $this->request();
 
@@ -39,7 +43,7 @@ final class TemplateManager
 
     public function isPreview(): bool
     {
-        return $this->current() !== $this->active();
+        return $this->current()->id !== $this->active()->id;
     }
 
     /**
@@ -47,7 +51,7 @@ final class TemplateManager
      */
     public function page(string $name): string
     {
-        return "{$this->current()->value}/{$name}";
+        return "{$this->current()->id}/{$name}";
     }
 
     public function canPreview(): bool
@@ -62,19 +66,20 @@ final class TemplateManager
         return request();
     }
 
-    private function resolve(Request $request): Template
+    private function resolve(Request $request): TemplateDefinition
     {
         $session = $request->hasSession() ? $request->session() : null;
 
         if ($request->query->has('template') && $session !== null) {
-            $requested = Template::tryFrom((string) $request->query('template'));
+            $requested = $this->registry->find((string) $request->query('template'));
 
             $requested !== null && $this->canPreview()
-                ? $session->put(self::SESSION_KEY, $requested->value)
+                ? $session->put(self::SESSION_KEY, $requested->id)
                 : $session->forget(self::SESSION_KEY);
         }
 
-        $preview = Template::tryFrom((string) $session?->get(self::SESSION_KEY));
+        $stored = $session?->get(self::SESSION_KEY);
+        $preview = $this->registry->find(is_string($stored) ? $stored : null);
 
         return $preview !== null && $this->canPreview() ? $preview : $this->active();
     }

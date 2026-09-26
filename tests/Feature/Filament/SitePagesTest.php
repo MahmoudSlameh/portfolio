@@ -1,17 +1,17 @@
 <?php
 
-use App\Enums\Template;
 use App\Filament\Pages\Appearance;
 use App\Filament\Pages\SiteSettings;
 use App\Models\SiteSetting;
 use App\Support\Content\ContentCache;
+use App\Support\Templates\TemplateRegistry;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 
 beforeEach(fn () => actingAsAdmin());
 
 test('the appearance page shows every template with the active one marked', function () {
-    SiteSetting::current()->update(['active_template' => Template::Terminal]);
+    SiteSetting::current()->update(['active_template' => 'terminal']);
 
     $this->get(Appearance::getUrl())
         ->assertOk()
@@ -36,33 +36,35 @@ test('activating a template updates the site settings and flushes the content ca
         return ++$calls;
     });
 
-    expect(SiteSetting::current()->active_template)->toBe(Template::Playground)
+    expect(SiteSetting::current()->active_template)->toBe('playground')
         ->and($calls)->toBe(2);
 });
 
-test('every card activates its own template and the active one is disabled', function (Template $template) {
-    SiteSetting::current()->update(['active_template' => Template::Changelog]);
+test('every card activates its own template and the active one is disabled', function (string $template) {
+    SiteSetting::current()->update(['active_template' => 'changelog']);
 
     $page = Livewire::test(Appearance::class)
-        ->assertActionExists(TestAction::make("activate_{$template->value}")->schemaComponent("template-{$template->value}"));
+        ->assertActionExists(TestAction::make("activate_{$template}")->schemaComponent("template-{$template}"));
 
-    if ($template === Template::Changelog) {
+    if ($template === 'changelog') {
         $page->assertActionDisabled(TestAction::make('activate_changelog')->schemaComponent('template-changelog'));
 
         return;
     }
 
-    $page->callAction(TestAction::make("activate_{$template->value}")->schemaComponent("template-{$template->value}"))
-        ->assertNotified("{$template->getLabel()} is now live");
+    $label = app(TemplateRegistry::class)->find($template)?->label;
+
+    $page->callAction(TestAction::make("activate_{$template}")->schemaComponent("template-{$template}"))
+        ->assertNotified("{$label} is now live");
 
     expect(SiteSetting::current()->active_template)->toBe($template);
-})->with(Template::cases());
+})->with('templates');
 
 test('the rendered activate buttons mount a distinct action per template', function () {
     $html = Livewire::test(Appearance::class)->html();
 
-    foreach (Template::cases() as $template) {
-        expect($html)->toContain("mountAction('activate_{$template->value}'");
+    foreach (templateIds() as $template) {
+        expect($html)->toContain("mountAction('activate_{$template}'");
     }
 });
 
