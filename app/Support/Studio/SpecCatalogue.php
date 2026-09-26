@@ -92,6 +92,29 @@ final class SpecCatalogue
     ];
 
     /**
+     * Stable class names of the engine that a spec's CSS may target (all under the
+     * `[data-template="studio"]` scope). Home sections also get `.st-<section>`, e.g. `.st-career`.
+     * A test checks every hook exists in the engine.
+     *
+     * @var list<string>
+     */
+    public const CLASS_HOOKS = [
+        // Layout
+        'st-root', 'st-header', 'st-header--bar-sticky', 'st-header--floating-pill', 'st-header--sidebar', 'st-header--minimal',
+        'st-brand', 'st-nav', 'st-tools', 'st-socials', 'st-main', 'st-footer', 'st-footer--minimal', 'st-footer--columns', 'st-footer--big-name',
+        // Building blocks
+        'st-container', 'st-section', 'st-kicker', 'st-section-title', 'st-card', 'st-button', 'st-button--ghost', 'st-chip', 'st-link', 'st-field', 'st-empty',
+        // Home
+        'st-hero', 'st-hero--centered', 'st-hero--split-portrait', 'st-hero--editorial', 'st-hero--terminal', 'st-hero__title', 'st-hero__actions',
+        'st-hero__socials', 'st-hero__portrait', 'st-availability', 'st-career__highlights', 'st-project-card', 'st-project-row', 'st-slider',
+        'st-marquee__track', 'st-logo', 'st-testimonial', 'st-article-card', 'st-article-row', 'st-book-cover', 'st-contact-form',
+        'st-contact-success', 'st-contact__email',
+        // Pages
+        'st-page-header', 'st-filters', 'st-case-study', 'st-case-block', 'st-case-meta', 'st-article', 'st-article-body', 'st-toc',
+        'st-code', 'st-quote', 'st-callout', 'st-adjacent', 'st-not-found',
+    ];
+
+    /**
      * UI micro-copy a spec may override, with maximum lengths. Content (names, bios, projects…)
      * never lives in a spec: it always comes from the panel (hard rule 1).
      *
@@ -143,8 +166,27 @@ final class SpecCatalogue
      */
     public static function example(): array
     {
-        /** @var array<string, mixed> */
-        return json_decode((string) file_get_contents(resource_path('studio/examples/neon-brutalist.json')), true, flags: JSON_THROW_ON_ERROR);
+        return self::examples()['neon-brutalist'];
+    }
+
+    /**
+     * Every example spec, keyed by file name. Together they use every section and variant.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public static function examples(): array
+    {
+        $examples = [];
+
+        foreach (glob(resource_path('studio/examples/*.json')) ?: [] as $file) {
+            /** @var array<string, mixed> $spec */
+            $spec = json_decode((string) file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
+            $examples[basename($file, '.json')] = $spec;
+        }
+
+        ksort($examples);
+
+        return $examples;
     }
 
     public static function limit(string $key): int
@@ -174,6 +216,7 @@ final class SpecCatalogue
             'homeSections' => array_map(fn (array $rule): array => [...$rule, 'props' => (object) $rule['props']], self::HOME_SECTIONS),
             'pages' => self::PAGES,
             'copy' => self::COPY,
+            'classHooks' => self::CLASS_HOOKS,
             'limits' => [
                 'name' => self::limit('name'),
                 'homeSections' => self::limit('home_sections'),

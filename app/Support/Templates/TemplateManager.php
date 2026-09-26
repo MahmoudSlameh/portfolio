@@ -3,6 +3,8 @@
 namespace App\Support\Templates;
 
 use App\Models\SiteSetting;
+use App\Models\StudioTemplate;
+use App\Models\StudioTemplateVersion;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Http\Request;
@@ -27,6 +29,13 @@ final class TemplateManager
      */
     private array $resolved = [];
 
+    /**
+     * Studio template rendered by each request (false: none).
+     *
+     * @var array<int, StudioTemplate|false>
+     */
+    private array $studio = [];
+
     public function __construct(private readonly TemplateRegistry $registry) {}
 
     /**
@@ -42,6 +51,35 @@ final class TemplateManager
         $request = $this->request();
 
         return $this->resolved[spl_object_id($request)] ??= $this->resolve($request);
+    }
+
+    /**
+     * The studio template this request renders (with its active version), if the current template is one.
+     */
+    public function studio(): ?StudioTemplate
+    {
+        $key = spl_object_id($this->request());
+
+        if (! array_key_exists($key, $this->studio)) {
+            $current = $this->current();
+            $this->studio[$key] = $current->isStudio()
+                ? (StudioTemplate::query()->renderable()->with('activeVersion')->find(substr($current->id, strlen(StudioTemplate::ID_PREFIX))) ?? false)
+                : false;
+        }
+
+        return $this->studio[$key] ?: null;
+    }
+
+    /**
+     * The spec of the rendered studio template's active version.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function studioSpec(): ?array
+    {
+        $version = $this->studio()?->getRelationValue('activeVersion');
+
+        return $version instanceof StudioTemplateVersion ? $version->spec : null;
     }
 
     /**

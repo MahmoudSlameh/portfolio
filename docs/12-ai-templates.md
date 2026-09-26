@@ -175,6 +175,32 @@ spec version.
   (`.st-hero`, `.st-hero__title`, `.st-card`, …) so the AI's CSS targets a
   known surface. The list is generated into the AI instructions.
 
+### As built (P8-04)
+
+- Server: `TemplateManager::studio()`/`studioSpec()`; shared prop
+  `studio: { spec } | null`; `App\Support\Studio\StudioStyles` prints
+  `<style id="studio-styles">` in `<head>` after the bundle: the tokens as
+  the shared colour system (`--paper`, `--surface`, `--ink`, `--ink-muted`,
+  `--line`, `--signal`, `--on-signal` = black or white by WCAG contrast, …)
+  and engine variables (`--st-radius`, `--st-section-gap`, `--st-container`,
+  `--st-shadow`, `--st-duration`, fonts), light and dark, then the spec's
+  sanitised CSS.
+- Engine: `resources/js/templates/studio/` — `layout/StudioLayout.tsx`
+  (4 headers, 3 footers, command palette, pages switched off in the panel
+  are hidden), `sections/*` (12 home sections), `home/HomePage.tsx` (an
+  exhaustive map from section name to component: a section added to the
+  catalogue does not compile until implemented), `pages/*` (the 8 other
+  pages with their variants), `components/*` (cards, contact form on the
+  kit, article renderers), `styles.css` (the `.st-*` building blocks). The
+  wrappers are in `resources/js/pages/studio/`.
+- Class hooks for the spec's CSS: `SpecCatalogue::CLASS_HOOKS` (also in the
+  generated catalogue for the AI); a test fails if one disappears from the
+  engine.
+- Examples: `resources/studio/examples/*.json` (Neon Brutalist, Quiet Serif,
+  Mono Grid, Sidebar Atelier) use every section, variant, header and footer
+  between them (tested). `php artisan db:seed --class=StudioDemoSeeder`
+  creates them as ready studio templates to try in `/dev/templates`.
+
 ## 4. Data model (P8/P9) — _built in P8-03_
 
 `studio_templates`

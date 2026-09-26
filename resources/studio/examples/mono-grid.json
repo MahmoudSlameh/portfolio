@@ -1,0 +1,44 @@
+{
+    "$schema": "studio/v1",
+    "name": "Mono Grid",
+    "tokens": {
+        "colors": {
+            "light": { "bg": "#f4f6f4", "surface": "#ffffff", "text": "#0f1a14", "muted": "#51605a", "accent": "#16a34a", "border": "#d5ddd8" },
+            "dark": { "bg": "#0b100d", "surface": "#121a15", "text": "#e3f2e8", "muted": "#8ea398", "accent": "#4ade80", "border": "#1f2c25" }
+        },
+        "fonts": { "display": "jetbrains-mono", "body": "dm-mono", "mono": "jetbrains-mono" },
+        "radius": "md",
+        "density": "compact",
+        "shadow": "soft",
+        "motion": "lively"
+    },
+    "layout": {
+        "header": { "variant": "floating-pill" },
+        "footer": { "variant": "minimal" },
+        "container": "default"
+    },
+    "pages": {
+        "home": [
+            { "section": "hero", "variant": "terminal" },
+            { "section": "stats", "variant": "cards" },
+            { "section": "skills", "variant": "bars" },
+            { "section": "career", "variant": "cards" },
+            { "section": "projects", "variant": "slider", "props": { "limit": 8 } },
+            { "section": "clients", "variant": "logos" },
+            { "section": "testimonials", "variant": "wall" },
+            { "section": "education", "variant": "cards" },
+            { "section": "books", "variant": "covers", "props": { "limit": 12 } },
+            { "section": "contact", "variant": "split" }
+        ],
+        "projects": { "variant": "table" },
+        "caseStudy": { "variant": "longform" },
+        "writing": { "variant": "list" },
+        "article": { "variant": "centered" },
+        "books": { "variant": "shelf" },
+        "uses": { "variant": "columns" },
+        "now": { "variant": "notes" },
+        "notFound": { "variant": "big-number" }
+    },
+    "copy": { "heroCta": "ssh me", "footerNote": "Built with the studio engine." },
+    "css": ".st-hero--terminal .st-card { border-color: var(--signal); }"
+}

@@ -1,3 +1,4 @@
+import type { TemplateSpec } from '@/templates/studio/spec';
 import type { Profile, SearchIndex, Social } from '@/types/content';
 
 /** A template id from the registry (`resources/js/templates/<id>/template.json`). */
@@ -23,6 +24,8 @@ export interface SharedProps {
         name: string;
         isPreview: boolean;
     };
+    /** The rendered studio template's spec; null for code templates. */
+    studio: { spec: TemplateSpec } | null;
     theme: 'light' | 'dark' | null;
     flash: { success?: string | null };
 }
