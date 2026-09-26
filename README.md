@@ -187,26 +187,26 @@ A template is a set of React components that receive the same props from
 Laravel (the _template contract_) and decide how they look. Templates never
 fetch data themselves.
 
-Today, adding a template means:
+Create one with a single command:
 
-1. Create `resources/js/templates/<id>/` with a layout and the nine pages
-   (Home, ProjectArchive, CaseStudy, WritingArchive, Article, Books, Uses,
-   Now, NotFound). The props for each page are typed in
-   [`resources/js/templates/types.ts`](resources/js/templates/types.ts).
-2. Add the thin Inertia wrappers in `resources/js/pages/<id>/`. Copy an
-   existing template's wrappers.
-3. Add a `template.json` manifest next to it (id, name, description,
-   fonts to preload, screenshot) and `public/templates/<id>.webp`. The
-   template is discovered automatically; no PHP change is needed.
-4. Run `composer ci:check`. The test suite renders every page of every
-   template automatically.
+```bash
+php artisan make:template magazine --name="Magazine"   # copies the commented `minimal` starter
+php artisan make:template retro --from=terminal        # or start from any existing template
+composer dev                                           # then preview /?template=magazine
+```
 
-Behaviour comes from the template kit (`@/kit`): `useContactForm`,
-`useArchiveFilters`, `useSiteSearch`, `useTheme`, a headless
-`ArticleBlocks`, `ResponsiveImage` and more, so a template only decides how
-things look. See [docs/11-template-kit.md](docs/11-template-kit.md). A
-`php artisan make:template <id>` scaffold and a commented `minimal` starter
-template are next on the roadmap (phase P7).
+It copies the template into `resources/js/templates/<id>/` with its nine
+Inertia pages, renames the layout and the CSS scope, writes the
+`template.json` manifest, adds a placeholder screenshot and imports the
+stylesheet. The template is discovered automatically: no PHP change is
+needed, and `composer ci:check` renders every page of it.
+
+Then change how it looks. Behaviour comes from the template kit (`@/kit`):
+`useContactForm`, `useArchiveFilters`, `useSiteSearch`, `useTheme`, a
+headless `ArticleBlocks`, `ResponsiveImage` and more. The props of every
+page are typed in
+[`resources/js/templates/types.ts`](resources/js/templates/types.ts). See
+[docs/11-template-kit.md](docs/11-template-kit.md).
 
 ## Testing & code quality
 

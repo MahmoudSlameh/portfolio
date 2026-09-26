@@ -60,6 +60,11 @@ return [
     'templates' => [
         'path' => resource_path('js/templates'),
         'default' => 'changelog',
+
+        // Used by `php artisan make:template` (see docs/11-template-kit.md).
+        'pages_path' => resource_path('js/pages'),
+        'stylesheet' => resource_path('js/styles/main.css'),
+        'screenshots_path' => public_path('templates'),
     ],
 
 ];

@@ -24,10 +24,12 @@ use App\Models\UsesItem;
 use App\Support\Seo\Seo;
 use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
+use App\Support\Templates\TemplateScaffolder;
 use Carbon\CarbonImmutable;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +50,14 @@ class AppServiceProvider extends ServiceProvider
             path: config('portfolio.templates.path'),
             defaultId: config('portfolio.templates.default'),
             cachePath: $this->app->bootstrapPath('cache/templates.php'),
+        ));
+        $this->app->bind(TemplateScaffolder::class, fn (): TemplateScaffolder => new TemplateScaffolder(
+            files: $this->app->make(Filesystem::class),
+            registry: $this->app->make(TemplateRegistry::class),
+            templatesPath: config('portfolio.templates.path'),
+            pagesPath: config('portfolio.templates.pages_path'),
+            stylesheet: config('portfolio.templates.stylesheet'),
+            screenshotsPath: config('portfolio.templates.screenshots_path'),
         ));
         $this->app->scoped(TemplateManager::class);
     }
