@@ -40,8 +40,9 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 
 > **Status (2026-09-26): P0–P7 are done (P7: the template kit, see
 > [11](../11-template-kit.md) and the
-> [guide](../templates/building-a-template.md)). P8–P10 (studio templates and
-> the AI template builder) are planned** — design in
+> [guide](../templates/building-a-template.md)) and P8 (studio templates
+> without AI: spec, sanitiser, models, engine, Appearance editor). P9–P10
+> (the AI template builder and extras) are planned** — design in
 > [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
@@ -115,7 +116,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P8-02  | CSS sanitiser                                                      | —                   | done   |
 | P8-03  | Studio models, migrations, enums                                   | P8-01               | done   |
 | P8-04  | `studio` React engine + section library                            | P7-02, P8-01…P8-03  | done   |
-| P8-05  | Appearance: studio templates without AI                            | P8-04               | todo   |
+| P8-05  | Appearance: studio templates without AI                            | P8-04               | done   |
 | P9-01  | Install and configure `laravel/ai`                                 | P8-*                | todo   |
 | P9-02  | AI settings page (Site → AI)                                       | P9-01               | todo   |
 | P9-03  | `TemplateDesigner` agent                                           | P9-01               | todo   |

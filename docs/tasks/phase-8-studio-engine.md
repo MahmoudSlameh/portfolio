@@ -47,11 +47,11 @@ Decision: D25.
 **Acceptance**: a seeded fixture spec renders every public page with SSR;
 the template test matrix includes it.
 
-## P8-05 · Appearance: studio templates without AI — `todo`
+## P8-05 · Appearance: studio templates without AI — `done`
 
-- [ ] Studio cards on Appearance (preview, activate, duplicate, delete),
-      "New blank studio template" and a JSON spec editor with validation
-      errors shown inline.
+- [x] Studio cards on Appearance (preview, activate, duplicate, delete),
+      "New studio template" (from an example) and a JSON spec editor with
+      validation errors shown inline.
 
 ---
 
@@ -94,3 +94,16 @@ the template test matrix includes it.
   Checked in Chromium: all 9 pages × 4 demo templates render (404 page
   included) with no console errors and no horizontal scroll at 390 px;
   light and dark. Tests: `tests/Feature/Studio/StudioEngineTest.php`.
+- 2026-09-26 — P8-05: Appearance lists studio templates with status,
+  version and source; header action **New studio template** starts from an
+  example (a blank spec would render an empty site, so "blank" became
+  "from an example"); **Edit** slide-over with a JSON `CodeEditor`, all
+  validation problems in one field message, save = new version + activate +
+  cache flush, persistent warning with the sanitiser notes; **Duplicate**;
+  **Delete** disabled while active. Cards are rebuilt after each action
+  (the page schema was built before the action ran, so the response showed
+  the old version). Checked in Chromium: editor loads, invalid spec shows
+  the errors, a save with an external `url()` shows "Saved as version N"
+  and the CSS warning. Note: after `composer install --no-scripts`, run
+  `php artisan filament:assets`, otherwise the editor does not load.
+  Tests: `tests/Feature/Studio/AppearanceStudioTest.php` (9 cases).
