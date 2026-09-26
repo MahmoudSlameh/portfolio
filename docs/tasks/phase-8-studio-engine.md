@@ -18,9 +18,9 @@ Decision: D25.
 
 **Acceptance**: unit tests with valid and invalid fixtures.
 
-## P8-02 · CSS sanitiser — `todo`
+## P8-02 · CSS sanitiser — `done`
 
-- [ ] `App\Support\Studio\CssSanitizer` per 12 §6 (allow-list, scope
+- [x] `App\Support\Studio\CssSanitizer` per 12 §6 (allow-list, scope
       prefixing, 40 KB cap).
 
 **Acceptance**: unit tests with malicious fixtures (`@import`, `url(http…)`,
@@ -68,3 +68,11 @@ the template test matrix includes it.
   `spec.ts` types derived from the catalogue. The design example used
   `inter`, which the app does not ship; it now uses `geist`. Tests:
   `tests/Feature/Studio/SpecValidatorTest.php` (36 cases).
+- 2026-09-26 — P8-02: `CssSanitizer` + `CssSanitizeResult` (allow-list
+  parser, no new dependency). Scope simplified to `[data-template="studio"]`
+  (one template per page; survives duplicate/refine). Tests:
+  `tests/Feature/Studio/CssSanitizerTest.php` (27 cases: @import/@font-face/
+  @charset/@namespace/@page, external and escaped url(), image-set(),
+  expression(), javascript:, behavior, -moz-binding, `</style>` in selectors
+  and values, unbalanced braces, nested rules, HTML comments, size cap,
+  stability, the example spec). Sanitising on save is wired in P8-03/P8-05.

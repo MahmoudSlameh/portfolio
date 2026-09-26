@@ -111,7 +111,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P7-05  | `/dev/templates` gallery (local only)                              | P7-01               | done   |
 | P7-06  | Guide: building a template                                         | P7-04               | done   |
 | P8-01  | Spec schema `studio/v1` + validator                                | P7-01               | done   |
-| P8-02  | CSS sanitiser                                                      | —                   | todo   |
+| P8-02  | CSS sanitiser                                                      | —                   | done   |
 | P8-03  | Studio models, migrations, enums                                   | P8-01               | todo   |
 | P8-04  | `studio` React engine + section library                            | P7-02, P8-01…P8-03  | todo   |
 | P8-05  | Appearance: studio templates without AI                            | P8-04               | todo   |
