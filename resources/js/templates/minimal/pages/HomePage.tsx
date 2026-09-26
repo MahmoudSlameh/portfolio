@@ -177,6 +177,19 @@ export function HomePage({
                                     {item.institution} ·{' '}
                                     {yearRange(item.start, item.end)}
                                 </p>
+                                {/* The panel's "Details": a description and achievements. */}
+                                {item.description && (
+                                    <p className="mt-1 text-ink-muted">
+                                        {item.description}
+                                    </p>
+                                )}
+                                {item.notes.length > 0 && (
+                                    <ul className="mt-1 list-disc ps-5 text-ink-muted">
+                                        {item.notes.map((note) => (
+                                            <li key={note}>{note}</li>
+                                        ))}
+                                    </ul>
+                                )}
                             </li>
                         ))}
                         {certifications.map((certification) => (

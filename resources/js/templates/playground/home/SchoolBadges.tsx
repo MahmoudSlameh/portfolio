@@ -43,6 +43,11 @@ function DegreeCard({ entry, index }: { entry: Education; index: number }) {
                             {entry.grade}
                         </p>
                     )}
+                    {entry.description && (
+                        <p className="text-sm leading-relaxed text-ink-muted">
+                            {entry.description}
+                        </p>
+                    )}
                     <ul className="flex flex-col gap-1.5">
                         {entry.notes.map((note) => (
                             <li
@@ -127,34 +132,50 @@ export function SchoolBadges({
                 pop="yellow"
             />
             <div className="grid gap-12 lg:grid-cols-12">
-                <div className="lg:col-span-6">
-                    <h3 className="pg-label mb-5 text-ink">
-                        {t('education.degrees')}
-                    </h3>
-                    <ul className="grid gap-5">
-                        {education.map((entry, index) => (
-                            <DegreeCard
-                                key={entry.id}
-                                entry={entry}
-                                index={index}
-                            />
-                        ))}
-                    </ul>
-                </div>
-                <div className="lg:col-span-6">
-                    <h3 className="pg-label mb-5 text-ink">
-                        {t('education.certifications')}
-                    </h3>
-                    <ul className="grid grid-cols-2 gap-6">
-                        {certifications.map((certification, index) => (
-                            <CertificationStamp
-                                key={certification.id}
-                                certification={certification}
-                                index={index}
-                            />
-                        ))}
-                    </ul>
-                </div>
+                {education.length > 0 && (
+                    <div
+                        className={
+                            certifications.length > 0
+                                ? 'lg:col-span-6'
+                                : 'lg:col-span-12'
+                        }
+                    >
+                        <h3 className="pg-label mb-5 text-ink">
+                            {t('education.degrees')}
+                        </h3>
+                        <ul className="grid gap-5">
+                            {education.map((entry, index) => (
+                                <DegreeCard
+                                    key={entry.id}
+                                    entry={entry}
+                                    index={index}
+                                />
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                {certifications.length > 0 && (
+                    <div
+                        className={
+                            education.length > 0
+                                ? 'lg:col-span-6'
+                                : 'lg:col-span-12'
+                        }
+                    >
+                        <h3 className="pg-label mb-5 text-ink">
+                            {t('education.certifications')}
+                        </h3>
+                        <ul className="grid grid-cols-2 gap-6">
+                            {certifications.map((certification, index) => (
+                                <CertificationStamp
+                                    key={certification.id}
+                                    certification={certification}
+                                    index={index}
+                                />
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         </section>
     );
