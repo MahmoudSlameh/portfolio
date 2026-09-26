@@ -104,7 +104,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P6-03  | English-only docs & project metadata                               | P6-01               | done   |
 | P7-01  | Template registry replaces the `Template` enum                     | P6-*                | done   |
 | P7-02  | Kit: shared hooks & components                                     | P7-01               | done   |
-| P7-03  | `minimal` starter template                                         | P7-02               | todo   |
+| P7-03  | `minimal` starter template                                         | P7-02               | done   |
 | P7-04  | `php artisan make:template`                                        | P7-03               | todo   |
 | P7-05  | `/dev/templates` gallery (local only)                              | P7-01               | todo   |
 | P7-06  | Guide: building a template                                         | P7-04               | todo   |
