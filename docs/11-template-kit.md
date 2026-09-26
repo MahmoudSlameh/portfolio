@@ -158,8 +158,11 @@ Blade view `resources/views/dev/templates.blade.php`):
 6. `composer ci:check` must pass; the template test matrix picks the new
    template up automatically from the registry.
 
-### 7. Documentation deliverable
+### 7. Documentation deliverable — _built in P7-06_
 
-`docs/templates/building-a-template.md`: a step-by-step guide (scaffold →
-layout → pages → screenshot → tests → PR) with the prop reference for every
-page generated from `resources/js/templates/types.ts`.
+[`docs/templates/building-a-template.md`](templates/building-a-template.md):
+the step-by-step guide (setup → `make:template` → anatomy → manifest →
+styling and fonts → layout → pages → kit → rules → test and ship →
+troubleshooting) with a prop table for every page of the contract.
+`tests/Unit/TemplateGuideTest.php` fails when a prop in
+`resources/js/templates/types.ts` is not documented there.

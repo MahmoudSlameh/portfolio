@@ -209,8 +209,11 @@ Then change how it looks. Behaviour comes from the template kit (`@/kit`):
 `useContactForm`, `useArchiveFilters`, `useSiteSearch`, `useTheme`, a
 headless `ArticleBlocks`, `ResponsiveImage` and more. The props of every
 page are typed in
-[`resources/js/templates/types.ts`](resources/js/templates/types.ts). See
-[docs/11-template-kit.md](docs/11-template-kit.md).
+[`resources/js/templates/types.ts`](resources/js/templates/types.ts).
+
+**Step-by-step guide:
+[docs/templates/building-a-template.md](docs/templates/building-a-template.md)**
+(design details in [docs/11-template-kit.md](docs/11-template-kit.md)).
 
 ## Testing & code quality
 
@@ -242,7 +245,7 @@ live status.
 | ----- | ------- | ------------------------------------------------------------------------------------ |
 | P0–P5 | Done    | Data layer, admin panel, three templates, SEO & performance, tests, deployment guide |
 | P6    | Done    | Open-source release: this README, license, contributing guides                       |
-| P7    | Planned | Template kit: registry, shared hooks, `make:template`, starter template, guide       |
+| P7    | Done    | Template kit: registry, shared hooks, `make:template`, starter template, guide       |
 | P8    | Planned | Studio engine: templates stored as a JSON spec and rendered by one React engine      |
 | P9    | Planned | AI template builder with the Laravel AI SDK                                          |
 | P10   | Planned | Refine & versions, export/import, eject to code                                      |

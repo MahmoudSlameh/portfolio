@@ -59,8 +59,8 @@ composer dev
 Run `php artisan make:template <id>`: it copies the commented starter
 template (`resources/js/templates/minimal`, or any template with
 `--from=<id>`) with its pages, manifest, screenshot and stylesheet import.
-Build on the kit (`@/kit`, see
-[`docs/11-template-kit.md`](docs/11-template-kit.md)). A template pull
+Build on the kit (`@/kit`) and follow the step-by-step guide:
+[`docs/templates/building-a-template.md`](docs/templates/building-a-template.md). A template pull
 request needs:
 
 - all nine pages, working with empty content and with the demo content;
