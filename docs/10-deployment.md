@@ -79,7 +79,7 @@ php artisan storage:link        # serves the "public" media disk at /storage
 npm ci
 npm run build:ssr               # client bundle (public/build) + SSR bundle (bootstrap/ssr)
 
-php artisan optimize            # config, routes, events, views, Filament components/icons
+php artisan optimize            # config, routes, events, views, template manifests, Filament components/icons
 php artisan filament:optimize
 ```
 

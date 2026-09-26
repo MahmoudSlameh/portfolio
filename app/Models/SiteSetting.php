@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Template;
 use App\Models\Concerns\IsSingleton;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Support\Media\MimeTypes;
@@ -19,7 +18,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * Site-wide settings: active template, SEO defaults and page toggles (single row).
  *
  * @property int $id
- * @property Template $active_template
+ * @property string $active_template Template id (see App\Support\Templates\TemplateRegistry)
  * @property string $site_name
  * @property string $title_separator
  * @property string|null $meta_description
@@ -66,7 +65,6 @@ class SiteSetting extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'active_template' => Template::class,
             'enabled_pages' => 'array',
             'indexable' => 'boolean',
         ];
@@ -78,7 +76,7 @@ class SiteSetting extends Model implements HasMedia
     protected static function singletonDefaults(): array
     {
         return [
-            'active_template' => Template::default(),
+            'active_template' => config('portfolio.templates.default'),
             'site_name' => config('app.name'),
         ];
     }

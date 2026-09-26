@@ -23,6 +23,7 @@ use App\Models\UsesGroup;
 use App\Models\UsesItem;
 use App\Support\Seo\Seo;
 use App\Support\Templates\TemplateManager;
+use App\Support\Templates\TemplateRegistry;
 use Carbon\CarbonImmutable;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -43,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(TemplateRegistry::class, fn (): TemplateRegistry => new TemplateRegistry(
+            path: config('portfolio.templates.path'),
+            defaultId: config('portfolio.templates.default'),
+            cachePath: $this->app->bootstrapPath('cache/templates.php'),
+        ));
         $this->app->scoped(TemplateManager::class);
     }
 
@@ -56,6 +62,8 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureErrorPages();
         $this->configureMediaUploads();
+
+        $this->optimizes(optimize: 'template:cache', clear: 'template:clear', key: 'templates');
     }
 
     /**

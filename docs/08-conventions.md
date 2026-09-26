@@ -82,8 +82,8 @@ migrate:fresh --seed` without the demo seeder) and check the browser console.
 
 ## Testing (Pest)
 
-- Feature test per public route × per template (dataset over
-  `Template::cases()`): status 200, component name, required props, SEO prop.
+- Feature test per public route × per template (the `templates`
+  dataset in `tests/Pest.php`, one entry per `template.json`): status 200, component name, required props, SEO prop.
 - Filament tests with `livewire()` helpers: list/create/edit/delete per
   resource, validation rules (e.g. end date ≥ start date), media upload
   (`UploadedFile::fake()->image()`), singleton pages save.

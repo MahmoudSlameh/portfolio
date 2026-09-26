@@ -1,0 +1,11 @@
+{
+    "id": "playground",
+    "name": "Playground",
+    "description": "Playful bento layout with stickers, career tickets and a floating dock.",
+    "author": "Mahmoud Slameh",
+    "preloadFonts": [
+        "node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2",
+        "node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2"
+    ],
+    "screenshot": "templates/playground.webp"
+}

@@ -266,7 +266,7 @@ reading books (multi-select of books, default = status reading). Shows
 
 ## Site · Appearance (custom page `Appearance`)
 
-- Card grid (one card per `Template` enum case): screenshot
+- Card grid (one card per template in the `TemplateRegistry`): screenshot
   (`public/templates/<id>.webp`), name, short description, fonts, "Active"
   badge on the current one.
 - Card actions: **Activate** (confirmation modal → updates

@@ -69,3 +69,19 @@ function actingAsAdmin(): User
 
     return $user;
 }
+
+/**
+ * Ids of the code templates (`resources/js/templates/<id>/template.json`), read without booting the
+ * app so they can feed datasets. Every template added to the folder is tested automatically.
+ *
+ * @return list<string>
+ */
+function templateIds(): array
+{
+    $ids = array_map(fn (string $file): string => basename(dirname($file)), glob(dirname(__DIR__).'/resources/js/templates/*/template.json') ?: []);
+    sort($ids);
+
+    return $ids;
+}
+
+dataset('templates', fn (): array => templateIds());

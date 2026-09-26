@@ -164,7 +164,7 @@ send `<meta name="robots" content="noindex">` and
   `@fontsource/*`), imported at the top of `resources/js/styles/main.css`.
   Vite fingerprints the `.woff2` files; `@font-face` + `unicode-range` means a
   page downloads only the faces it renders. No third-party font requests.
-- `Template::preloadFonts()` lists the above-the-fold font files (Vite manifest
+- `preloadFonts` in each `template.json` lists the above-the-fold font files (Vite manifest
   keys); `app.blade.php` emits `<link rel="preload" as="font">` for the active
   template only, so the first paint uses the right type (no swap CLS).
 - `<html data-template="terminal">` is set server-side in Blade.
@@ -190,9 +190,11 @@ uses 5.7 — keep root's and fix any type errors.
 
 ## Adding a new template later
 
-1. Add a case to `App\Enums\Template` (label, description, preloadFonts,
-   screenshot path) and import its Fontsource packages in `styles/main.css`.
-2. Create `resources/js/templates/<id>/` and the 9 pages in
-   `resources/js/pages/<id>/`.
+1. Create `resources/js/templates/<id>/` with a `template.json` manifest
+   (id, name, description, author, preloadFonts, screenshot — see
+   [11](11-template-kit.md#1-template-registry-replaces-the-enum)) and import
+   its Fontsource packages in `styles/main.css`.
+2. Add the 9 pages in `resources/js/pages/<id>/`.
 3. Add `public/templates/<id>.webp` screenshot for the Appearance page.
-4. The Pest test matrix picks the new enum case up automatically.
+4. The registry discovers the manifest and the Pest test matrix picks the new
+   template up automatically. No PHP change is needed.

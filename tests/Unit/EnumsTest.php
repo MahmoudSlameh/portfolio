@@ -9,23 +9,7 @@ use App\Enums\EmploymentType;
 use App\Enums\ProjectStatus;
 use App\Enums\ReadingStatus;
 use App\Enums\SocialPlatform;
-use App\Enums\Template;
 use App\Enums\WorkMode;
-
-test('every template has a label, description and screenshot', function (Template $template) {
-    expect($template->getLabel())->not->toBeEmpty()
-        ->and($template->getDescription())->not->toBeEmpty()
-        ->and($template->screenshot())->toBe("templates/{$template->value}.webp");
-})->with(Template::cases());
-
-test('every template preloads self-hosted font files that exist', function (Template $template) {
-    expect($template->preloadFonts())->not->toBeEmpty()
-        ->each(fn ($font) => $font->toEndWith('.woff2')->and(file_exists(dirname(__DIR__, 2).'/'.$font->value))->toBeTrue());
-})->with(Template::cases());
-
-test('the default template is changelog', function () {
-    expect(Template::default())->toBe(Template::Changelog);
-});
 
 test('badge enums expose a label, color and icon for every case', function (string $enum) {
     foreach ($enum::cases() as $case) {
