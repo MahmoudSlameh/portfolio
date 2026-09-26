@@ -1,0 +1,8 @@
+{
+    "id": "minimal",
+    "name": "Minimal",
+    "description": "A plain, single-column starter built only on the template kit. Copy it to start your own template.",
+    "author": "Mahmoud Slameh",
+    "preloadFonts": [],
+    "screenshot": "templates/minimal.webp"
+}

@@ -20,6 +20,7 @@ export {
 export { useCommandPalette } from '@/providers/CommandPaletteProvider';
 export { useToast } from '@/providers/ToastProvider';
 export { useClipboard } from '@/hooks/useClipboard';
+export { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 export { useNow } from '@/hooks/useLocalTime';
 export { useReveal } from '@/hooks/useReveal';
 export { useTranslation } from '@/hooks/useTranslation';

@@ -104,7 +104,7 @@ The three existing templates use the kit for the contact form, archive
 filters, theme toggle and article body, so they double as real-world
 examples.
 
-### 4. The `minimal` starter template
+### 4. The `minimal` starter template — _built in P7-03_
 
 A deliberately plain template (system fonts, one CSS file, no animation)
 whose files are heavily commented: which props each page receives, which kit

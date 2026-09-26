@@ -1,0 +1,119 @@
+/*
+ * Minimal template styles.
+ *
+ * Every rule is scoped to [data-template='minimal'] (set on <html> by the server), so this file
+ * never leaks into other templates even though all template stylesheets ship in one bundle
+ * (decision D18).
+ *
+ * The design tokens below feed the shared Tailwind colours from styles/base.css:
+ * --paper → bg-paper, --ink → text-ink, --line → border-line, --signal → text-signal …
+ * Set them for light, then override them for dark. That is all a template needs for theming.
+ *
+ * This template uses system fonts, so `preloadFonts` in template.json is empty. To use a web font,
+ * install its Fontsource package, import it in styles/main.css and list the above-the-fold .woff2
+ * files in `preloadFonts`.
+ */
+[data-template='minimal'] {
+    --tpl-font-display:
+        ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --tpl-font-sans:
+        ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --tpl-font-mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+    --paper: #fbfbfa;
+    --surface: #f2f2f0;
+    --raised: #ffffff;
+    --ink: #18181b;
+    --ink-muted: #52525b;
+    --ink-subtle: #6b6b73;
+    --line: #e4e4e7;
+    --line-strong: #18181b;
+    --signal: #2563eb;
+    --signal-ink: #1d4ed8;
+    --signal-soft: rgb(37 99 235 / 0.1);
+    --on-signal: #ffffff;
+    --electric: #2563eb;
+    --aqua: #0d9488;
+    --coral: #e11d48;
+    --danger: #b91c1c;
+    --danger-soft: rgb(185 28 28 / 0.08);
+    --shadow-lift: 0 1px 2px rgb(0 0 0 / 0.06);
+    --header-height: 4rem;
+}
+
+[data-template='minimal'][data-theme='dark'] {
+    --paper: #111113;
+    --surface: #1a1a1d;
+    --raised: #1f1f23;
+    --ink: #f4f4f5;
+    --ink-muted: #a1a1aa;
+    --ink-subtle: #8b8b94;
+    --line: #2e2e33;
+    --line-strong: #f4f4f5;
+    --signal: #7aa2ff;
+    --signal-ink: #9ab8ff;
+    --signal-soft: rgb(122 162 255 / 0.12);
+    --on-signal: #111113;
+    --danger: #f87171;
+    --danger-soft: rgb(248 113 113 / 0.1);
+}
+
+@layer components {
+    /* Readable column used by every page. */
+    [data-template='minimal'] .mn-container {
+        margin-inline: auto;
+        width: 100%;
+        max-width: 44rem;
+        padding-inline: 1.25rem;
+    }
+
+    [data-template='minimal'] .mn-link {
+        color: var(--signal-ink);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+    }
+
+    [data-template='minimal'] .mn-field {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 0.375rem;
+        background: var(--raised);
+        padding: 0.5rem 0.75rem;
+        color: var(--ink);
+    }
+
+    [data-template='minimal'] .mn-field:focus-visible {
+        outline: 2px solid var(--signal);
+        outline-offset: 1px;
+    }
+
+    [data-template='minimal'] .mn-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 0.375rem;
+        background: var(--ink);
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        color: var(--paper);
+    }
+
+    [data-template='minimal'] .mn-button:disabled {
+        opacity: 0.6;
+    }
+
+    [data-template='minimal'] .mn-chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.125rem 0.625rem;
+        font-size: 0.8125rem;
+        color: var(--ink-muted);
+    }
+
+    [data-template='minimal'] .mn-chip[aria-pressed='true'] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+    }
+}

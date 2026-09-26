@@ -71,6 +71,9 @@ page builder that is slow and bad for SEO. This project is both a
 | ![Changelog template](public/templates/changelog.webp)            | ![Playground template](public/templates/playground.webp)      | ![Terminal template](public/templates/terminal.webp)             |
 | Editorial "engineer's changelog" with a git-graph career timeline | Playful bento layout with stickers, career tickets and a dock | Dark developer-terminal look with mono type and a project slider |
 
+There is also **Minimal**, a plain, fully commented starter template to copy
+when you build your own (`resources/js/templates/minimal`).
+
 Visitors always see the template activated in **Site → Appearance**. While
 you are signed in to the panel, `/?template=<id>` previews another template
 just for you (preview pages are `noindex`). `/?template=reset` ends the

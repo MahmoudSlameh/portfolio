@@ -31,10 +31,10 @@ fake manifest and sees it in the registry.
 **Acceptance**: `npm run types:check`, `npm run check` pass; contact and
 filter feature tests still pass for every template.
 
-## P7-03 · `minimal` starter template — `todo`
+## P7-03 · `minimal` starter template — `done`
 
-- [ ] Plain, heavily commented template implementing all 9 pages with the kit.
-- [ ] Screenshot `public/templates/minimal.webp`.
+- [x] Plain, heavily commented template implementing all 9 pages with the kit.
+- [x] Screenshot `public/templates/minimal.webp`.
 
 ## P7-04 · `php artisan make:template` — `todo`
 
@@ -85,3 +85,12 @@ passes with the new template in the matrix (test in CI with a temp dir).
   validation summary, clearing while typing, submission stored in the
   inbox, success state; image blocks with caption. `composer ci:check`
   green.
+- 2026-09-26 — P7-03: `resources/js/templates/minimal` (manifest, styles,
+  layout, components, nine pages, README) and `resources/js/pages/minimal`
+  wrappers, built only on `@/kit`; system fonts, so `preloadFonts` is empty
+  (the registry test now allows that and still checks listed files exist).
+  The nav hides pages switched off in the panel. Screenshot
+  `public/templates/minimal.webp` (960×600) taken from the running app with
+  the demo content. Checked in Chromium: every page renders (404 for
+  unknown URLs), project search filter, theme toggle, contact form
+  validation and submission, light/dark and mobile.

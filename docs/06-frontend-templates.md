@@ -190,7 +190,8 @@ uses 5.7 — keep root's and fix any type errors.
 
 ## Adding a new template later
 
-1. Create `resources/js/templates/<id>/` with a `template.json` manifest
+1. Copy `resources/js/templates/minimal` (the commented starter) or create
+   `resources/js/templates/<id>/` with a `template.json` manifest
    (id, name, description, author, preloadFonts, screenshot — see
    [11](11-template-kit.md#1-template-registry-replaces-the-enum)) and import
    its Fontsource packages in `styles/main.css`.

@@ -34,7 +34,7 @@ function manifest(string $id, array $overrides = []): array
 $root = dirname(__DIR__, 2);
 
 test('the bundled templates are discovered in id order', function () use ($root) {
-    expect(registryFor("{$root}/resources/js/templates")->ids())->toBe(['changelog', 'playground', 'terminal']);
+    expect(registryFor("{$root}/resources/js/templates")->ids())->toBe(['changelog', 'minimal', 'playground', 'terminal']);
 });
 
 test('every bundled template has a label, description, screenshot and all nine Inertia pages', function (string $id) use ($root) {
@@ -49,9 +49,15 @@ test('every bundled template has a label, description, screenshot and all nine I
     }
 })->with('templates');
 
-test('every bundled template preloads self-hosted font files that exist', function (string $id) use ($root) {
-    expect(registryFor("{$root}/resources/js/templates")->find($id)->preloadFonts)->not->toBeEmpty()
-        ->each(fn ($font) => $font->toEndWith('.woff2')->and(file_exists("{$root}/{$font->value}"))->toBeTrue());
+test('every font a bundled template preloads is a self-hosted file that exists', function (string $id) use ($root) {
+    // A template may use system fonts only (minimal), so the list can be empty.
+    $fonts = registryFor("{$root}/resources/js/templates")->find($id)->preloadFonts;
+    expect($fonts)->toBeArray();
+
+    foreach ($fonts as $font) {
+        expect($font)->toEndWith('.woff2')
+            ->and(file_exists("{$root}/{$font}"))->toBeTrue("{$font} does not exist");
+    }
 })->with('templates');
 
 test('a new folder with a manifest is picked up without any PHP change', function () {
