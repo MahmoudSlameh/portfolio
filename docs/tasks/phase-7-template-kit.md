@@ -36,12 +36,12 @@ filter feature tests still pass for every template.
 - [x] Plain, heavily commented template implementing all 9 pages with the kit.
 - [x] Screenshot `public/templates/minimal.webp`.
 
-## P7-04 · `php artisan make:template` — `todo`
+## P7-04 · `php artisan make:template` — `done`
 
-- [ ] Copies `minimal` (or `--from=<id>`) into `resources/js/templates/<id>`,
+- [x] Copies `minimal` (or `--from=<id>`) into `resources/js/templates/<id>`,
       generates `resources/js/pages/<id>/*.tsx` wrappers and a placeholder
       screenshot, rewrites ids/class scopes.
-- [ ] Refuses existing ids and invalid slugs.
+- [x] Refuses existing ids and invalid slugs.
 
 **Acceptance**: `make:template demo && npm run build:ssr && php artisan test`
 passes with the new template in the matrix (test in CI with a temp dir).
@@ -94,3 +94,16 @@ passes with the new template in the matrix (test in CI with a temp dir).
   the demo content. Checked in Chromium: every page renders (404 for
   unknown URLs), project search filter, theme toggle, contact form
   validation and submission, light/dark and mobile.
+- 2026-09-26 — P7-04: `php artisan make:template <id> [--from=] [--name=]
+[--description=] [--author=] [--no-format]` via
+  `App\Support\Templates\TemplateScaffolder`: copies the source template and
+  its pages, renames the layout, CSS scope and import paths, writes the
+  manifest and a README with next steps, copies the screenshot as a
+  placeholder, adds the stylesheet import to `styles/main.css`, formats the
+  output with Vite+ and refreshes a warm template cache. Reserved ids:
+  `studio`, `reset`. Paths are in `config/portfolio.php`. Tests run against
+  a temporary copy (`tests/Feature/MakeTemplateCommandTest.php`). Acceptance
+  checked locally: `make:template demo-zine` → `npm run build:ssr` →
+  `composer ci:check` green with the new template in the page matrix, then
+  removed. The bundled-ids registry test now only checks our templates are
+  present, so contributors' templates do not break it.

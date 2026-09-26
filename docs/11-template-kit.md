@@ -63,24 +63,38 @@ Two kinds of templates share one registry:
 }
 ```
 
-### 2. Scaffold command
+### 2. Scaffold command — _built in P7-04_
 
-`php artisan make:template <id> [--from=minimal]` creates:
-
-```
-resources/js/templates/<id>/
-  template.json            # manifest (above)
-  styles.css               # scoped to [data-template="<id>"]
-  layout/<Id>Layout.tsx    # receives LayoutProps
-  pages/HomePage.tsx … NotFoundPage.tsx   # one per contract page
-resources/js/pages/<id>/
-  Home.tsx ProjectArchive.tsx CaseStudy.tsx WritingArchive.tsx
-  Article.tsx Books.tsx Uses.tsx Now.tsx NotFound.tsx   # thin Inertia wrappers
-public/templates/<id>.webp  # placeholder screenshot to replace
+```bash
+php artisan make:template <id> [--from=minimal] [--name=] [--description=] [--author=] [--no-format]
 ```
 
-The Inertia wrappers are generated and never edited by hand (same shape as
-today: `SeoHead` + page component + `withTemplateLayout(Layout)`).
+`App\Support\Templates\TemplateScaffolder` copies the source template and
+renames everything that ties the copy to it:
+
+```
+resources/js/templates/<id>/        # copy of the source folder
+  template.json                     # rewritten: id, name, description, author, source's preloadFonts
+  styles.css                        # [data-template='<from>'] → [data-template='<id>']
+  layout/<Id>Layout.tsx             # <From>Layout renamed (file and identifiers)
+  README.md                         # next steps (the source README is not copied)
+resources/js/pages/<id>/*.tsx       # the nine Inertia wrappers, imports rewritten
+public/templates/<id>.webp          # the source screenshot as a placeholder
+resources/js/styles/main.css        # @import of the new stylesheet, after the source's
+```
+
+- Ids are lowercase slugs; `studio` and `reset` are reserved; existing ids
+  and unknown sources are refused before anything is written.
+- The generated files are formatted with `npx vp fmt` (skip with
+  `--no-format`), because rewritten import paths change line lengths.
+- A warm template cache (`template:cache`) is rebuilt so the new template
+  appears right away.
+- Paths come from `config/portfolio.php` → `templates` (`path`,
+  `pages_path`, `stylesheet`, `screenshots_path`); the tests point them at a
+  temporary copy.
+
+The Inertia wrappers are thin (`SeoHead` + page component +
+`withTemplateLayout(Layout)`) and rarely need editing.
 
 ### 3. Shared building blocks (`resources/js/kit`) — _built in P7-02_
 

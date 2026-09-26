@@ -34,7 +34,13 @@ function manifest(string $id, array $overrides = []): array
 $root = dirname(__DIR__, 2);
 
 test('the bundled templates are discovered in id order', function () use ($root) {
-    expect(registryFor("{$root}/resources/js/templates")->ids())->toBe(['changelog', 'minimal', 'playground', 'terminal']);
+    $ids = registryFor("{$root}/resources/js/templates")->ids();
+    $sorted = $ids;
+    sort($sorted);
+
+    // Templates added by contributors (make:template) are discovered too, so only check ours are there.
+    expect($ids)->toContain('changelog', 'minimal', 'playground', 'terminal')
+        ->and($ids)->toBe($sorted);
 });
 
 test('every bundled template has a label, description, screenshot and all nine Inertia pages', function (string $id) use ($root) {

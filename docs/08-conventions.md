@@ -14,6 +14,7 @@
 | Build                       | `npm run build` · with SSR `npm run build:ssr`                          |
 | Filament resource           | `php artisan make:filament-resource Experience --generate --view`       |
 | Filament page               | `php artisan make:filament-page EditProfile`                            |
+| New public-site template    | `php artisan make:template <id> [--from=minimal]` (see 11 §2)           |
 
 A task is **not done** until `composer ci:check` passes.
 

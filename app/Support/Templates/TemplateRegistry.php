@@ -93,6 +93,18 @@ final class TemplateRegistry
         return $templates;
     }
 
+    /**
+     * Forget the templates read so far (after a template was added), keeping a warm cache warm.
+     */
+    public function refresh(): void
+    {
+        $this->templates = null;
+
+        if (is_file($this->cachePath)) {
+            $this->cache();
+        }
+    }
+
     public function cache(): void
     {
         $manifests = array_map(fn (TemplateDefinition $template): array => $template->toArray(), $this->discover());
