@@ -17,6 +17,9 @@ final class TemplateManager
 {
     private const SESSION_KEY = 'template.preview';
 
+    /** Stateless override used by the developer gallery (/dev/templates) when it is enabled. */
+    public const GALLERY_QUERY = '_template';
+
     /**
      * Resolved template per request object (the manager may outlive a single request).
      *
@@ -39,6 +42,28 @@ final class TemplateManager
         $request = $this->request();
 
         return $this->resolved[spl_object_id($request)] ??= $this->resolve($request);
+    }
+
+    /**
+     * Whether this request renders a template chosen by the developer gallery (`?_template=`).
+     */
+    public function isGalleryRender(): bool
+    {
+        return config('portfolio.templates.dev_gallery') === true
+            && $this->registry->has((string) $this->request()->query(self::GALLERY_QUERY));
+    }
+
+    /**
+     * Light/dark theme of the request: `?_theme=` in a gallery render, otherwise the visitor's cookie.
+     *
+     * @return 'light'|'dark'|null
+     */
+    public function theme(): ?string
+    {
+        $request = $this->request();
+        $theme = $this->isGalleryRender() ? $request->query('_theme') : $request->cookie('theme');
+
+        return in_array($theme, ['light', 'dark'], true) ? $theme : null;
     }
 
     public function isPreview(): bool
@@ -68,6 +93,11 @@ final class TemplateManager
 
     private function resolve(Request $request): TemplateDefinition
     {
+        // Gallery iframes each render their own template without touching the (shared) session.
+        if ($this->isGalleryRender()) {
+            return $this->registry->find((string) $request->query(self::GALLERY_QUERY)) ?? $this->active();
+        }
+
         $session = $request->hasSession() ? $request->session() : null;
 
         if ($request->query->has('template') && $session !== null) {

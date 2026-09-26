@@ -41,7 +41,6 @@ class HandleInertiaRequests extends Middleware
         $templates = app(TemplateManager::class);
         $content = app(PortfolioContent::class);
         $settings = SiteSetting::current();
-        $theme = $request->cookie('theme');
 
         return [
             ...parent::share($request),
@@ -58,9 +57,10 @@ class HandleInertiaRequests extends Middleware
             'template' => fn (): array => [
                 'id' => $templates->current()->id,
                 'name' => $templates->current()->label,
-                'isPreview' => $templates->isPreview(),
+                // The gallery renders templates side by side; the owner's preview bar would only get in the way.
+                'isPreview' => $templates->isPreview() && ! $templates->isGalleryRender(),
             ],
-            'theme' => in_array($theme, ['light', 'dark'], true) ? $theme : null,
+            'theme' => $templates->theme(),
             'flash' => fn (): array => ['success' => $request->hasSession() ? $request->session()->get('success') : null],
         ];
     }

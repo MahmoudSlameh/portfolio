@@ -14,7 +14,7 @@ interface TimelineProps {
     spread?: boolean;
 }
 
-/** Dated list with a hairline on the start edge that fades into the card, as in the resume blocks. */
+/** Dated list with a hairline on the start edge that fades out, as in the resume blocks. */
 export function Timeline({ items, className, spread = false }: TimelineProps) {
     return (
         <div className={cn('relative h-full', className)}>
@@ -45,13 +45,10 @@ export function Timeline({ items, className, spread = false }: TimelineProps) {
                     </li>
                 ))}
             </ul>
+            {/* The hairline fades out towards the bottom; the entries themselves stay fully visible. */}
             <span
                 aria-hidden
-                className="absolute start-[5px] top-6 z-0 h-[90%] border-s border-tm-border"
-            />
-            <span
-                aria-hidden
-                className="tm-timeline-fade pointer-events-none absolute start-0 bottom-0 z-[2] h-[70%] w-full"
+                className="absolute start-[5px] top-6 z-0 h-[90%] border-s border-tm-border [mask-image:linear-gradient(180deg,#000_30%,transparent)]"
             />
         </div>
     );

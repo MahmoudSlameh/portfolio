@@ -46,9 +46,9 @@ filter feature tests still pass for every template.
 **Acceptance**: `make:template demo && npm run build:ssr && php artisan test`
 passes with the new template in the matrix (test in CI with a temp dir).
 
-## P7-05 · `/dev/templates` gallery (local only) — `todo`
+## P7-05 · `/dev/templates` gallery (local only) — `done`
 
-- [ ] Route registered only in the local environment; renders any page of any
+- [x] Route registered only in the local environment; renders any page of any
       template with demo data; light/dark toggle.
 
 ## P7-06 · Guide: `docs/templates/building-a-template.md` — `todo`
@@ -107,3 +107,17 @@ passes with the new template in the matrix (test in CI with a temp dir).
   `composer ci:check` green with the new template in the page matrix, then
   removed. The bundled-ids registry test now only checks our templates are
   present, so contributors' templates do not break it.
+- 2026-09-26 — P7-05: `/dev/templates` gallery (compare one page across
+  templates, or every page of one template; light/dark; desktop/mobile)
+  backed by a stateless `?_template=` + `?_theme=` override in
+  `TemplateManager` (no session, no preview bar, noindex, theme rendered
+  server-side). Gated by `portfolio.templates.dev_gallery`
+  (`TEMPLATE_GALLERY`, default on only in `APP_ENV=local`); otherwise 404
+  and the override is ignored. Tests in
+  `tests/Feature/Site/TemplateGalleryTest.php`; checked in Chromium (frames
+  render their own template and theme, no preview bar, no errors).
+- 2026-09-26 — Template fixes found by the owner (commit ae7f603): terminal
+  experience tabs show company logos; education shows description and all
+  achievements in every template; the terminal timeline no longer fades
+  over entries; empty certifications/degrees columns are hidden in every
+  template; terminal client logos colour in with an animation on hover.

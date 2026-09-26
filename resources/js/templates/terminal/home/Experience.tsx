@@ -1,4 +1,5 @@
 import { Link } from '@/lib/router';
+import { CompanyLogo } from '@/shared/ui/CompanyLogo';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { CareerEntry } from '@/lib/content';
@@ -109,10 +110,19 @@ export function Experience({ career }: { career: CareerEntry[] }) {
                                     >
                                         <span
                                             aria-hidden
-                                            className="ltr-isolate inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-tm-tile text-lg font-medium"
+                                            className="ltr-isolate inline-flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-md bg-tm-tile text-lg font-medium"
                                             style={{ color: tintFor(name) }}
                                         >
-                                            {monogram(name)}
+                                            {/* The logo uploaded in the panel (dark variant aware), else the monogram. */}
+                                            {entry.company ? (
+                                                <CompanyLogo
+                                                    company={entry.company}
+                                                    fallback={monogram(name)}
+                                                    className="size-9 max-w-9"
+                                                />
+                                            ) : (
+                                                monogram(name)
+                                            )}
                                         </span>
                                         <span className="flex min-w-0 flex-col">
                                             <span

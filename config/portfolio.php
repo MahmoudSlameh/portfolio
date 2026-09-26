@@ -65,6 +65,10 @@ return [
         'pages_path' => resource_path('js/pages'),
         'stylesheet' => resource_path('js/styles/main.css'),
         'screenshots_path' => public_path('templates'),
+
+        // Developer gallery at /dev/templates (every page of every template side by side) and the
+        // stateless `?_template=<id>` override it relies on. On in the local environment only.
+        'dev_gallery' => (bool) env('TEMPLATE_GALLERY', env('APP_ENV') === 'local'),
     ],
 
 ];

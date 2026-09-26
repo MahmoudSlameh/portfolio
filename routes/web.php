@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dev\TemplateGalleryController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\ContactMessageController;
 use App\Http\Controllers\Site\HomeController;
@@ -28,5 +29,8 @@ Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/rss.xml', [SeoController::class, 'rss'])->name('rss');
 
 Route::post('/contact', [ContactMessageController::class, 'store'])->middleware('throttle:contact')->name('contact.store');
+
+// Developer gallery; 404 unless portfolio.templates.dev_gallery is on (local by default).
+Route::get('/dev/templates', TemplateGalleryController::class)->name('dev.templates');
 
 Route::fallback(fn () => abort(404));

@@ -2,7 +2,7 @@
     $templates = app(\App\Support\Templates\TemplateManager::class);
     $template = $templates->current();
     $settings = \App\Models\SiteSetting::current();
-    $theme = in_array(request()->cookie('theme'), ['light', 'dark'], true) ? request()->cookie('theme') : null;
+    $theme = $templates->theme();
     $favicon = $settings->getFirstMediaUrl('favicon');
 @endphp
 <!DOCTYPE html>
