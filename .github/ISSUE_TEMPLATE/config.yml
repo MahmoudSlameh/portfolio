@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/MahmoudSlameh/portfolio/security/advisories/new
+    about: Please report security issues privately.
+  - name: Documentation
+    url: https://github.com/MahmoudSlameh/portfolio/tree/main/docs
+    about: Architecture, templates, deployment and the task board.

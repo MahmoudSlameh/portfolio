@@ -4,12 +4,19 @@
 > [`tasks/README.md`](tasks/README.md) to find the next open task. Every task
 > links back to the doc section it implements.
 
-## ملخص سريع (Arabic summary)
+## Summary
 
-مشروع Portfolio شخصي مبني على **Laravel 13 + Filament 5 (لوحة التحكم) + Inertia 3 + React 19 (الواجهة) مع SSR لدعم الـ SEO**.
-الواجهة الأمامية فيها 3 قوالب (`changelog` · `playground` · `terminal`) منقولة من مجلد `Reference-Frontend/` (انحذف بعد النقل، آخر commit فيه `eb06a9a`).
-من لوحة التحكم بتختار القالب الفعّال، وبتدير **كل** المحتوى: البروفايل والـ Bio، الخبرات، الدراسة، الشركات والعملاء، المشاريع، المقالات، الكتب، المهارات… وكل الصور عن طريق **Spatie Media Library**.
-اللغة الوحيدة هي **الإنكليزية**.
+A personal developer portfolio built on **Laravel 13 + Filament 5 (admin
+panel) + Inertia 3 + React 19 (public site) with SSR for SEO**. The public
+site ships three templates (`changelog` · `playground` · `terminal`), ported
+from a reference design that was removed after the port (last in commit
+`eb06a9a`). The panel picks the active template and manages **all** content:
+profile and bio, experience, education, companies and clients, projects,
+articles, books, skills… with every image stored through **Spatie Media
+Library**. The only language is **English**.
+
+The public-facing introduction (features, quick start, roadmap) is the root
+[`README.md`](../README.md).
 
 ## Documentation map
 
@@ -25,6 +32,8 @@
 | 08  | [Conventions](08-conventions.md)                 | Code style, commands, testing, git workflow, definition of done                                   |
 | 09  | [Decisions & open questions](09-decisions.md)    | Architecture decision log + questions still waiting for the owner                                 |
 | 10  | [Deployment & launch](10-deployment.md)          | Server requirements, env, build steps, Supervisor (SSR + queue), Nginx, backups, launch checklist |
+| 11  | [Template kit](11-template-kit.md)               | _Planned (P7)_: template registry, shared hooks, `make:template`, rules for template authors      |
+| 12  | [Studio & AI templates](12-ai-templates.md)      | _Planned (P8–P10)_: spec-driven templates in the DB and the AI template builder (Laravel AI SDK)  |
 | —   | [Tasks](tasks/README.md)                         | The phased task plan and live status board                                                        |
 
 ## Hard rules (non-negotiable)
