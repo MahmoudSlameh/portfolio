@@ -82,22 +82,27 @@ public/templates/<id>.webp  # placeholder screenshot to replace
 The Inertia wrappers are generated and never edited by hand (same shape as
 today: `SeoHead` + page component + `withTemplateLayout(Layout)`).
 
-### 3. Shared building blocks (`resources/js/kit`)
+### 3. Shared building blocks (`resources/js/kit`) — _built in P7-02_
 
-Templates own **how things look**; the kit owns **how things work**.
+Templates own **how things look**; the kit owns **how things work**. Import
+everything from `@/kit` (`resources/js/kit/index.ts`).
 
-| Export                                                                                          | What it does                                                                   |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `useContactForm()`                                                                              | State, client validation, `POST /contact`, server error mapping, success state |
-| `useArchiveFilters(route, only)`                                                                | Wraps `useSearchChange`: current filters, `set(patch)`, `reset()`              |
-| `useSiteSearch()`                                                                               | Fuzzy search over the deferred `searchIndex` (what the command palettes use)   |
-| `useTheme()`                                                                                    | Light/dark with the SSR-safe cookie (D19)                                      |
-| `ResponsiveImage`, `CompanyLogo`, `BrandIcon`, `CountUp`, `RotatingText`, `ArchitectureDiagram` | Existing `shared/*` components, re-exported from one place                     |
-| `ArticleBlocks` (headless)                                                                      | Walks article blocks and calls a render function per block type                |
-| `formatDate`, `formatRange`, `cn`, …                                                            | Existing `lib/utils` helpers                                                   |
+| Export                                                                                                                                             | What it does                                                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `useContactForm({ onSuccess? })`                                                                                                                   | Values, client validation (errors show after the first submit and update while typing), `POST /contact`, toast on failure, `status`/`messageId`, `summaryRef`/`nameRef` focus handling, `reset()` |
+| `CONTACT_FIELDS`, `CONTACT_TOPICS`                                                                                                                 | Field order for the error summary; the topics the server accepts                                                                                                                                  |
+| `useArchiveFilters(search, only)`                                                                                                                  | Returns the `onSearchChange(patch)` the archive pages pass to their template: merges the patch, drops empty values, reloads only `only` + `search` + `seo`                                        |
+| `useSiteSearch(query)` / `rankByQuery(items, q, text)`                                                                                             | Fuzzy search over the deferred `searchIndex` (projects, articles, books); `rankByQuery` is the same ranking the command palette uses                                                              |
+| `useTheme()`                                                                                                                                       | `{ theme, toggleTheme }` with the SSR-safe cookie (D19)                                                                                                                                           |
+| `ArticleBlocks` + `ArticleBlockRenderers`                                                                                                          | Headless article body: one render function per block type, typed exhaustively, so a new block type fails to compile until every template renders it. Context: `index`, `isFirst`, `headingIndex`  |
+| `useToast`, `useClipboard`, `useNow`, `useReveal`, `useTranslation`, `useCommandPalette`                                                           | Existing hooks, re-exported                                                                                                                                                                       |
+| `Link`, `useNavigate`, `useRouterState`                                                                                                            | Inertia navigation                                                                                                                                                                                |
+| `ResponsiveImage`, `CompanyLogo`, `BrandIcon`, `CountUp`, `RotatingText`, `ArchitectureDiagram`, `CommandPalette`, `SeoHead`, `withTemplateLayout` | Shared components                                                                                                                                                                                 |
+| `cn`, `formatDate`, `formatMonth`, `formatTime`, `formatNumber`, `yearRange`, …                                                                    | `lib/utils` helpers                                                                                                                                                                               |
 
-The three existing templates are migrated onto the kit (no visual change) so
-they double as real-world examples.
+The three existing templates use the kit for the contact form, archive
+filters, theme toggle and article body, so they double as real-world
+examples.
 
 ### 4. The `minimal` starter template
 

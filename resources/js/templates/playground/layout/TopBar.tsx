@@ -2,7 +2,7 @@ import { Link } from '@/lib/router';
 import { Moon, Search, Sun } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCommandPalette } from '@/providers/CommandPaletteProvider';
-import { usePreferences } from '@/providers/PreferencesProvider';
+import { useTheme } from '@/kit';
 import type { Profile } from '@/types/content';
 import { usePlaygroundCopy } from '../copy';
 import { popButtonClasses } from '../components/PopButton';
@@ -10,7 +10,7 @@ import { popButtonClasses } from '../components/PopButton';
 export function TopBar({ profile }: { profile: Profile }) {
     const { t } = useTranslation();
     const p = usePlaygroundCopy();
-    const { theme, toggleTheme } = usePreferences();
+    const { theme, toggleTheme } = useTheme();
     const { openPalette } = useCommandPalette();
     const ThemeIcon = theme === 'dark' ? Sun : Moon;
 

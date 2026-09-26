@@ -46,7 +46,7 @@ every template (except the removed language toggle).
   (`SeoHead` + template component + `Page.layout = withTemplateLayout(Layout)`).
 - `shared/inertia/withTemplateLayout.tsx` passes the shared `profile`, `socials` and the deferred
   `searchIndex` to the template Layout and shows the admin `PreviewBar` while previewing.
-- `shared/inertia/useSearchChange.ts` implements `onSearchChange` with `router.get(..., { only, preserveState, replace })`.
+- `kit/useArchiveFilters.ts` (was `shared/inertia/useSearchChange.ts`) implements `onSearchChange` with `router.get(..., { only, preserveState, replace })`. The kit (`@/kit`) is described in [11 §3](11-template-kit.md#3-shared-building-blocks-resourcesjskit--built-in-p7-02).
 - `shared/ui/CompanyLogo.tsx` renders uploaded company logos (dark variant aware) on the clients walls,
   falling back to the template wordmark.
 - Images are `ImageData | null`; `ResponsiveImage` renders a neutral placeholder when nothing was uploaded.

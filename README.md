@@ -198,11 +198,12 @@ Today, adding a template means:
 4. Run `composer ci:check`. The test suite renders every page of every
    template automatically.
 
-This is being made much easier (phase P7, design in
-[docs/11-template-kit.md](docs/11-template-kit.md)):
-`php artisan make:template <id>` scaffolding, a commented `minimal` starter
-template, shared hooks (`useContactForm`, `useArchiveFilters`,
-`useSiteSearch`, …).
+Behaviour comes from the template kit (`@/kit`): `useContactForm`,
+`useArchiveFilters`, `useSiteSearch`, `useTheme`, a headless
+`ArticleBlocks`, `ResponsiveImage` and more, so a template only decides how
+things look. See [docs/11-template-kit.md](docs/11-template-kit.md). A
+`php artisan make:template <id>` scaffold and a commented `minimal` starter
+template are next on the roadmap (phase P7).
 
 ## Testing & code quality
 

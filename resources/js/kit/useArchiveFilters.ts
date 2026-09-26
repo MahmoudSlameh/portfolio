@@ -2,10 +2,11 @@ import { router } from '@inertiajs/react';
 import { useCallback } from 'react';
 
 /**
- * Archive filters live in the query string and are applied on the server. Returns the
- * `onSearchChange(patch)` callback the templates expect.
+ * Archive filters live in the query string and are applied on the server (Form Requests).
+ * Returns the `onSearchChange(patch)` callback the archive pages pass to their template: it merges
+ * the patch into the current filters, drops empty values and reloads only the listed props.
  */
-export function useSearchChange<T extends object>(
+export function useArchiveFilters<T extends object>(
     current: T,
     only: string[],
 ): (patch: Partial<T>) => void {

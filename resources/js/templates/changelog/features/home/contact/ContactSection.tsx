@@ -1,11 +1,4 @@
-import { useToast } from '@/providers/ToastProvider';
-import {
-    useEffect,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type FormEvent,
-} from 'react';
+import { useEffect, useRef } from 'react';
 import { Button } from '@/templates/changelog/components/ui/Button';
 import { CopyButton } from '@/templates/changelog/components/ui/CopyButton';
 import {
@@ -18,25 +11,9 @@ import { StatusBadge } from '@/templates/changelog/components/ui/StatusBadge';
 import { sectionIndex } from '@/config/navigation';
 import { useNow } from '@/hooks/useLocalTime';
 import { useTranslation } from '@/hooks/useTranslation';
-import { submitContactMessage } from '@/lib/content';
 import { formatTime } from '@/lib/utils';
-import type { ContactMessage, Profile } from '@/types/content';
-import {
-    validateContact,
-    type ContactErrors,
-    type ContactField,
-} from '@/lib/contactSchema';
-
-const initialValues: ContactMessage = {
-    name: '',
-    email: '',
-    topic: 'advisory',
-    message: '',
-};
-
-type FormStatus = 'idle' | 'submitting' | 'success';
-
-const FIELD_ORDER: ContactField[] = ['name', 'email', 'topic', 'message'];
+import type { Profile } from '@/types/content';
+import { CONTACT_FIELDS, useContactForm } from '@/kit';
 
 function ContactAside({ profile }: { profile: Profile }) {
     const { t } = useTranslation();
@@ -147,71 +124,19 @@ function ContactSuccess({
 
 export function ContactSection({ profile }: { profile: Profile }) {
     const { t } = useTranslation();
-    const [values, setValues] = useState<ContactMessage>(initialValues);
-    const [errors, setErrors] = useState<ContactErrors>({});
-    const [hasAttempted, setHasAttempted] = useState(false);
-    const [status, setStatus] = useState<FormStatus>('idle');
-    const { notify: notifyFailure } = useToast();
-    const [messageId, setMessageId] = useState('');
-    const summaryRef = useRef<HTMLDivElement>(null);
-    const nameRef = useRef<HTMLInputElement>(null);
-
-    const errorCount = Object.keys(errors).length;
-
-    const handleChange = (
-        event: ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >,
-    ): void => {
-        const nextValues = {
-            ...values,
-            [event.target.name]: event.target.value,
-        };
-        setValues(nextValues);
-        if (!hasAttempted) return;
-        const result = validateContact(nextValues);
-        setErrors(result.success ? {} : result.errors);
-    };
-
-    const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> => {
-        event.preventDefault();
-        setHasAttempted(true);
-
-        const result = validateContact(values);
-        if (!result.success) {
-            setErrors(result.errors);
-            window.requestAnimationFrame(() => summaryRef.current?.focus());
-            return;
-        }
-
-        setErrors({});
-        setStatus('submitting');
-        let response: Awaited<ReturnType<typeof submitContactMessage>>;
-        try {
-            response = await submitContactMessage(result.data);
-        } catch {
-            setStatus('idle');
-            notifyFailure(t('contact.failed'));
-            return;
-        }
-        setMessageId(response.id);
-        setStatus('success');
-    };
-
-    const handleReset = (): void => {
-        setValues(initialValues);
-        setErrors({});
-        setHasAttempted(false);
-        setStatus('idle');
-        window.requestAnimationFrame(() => nameRef.current?.focus());
-    };
-
-    const errorText = (field: ContactField): string | undefined => {
-        const key = errors[field];
-        return key ? t(key) : undefined;
-    };
+    const {
+        values,
+        errors,
+        errorCount,
+        status,
+        messageId,
+        errorText,
+        handleChange,
+        handleSubmit,
+        reset: handleReset,
+        summaryRef,
+        nameRef,
+    } = useContactForm();
 
     return (
         <Section
@@ -253,7 +178,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
                                         })}
                                     </p>
                                     <ul className="mt-1.5 flex flex-col gap-0.5">
-                                        {FIELD_ORDER.filter(
+                                        {CONTACT_FIELDS.filter(
                                             (field) => errors[field],
                                         ).map((field) => (
                                             <li key={field}>

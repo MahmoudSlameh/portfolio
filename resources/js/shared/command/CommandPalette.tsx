@@ -24,7 +24,7 @@ import { homeSections, primaryNav } from '@/config/navigation';
 import type { DictionaryKey } from '@/i18n/dictionary';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
-import { fuzzyScore } from '@/lib/fuzzy';
+import { rankByQuery } from '@/kit/useSiteSearch';
 import type { SearchIndex } from '@/lib/content';
 import { cn } from '@/lib/utils';
 import { useCommandPalette } from '@/providers/CommandPaletteProvider';
@@ -195,18 +195,14 @@ export function CommandPalette({ searchIndex, email }: CommandPaletteProps) {
                     items: limit ? groupItems.slice(0, limit) : groupItems,
                 };
             }
-            const scored = groupItems
-                .map((item) => ({
-                    item,
-                    score: fuzzyScore(
-                        trimmed,
-                        `${item.label} ${item.keywords}`,
-                    ),
-                }))
-                .filter(({ score }) => score > 0)
-                .sort((a, b) => b.score - a.score)
-                .map(({ item }) => item);
-            return { group, items: scored };
+            return {
+                group,
+                items: rankByQuery(
+                    groupItems,
+                    trimmed,
+                    (item) => `${item.label} ${item.keywords}`,
+                ),
+            };
         }).filter(({ items: groupItems }) => groupItems.length > 0);
     }, [items, query]);
 
