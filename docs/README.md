@@ -25,6 +25,8 @@
 | 08  | [Conventions](08-conventions.md)                 | Code style, commands, testing, git workflow, definition of done                                   |
 | 09  | [Decisions & open questions](09-decisions.md)    | Architecture decision log + questions still waiting for the owner                                 |
 | 10  | [Deployment & launch](10-deployment.md)          | Server requirements, env, build steps, Supervisor (SSR + queue), Nginx, backups, launch checklist |
+| 11  | [Template kit](11-template-kit.md)               | _Planned (P7)_: template registry, shared hooks, `make:template`, rules for template authors      |
+| 12  | [Studio & AI templates](12-ai-templates.md)      | _Planned (P8–P10)_: spec-driven templates in the DB and the AI template builder (Laravel AI SDK)  |
 | —   | [Tasks](tasks/README.md)                         | The phased task plan and live status board                                                        |
 
 ## Hard rules (non-negotiable)
