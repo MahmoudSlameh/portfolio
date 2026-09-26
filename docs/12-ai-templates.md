@@ -168,7 +168,9 @@ spec version.
     | Other  | one to three variants each for project archive, case study, writing archive, article, books, uses, now, 404                                                                                                                                                                                                                                                                                       |
 
 - **Scoped CSS.** `css` is sanitised on save (see §6) and injected after the
-  engine's base styles, scoped under `[data-template="studio"][data-studio="<ulid>"]`.
+  engine's base styles, scoped under `[data-template="studio"]`. (A page only
+  ever renders one template, so no per-template id is needed, and the CSS
+  stays valid when a template is duplicated or refined.)
 - **Stable class hooks.** Every section exposes documented class names
   (`.st-hero`, `.st-hero__title`, `.st-card`, …) so the AI's CSS targets a
   known surface. The list is generated into the AI instructions.
@@ -248,12 +250,29 @@ StudioTemplateVersion #1 → active_version_id → status=ready 100%
 
 - **No executable output.** The AI produces JSON; JSON is validated against
   the schema; nothing is ever `eval`-ed, compiled or written to disk.
-- **CSS sanitiser** (`App\Support\Studio\CssSanitizer`, allow-list based):
-  parses the stylesheet, drops `@import`, `@font-face`, `@charset`,
-  `url(...)` (except `data:` SVG/PNG under 20 KB), `expression()`,
-  `behavior`, `-moz-binding`, `</style`, HTML comments, and any selector not
-  prefixed by the template scope (the scope is prepended when missing). Size
-  limit 40 KB.
+- **CSS sanitiser** (`App\Support\Studio\CssSanitizer`, _built in P8-02_):
+  an allow-list parser (no dependency) that writes back only what it
+  understands and reports everything it dropped (`CssSanitizeResult::$removed`,
+  shown to the owner and sent back to the AI):
+    - keeps style rules, `@media`, `@supports` and `@keyframes`; drops every
+      other at-rule (`@import`, `@font-face`, `@charset`, `@namespace`,
+      `@page`, …), nested rules and stray text;
+    - scopes every selector: `.x` → `[data-template="studio"] .x`;
+      `html`/`:root` → the scope; `[data-theme="dark"] .x` →
+      `[data-template="studio"][data-theme="dark"] .x`;
+    - drops declarations with `expression()`, `javascript:`, `behavior`,
+      `-moz-binding`, backslash escapes (they can hide any of these), `<`, `>`
+      `{`, `}` or `@` in values, and anything that loads a resource:
+      `url()` only for inline `data:` images (png, jpeg, gif, webp, svg) up to
+      20 KB; `image-set()`, `image()`, `element()`, `src()`, `cross-fade()` are
+      dropped;
+    - removes comments; `<` never survives, so the output cannot close the
+      `<style>` tag; over 40 KB nothing is kept;
+    - is stable: sanitising its own output changes nothing.
+
+    Known limit: CSS escapes are not supported at all, so `content: "\201C"`
+    is dropped; write the character itself (`content: "“"`).
+
 - **Copy** strings are plain text, length-limited, escaped by React.
 - **Preview first.** A new or refined template is never activated
   automatically; the owner previews it (`?template=studio:<ulid>`, admin
