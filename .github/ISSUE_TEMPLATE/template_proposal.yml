@@ -1,0 +1,36 @@
+name: Template proposal
+description: Propose a new public-site template.
+labels: [template]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Template name and id
+      placeholder: Magazine (magazine)
+    validations:
+      required: true
+  - type: textarea
+    id: concept
+    attributes:
+      label: Concept
+      description: The look and feel, who it is for, what makes it different from the existing templates.
+    validations:
+      required: true
+  - type: textarea
+    id: visuals
+    attributes:
+      label: Mockups or references
+      description: Screenshots, sketches or links.
+  - type: input
+    id: fonts
+    attributes:
+      label: Fonts
+      description: Fonts must be available as Fontsource packages.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I read the template rules in CONTRIBUTING.md.
+          required: true
+        - label: I plan to build all nine pages.

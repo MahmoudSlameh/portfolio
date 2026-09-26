@@ -4,12 +4,19 @@
 > [`tasks/README.md`](tasks/README.md) to find the next open task. Every task
 > links back to the doc section it implements.
 
-## ملخص سريع (Arabic summary)
+## Summary
 
-مشروع Portfolio شخصي مبني على **Laravel 13 + Filament 5 (لوحة التحكم) + Inertia 3 + React 19 (الواجهة) مع SSR لدعم الـ SEO**.
-الواجهة الأمامية فيها 3 قوالب (`changelog` · `playground` · `terminal`) منقولة من مجلد `Reference-Frontend/` (انحذف بعد النقل، آخر commit فيه `eb06a9a`).
-من لوحة التحكم بتختار القالب الفعّال، وبتدير **كل** المحتوى: البروفايل والـ Bio، الخبرات، الدراسة، الشركات والعملاء، المشاريع، المقالات، الكتب، المهارات… وكل الصور عن طريق **Spatie Media Library**.
-اللغة الوحيدة هي **الإنكليزية**.
+A personal developer portfolio built on **Laravel 13 + Filament 5 (admin
+panel) + Inertia 3 + React 19 (public site) with SSR for SEO**. The public
+site ships three templates (`changelog` · `playground` · `terminal`), ported
+from a reference design that was removed after the port (last in commit
+`eb06a9a`). The panel picks the active template and manages **all** content:
+profile and bio, experience, education, companies and clients, projects,
+articles, books, skills… with every image stored through **Spatie Media
+Library**. The only language is **English**.
+
+The public-facing introduction (features, quick start, roadmap) is the root
+[`README.md`](../README.md).
 
 ## Documentation map
 

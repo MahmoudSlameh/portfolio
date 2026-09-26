@@ -37,8 +37,8 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P9    | [phase-9-ai-builder.md](phase-9-ai-builder.md)           | Generate templates with AI (Laravel AI SDK)       |
 | P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)   | Refine, versions, export/import, eject to code    |
 
-> **Status (2026-09-26): P0–P5 are done. P6–P10 (open source, template kit
-> and the AI template builder) are planned** — design in
+> **Status (2026-09-26): P0–P6 are done. P7–P10 (template kit and the AI
+> template builder) are planned** — design in
 > [11](../11-template-kit.md) and [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
@@ -99,9 +99,9 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P5-02  | Content health & admin polish                                      | P2-*                | done   |
 | P5-03  | Remove `Reference-Frontend/`                                       | P3-*, P5-01         | done   |
 | P5-04  | Deployment guide & launch checklist                                | P4-*                | done   |
-| P6-01  | Root `README.md` (English)                                         | —                   | todo   |
-| P6-02  | License & community files                                          | —                   | todo   |
-| P6-03  | English-only docs & project metadata                               | P6-01               | todo   |
+| P6-01  | Root `README.md` (English)                                         | —                   | done   |
+| P6-02  | License & community files                                          | —                   | done   |
+| P6-03  | English-only docs & project metadata                               | P6-01               | done   |
 | P7-01  | Template registry replaces the `Template` enum                     | P6-*                | todo   |
 | P7-02  | Kit: shared hooks & components                                     | P7-01               | todo   |
 | P7-03  | `minimal` starter template                                         | P7-02               | todo   |

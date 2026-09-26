@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/blank-react-starter-kit",
+    "name": "mahmoudslameh/portfolio",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "A self-hosted developer portfolio: Filament admin panel, swappable React templates with SSR, and SEO built in.",
+    "keywords": ["laravel", "filament", "inertia", "react", "ssr", "portfolio", "cms", "templates"],
     "license": "MIT",
     "require": {
         "php": "^8.4",
