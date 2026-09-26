@@ -37,9 +37,11 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P9    | [phase-9-ai-builder.md](phase-9-ai-builder.md)           | Generate templates with AI (Laravel AI SDK)       |
 | P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)   | Refine, versions, export/import, eject to code    |
 
-> **Status (2026-09-26): P0–P6 are done. P7–P10 (template kit and the AI
-> template builder) are planned** — design in
-> [11](../11-template-kit.md) and [12](../12-ai-templates.md).
+> **Status (2026-09-26): P0–P7 are done (P7: the template kit, see
+> [11](../11-template-kit.md) and the
+> [guide](../templates/building-a-template.md)). P8–P10 (studio templates and
+> the AI template builder) are planned** — design in
+> [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
 > decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
@@ -107,7 +109,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P7-03  | `minimal` starter template                                         | P7-02               | done   |
 | P7-04  | `php artisan make:template`                                        | P7-03               | done   |
 | P7-05  | `/dev/templates` gallery (local only)                              | P7-01               | done   |
-| P7-06  | Guide: building a template                                         | P7-04               | todo   |
+| P7-06  | Guide: building a template                                         | P7-04               | done   |
 | P8-01  | Spec schema `studio/v1` + validator                                | P7-01               | todo   |
 | P8-02  | CSS sanitiser                                                      | —                   | todo   |
 | P8-03  | Studio models, migrations, enums                                   | P8-01               | todo   |

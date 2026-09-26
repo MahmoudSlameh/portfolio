@@ -150,7 +150,7 @@ final class TemplateScaffolder
             4. Update `template.json` (name, description, fonts to preload).
             5. Run `composer ci:check`: every page of the template is tested automatically.
 
-            Guide: docs/11-template-kit.md.
+            Guide: docs/templates/building-a-template.md.
 
             MD;
     }

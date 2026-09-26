@@ -190,6 +190,8 @@ uses 5.7 — keep root's and fix any type errors.
 
 ## Adding a new template later
 
+> Full guide: [templates/building-a-template.md](templates/building-a-template.md).
+
 0. Easiest: `php artisan make:template <id> [--from=minimal]` does steps 1–3
    for you (see [11 §2](11-template-kit.md#2-scaffold-command--built-in-p7-04)).
 1. Copy `resources/js/templates/minimal` (the commented starter) or create

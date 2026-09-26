@@ -24,4 +24,4 @@ thin wrappers (SEO head + page + persistent layout) and you rarely edit them.
 3. Scope CSS under `[data-template='<id>']`.
 4. Import behaviour from `@/kit`; keep templates about how things look.
 
-See [docs/11-template-kit.md](../../../../docs/11-template-kit.md).
+Step-by-step guide: [docs/templates/building-a-template.md](../../../../docs/templates/building-a-template.md).

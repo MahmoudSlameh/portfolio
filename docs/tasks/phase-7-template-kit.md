@@ -51,10 +51,10 @@ passes with the new template in the matrix (test in CI with a temp dir).
 - [x] Route registered only in the local environment; renders any page of any
       template with demo data; light/dark toggle.
 
-## P7-06 · Guide: `docs/templates/building-a-template.md` — `todo`
+## P7-06 · Guide: `docs/templates/building-a-template.md` — `done`
 
-- [ ] Step-by-step guide + per-page prop reference + rules from 11 §6.
-- [ ] Update 06 § "Adding a new template later" to point to it.
+- [x] Step-by-step guide + per-page prop reference + rules from 11 §6.
+- [x] Update 06 § "Adding a new template later" to point to it.
 
 ---
 
@@ -121,3 +121,10 @@ passes with the new template in the matrix (test in CI with a temp dir).
   achievements in every template; the terminal timeline no longer fades
   over entries; empty certifications/degrees columns are hidden in every
   template; terminal client logos colour in with an animation on hover.
+- 2026-09-26 — P7-06: `docs/templates/building-a-template.md` (setup,
+  make:template, anatomy, manifest, styling and fonts, layout and shared
+  props, prop tables for all nine pages, kit cheat sheet, rules, test and
+  ship, troubleshooting). `tests/Unit/TemplateGuideTest.php` keeps the prop
+  tables in sync with `resources/js/templates/types.ts`. Linked from the
+  README, CONTRIBUTING, docs 06/11, the docs index, the minimal README and
+  the README that `make:template` writes. **Phase 7 is done.**
