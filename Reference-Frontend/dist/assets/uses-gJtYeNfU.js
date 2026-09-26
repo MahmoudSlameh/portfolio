@@ -1,1 +1,0 @@
-import{d as e}from"./link-BC2J5x0T.js";import{t}from"./useTemplate-B00SPEwP.js";import{a as n}from"./index-Cn0c6vzl.js";var r=e();function i(){let{groups:e}=n.useLoaderData(),{Uses:i}=t();return(0,r.jsx)(i,{groups:e})}export{i as component};

@@ -1,1 +1,0 @@
-import{d as e}from"./link-BC2J5x0T.js";import{t}from"./useTemplate-B00SPEwP.js";import{s as n}from"./index-Cn0c6vzl.js";var r=e();function i(){let{books:e,stats:i}=n.useLoaderData(),a=n.useSearch(),o=n.useNavigate(),{Books:s}=t();return(0,r.jsx)(s,{books:e,stats:i,search:a,onSearchChange:e=>{o({search:t=>({...t,...e}),replace:!0,resetScroll:!1})}})}export{i as component};
