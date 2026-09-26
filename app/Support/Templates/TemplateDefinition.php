@@ -2,28 +2,84 @@
 
 namespace App\Support\Templates;
 
+use App\Models\StudioTemplate;
+use App\Models\StudioTemplateVersion;
+use App\Support\Studio\SpecCatalogue;
 use InvalidArgumentException;
 
 /**
- * One public site template, read from its `template.json` manifest.
+ * One public site template.
  *
- * The id is also the Inertia page namespace (e.g. "terminal/Home") and the `data-template`
- * attribute on <html>.
+ * - Code templates come from a `template.json` manifest; their id is also their namespace.
+ * - Studio templates come from the database (`studio:<ulid>`) and all share the `studio` namespace.
+ *
+ * The namespace is the Inertia page folder (e.g. "terminal/Home") and the `data-template`
+ * attribute on <html>; the id is what site_settings.active_template stores.
  */
 final readonly class TemplateDefinition
 {
     /**
      * @param  list<string>  $preloadFonts  Above-the-fold font files (Vite manifest keys) preloaded in the document head.
-     * @param  string  $screenshot  Public path of the screenshot shown on the Appearance page.
+     * @param  string|null  $screenshot  Public path or absolute URL of the screenshot shown on the Appearance page.
+     * @param  'code'|'studio'  $kind
      */
     public function __construct(
         public string $id,
         public string $label,
         public string $description,
         public array $preloadFonts,
-        public string $screenshot,
+        public ?string $screenshot,
         public ?string $author = null,
+        public string $kind = 'code',
+        public string $namespace = '',
     ) {}
+
+    /**
+     * The Inertia namespace and `data-template` value (the id for code templates).
+     */
+    public function namespace(): string
+    {
+        return $this->namespace !== '' ? $this->namespace : $this->id;
+    }
+
+    public function screenshotUrl(): ?string
+    {
+        if ($this->screenshot === null) {
+            return null;
+        }
+
+        return preg_match('#^(https?:)?//#', $this->screenshot) === 1 ? $this->screenshot : asset($this->screenshot);
+    }
+
+    public function isStudio(): bool
+    {
+        return $this->kind === 'studio';
+    }
+
+    /**
+     * A ready studio template, with the fonts its active spec uses preloaded.
+     */
+    public static function forStudio(StudioTemplate $template): self
+    {
+        $version = $template->getRelationValue('activeVersion');
+        /** @var array{tokens?: array{fonts?: array<string, string>}} $spec */
+        $spec = $version instanceof StudioTemplateVersion ? $version->spec : [];
+        $fonts = SpecCatalogue::fonts();
+        $preload = array_values(array_unique(array_filter(array_map(
+            fn (string $font): ?string => $fonts[$font]['preload'] ?? null,
+            array_values($spec['tokens']['fonts'] ?? []),
+        ))));
+
+        return new self(
+            id: $template->templateId(),
+            label: $template->name,
+            description: $template->description ?? 'A studio template.',
+            preloadFonts: $preload,
+            screenshot: $template->getFirstMediaUrl('screenshot') ?: null,
+            kind: 'studio',
+            namespace: 'studio',
+        );
+    }
 
     /**
      * @param  array<string, mixed>  $manifest

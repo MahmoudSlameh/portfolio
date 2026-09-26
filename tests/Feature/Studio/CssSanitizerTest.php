@@ -118,7 +118,7 @@ test('sanitising is stable', function () {
 });
 
 test('the example spec css passes unchanged apart from formatting', function () {
-    $spec = json_decode((string) file_get_contents(base_path('tests/Fixtures/studio/neon-brutalist.json')), true);
+    $spec = json_decode((string) file_get_contents(base_path('resources/studio/examples/neon-brutalist.json')), true);
     $result = sanitizeCss($spec['css']);
 
     expect($result->removed)->toBe([])

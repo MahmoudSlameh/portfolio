@@ -38,9 +38,9 @@ Two kinds of templates share one registry:
     - `php artisan template:cache` writes the manifests to
       `bootstrap/cache/templates.php` and `template:clear` removes it; both are
       hooked into `php artisan optimize` / `optimize:clear`.
-    - _P8:_ studio templates are read from the database, id format
-      `studio:<ulid>`, Inertia namespace `studio` (adds `kind` to the
-      definition).
+    - Studio templates (P8-03) are read from the database, id format
+      `studio:<ulid>`, `kind` `studio`, `namespace()` `studio` (Inertia pages
+      and `data-template`); code templates' namespace is their id.
 - `site_settings.active_template` is a plain string column (no cast). An
   unknown value (deleted template) falls back to the default template in
   `TemplateManager::active()`.

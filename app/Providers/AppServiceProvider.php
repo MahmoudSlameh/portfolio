@@ -17,11 +17,14 @@ use App\Models\SiteSetting;
 use App\Models\Skill;
 use App\Models\SkillCategory;
 use App\Models\Social;
+use App\Models\StudioTemplate;
+use App\Models\StudioTemplateVersion;
 use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\UsesGroup;
 use App\Models\UsesItem;
 use App\Support\Seo\Seo;
+use App\Support\Templates\TemplateDefinition;
 use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
 use App\Support\Templates\TemplateScaffolder;
@@ -50,6 +53,12 @@ class AppServiceProvider extends ServiceProvider
             path: config('portfolio.templates.path'),
             defaultId: config('portfolio.templates.default'),
             cachePath: $this->app->bootstrapPath('cache/templates.php'),
+            studio: fn (): iterable => StudioTemplate::query()
+                ->renderable()
+                ->with(['activeVersion', 'media'])
+                ->latest()
+                ->get()
+                ->map(fn (StudioTemplate $template): TemplateDefinition => TemplateDefinition::forStudio($template)),
         ));
         $this->app->bind(TemplateScaffolder::class, fn (): TemplateScaffolder => new TemplateScaffolder(
             files: $this->app->make(Filesystem::class),
@@ -140,6 +149,8 @@ class AppServiceProvider extends ServiceProvider
             'uses_item' => UsesItem::class,
             'social' => Social::class,
             'contact_message' => ContactMessage::class,
+            'studio_template' => StudioTemplate::class,
+            'studio_template_version' => StudioTemplateVersion::class,
         ]);
     }
 

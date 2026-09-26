@@ -45,7 +45,7 @@ A versioned JSON document (`"$schema": "studio/v1"`). _Built in P8-01:_
 
 `php artisan studio:generate` writes the two generated files (excluded from
 Vite+ lint/format); `studio:generate --check` and a test fail when they are
-stale. Example fixture: `tests/Fixtures/studio/neon-brutalist.json`.
+stale. Example fixture: `resources/studio/examples/neon-brutalist.json`.
 
 ```json
 {
@@ -175,7 +175,7 @@ spec version.
   (`.st-hero`, `.st-hero__title`, `.st-card`, …) so the AI's CSS targets a
   known surface. The list is generated into the AI instructions.
 
-## 4. Data model (P8/P9)
+## 4. Data model (P8/P9) — _built in P8-03_
 
 `studio_templates`
 
@@ -200,6 +200,7 @@ spec version.
 | `studio_template_id`            | foreign id             |                                              |
 | `number`                        | unsigned int           | 1, 2, 3 … per template                       |
 | `spec`                          | json                   | Validated Template Spec (no DB default, D15) |
+| `notes`                         | json, nullable         | What the CSS sanitiser removed               |
 | `prompt`                        | text, nullable         | Prompt (v1) or refine instruction (v2+)      |
 | `parent_id`                     | foreign id, nullable   | Version this one refined                     |
 | `provider`, `model`             | string, nullable       | What generated it                            |
@@ -208,6 +209,29 @@ spec version.
 
 Media (Spatie, hard rule 2): `StudioTemplate` collections `reference`
 (uploaded screenshots/mockups, private disk) and `screenshot` (card image).
+
+As built:
+
+- `App\Models\StudioTemplate` (ULID key, enums `StudioStatus` and
+  `StudioSource`) and `App\Models\StudioTemplateVersion`; morph aliases
+  `studio_template`, `studio_template_version`. Deleting a template deletes
+  its versions.
+- **`StudioTemplate::addVersion($spec, $meta)` is the only way to store a
+  design:** it validates the spec (`InvalidSpecException`, nothing stored),
+  sanitises its CSS (removed items go to `notes`; fully unsafe CSS is
+  dropped), numbers the version and, for the first version, activates it
+  and marks the template `ready`. Later versions (refinements) are
+  activated with `activate($version)`, which also rolls back.
+- The registry lists **ready** studio templates (status `ready` with an
+  active version) after the code templates, as `TemplateDefinition`s with id
+  `studio:<ulid>`, namespace `studio` (Inertia pages and CSS scope), the
+  spec's fonts preloaded and the `screenshot` media as the card image.
+  Studio templates are never written to the template cache; saving or
+  deleting one refreshes the list. A deleted active template falls back to
+  the default.
+- The example spec lives in `resources/studio/examples/neon-brutalist.json`
+  (`SpecCatalogue::example()`), used by the factory's `ready()` state and the
+  tests.
 
 ## 5. AI generation pipeline (P9)
 
