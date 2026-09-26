@@ -33,9 +33,19 @@ Consequences:
 
 ## 2. The Template Spec
 
-A versioned JSON document (`"$schema": "studio/v1"`) validated on the server
-(JSON Schema in `resources/studio/schema/v1.json` + a PHP validator) and typed
-on the client (`resources/js/templates/studio/spec.ts`).
+A versioned JSON document (`"$schema": "studio/v1"`). _Built in P8-01:_
+
+| Piece                           | Where                                                             | Role                                                                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Catalogue** (source of truth) | `App\Support\Studio\SpecCatalogue` + fonts in `config/studio.php` | Sections, variants, props, page variants, layout, tokens, copy keys and limits                                                                  |
+| Validator                       | `App\Support\Studio\SpecValidator`                                | Checks a spec; every error has a path (`pages.home[2].variant must be one of: grid, bento, list, slider.`); nothing unknown is silently ignored |
+| JSON Schema                     | `resources/studio/schema/v1.json` (generated)                     | Draft 2020-12, closed objects; given to the AI as its output format (P9)                                                                        |
+| Engine catalogue                | `resources/js/templates/studio/catalogue.ts` (generated)          | The same data `as const` for React                                                                                                              |
+| Types                           | `resources/js/templates/studio/spec.ts`                           | `TemplateSpec` derived from the catalogue, so they cannot drift                                                                                 |
+
+`php artisan studio:generate` writes the two generated files (excluded from
+Vite+ lint/format); `studio:generate --check` and a test fail when they are
+stale. Example fixture: `tests/Fixtures/studio/neon-brutalist.json`.
 
 ```json
 {
@@ -62,7 +72,7 @@ on the client (`resources/js/templates/studio/spec.ts`).
         },
         "fonts": {
             "display": "space-grotesk",
-            "body": "inter",
+            "body": "geist",
             "mono": "jetbrains-mono"
         },
         "radius": "none",
@@ -122,7 +132,16 @@ Rules:
   micro-copy keys defined by the section library, each with a max length.
 - **Fonts** are chosen from a fixed allow-list of Fontsource families that
   ship with the app (hard rule / D20: no third-party requests). The list
-  lives in `config/studio.php` and is sent to the AI.
+  lives in `config/studio.php` and is sent to the AI: Geist, Bricolage
+  Grotesque, Space Grotesk, Archivo, JetBrains Mono, Space Mono, DM Mono and
+  the system sans/serif/mono stacks. `tokens.fonts.mono` only accepts
+  monospace fonts.
+- **Everything is required** except `copy` and `css`: all colour roles for
+  light and dark, all three fonts, all tokens, header/footer/container and a
+  variant for every page. Each home section may appear once (up to 16).
+- **Copy and names are plain text**: no `<`/`>`, line breaks or control
+  characters; colours must be hex (`#rgb`, `#rrggbb`, `#rrggbbaa`), so no CSS
+  can be smuggled through a token.
 - **Unknown sections, variants or props are rejected** by validation (they
   are not silently ignored), so the AI gets precise errors to repair.
 - Every home section is optional; sections whose data is empty render

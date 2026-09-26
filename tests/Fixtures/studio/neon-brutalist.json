@@ -1,0 +1,75 @@
+{
+    "$schema": "studio/v1",
+    "name": "Neon Brutalist",
+    "tokens": {
+        "colors": {
+            "light": {
+                "bg": "#f6f5f0",
+                "surface": "#ffffff",
+                "text": "#111111",
+                "muted": "#5b5b5b",
+                "accent": "#ff3d7f",
+                "border": "#111111"
+            },
+            "dark": {
+                "bg": "#0c0c0f",
+                "surface": "#16161c",
+                "text": "#f2f2f2",
+                "muted": "#9a9aa5",
+                "accent": "#ff3d7f",
+                "border": "#f2f2f2"
+            }
+        },
+        "fonts": {
+            "display": "space-grotesk",
+            "body": "geist",
+            "mono": "jetbrains-mono"
+        },
+        "radius": "none",
+        "density": "comfortable",
+        "shadow": "hard",
+        "motion": "subtle"
+    },
+    "layout": {
+        "header": { "variant": "bar-sticky" },
+        "footer": { "variant": "columns" },
+        "container": "wide"
+    },
+    "pages": {
+        "home": [
+            {
+                "section": "hero",
+                "variant": "split-portrait",
+                "props": { "showAvailability": true }
+            },
+            { "section": "stats", "variant": "inline" },
+            {
+                "section": "projects",
+                "variant": "bento",
+                "props": { "limit": 6 }
+            },
+            { "section": "career", "variant": "timeline" },
+            { "section": "clients", "variant": "marquee" },
+            { "section": "testimonials", "variant": "carousel" },
+            {
+                "section": "writing",
+                "variant": "list",
+                "props": { "limit": 3 }
+            },
+            { "section": "contact", "variant": "card" }
+        ],
+        "projects": { "variant": "grid" },
+        "caseStudy": { "variant": "longform" },
+        "writing": { "variant": "list" },
+        "article": { "variant": "centered" },
+        "books": { "variant": "shelf" },
+        "uses": { "variant": "columns" },
+        "now": { "variant": "notes" },
+        "notFound": { "variant": "big-number" }
+    },
+    "copy": {
+        "heroKicker": "Available for select projects",
+        "contactHeading": "Let's build something loud"
+    },
+    "css": "[data-template=\"studio\"] .st-hero h1 { letter-spacing: -0.04em; text-transform: uppercase; }"
+}
