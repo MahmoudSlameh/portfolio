@@ -20,12 +20,12 @@ Decision: D26.
 **Acceptance**: no visible change; all existing tests green; a test adds a
 fake manifest and sees it in the registry.
 
-## P7-02 · Kit: shared hooks & components — `todo`
+## P7-02 · Kit: shared hooks & components — `done`
 
-- [ ] `resources/js/kit/index.ts` exporting `useContactForm`,
+- [x] `resources/js/kit/index.ts` exporting `useContactForm`,
       `useArchiveFilters`, `useSiteSearch`, `useTheme`, `ArticleBlocks`
       (headless) and the existing shared components and helpers.
-- [ ] Migrate the three templates' contact forms, archive filters and search
+- [x] Migrate the three templates' contact forms, archive filters and search
       onto the kit (no visual change).
 
 **Acceptance**: `npm run types:check`, `npm run check` pass; contact and
@@ -71,3 +71,17 @@ passes with the new template in the matrix (test in CI with a temp dir).
   template), fallback feature test, commands test; the `templates` dataset
   lives in `tests/Pest.php` (`templateIds()`). `composer ci:check` green
   (185 tests).
+- 2026-09-26 — P7-02: `resources/js/kit` (`@/kit`): `useContactForm`,
+  `CONTACT_FIELDS`/`CONTACT_TOPICS`, `useArchiveFilters` (moved from
+  `shared/inertia/useSearchChange.ts`), `useSiteSearch` + `rankByQuery`
+  (now also used by the command palette), `useTheme`, headless
+  `ArticleBlocks` with exhaustive `ArticleBlockRenderers`, and re-exports of
+  the shared hooks, components and helpers. The three templates' contact
+  forms (~70 duplicated lines each), archive wrappers, theme toggles and
+  article bodies now use the kit. **Bug fixed:** article `image` blocks
+  (supported by the panel's block builder) were rendered by no template;
+  the exhaustive renderer type surfaced it and each template now renders a
+  figure with caption. Checked in Chromium on all three templates: contact
+  validation summary, clearing while typing, submission stored in the
+  inbox, success state; image blocks with caption. `composer ci:check`
+  green.

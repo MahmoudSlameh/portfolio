@@ -6,7 +6,7 @@ import { useNow } from '@/hooks/useLocalTime';
 import { useTranslation } from '@/hooks/useTranslation';
 import { formatTime } from '@/lib/utils';
 import { useCommandPalette } from '@/providers/CommandPaletteProvider';
-import { usePreferences } from '@/providers/PreferencesProvider';
+import { useTheme } from '@/kit';
 import { BrandIcon } from '@/shared/ui/BrandIcon';
 import type { Profile, Social } from '@/types/content';
 import { useTerminalCopy } from '../copy';
@@ -195,7 +195,7 @@ export function Header({
 }) {
     const { t } = useTranslation();
     const c = useTerminalCopy();
-    const { theme, toggleTheme } = usePreferences();
+    const { theme, toggleTheme } = useTheme();
     const { openPalette } = useCommandPalette();
     const pathname = useRouterState({
         select: (state) => state.location.pathname,
