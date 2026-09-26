@@ -58,6 +58,8 @@ test('the portrait is uploaded to the media library', function () {
     $media = Profile::current()->getFirstMedia('portrait');
 
     expect($media)->not->toBeNull()
+        ->and($media?->disk)->toBe('public')
+        ->and(Storage::disk('public')->exists($media?->getPathRelativeToRoot() ?? ''))->toBeTrue()
         ->and($media?->getCustomProperty('width'))->toBe(600)
         ->and(Profile::current()->portrait_alt)->toBe('Me in soft light');
 });
