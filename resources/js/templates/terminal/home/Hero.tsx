@@ -39,7 +39,7 @@ function HexPortrait({ profile }: { profile: Profile }) {
                         alt={c('hero.portrait', { name: profile.name })}
                         fetchPriority="high"
                         decoding="async"
-                        className="absolute inset-0 size-full object-cover object-[50%_20%] mix-blend-luminosity"
+                        className="absolute inset-0 size-full object-cover object-[50%_20%]"
                     />
                 )}
             </div>
