@@ -36,6 +36,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P8    | [phase-8-studio-engine.md](phase-8-studio-engine.md)     | Spec-driven studio templates stored in the DB     |
 | P9    | [phase-9-ai-builder.md](phase-9-ai-builder.md)           | Generate templates with AI (Laravel AI SDK)       |
 | P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)   | Refine, versions, export/import, eject to code    |
+| P11   | [phase-11-content-tools.md](phase-11-content-tools.md)   | Paste-friendly article editor; ATS CV to PDF      |
 
 > **Status (2026-09-26): P0–P7 are done (P7: the template kit, see
 > [11](../11-template-kit.md) and the
@@ -113,7 +114,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P8-01  | Spec schema `studio/v1` + validator                                | P7-01               | done   |
 | P8-02  | CSS sanitiser                                                      | —                   | done   |
 | P8-03  | Studio models, migrations, enums                                   | P8-01               | done   |
-| P8-04  | `studio` React engine + section library                            | P7-02, P8-01…P8-03  | todo   |
+| P8-04  | `studio` React engine + section library                            | P7-02, P8-01…P8-03  | done   |
 | P8-05  | Appearance: studio templates without AI                            | P8-04               | todo   |
 | P9-01  | Install and configure `laravel/ai`                                 | P8-*                | todo   |
 | P9-02  | AI settings page (Site → AI)                                       | P9-01               | todo   |
@@ -125,3 +126,8 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P10-02 | Export / import JSON                                               | P8-05               | todo   |
 | P10-03 | Card screenshots                                                   | P8-05               | todo   |
 | P10-04 | `php artisan template:eject`                                       | P8-04, P7-04        | todo   |
+| P11-01 | Article editor you can paste into (Filament RichEditor)            | —                   | todo   |
+| P11-02 | CV data + three ATS-friendly CV templates                          | —                   | todo   |
+| P11-03 | PDF generation                                                     | P11-02              | todo   |
+| P11-04 | Panel: CV page (pick template, generate, use as resume)            | P11-03              | todo   |
+| P11-05 | CV tests & docs                                                    | P11-04              | todo   |

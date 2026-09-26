@@ -1,0 +1,179 @@
+/*
+ * Studio engine base styles. Colours, fonts, radius, spacing, shadow and motion come from the
+ * spec's tokens as CSS variables (App\Support\Studio\StudioStyles, printed in <head>); the spec's
+ * own CSS comes after this file and can override any `.st-*` class hook.
+ * Class hooks are documented in docs/12-ai-templates.md §3.
+ */
+[data-template='studio'] {
+    --tpl-font-display: ui-sans-serif, system-ui, sans-serif;
+    --tpl-font-sans: ui-sans-serif, system-ui, sans-serif;
+    --tpl-font-mono: ui-monospace, monospace;
+    --st-radius: 0.5rem;
+    --st-section-gap: 6rem;
+    --st-container: 68rem;
+    --st-duration: 0.2s;
+    --st-shadow: none;
+}
+
+@layer components {
+    [data-template='studio'] h1,
+    [data-template='studio'] h2,
+    [data-template='studio'] h3 {
+        font-family: var(--tpl-font-display);
+        letter-spacing: -0.01em;
+    }
+
+    [data-template='studio'] .st-container {
+        width: 100%;
+        max-width: var(--st-container);
+        margin-inline: auto;
+        padding-inline: clamp(1rem, 4vw, 2rem);
+    }
+
+    [data-template='studio'] .st-section {
+        padding-block: calc(var(--st-section-gap) / 2);
+        scroll-margin-top: calc(var(--header-height) + 1rem);
+    }
+
+    [data-template='studio'] .st-kicker {
+        font-family: var(--tpl-font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--signal);
+    }
+
+    [data-template='studio'] .st-section-title {
+        font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+        line-height: 1.1;
+        font-weight: 700;
+        color: var(--ink);
+    }
+
+    [data-template='studio'] .st-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--st-radius);
+        box-shadow: var(--st-shadow);
+        transition:
+            transform var(--st-duration) ease,
+            border-color var(--st-duration) ease;
+    }
+
+    [data-template='studio'] a.st-card:hover,
+    [data-template='studio'] a.st-card:focus-visible {
+        transform: translateY(-3px);
+        border-color: var(--signal);
+    }
+
+    [data-template='studio'] .st-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid var(--signal);
+        border-radius: var(--st-radius);
+        background: var(--signal);
+        padding: 0.65rem 1.15rem;
+        font-weight: 600;
+        color: var(--on-signal);
+        transition: filter var(--st-duration) ease;
+    }
+
+    [data-template='studio'] .st-button:hover {
+        filter: brightness(1.08);
+    }
+
+    [data-template='studio'] .st-button:disabled {
+        opacity: 0.6;
+    }
+
+    [data-template='studio'] .st-button--ghost {
+        border-color: var(--line);
+        background: transparent;
+        color: var(--ink);
+    }
+
+    [data-template='studio'] .st-chip {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.2rem 0.7rem;
+        font-size: 0.8125rem;
+        color: var(--ink-muted);
+        transition:
+            background var(--st-duration) ease,
+            color var(--st-duration) ease;
+    }
+
+    [data-template='studio'] .st-chip[aria-pressed='true'] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+    }
+
+    [data-template='studio'] .st-link {
+        color: var(--signal);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+    }
+
+    [data-template='studio'] .st-field {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: var(--st-radius);
+        background: var(--paper);
+        padding: 0.6rem 0.8rem;
+        color: var(--ink);
+    }
+
+    [data-template='studio'] .st-field:focus-visible {
+        outline: 2px solid var(--signal);
+        outline-offset: 1px;
+    }
+
+    [data-template='studio'] .st-marquee {
+        display: flex;
+        overflow: hidden;
+        mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 10%,
+            #000 90%,
+            transparent
+        );
+    }
+
+    [data-template='studio'] .st-marquee__track {
+        display: flex;
+        flex: 0 0 auto;
+        min-width: 100%;
+        align-items: center;
+        justify-content: space-around;
+        animation: st-marquee 30s linear infinite;
+    }
+
+    [data-template='studio'] .st-marquee:hover .st-marquee__track {
+        animation-play-state: paused;
+    }
+
+    [data-template='studio'] .st-logo {
+        opacity: 0.7;
+        filter: grayscale(1);
+        transition:
+            filter var(--st-duration) ease,
+            opacity var(--st-duration) ease;
+    }
+
+    [data-template='studio'] .st-logo:hover {
+        opacity: 1;
+        filter: grayscale(0);
+    }
+}
+
+@keyframes st-marquee {
+    to {
+        transform: translateX(-100%);
+    }
+}

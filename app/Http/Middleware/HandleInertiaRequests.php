@@ -54,6 +54,8 @@ class HandleInertiaRequests extends Middleware
             'profile' => fn (): array => $content->profile(),
             'socials' => fn (): array => $content->socials(),
             'searchIndex' => inertia()->defer(fn (): array => $content->searchIndex())->once(),
+            // The rendered studio template's spec (null for code templates); see docs/12-ai-templates.md §3.
+            'studio' => fn (): ?array => ($spec = $templates->studioSpec()) === null ? null : ['spec' => $spec],
             'template' => fn (): array => [
                 'id' => $templates->current()->id,
                 'name' => $templates->current()->label,

@@ -33,15 +33,15 @@ Decision: D25.
       `reference` and `screenshot`.
 - [x] Registry (P7-01) lists ready studio templates as `studio:<ulid>`.
 
-## P8-04 · `studio` React engine — `todo`
+## P8-04 · `studio` React engine — `done`
 
-- [ ] `resources/js/templates/studio/` layout + 9 pages rendering the spec;
+- [x] `resources/js/templates/studio/` layout + 9 pages rendering the spec;
       `resources/js/pages/studio/*.tsx` wrappers.
-- [ ] Tokens → CSS custom properties emitted server-side in `app.blade.php`
+- [x] Tokens → CSS custom properties emitted server-side in `app.blade.php`
       (light + dark, no flash); scoped CSS injected after base styles.
-- [ ] Initial section library and variants from 12 §3 with documented class
+- [x] Initial section library and variants from 12 §3 with documented class
       hooks (`.st-*`), built on the kit.
-- [ ] `TemplateManager::page()` returns `studio/<Page>` for studio templates;
+- [x] `TemplateManager::page()` returns `studio/<Page>` for studio templates;
       shared `studio` prop carries the active version's spec.
 
 **Acceptance**: a seeded fixture spec renders every public page with SSR;
@@ -87,3 +87,10 @@ the template test matrix includes it.
   namespace; Appearance keys are colon-free and cards without a screenshot
   show a note. Tests: `tests/Feature/Studio/StudioTemplateTest.php`.
   The registry catches a missing table (deployed before `migrate`) and keeps serving the code templates. Studio templates only render once the engine exists (P8-04).
+- 2026-09-26 — P8-04: the studio engine (see 12 §3 "As built"): shared
+  `studio` prop, `StudioStyles` tokens → CSS in `<head>`, layout with 4
+  headers/3 footers, 12 home sections, 8 pages, class hooks with a guard
+  test, four example specs covering every variant + `StudioDemoSeeder`.
+  Checked in Chromium: all 9 pages × 4 demo templates render (404 page
+  included) with no console errors and no horizontal scroll at 390 px;
+  light and dark. Tests: `tests/Feature/Studio/StudioEngineTest.php`.

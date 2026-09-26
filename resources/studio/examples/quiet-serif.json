@@ -1,0 +1,45 @@
+{
+    "$schema": "studio/v1",
+    "name": "Quiet Serif",
+    "tokens": {
+        "colors": {
+            "light": { "bg": "#fbf8f1", "surface": "#ffffff", "text": "#1c1917", "muted": "#6b635b", "accent": "#9a3412", "border": "#e7e0d4" },
+            "dark": { "bg": "#15130f", "surface": "#1f1c17", "text": "#f3eee4", "muted": "#a8a095", "accent": "#fb923c", "border": "#34302a" }
+        },
+        "fonts": { "display": "system-serif", "body": "geist", "mono": "dm-mono" },
+        "radius": "sm",
+        "density": "airy",
+        "shadow": "none",
+        "motion": "subtle"
+    },
+    "layout": {
+        "header": { "variant": "minimal" },
+        "footer": { "variant": "big-name" },
+        "container": "narrow"
+    },
+    "pages": {
+        "home": [
+            { "section": "hero", "variant": "editorial", "props": { "showSocials": false } },
+            { "section": "about", "variant": "prose" },
+            { "section": "skills", "variant": "chips" },
+            { "section": "career", "variant": "table", "props": { "limit": 6 } },
+            { "section": "projects", "variant": "list", "props": { "limit": 5 } },
+            { "section": "education", "variant": "list" },
+            { "section": "writing", "variant": "cards", "props": { "limit": 3 } },
+            { "section": "books", "variant": "shelf", "props": { "limit": 10 } },
+            { "section": "contact", "variant": "minimal" }
+        ],
+        "projects": { "variant": "list" },
+        "caseStudy": { "variant": "sidebar" },
+        "writing": { "variant": "cards" },
+        "article": { "variant": "wide" },
+        "books": { "variant": "grid" },
+        "uses": { "variant": "list" },
+        "now": { "variant": "timeline" },
+        "notFound": { "variant": "minimal" }
+    },
+    "copy": {
+        "aboutHeading": "A few words",
+        "contactHeading": "Write to me"
+    }
+}

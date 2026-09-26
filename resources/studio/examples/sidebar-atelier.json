@@ -1,0 +1,39 @@
+{
+    "$schema": "studio/v1",
+    "name": "Sidebar Atelier",
+    "tokens": {
+        "colors": {
+            "light": { "bg": "#f7f7fb", "surface": "#ffffff", "text": "#16162a", "muted": "#5d5d78", "accent": "#6d28d9", "border": "#e2e2ee" },
+            "dark": { "bg": "#0f0f1a", "surface": "#171726", "text": "#ececf8", "muted": "#9a9ab8", "accent": "#a78bfa", "border": "#2a2a40" }
+        },
+        "fonts": { "display": "bricolage-grotesque", "body": "geist", "mono": "space-mono" },
+        "radius": "lg",
+        "density": "comfortable",
+        "shadow": "soft",
+        "motion": "subtle"
+    },
+    "layout": {
+        "header": { "variant": "sidebar" },
+        "footer": { "variant": "columns" },
+        "container": "wide"
+    },
+    "pages": {
+        "home": [
+            { "section": "hero", "variant": "centered" },
+            { "section": "about", "variant": "columns" },
+            { "section": "skills", "variant": "grid" },
+            { "section": "projects", "variant": "grid", "props": { "limit": 6 } },
+            { "section": "career", "variant": "timeline", "props": { "limit": 4 } },
+            { "section": "writing", "variant": "cards" },
+            { "section": "contact", "variant": "card" }
+        ],
+        "projects": { "variant": "grid" },
+        "caseStudy": { "variant": "sidebar" },
+        "writing": { "variant": "cards" },
+        "article": { "variant": "wide" },
+        "books": { "variant": "grid" },
+        "uses": { "variant": "columns" },
+        "now": { "variant": "notes" },
+        "notFound": { "variant": "big-number" }
+    }
+}

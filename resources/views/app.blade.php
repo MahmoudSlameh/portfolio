@@ -50,6 +50,10 @@
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @if ($studioSpec = $templates->studioSpec())
+            {{-- Design tokens and sanitised CSS of the studio template (App\Support\Studio\StudioStyles). --}}
+            <style id="studio-styles">{!! \App\Support\Studio\StudioStyles::render($studioSpec) !!}</style>
+        @endif
         <x-inertia::head>
             <title>{{ $settings->site_name }}</title>
         </x-inertia::head>

@@ -249,6 +249,7 @@ live status.
 | P8    | Planned | Studio engine: templates stored as a JSON spec and rendered by one React engine      |
 | P9    | Planned | AI template builder with the Laravel AI SDK                                          |
 | P10   | Planned | Refine & versions, export/import, eject to code                                      |
+| P11   | Planned | Paste-friendly article editor; ATS-friendly CV generated as PDF from the panel       |
 
 ## Contributing
 
