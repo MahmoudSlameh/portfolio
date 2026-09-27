@@ -164,6 +164,16 @@ php artisan inertia:check-ssr    # health check for the SSR server
       proxy in front of the AI provider (or Ollama on a slow machine) must
       allow long responses. `STUDIO_AI_TIMEOUT` (default 240 s) is the
       per-request limit.
+- **Studio card screenshots (optional)**: install Chromium on the server
+  (`apt install chromium`) and set `STUDIO_SCREENSHOT_CHROME=/usr/bin/chromium`.
+  The queue worker then captures a studio template's home page whenever its
+  active version changes (`php artisan studio:screenshots --missing`
+  fills in existing ones). Chrome opens the site at `APP_URL`, or at
+  `STUDIO_SCREENSHOT_URL` when the server cannot reach its public address
+  (e.g. `http://127.0.0.1`); the URL carries a 5-minute signature and is
+  rendered `noindex`, without analytics. Set
+  `STUDIO_SCREENSHOT_NO_SANDBOX=true` only if the worker runs as root.
+  Without Chromium, cards show a colour/type swatch instead.
 - **Scheduler**: the app has no scheduled tasks today. Add the standard cron
   (`* * * * * php /var/www/portfolio/artisan schedule:run`) only if you add some.
 

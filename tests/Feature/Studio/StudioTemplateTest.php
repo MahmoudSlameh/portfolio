@@ -152,7 +152,7 @@ test('the appearance page shows a ready studio template and can activate it', fu
 
     Livewire::test(Appearance::class)
         ->assertSee('Neon Studio')
-        ->assertSee('No screenshot yet · use Preview to see it')
+        ->assertSeeHtml('alt="Neon Studio colours and type"')
         ->callAction(TestAction::make("activate_{$key}")->schemaComponent("template-{$key}"))
         ->assertNotified('Neon Studio is now live');
 

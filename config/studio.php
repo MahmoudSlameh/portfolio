@@ -89,6 +89,21 @@ return [
     ],
 
     /*
+    | Card screenshots (P10-03). Set STUDIO_SCREENSHOT_CHROME to a Chrome/Chromium binary to capture the
+    | home page of a studio template whenever its active version changes; without it, cards show a
+    | swatch drawn from the spec. `no_sandbox` is only needed when the worker runs as root (containers).
+    */
+
+    'screenshots' => [
+        'chrome' => env('STUDIO_SCREENSHOT_CHROME'),
+        'base_url' => env('STUDIO_SCREENSHOT_URL'), // where Chrome reaches the site from the server; default APP_URL
+        'no_sandbox' => (bool) env('STUDIO_SCREENSHOT_NO_SANDBOX', false),
+        'width' => 1280,
+        'height' => 800,
+        'timeout' => 90, // seconds for Chrome to load, render and save
+    ],
+
+    /*
     | AI template builder (P9, docs/12-ai-templates.md sections 5 and 7). Requests go through the
     | Laravel AI SDK (laravel/ai); its provider keys and URLs use the SDK's own env names
     | (ANTHROPIC_API_KEY, OPENAI_API_KEY, ...; see vendor/laravel/ai/config/ai.php).

@@ -125,7 +125,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P9-06  | Docs & README for the AI builder                                   | P9-05               | done   |
 | P10-01 | Refine & versions                                                  | P9-*                | done   |
 | P10-02 | Export / import JSON                                               | P8-05               | done   |
-| P10-03 | Card screenshots                                                   | P8-05               | todo   |
+| P10-03 | Card screenshots                                                   | P8-05               | done   |
 | P10-04 | `php artisan template:eject`                                       | P8-04, P7-04        | todo   |
 | P11-01 | Article editor you can paste into (Filament RichEditor)            | —                   | done   |
 | P11-02 | CV data + three ATS-friendly CV templates                          | —                   | todo   |

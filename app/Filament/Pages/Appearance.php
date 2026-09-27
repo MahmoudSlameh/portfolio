@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\StudioSource;
 use App\Enums\StudioStatus;
+use App\Jobs\CaptureStudioScreenshot;
 use App\Models\SiteSetting;
 use App\Models\StudioTemplate;
 use App\Models\StudioTemplateVersion;
@@ -15,6 +16,7 @@ use App\Support\Studio\SpecCatalogue;
 use App\Support\Studio\SpecValidator;
 use App\Support\Studio\StudioFile;
 use App\Support\Studio\StudioGenerator;
+use App\Support\Studio\StudioSwatch;
 use App\Support\Templates\TemplateDefinition;
 use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
@@ -123,8 +125,11 @@ class Appearance extends Page
         $version = $template->getRelationValue('activeVersion');
         $details = [];
 
-        if ($definition !== null) {
+        if ($definition?->screenshotUrl() !== null) {
             $details[] = $this->screenshot($definition);
+        } elseif ($version instanceof StudioTemplateVersion) {
+            // No screenshot yet: a swatch drawn from the spec (P10-03).
+            $details[] = Image::make(StudioSwatch::dataUri($version->spec), "{$template->name} colours and type")->imageWidth('100%')->imageHeight('auto');
         }
 
         if ($version instanceof StudioTemplateVersion) {
@@ -159,6 +164,7 @@ class Appearance extends Page
                 $template->status->isWorking() ? null : $this->editStudioAction($template, $key),
                 $version instanceof StudioTemplateVersion ? $this->versionsAction($template, $key) : null,
                 $version instanceof StudioTemplateVersion ? $this->exportAction($template, $version, $key) : null,
+                $version instanceof StudioTemplateVersion && CaptureStudioScreenshot::enabled() ? $this->screenshotAction($template, $key) : null,
                 $version instanceof StudioTemplateVersion ? $this->duplicateStudioAction($template, $version, $key) : null,
                 $this->deleteStudioAction($template, $key, $isActive),
             ])));
@@ -167,7 +173,7 @@ class Appearance extends Page
     private function screenshot(TemplateDefinition $template): Text|Image
     {
         return $template->screenshotUrl() === null
-            ? Text::make($template->isStudio() ? 'No screenshot yet · use Preview to see it' : 'No screenshot')->color('gray')
+            ? Text::make('No screenshot')->color('gray')
             : Image::make($template->screenshotUrl(), "{$template->label} template preview")->imageWidth('100%')->imageHeight('auto');
     }
 
@@ -395,6 +401,19 @@ class Appearance extends Page
                 }
 
                 $this->refreshCards();
+            });
+    }
+
+    private function screenshotAction(StudioTemplate $template, string $key): Action
+    {
+        return Action::make("screenshot_{$key}")
+            ->label('Refresh screenshot')
+            ->icon(Heroicon::OutlinedCamera)
+            ->color('gray')
+            ->action(function () use ($template): void {
+                CaptureStudioScreenshot::dispatch($template);
+
+                Notification::make()->success()->title('Taking a screenshot…')->body('It appears on the card in a moment (reload the page).')->send();
             });
     }
 
