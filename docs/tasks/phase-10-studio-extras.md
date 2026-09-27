@@ -37,11 +37,26 @@ Design: [12](../12-ai-templates.md).
 the live site; any version can be previewed and activated (roll back);
 tests for all of it.
 
-## P10-02 · Export / import JSON — `todo`
+## P10-02 · Export / import JSON — `done`
 
-- [ ] Export a version as `<name>.studio.json` (spec + metadata, no media).
-- [ ] Import validates and sanitises exactly like AI output (`source=import`).
-- [ ] `docs/templates/sharing-studio-templates.md`.
+- [x] File format (`App\Support\Studio\StudioFile`), `<slug>.studio.json`:
+      `{"format": "portfolio-studio-template", "formatVersion": 1, "name",
+"description", "exportedAt", "spec"}`. No media (reference images and
+      screenshots stay private), no prompt, provider or token data.
+- [x] **Export**: card action (templates with a version) downloads the
+      active version; the Versions page exports any version.
+- [x] **Import** (Appearance header): upload a `.json` file (≤ 100 KB) or
+      paste its text; name optional (defaults to the file's name). Accepts
+      the wrapped format or a bare spec (`"$schema": "studio/v1"`).
+      Validated with `SpecValidator` (errors shown in the form, nothing
+      created) and stored with `addVersion()` like AI output, so CSS is
+      sanitised (warning with what was removed); `source = import`. The
+      imported template is never activated automatically.
+- [x] `docs/templates/sharing-studio-templates.md`: export, import, the
+      format, what is (not) included, safety, editing a file by hand.
+
+**Acceptance**: export → import round-trips the spec; invalid files are
+rejected with readable errors; unsafe CSS is removed on import.
 
 ## P10-03 · Card screenshots — `todo`
 
@@ -72,3 +87,10 @@ tests for all of it.
   Filament derives route names from the slug, and a name containing
   `{template}` breaks the generated Wayfinder helpers (TypeScript error).
   Tests: `tests/Feature/Studio/RefineAndVersionsTest.php` (11 cases).
+- 2026-09-27 — P10-02: `StudioFile` (export, filename, parse),
+  `InvalidStudioFile`, Export on cards and on the Versions page, Import on
+  Appearance (file or paste, optional name). A refused import shows a
+  persistent notification and keeps the modal open. Checked in Chromium: a
+  card's Export downloads `mono-grid.studio.json`, and importing that file
+  creates the template. Tests: `tests/Feature/Studio/StudioFileTest.php`
+  (14 cases).

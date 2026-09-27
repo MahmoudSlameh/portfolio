@@ -10,8 +10,10 @@ use App\Models\StudioTemplateVersion;
 use App\Support\Content\ContentCache;
 use App\Support\Studio\AiSettings;
 use App\Support\Studio\GenerationRefused;
+use App\Support\Studio\InvalidStudioFile;
 use App\Support\Studio\SpecCatalogue;
 use App\Support\Studio\SpecValidator;
+use App\Support\Studio\StudioFile;
 use App\Support\Studio\StudioGenerator;
 use App\Support\Templates\TemplateDefinition;
 use App\Support\Templates\TemplateManager;
@@ -37,6 +39,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use UnitEnum;
 
 /**
@@ -60,7 +64,7 @@ class Appearance extends Page
 
     protected function getHeaderActions(): array
     {
-        return [$this->generateAction(), $this->createStudioAction()];
+        return [$this->generateAction(), $this->createStudioAction(), $this->importAction()];
     }
 
     public function content(Schema $schema): Schema
@@ -154,6 +158,7 @@ class Appearance extends Page
                 $version instanceof StudioTemplateVersion && ! $template->status->isWorking() ? $this->refineAction($template, $key) : null,
                 $template->status->isWorking() ? null : $this->editStudioAction($template, $key),
                 $version instanceof StudioTemplateVersion ? $this->versionsAction($template, $key) : null,
+                $version instanceof StudioTemplateVersion ? $this->exportAction($template, $version, $key) : null,
                 $version instanceof StudioTemplateVersion ? $this->duplicateStudioAction($template, $version, $key) : null,
                 $this->deleteStudioAction($template, $key, $isActive),
             ])));
@@ -312,6 +317,83 @@ class Appearance extends Page
                 }
 
                 Notification::make()->success()->title("Refining {$template->name}…")->body('You will be notified when the new version is ready.')->send();
+                $this->refreshCards();
+            });
+    }
+
+    private function exportAction(StudioTemplate $template, StudioTemplateVersion $version, string $key): Action
+    {
+        return Action::make("export_{$key}")
+            ->label('Export')
+            ->icon(Heroicon::OutlinedArrowDownTray)
+            ->color('gray')
+            ->action(fn (): StreamedResponse => response()->streamDownload(
+                function () use ($template, $version): void {
+                    echo StudioFile::json($template, $version);
+                },
+                StudioFile::filename($template),
+                ['Content-Type' => 'application/json'],
+            ));
+    }
+
+    /**
+     * Import a `.studio.json` file (or a bare spec), validated and sanitised like AI output.
+     */
+    private function importAction(): Action
+    {
+        return Action::make('import')
+            ->label('Import')
+            ->icon(Heroicon::OutlinedArrowUpTray)
+            ->color('gray')
+            ->modalHeading('Import a studio template')
+            ->modalDescription('A .studio.json file exported from another portfolio, or a spec. It is validated and its CSS sanitised; it is not activated.')
+            ->modalSubmitActionLabel('Import')
+            ->schema([
+                FileUpload::make('file')
+                    ->label('File')
+                    ->acceptedFileTypes(['application/json', 'text/plain'])
+                    ->maxSize(intdiv(StudioFile::MAX_BYTES, 1024))
+                    ->storeFiles(false)
+                    ->requiredWithout('json'),
+                Textarea::make('json')
+                    ->label('…or paste its contents')
+                    ->rows(6)
+                    ->extraInputAttributes(['class' => 'font-mono'])
+                    ->requiredWithout('file'),
+                TextInput::make('name')
+                    ->label('Name')
+                    ->placeholder('Taken from the file when empty')
+                    ->maxLength(SpecCatalogue::limit('name')),
+            ])
+            ->action(function (array $data, Action $action): void {
+                $file = $data['file'] ?? null;
+                $contents = $file instanceof TemporaryUploadedFile ? (string) $file->get() : (string) ($data['json'] ?? '');
+
+                try {
+                    $parsed = StudioFile::parse($contents);
+                } catch (InvalidStudioFile $exception) {
+                    Notification::make()->danger()->title('Not imported')->body(Str::limit($exception->getMessage(), 600))->persistent()->send();
+                    $action->halt();
+
+                    return;
+                }
+
+                $name = filled($data['name'] ?? null) ? (string) $data['name'] : ($parsed['name'] ?? 'Imported template');
+                $spec = [...$parsed['spec'], 'name' => $name];
+
+                $template = StudioTemplate::query()->create([
+                    'name' => $name,
+                    'description' => $parsed['description'],
+                    'source' => StudioSource::Import,
+                ]);
+                $version = $template->addVersion($spec);
+
+                Notification::make()->success()->title("{$name} imported")->body('Preview it before activating.')->send();
+
+                if ($version->notes !== null) {
+                    Notification::make()->warning()->title('Some CSS was removed for safety')->body(implode("\n", $version->notes))->persistent()->send();
+                }
+
                 $this->refreshCards();
             });
     }

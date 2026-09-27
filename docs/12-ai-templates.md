@@ -453,6 +453,16 @@ and **Studio templates** (every `StudioTemplate` row, newest first).
   tokens, removed CSS, with **Preview** and **Activate** (roll back or
   forward; warns when the template is live).
 
+### Export / import (as built, P10-02)
+
+`App\Support\Studio\StudioFile`: **Export** (card: active version;
+Versions page: any version) downloads `<name>.studio.json` with the spec, a
+name and a description only. **Import** (Appearance header) takes a file or
+pasted text, accepts that format or a bare spec, validates it (nothing is
+created on error) and stores it with `addVersion()` (CSS sanitised,
+`source = import`, never activated). Guide:
+[templates/sharing-studio-templates.md](templates/sharing-studio-templates.md).
+
 ## 9. Testing
 
 - Spec validator and CSS sanitiser: unit tests with valid, invalid and
