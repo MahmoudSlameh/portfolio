@@ -2,7 +2,7 @@
 @extends('cv.layout', ['margin' => '11mm 13mm', 'skillsInline' => true])
 
 @section('styles')
-    body { font-family: 'DejaVu Sans', Helvetica, Arial, sans-serif; font-size: 9pt; line-height: 1.3; }
+    body { font-family: 'DejaVu Sans', Helvetica, Arial, sans-serif; font-size: 9pt; line-height: 1.2; }
     .cv-header { margin-bottom: 7pt; }
     .cv-name { font-size: 17pt; font-weight: bold; }
     .cv-role { font-size: 10pt; }

@@ -9,7 +9,6 @@ use App\Models\Social;
 use App\Support\Cv\CvData;
 use App\Support\Cv\CvOptions;
 use App\Support\Cv\CvRenderer;
-use Database\Seeders\DemoContentSeeder;
 
 function cvHtml(CvTemplate $template, array $options = []): string
 {
@@ -17,7 +16,7 @@ function cvHtml(CvTemplate $template, array $options = []): string
 }
 
 test('every template renders the demo content with the standard sections in order', function (CvTemplate $template) {
-    $this->seed(DemoContentSeeder::class);
+    seedCvDemo();
     $html = cvHtml($template);
     $profile = Profile::current();
     $firstRole = Experience::query()->visible()->orderByDesc('start_date')->firstOrFail();
@@ -46,7 +45,7 @@ test('every template renders with an empty database', function (CvTemplate $temp
 })->with(CvTemplate::cases());
 
 test('the paper size and options are applied', function () {
-    $this->seed(DemoContentSeeder::class);
+    seedCvDemo();
 
     $letter = cvHtml(CvTemplate::Modern, ['paper' => 'letter', 'includeProjects' => false, 'includeCertifications' => false, 'maxRoles' => 2]);
 
