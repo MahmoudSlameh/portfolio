@@ -1,8 +1,8 @@
 # 12 · Studio templates & the AI template builder
 
-> Status: **P8 built** (studio templates without AI); **P9–P10 planned** (phases [P8](tasks/phase-8-studio-engine.md),
+> Status: **P8 and P9 built** (studio templates and the AI builder); **P10 planned** (phases [P8](tasks/phase-8-studio-engine.md),
 > [P9](tasks/phase-9-ai-builder.md), [P10](tasks/phase-10-studio-extras.md)).
-> Decisions: D25–D29 in [09](09-decisions.md).
+> Decisions: D25–D31 in [09](09-decisions.md).
 
 The owner opens **Site → Appearance → Generate with AI**, describes a design
 (a prompt, a reference screenshot or both), and a few minutes later a new

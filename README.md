@@ -3,7 +3,7 @@
 # Portfolio
 
 **A self-hosted developer portfolio with a real admin panel, swappable
-templates and, coming soon, templates you can generate with AI.**
+templates and templates you can generate with AI.**
 
 Laravel 13 · Filament 5 · Inertia 3 · React 19 · Server-side rendering
 
@@ -13,7 +13,7 @@ Laravel 13 · Filament 5 · Inertia 3 · React 19 · Server-side rendering
 ![Laravel 13](https://img.shields.io/badge/Laravel-13-ff2d20.svg)
 
 [Features](#features) · [Quick start](#quick-start) · [Templates](#templates) ·
-[AI template builder](#ai-template-builder-in-development) ·
+[AI template builder](#ai-template-builder) ·
 [Build your own template](#build-your-own-template) · [Docs](docs/README.md)
 
 </div>
@@ -54,12 +54,14 @@ page builder that is slow and bad for SEO. This project is both a
 **Admin panel** (`/admin`, Filament 5)
 
 - Profile & bio, work experience, education, companies & clients, projects
-  (with architecture diagrams, metrics and galleries), articles (block
-  editor), books, skills, certifications, testimonials, socials, uses, now
+  (with architecture diagrams, metrics and galleries), articles (rich
+  editor: paste from any page, or import Markdown), books, skills, certifications, testimonials, socials, uses, now
   page.
 - Inbox for contact messages, dashboard with content health.
 - **Appearance**: activate a template, or preview it privately before
-  switching.
+  switching; generate new templates with AI, or edit a template's spec by
+  hand.
+- **AI**: provider, model and API key for the template builder.
 - SEO & site settings: site name, meta defaults, favicon, OG image,
   verification codes, analytics snippet, page toggles.
 - All media through Spatie Media Library (responsive conversions, alt text).
@@ -79,48 +81,56 @@ you are signed in to the panel, `/?template=<id>` previews another template
 just for you (preview pages are `noindex`). `/?template=reset` ends the
 preview.
 
-## AI template builder (in development)
+## AI template builder
 
-> 🚧 **Not available yet.** This feature is designed and planned (phases
-> P8–P10 in the [task board](docs/tasks/README.md)). The full design is in
-> [docs/12-ai-templates.md](docs/12-ai-templates.md). Contributions are
-> welcome.
+Describe the design you want, or upload a screenshot you like, and get a new
+template that renders your real content. It is generated in the background
+and shows up on **Site → Appearance** when it is ready.
 
-The goal: go to **Site → Appearance → Generate with AI**, describe the
-design you want or upload a screenshot, and get a new template that renders
-your real content.
+**1. Choose a provider.** Built on the official
+[Laravel AI SDK](https://laravel.com/ai): Anthropic, OpenAI, Gemini, xAI,
+Mistral, DeepSeek, Groq, OpenRouter, a local Ollama model or any
+OpenAI-compatible endpoint. Pick the provider and model and paste your API
+key in **Site → AI** (stored encrypted, never shown again), then press
+**Test connection**. Or set it in `.env`; the panel wins when both are set:
 
-How it will work:
+```dotenv
+STUDIO_AI_PROVIDER=anthropic
+STUDIO_AI_MODEL=            # empty = the provider's default model
+ANTHROPIC_API_KEY=
+```
 
-1. **Bring your own AI provider.** Built on the official
-   [Laravel AI SDK](https://laravel.com/ai), so you can use Anthropic, OpenAI,
-   Gemini, Groq, xAI, DeepSeek, Mistral, OpenRouter or a local Ollama model.
-   Choose the provider and model and paste your API key in **Site → AI**
-   (stored encrypted), or set them in `.env`:
+Use a model that accepts images if you want to generate from screenshots.
 
-    ```dotenv
-    STUDIO_AI_PROVIDER=anthropic
-    STUDIO_AI_MODEL=
-    ANTHROPIC_API_KEY=
-    ```
+**2. Run a queue worker.** Generation is a queued job that can take a
+minute or two (up to 5 minutes), so a worker must be running:
+`composer dev` starts one locally; in production see
+[docs/10-deployment.md](docs/10-deployment.md#5-long-running-processes-supervisor).
 
-2. **Describe it.** Write a prompt, attach up to three reference images, or
-   start from an existing template.
-3. **Watch it build.** Generation runs on the queue. The Appearance page
-   shows the template as `Queued`, then `Generating 45% — Composing pages…`,
-   then `Ready`.
-4. **Preview, refine, activate.** Preview it privately, ask for changes ("make
-   it darker, use a serif headline") to get a new version, roll back to any
-   version, then activate it.
-5. **Share it.** Export a template as a JSON file and import templates other
-   people made.
+**3. Generate.** On **Site → Appearance**, click **Generate with AI**: give it
+a name, describe the look, attach up to three reference images, and
+optionally start from an existing template. The card shows the progress
+(`Generating 70% — Checking the design…`) and you get a notification when it
+is done. If the design does not pass validation, the AI gets the errors back
+and fixes them (up to twice); if it still fails, the card shows why and
+offers **Retry**.
+
+**4. Preview, tweak, activate.** **Preview** it privately, adjust the spec
+by hand with **Edit** if you like (every save is a new version), then
+**Activate** it. A daily limit (20 by default, set in Site → AI) keeps the
+bill predictable; each version shows the tokens it used.
 
 **Safe by design:** the AI never writes code. It produces a _Template Spec_
-(design tokens, layout and section choices, plus a sanitised stylesheet
-scoped to the template) that is validated and stored in the database. One
-built-in React engine renders any spec, so generated templates keep SSR and
-SEO, need no rebuild and survive deploys. Developers can later _eject_ a
-generated template into regular React code.
+(design tokens, layout and section choices, plus an optional stylesheet)
+that is validated against a schema; the CSS is sanitised and scoped to the
+template, and it may not load fonts, images or anything else from the
+internet. One built-in React engine renders any spec, so generated templates
+keep SSR and SEO, need no rebuild and survive deploys. Details:
+[docs/12-ai-templates.md](docs/12-ai-templates.md).
+
+Next ([P10](docs/tasks/phase-10-studio-extras.md)): refine a template by
+asking for changes, browse and roll back versions, export/import templates
+as JSON, card screenshots, and ejecting a template into React code.
 
 ## Tech stack
 
@@ -169,14 +179,15 @@ php artisan inertia:start-ssr
 
 The important `.env` values (see [`.env.example`](.env.example)):
 
-| Variable                                        | Purpose                                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------------------- |
-| `APP_URL`                                       | Canonical URLs, sitemap and Open Graph images use it                    |
-| `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | First admin user created by the seeder                                  |
-| `ADMIN_EMAILS`                                  | Comma-separated emails allowed into `/admin` in production              |
-| `MEDIA_DISK`                                    | `public` or `s3` for uploaded images                                    |
-| `MAIL_*`                                        | Contact-form notifications                                              |
-| `QUEUE_CONNECTION`                              | Queue for notifications and media conversions (and AI generation later) |
+| Variable                                        | Purpose                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| `APP_URL`                                       | Canonical URLs, sitemap and Open Graph images use it         |
+| `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | First admin user created by the seeder                       |
+| `ADMIN_EMAILS`                                  | Comma-separated emails allowed into `/admin` in production   |
+| `MEDIA_DISK`                                    | `public` or `s3` for uploaded images                         |
+| `MAIL_*`                                        | Contact-form notifications                                   |
+| `QUEUE_CONNECTION`                              | Queue for notifications, media conversions and AI generation |
+| `STUDIO_AI_PROVIDER` / `STUDIO_AI_MODEL`        | AI template builder defaults (Site → AI overrides them)      |
 
 Everything else (site name, SEO defaults, favicon, analytics, enabled pages,
 active template) is edited in the panel.
@@ -241,15 +252,15 @@ live status.
 
 ## Roadmap
 
-| Phase | Status  | What                                                                                 |
-| ----- | ------- | ------------------------------------------------------------------------------------ |
-| P0–P5 | Done    | Data layer, admin panel, three templates, SEO & performance, tests, deployment guide |
-| P6    | Done    | Open-source release: this README, license, contributing guides                       |
-| P7    | Done    | Template kit: registry, shared hooks, `make:template`, starter template, guide       |
-| P8    | Planned | Studio engine: templates stored as a JSON spec and rendered by one React engine      |
-| P9    | Planned | AI template builder with the Laravel AI SDK                                          |
-| P10   | Planned | Refine & versions, export/import, eject to code                                      |
-| P11   | Planned | Paste-friendly article editor; ATS-friendly CV generated as PDF from the panel       |
+| Phase | Status  | What                                                                                  |
+| ----- | ------- | ------------------------------------------------------------------------------------- |
+| P0–P5 | Done    | Data layer, admin panel, three templates, SEO & performance, tests, deployment guide  |
+| P6    | Done    | Open-source release: this README, license, contributing guides                        |
+| P7    | Done    | Template kit: registry, shared hooks, `make:template`, starter template, guide        |
+| P8    | Done    | Studio engine: templates stored as a JSON spec and rendered by one React engine       |
+| P9    | Done    | AI template builder with the Laravel AI SDK                                           |
+| P10   | Planned | Refine & versions, export/import, eject to code                                       |
+| P11   | Started | Paste-friendly article editor (done); ATS-friendly CV generated as PDF from the panel |
 
 ## Contributing
 

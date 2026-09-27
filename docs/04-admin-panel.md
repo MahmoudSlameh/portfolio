@@ -277,6 +277,15 @@ reading books (multi-select of books, default = status reading). Shows
   `site_settings.active_template`, flushes cache, success notification) and
   **Preview** (opens `/?template=<id>` in a new tab; preview works only for
   the logged-in admin — visitors always get the active template).
+- Two sections: **Built-in templates** (code) and **Studio templates**
+  (database, rendered by the studio engine; [12](12-ai-templates.md)).
+- Header actions: **Generate with AI** (name, prompt, up to 3 reference
+  images, start from; queued job with live progress) and **New studio
+  template** (from an example spec).
+- Studio card actions: Activate, Preview, **Edit** (JSON spec in a
+  slide-over; each save is a new version), Duplicate, Delete (disabled while
+  active), **Retry** on a failed AI generation. The section polls every 3 s
+  only while a generation is queued or running.
 
 ## Site · SEO & settings (singleton page `SiteSettings`)
 

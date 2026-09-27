@@ -50,6 +50,11 @@ ADMIN_EMAILS="${ADMIN_EMAIL}"        # comma-separated allow-list for /admin in 
 
 MEDIA_DISK=public                    # or s3 (set AWS_* too)
 PORTFOLIO_CACHE_TTL=86400            # seconds; content cache is flushed on every change anyway
+
+# Optional: AI template builder (or set it in the panel: Site → AI)
+STUDIO_AI_PROVIDER=anthropic         # anthropic, openai, gemini, xai, mistral, deepseek, groq, openrouter, ollama, openai-compatible
+STUDIO_AI_MODEL=                     # empty = the provider's default model
+ANTHROPIC_API_KEY=                   # the provider's key, with the Laravel AI SDK's env name
 ```
 
 Notes:
@@ -61,6 +66,9 @@ Notes:
   `ADMIN_EMAIL`. The email is queued, so the queue worker must run.
 - If a proxy or CDN terminates TLS, configure trusted proxies so generated
   URLs use `https`.
+- AI settings saved in **Site → AI** win over `.env`. The key is stored with
+  Laravel's `encrypted` cast, so it depends on `APP_KEY`: rotating `APP_KEY`
+  means entering the key again.
 
 ## 3. First deploy
 
@@ -119,9 +127,10 @@ stdout_logfile=/var/www/portfolio/storage/logs/ssr.log
 
 [program:portfolio-queue]
 command=php /var/www/portfolio/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/portfolio
 user=www-data
-numprocs=1
+numprocs=2
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -139,9 +148,22 @@ php artisan inertia:check-ssr    # health check for the SSR server
 - **SSR** listens on `127.0.0.1:13714` (`config/inertia.php`). If it is down,
   pages still work but are rendered client-side, which is bad for SEO.
   Watch `storage/logs/ssr.log`.
-- **Queue**: image conversions (thumb/WebP/OG, queued by default) and the
-  contact-form email. Without a worker, new uploads show no responsive
-  variants and no email is sent.
+- **Queue**: image conversions (thumb/WebP/OG, queued by default), the
+  contact-form email, panel notifications and **AI template generation**.
+  Without a worker, new uploads show no responsive variants, no email is
+  sent and generated templates stay `Queued`.
+    - Two worker processes (`numprocs=2`) so a generation, which can take a
+      few minutes, does not hold up image conversions and emails.
+    - A generation job allows itself 300 s (its own `$timeout` overrides
+      the worker's `--timeout`). The queue's `retry_after` must be longer,
+      or a running generation is handed to a second worker and fails with
+      "attempted too many times"; `config/queue.php` defaults it to 360 s.
+      If you set `DB_QUEUE_RETRY_AFTER` / `REDIS_QUEUE_RETRY_AFTER`, keep it
+      above 300.
+    - PHP's `max_execution_time` does not apply to the CLI worker, but a
+      proxy in front of the AI provider (or Ollama on a slow machine) must
+      allow long responses. `STUDIO_AI_TIMEOUT` (default 240 s) is the
+      per-request limit.
 - **Scheduler**: the app has no scheduled tasks today. Add the standard cron
   (`* * * * * php /var/www/portfolio/artisan schedule:run`) only if you add some.
 
@@ -218,6 +240,9 @@ Before going live:
       the Inbox and arrive by email, which confirms the queue worker and mail work.
 - [ ] Upload an image and check that thumb/WebP/OG conversions appear
       (queue worker + WebP support).
+- [ ] Optional, AI templates: **Site → AI → Test connection** succeeds, then
+      generate a template on **Appearance** and check that the card moves
+      from `Queued` to `Ready` and a notification arrives.
 
 After going live (SEO checklist from [07 § 6](07-seo.md#6-verification-checklist-per-release)):
 
@@ -242,5 +267,8 @@ After going live (SEO checklist from [07 § 6](07-seo.md#6-verification-checklis
 | Uploaded images return **404** at `/storage/…` (it was a Laravel "403 Forbidden" page before the private disk's `serve` option was turned off) | The `public/storage` link is missing, so the web server passes the request on to Laravel. `MEDIA_DISK=public` is correct; the link is what's missing | `php artisan storage:link` (on zero-downtime setups, run it for every release, or link `storage/` as a shared directory). Check with `ls -l public/storage`                         |
 | Images uploaded from the panel **before the upload-disk fix** return 403/404 and the file is not in `storage/app/public/<id>/`                 | Older builds saved panel uploads on `FILESYSTEM_DISK` (`local` = private) instead of `MEDIA_DISK`                                                    | Deploy the fix, then upload those images again (or move `storage/app/private/<id>` to `storage/app/public/<id>` and set `disk`/`conversions_disk` to `public` in the `media` table) |
 | Images upload but the responsive/WebP/OG versions never appear                                                                                 | The queue worker isn't running                                                                                                                       | Start the `portfolio-queue` Supervisor program, then run `php artisan media-library:regenerate`                                                                                     |
+| A generated template stays `Queued`                                                                                                            | The queue worker isn't running                                                                                                                       | Start the `portfolio-queue` Supervisor program; the job then runs                                                                                                                   |
+| A generation fails with "attempted too many times" or "timed out"                                                                              | `retry_after` shorter than the job (300 s), or a proxy cutting long AI requests                                                                      | Keep `DB_QUEUE_RETRY_AFTER` / `REDIS_QUEUE_RETRY_AFTER` above 300 (default 360); allow long responses on any proxy; lower `STUDIO_AI_TIMEOUT` only if the provider is fast          |
+| "Generate with AI" is greyed out                                                                                                               | AI is not ready (no provider, key, URL or model)                                                                                                     | Hover the button for the reason, fix it in **Site → AI** and use **Test connection**                                                                                                |
 | Pages render but `view-source` shows almost no content                                                                                         | The SSR server is down                                                                                                                               | `php artisan inertia:check-ssr`; restart the `portfolio-ssr` program                                                                                                                |
 | A panel change doesn't show on the site                                                                                                        | Stale config or content cache                                                                                                                        | **Site → SEO & settings → Rebuild caches**; after `.env` changes run `php artisan optimize`                                                                                         |
