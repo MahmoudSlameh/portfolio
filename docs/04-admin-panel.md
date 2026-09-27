@@ -69,6 +69,7 @@ cards).
 | Inbox   | Messages (badge = unread count) | Resource (read-only + actions)                | `ContactMessage`              |
 | Site    | **Appearance (templates)**      | Custom page                                   | `SiteSetting.active_template` |
 | Site    | SEO & settings                  | Singleton page                                | `SiteSetting`                 |
+| Site    | AI                              | Singleton page (`AiSettingsPage`)             | `SiteSetting.ai_*`            |
 | Site    | Users                           | Resource (simple)                             | `User`                        |
 
 ## Shared building blocks (`app/Filament/Support`)
@@ -284,6 +285,18 @@ contact_recipient) · _SEO_ (meta_description, default_og_image, twitter_handle,
 indexable toggle with danger description, verification codes) ·
 _Advanced_ (analytics_snippet, favicon). Header action: "Rebuild caches"
 (flush content caches + regenerate sitemap).
+
+## Site · AI (singleton page `AiSettingsPage`)
+
+Settings for the AI template builder ([12 §7](12-ai-templates.md#7-ai-settings-p9)),
+resolved by `App\Support\Studio\AiSettings` (panel → `.env` → disabled).
+A status line says whether AI is ready and why not. Fields: Enable AI
+features · provider (Select from `config('studio.ai.providers')`) · model
+(placeholder shows the SDK's default) · API key (password field, never
+filled back; "Remove the saved key" toggle) · base URL (Ollama and
+OpenAI-compatible only) · generations per day. Header action **Test
+connection** prompts the provider with the form's unsaved values and
+reports the model and latency; errors never show the key.
 
 ## Dashboard widgets
 
