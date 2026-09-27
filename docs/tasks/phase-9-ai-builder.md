@@ -95,11 +95,23 @@ resolution order tested.
 **Acceptance**: tests with the SDK's fakes for success, repair-then-success
 and failure; no network in tests.
 
-## P9-05 · Appearance: Generate with AI + live status — `todo`
+## P9-05 · Appearance: Generate with AI + live status — `done`
 
-- [ ] Modal (name, prompt, up to 3 reference images, start from, pages).
-- [ ] Card badges `Queued` / `Generating n% — step` / `Ready` / `Failed`
-      (+ Retry); `wire:poll.3s` only while something is in progress.
+- [x] Header action **Generate with AI** (hidden when AI is switched off in
+      Site → AI; disabled with the reason as tooltip when AI is not ready).
+      Modal: name, prompt (required unless an image is given), up to 3
+      reference images (≤ 5 MB each, private `local` disk → the template's
+      `reference` media), **start from** (none, a built-in template or a
+      ready studio template), and "N of M generations left today". Calls
+      `StudioGenerator::start()`; a refusal is shown as a notification and
+      nothing is created. The planned "pages" field is dropped: every spec
+      must define every page, so the prompt says what matters.
+- [x] Cards: `Queued` / `Generating n% — step` / `Ready` / `Failed` (with
+      the error and **Retry**, which reuses the last attempt's prompt,
+      starting point and images). Edit is hidden while a template is
+      queued or generating. AI versions show their token usage.
+- [x] `wire:poll.3s` on the studio section **only while** a template is
+      queued or generating.
 
 **Acceptance**: Livewire tests for the modal, polling and retry.
 
@@ -165,3 +177,11 @@ and failure; no network in tests.
   `tests/Feature/Studio/GenerateStudioTemplateTest.php` (14 cases, SDK
   fakes, no network). Not run against a real provider (no key in this
   environment).
+- 2026-09-27 — P9-05: `Appearance` gains **Generate with AI** and **Retry**;
+  the studio section polls every 3 s only while a card is queued or
+  generating (checked in Chromium: a card moved from 30 % to 80 % with its
+  new step without a reload). A refused start deletes the just-created
+  template, so nothing half-made is left. Uploads go to the private
+  `local` disk (`studio-uploads/`) and are moved into the template's
+  `reference` media. Tests: `tests/Feature/Studio/AppearanceGenerateTest.php`
+  (9 cases).
