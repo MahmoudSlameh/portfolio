@@ -88,4 +88,34 @@ return [
         'css' => 40 * 1024,    // bytes, after sanitising (P8-02)
     ],
 
+    /*
+    | AI template builder (P9, docs/12-ai-templates.md sections 5 and 7). Requests go through the
+    | Laravel AI SDK (laravel/ai); its provider keys and URLs use the SDK's own env names
+    | (ANTHROPIC_API_KEY, OPENAI_API_KEY, ...; see vendor/laravel/ai/config/ai.php).
+    | Settings saved in the panel (Site → AI) take precedence over these values.
+    */
+
+    'ai' => [
+        'provider' => env('STUDIO_AI_PROVIDER'),       // empty = AI features off unless set in the panel
+        'model' => env('STUDIO_AI_MODEL'),             // empty = the provider's default model in the SDK
+        'daily_limit' => (int) env('STUDIO_AI_DAILY_LIMIT', 20),
+        'max_output_tokens' => (int) env('STUDIO_AI_MAX_TOKENS', 16000),
+        'timeout' => (int) env('STUDIO_AI_TIMEOUT', 240),  // seconds per request (the job allows 300)
+
+        // Text providers the panel offers (SDK driver names). `url` = the panel asks for a base URL;
+        // `model` = a model id is required (the SDK has no default for that provider).
+        'providers' => [
+            'anthropic' => ['label' => 'Anthropic'],
+            'openai' => ['label' => 'OpenAI'],
+            'gemini' => ['label' => 'Google Gemini'],
+            'xai' => ['label' => 'xAI'],
+            'mistral' => ['label' => 'Mistral'],
+            'deepseek' => ['label' => 'DeepSeek'],
+            'groq' => ['label' => 'Groq'],
+            'openrouter' => ['label' => 'OpenRouter'],
+            'ollama' => ['label' => 'Ollama (self-hosted)', 'url' => true],
+            'openai-compatible' => ['label' => 'OpenAI-compatible endpoint', 'url' => true, 'model' => true],
+        ],
+    ],
+
 ];
