@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use App\Enums\ArticleStatus;
+use App\Filament\RichContent\CalloutBlock;
+use App\Filament\RichContent\CodeBlock;
 use App\Models\Concerns\GeneratesSlug;
 use App\Models\Concerns\RegistersImageConversions;
+use App\Support\Content\ArticleDocument;
 use App\Support\Media\MimeTypes;
 use Carbon\CarbonImmutable;
 use Database\Factories\ArticleFactory;
+use Filament\Forms\Components\RichEditor\FileAttachmentProviders\SpatieMediaLibraryFileAttachmentProvider;
+use Filament\Forms\Components\RichEditor\Models\Concerns\InteractsWithRichContent;
+use Filament\Forms\Components\RichEditor\Models\Contracts\HasRichContent;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -23,16 +29,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- * A blog post. The body is a list of Filament Builder blocks: `[{type, data}]` where type is
- * paragraph, heading, code, quote, list, callout or image.
- *
- * @phpstan-type BodyBlock array{type: string, data: array<string, mixed>}
+ * A blog post. The body is a TipTap document written with the rich editor; ArticleDocument turns it
+ * into the paragraph, heading, code, quote, list, callout and image blocks the site renders.
  *
  * @property int $id
  * @property string $slug
  * @property string $title
  * @property string|null $excerpt
- * @property list<BodyBlock> $body
+ * @property array<string, mixed> $body
  * @property list<string> $tags
  * @property ArticleStatus $status
  * @property CarbonImmutable|null $published_at
@@ -46,16 +50,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  */
 #[Fillable(['slug', 'title', 'excerpt', 'body', 'tags', 'status', 'published_at', 'cover_alt', 'meta_title', 'meta_description'])]
 #[RouteKey('slug')]
-class Article extends Model implements HasMedia
+class Article extends Model implements HasMedia, HasRichContent
 {
     /** @use HasFactory<ArticleFactory> */
-    use GeneratesSlug, HasFactory, InteractsWithMedia, RegistersImageConversions, SoftDeletes;
+    use GeneratesSlug, HasFactory, InteractsWithMedia, InteractsWithRichContent, RegistersImageConversions, SoftDeletes;
 
     /**
      * @var array<string, mixed>
      */
     protected $attributes = [
-        'body' => '[]',
+        'body' => '{"type":"doc","content":[]}',
         'tags' => '[]',
         'status' => 'draft',
     ];
@@ -91,6 +95,18 @@ class Article extends Model implements HasMedia
     {
         $this->addMediaCollection('cover')->singleFile()->acceptsMimeTypes(MimeTypes::RASTER);
         $this->addMediaCollection('body_images')->acceptsMimeTypes(MimeTypes::RASTER);
+    }
+
+    /**
+     * The body editor: images go to `body_images` (removed again when taken out of the body).
+     */
+    protected function setUpRichContent(): void
+    {
+        $this->registerRichContent('body')
+            ->json()
+            ->fileAttachmentProvider(SpatieMediaLibraryFileAttachmentProvider::make()->collection('body_images'))
+            ->fileAttachmentsVisibility('public')
+            ->customBlocks([CalloutBlock::class, CodeBlock::class]);
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -131,15 +147,16 @@ class Article extends Model implements HasMedia
      */
     public function wordCount(): int
     {
-        return collect($this->body)->sum(function (array $block): int {
+        return collect(ArticleDocument::toBuilder($this->body))->sum(function (array $block): int {
             $data = $block['data'];
 
             $text = match ($block['type']) {
-                'list' => implode(' ', array_map(strval(...), (array) ($data['items'] ?? []))),
+                'list' => implode(' ', array_map(fn (mixed $item): string => ArticleDocument::plainText((string) $item), (array) ($data['items'] ?? []))),
                 'code' => (string) ($data['code'] ?? ''),
-                'callout' => ($data['title'] ?? '').' '.($data['text'] ?? ''),
+                'callout' => ($data['title'] ?? '').' '.ArticleDocument::plainText((string) ($data['text'] ?? '')),
                 'image' => '',
-                default => (string) ($data['text'] ?? ''),
+                'heading' => (string) ($data['text'] ?? ''),
+                default => ArticleDocument::plainText((string) ($data['text'] ?? '')),
             };
 
             return count(preg_split('/\s+/', $text, -1, PREG_SPLIT_NO_EMPTY) ?: []);

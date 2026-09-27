@@ -6,34 +6,99 @@ Nothing here is built yet.
 
 ---
 
-## P11-01 · Article editor you can paste into — `todo` (awaiting owner decision)
+## P11-01 · Article editor you can paste into — `done`
 
 **Problem.** Articles are written with Filament's block Builder: every
 paragraph, heading, list or code snippet is a separate block added by hand,
-so copying an existing article in is impractical.
+so copying an existing article in is impractical. Also, the form promised
+inline `**bold**`, `` `code` `` and links, but every template printed paragraph
+text as plain text.
 
-**Proposal (no third-party plugin needed).** Filament 5 ships a TipTap-based
-`RichEditor`:
+**Approved approach (2026-09-27, no third-party plugin).** Filament 5's
+TipTap-based `RichEditor`, stored as TipTap JSON, converted on the server to
+the existing `ArticleBlock[]` contract.
 
-- [ ] Replace the Builder with `RichEditor::make('body')->json()`; toolbar:
-      H2/H3, bold, italic, link, bullet/ordered list, blockquote, code block,
-      horizontal rule, attach files. Pasting from a web page, Google Docs or
-      Word keeps headings, lists, links and code.
-- [ ] Images: attachments stored through Spatie Media Library (hard rule 2);
-      check the media-library plugin's RichEditor attachment provider with
-      Boost `search-docs` first.
-- [ ] "Callout" as a `RichContentCustomBlock` (the one block type without a
-      standard equivalent).
-- [ ] `App\Support\Content\ArticleBody` converts TipTap JSON to the existing
-      `ArticleBlock[]` (paragraph, heading, code, quote, list, callout,
-      image), so **no template changes**; unknown nodes become paragraphs.
-- [ ] Optional **Import Markdown** action on the article form: paste Markdown
-      (league/commonmark ships with Laravel) → HTML → editor.
-- [ ] Migration converting existing Builder bodies to TipTap JSON (tested
-      on the demo articles), reversible.
+### Storage
 
-**Acceptance**: an article pasted from a web page keeps its structure; all
-templates render it unchanged; existing articles still render.
+- `articles.body` holds a TipTap document (`{"type":"doc","content":[…]}`)
+  instead of the Builder list. The `ArticleBlock[]` sent to templates keeps
+  its shape.
+- `App\Support\Content\ArticleDocument`:
+  `fromBuilder(list $blocks): array` (old format → document; used by the
+  migration, `ArticleFactory` and `DemoContentSeeder`) and
+  `toBuilder(array $doc): list` (for the migration's `down()`).
+
+### Editor (`ArticleForm::body()`)
+
+- [x] `RichEditor::make('body')->json()`. Toolbar: bold, italic, inline code,
+      link · H2, H3 · blockquote, code block, bullet list, ordered list ·
+      attach image, custom blocks · undo, redo. No tables, colours, alignment
+      or H1 (the contract has no place for them).
+- [x] Images: `SpatieMediaLibraryFileAttachmentProvider` on the
+      `body_images` collection (`Article` implements `HasRichContent`), alt
+      text asked on upload. Images can be added once the article is saved
+      (Filament's rule for media-library attachments); images no longer in
+      the body are removed on save, so the separate "Images" section goes.
+- [x] Custom blocks: **Callout** (title, text) and **Code** (language,
+      filename, code editor) for a snippet with a file name. A plain code
+      block (pasted or typed) keeps the language from the pasted
+      `language-*` class, else `text`.
+- [x] **Import Markdown** action on the Body section: paste Markdown,
+      choose _replace_ or _append_; `Str::markdown()` (raw HTML stripped,
+      unsafe links dropped) → HTML → editor document.
+
+### Conversion to `ArticleBlock[]` (`ArticleBody::toBlocks`)
+
+| TipTap node                      | Block                                                                        |
+| -------------------------------- | ---------------------------------------------------------------------------- |
+| `paragraph`                      | `paragraph` (empty ones skipped)                                             |
+| `heading` (any level)            | `heading`, plain text, unique slug id                                        |
+| `bulletList` / `orderedList`     | `list`; each item's text; nested items become further items                  |
+| `blockquote`                     | `quote`; a last paragraph starting with `—` or `--` becomes `cite`           |
+| `codeBlock`                      | `code` (`language` attr or `text`)                                           |
+| `customBlock` `code` / `callout` | `code` with filename / `callout`                                             |
+| `image` (`id` = media uuid)      | `image` (alt from the node, caption from its `title`); missing media skipped |
+| `table`                          | one paragraph per row, cells joined with `·`                                 |
+| `horizontalRule`, `hardBreak`    | dropped / a space                                                            |
+| anything else with content       | its children, converted the same way                                         |
+
+Marks become the inline Markdown subset: bold `**x**`, italic `*x*`, code
+`` `x` ``, link `[x](url)` (only `http(s)`, `mailto` and relative URLs; others
+keep the text). Other marks keep their text. Headings are always plain.
+
+### Templates (contract)
+
+- [x] Kit `InlineText` renders that subset as React elements (no
+      `dangerouslySetInnerHTML`), and `plainText()` strips it (search,
+      aria labels). Used for paragraph, list item, quote and callout text in
+      all templates (terminal, playground, changelog, minimal, studio);
+      documented in `types.ts` and the template guide.
+- [x] Word count / reading time from the converted blocks, markers stripped.
+
+### Migration
+
+- [x] Converts existing Builder bodies to documents (image block → image
+      node with the media uuid, caption → `title`, code with filename →
+      Code block, callout → Callout block); `down()` converts back.
+
+**Done 2026-09-27.** `ArticleDocument` (converter both ways, inline Markdown
+with escapes, safe links only), `CalloutBlock` / `CodeBlock`
+(`App\Filament\RichContent`), `Article` implements `HasRichContent`, form
+with Import Markdown, migration `2026_09_27_100000`, kit `InlineText` used by
+terminal, playground, changelog, minimal and studio. Custom heading anchors
+are not kept (ids come from the heading text). Checked in Chromium: pasting
+HTML (h1, marks, link, list, quote, `language-php` code, table) saves as the
+expected blocks; Import Markdown refreshes the open editor and keeps the
+existing content; the Callout block inserts and saves; all four code
+templates render bold, italic and the link. Tests:
+`tests/Unit/ArticleDocumentTest.php`,
+`tests/Feature/ArticleBodyMigrationTest.php`,
+`tests/Feature/Filament/ArticleResourceTest.php`.
+
+**Acceptance**: an article pasted from a web page keeps its headings, lists,
+links, bold/italic, quotes and code; all templates render it; existing
+articles render the same as before; tests cover the converter both ways, the
+migration, the Markdown import and the form.
 
 ## P11-02 · CV data and three ATS-friendly CV templates — `todo`
 

@@ -8,6 +8,8 @@ import {
     ArticleBlocks as KitArticleBlocks,
     ResponsiveImage,
     type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
 } from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
@@ -98,14 +100,23 @@ function Heading({ block, index }: { block: HeadingBlock; index: number }) {
     );
 }
 
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
 const renderers: ArticleBlockRenderers = {
     paragraph: (block, { isFirst }) =>
         isFirst ? (
             <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
         ) : (
-            <p className="pg-prose mb-6">{block.text}</p>
+            <p className="pg-prose mb-6">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
         ),
     heading: (block, { headingIndex }) => (
         <Heading block={block} index={headingIndex} />
@@ -120,7 +131,7 @@ const renderers: ArticleBlockRenderers = {
                 “
             </span>
             <p className="text-2xl leading-snug font-bold md:text-[1.75rem]">
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
             {block.cite && (
                 <footer className="mt-4 font-mono text-sm font-bold">
@@ -140,7 +151,7 @@ const renderers: ArticleBlockRenderers = {
                         aria-hidden
                         className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
                     />
-                    {item}
+                    <InlineText text={item} classNames={inline} />
                 </li>
             ))}
         </ul>
@@ -153,7 +164,7 @@ const renderers: ArticleBlockRenderers = {
             <div>
                 <p className="mb-1 text-lg font-bold">{block.title}</p>
                 <p className="text-base leading-relaxed font-medium">
-                    {block.text}
+                    <InlineText text={block.text} classNames={inline} />
                 </p>
             </div>
         </aside>

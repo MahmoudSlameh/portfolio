@@ -8,6 +8,8 @@ import {
     ArticleBlocks as KitArticleBlocks,
     ResponsiveImage,
     type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
 } from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
@@ -92,6 +94,13 @@ function Heading({ block }: { block: HeadingBlock }) {
     );
 }
 
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
 const renderers: ArticleBlockRenderers = {
     paragraph: (block, { isFirst }) => (
         <p
@@ -101,7 +110,7 @@ const renderers: ArticleBlockRenderers = {
                     : 'tm-prose mb-6'
             }
         >
-            {block.text}
+            <InlineText text={block.text} classNames={inline} />
         </p>
     ),
     heading: (block) => <Heading block={block} />,
@@ -110,7 +119,7 @@ const renderers: ArticleBlockRenderers = {
         <blockquote className="my-10 border-s-2 border-tm-primary ps-6">
             <p className="text-xl leading-relaxed text-ink">
                 <span className="text-tm-secondary">&gt; </span>
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
             {block.cite && (
                 <footer className="mt-3 text-sm text-tm-300">
@@ -123,7 +132,7 @@ const renderers: ArticleBlockRenderers = {
         <ul className="mb-8 list-disc ps-6 marker:text-tm-primary">
             {block.items.map((item) => (
                 <li key={item} className="tm-prose mb-2">
-                    {item}
+                    <InlineText text={item} classNames={inline} />
                 </li>
             ))}
         </ul>
@@ -136,7 +145,9 @@ const renderers: ArticleBlockRenderers = {
             />
             <div>
                 <p className="mb-1 font-medium text-ink">{block.title}</p>
-                <p className="mb-0 leading-relaxed text-tm-300">{block.text}</p>
+                <p className="mb-0 leading-relaxed text-tm-300">
+                    <InlineText text={block.text} classNames={inline} />
+                </p>
             </div>
         </aside>
     ),

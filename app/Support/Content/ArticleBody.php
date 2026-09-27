@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- * Converts the stored Filament Builder body (`[{type, data}]`) into the frontend `ArticleBlock[]` union.
+ * Converts the stored body (a TipTap document, see ArticleDocument) into the frontend `ArticleBlock[]` union.
  */
 final class ArticleBody
 {
@@ -21,7 +21,7 @@ final class ArticleBody
         $headingIds = [];
         $blocks = [];
 
-        foreach ($article->body as $block) {
+        foreach (ArticleDocument::toBuilder($article->body) as $block) {
             $data = $block['data'];
 
             $blocks[] = match ($block['type']) {
