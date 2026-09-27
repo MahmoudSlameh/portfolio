@@ -80,6 +80,20 @@ final class TemplateScaffolder
 
     private function validate(string $id, string $from): void
     {
+        $this->assertNewId($id);
+
+        if (! $this->registry->has($from)) {
+            throw new InvalidArgumentException("There is no template \"{$from}\" to copy. Available: ".implode(', ', $this->registry->ids()).'.');
+        }
+    }
+
+    /**
+     * A new code template id: a lowercase slug, not reserved, not taken (also used by template:eject).
+     *
+     * @throws InvalidArgumentException
+     */
+    public function assertNewId(string $id): void
+    {
         if (preg_match('/^[a-z][a-z0-9-]*$/', $id) !== 1) {
             throw new InvalidArgumentException("\"{$id}\" is not a valid template id: use lowercase letters, digits and dashes, starting with a letter.");
         }
@@ -90,10 +104,6 @@ final class TemplateScaffolder
 
         if ($this->registry->has($id) || $this->files->exists("{$this->templatesPath}/{$id}") || $this->files->exists("{$this->pagesPath}/{$id}")) {
             throw new InvalidArgumentException("A template named \"{$id}\" already exists.");
-        }
-
-        if (! $this->registry->has($from)) {
-            throw new InvalidArgumentException("There is no template \"{$from}\" to copy. Available: ".implode(', ', $this->registry->ids()).'.');
         }
     }
 
@@ -117,7 +127,7 @@ final class TemplateScaffolder
      * Add `@import '../templates/<id>/styles.css';` after the source template's import (all template
      * stylesheets ship in one bundle, scoped by `data-template`; decision D18).
      */
-    private function importStylesheet(string $from, string $id): void
+    public function importStylesheet(string $from, string $id): void
     {
         $css = $this->files->get($this->stylesheet);
         $import = "@import '../templates/{$id}/styles.css';";

@@ -42,8 +42,9 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 > [11](../11-template-kit.md) and the
 > [guide](../templates/building-a-template.md)), P8 (studio templates:
 > spec, sanitiser, models, engine, Appearance editor), P9 (the AI template
-> builder) and P11-01 (rich article editor). P10 (studio extras) and
-> P11-02… (ATS CV) are planned** — design in [12](../12-ai-templates.md).
+> builder), P10 (refine & versions, export/import, screenshots, eject) and
+> P11-01 (rich article editor). P11-02… (ATS CV) is planned** — design in
+> [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
 > decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
@@ -126,7 +127,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P10-01 | Refine & versions                                                  | P9-*                | done   |
 | P10-02 | Export / import JSON                                               | P8-05               | done   |
 | P10-03 | Card screenshots                                                   | P8-05               | done   |
-| P10-04 | `php artisan template:eject`                                       | P8-04, P7-04        | todo   |
+| P10-04 | `php artisan template:eject`                                       | P8-04, P7-04        | done   |
 | P11-01 | Article editor you can paste into (Filament RichEditor)            | —                   | done   |
 | P11-02 | CV data + three ATS-friendly CV templates                          | —                   | todo   |
 | P11-03 | PDF generation                                                     | P11-02              | todo   |
