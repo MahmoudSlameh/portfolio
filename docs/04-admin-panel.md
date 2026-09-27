@@ -280,11 +280,14 @@ reading books (multi-select of books, default = status reading). Shows
 - Two sections: **Built-in templates** (code) and **Studio templates**
   (database, rendered by the studio engine; [12](12-ai-templates.md)).
 - Header actions: **Generate with AI** (name, prompt, up to 3 reference
-  images, start from; queued job with live progress) and **New studio
-  template** (from an example spec).
-- Studio card actions: Activate, Preview, **Edit** (JSON spec in a
-  slide-over; each save is a new version), Duplicate, Delete (disabled while
-  active), **Retry** on a failed AI generation. The section polls every 3 s
+  images, start from; queued job with live progress), **New studio
+  template** (from an example spec) and **Import** (a `.studio.json` file
+  or pasted spec; [sharing guide](templates/sharing-studio-templates.md)).
+- Studio card actions: Activate, Preview, **Refine** (ask the AI for
+  changes), **Edit** (JSON spec in a slide-over; each save is a new
+  version), **Versions** (page with preview/activate per version),
+  **Export**, Duplicate, Delete (disabled while active), **Retry** on a
+  failed AI generation. The section polls every 3 s
   only while a generation is queued or running.
 
 ## Site · SEO & settings (singleton page `SiteSettings`)

@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\StudioTemplate;
 use App\Models\StudioTemplateVersion;
 use App\Support\Content\ContentCache;
+use App\Support\Studio\StudioFile;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -19,6 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Every version of a studio template (docs/12-ai-templates.md, P10-01): preview any of them and
@@ -110,6 +112,17 @@ class StudioTemplateVersions extends Page implements HasTable
                 TextColumn::make('created_at')->label('Created')->since()->dateTimeTooltip(),
             ])
             ->recordActions([
+                Action::make('export')
+                    ->label('Export')
+                    ->icon(Heroicon::OutlinedArrowDownTray)
+                    ->color('gray')
+                    ->action(fn (StudioTemplateVersion $record): StreamedResponse => response()->streamDownload(
+                        function () use ($record): void {
+                            echo StudioFile::json($this->studioTemplate, $record);
+                        },
+                        StudioFile::filename($this->studioTemplate, $record),
+                        ['Content-Type' => 'application/json'],
+                    )),
                 Action::make('preview')
                     ->label('Preview')
                     ->icon(Heroicon::OutlinedEye)
