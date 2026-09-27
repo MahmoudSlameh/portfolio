@@ -417,6 +417,22 @@ and **Studio templates** (every `StudioTemplate` row, newest first).
 - Studio cards have no screenshot until P10-03; they say so and point at
   Preview.
 
+### As built (P9-05)
+
+- **Generate with AI** (header): hidden when AI is switched off in Site →
+  AI, disabled with the reason as tooltip when it is not ready. Modal:
+  name, "What should it look like?" (required unless an image is given),
+  up to 3 reference images (5 MB each, private disk), **Start from** (none,
+  a built-in template or a ready studio template) and the generations left
+  today. The planned "pages" field was dropped: every spec defines every
+  page.
+- Cards show `Queued` / `Generating` with `n% — step`, and `Failed` with the
+  error and **Retry** (same prompt, starting point and images). Edit is not
+  offered while a template is queued or generating. AI versions show their
+  token usage.
+- The studio section has `wire:poll.3s` only while a card is queued or
+  generating.
+
 ## 9. Testing
 
 - Spec validator and CSS sanitiser: unit tests with valid, invalid and

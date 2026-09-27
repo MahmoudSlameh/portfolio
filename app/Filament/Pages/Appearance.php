@@ -3,12 +3,16 @@
 namespace App\Filament\Pages;
 
 use App\Enums\StudioSource;
+use App\Enums\StudioStatus;
 use App\Models\SiteSetting;
 use App\Models\StudioTemplate;
 use App\Models\StudioTemplateVersion;
 use App\Support\Content\ContentCache;
+use App\Support\Studio\AiSettings;
+use App\Support\Studio\GenerationRefused;
 use App\Support\Studio\SpecCatalogue;
 use App\Support\Studio\SpecValidator;
+use App\Support\Studio\StudioGenerator;
 use App\Support\Templates\TemplateDefinition;
 use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
@@ -17,7 +21,9 @@ use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\CodeEditor\Enums\Language;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -28,6 +34,8 @@ use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -52,7 +60,7 @@ class Appearance extends Page
 
     protected function getHeaderActions(): array
     {
-        return [$this->createStudioAction()];
+        return [$this->generateAction(), $this->createStudioAction()];
     }
 
     public function content(Schema $schema): Schema
@@ -70,10 +78,12 @@ class Appearance extends Page
                     )),
                 ]),
             Section::make('Studio templates')
-                ->description('Designs stored as a Template Spec and rendered by the studio engine. Start from an example and edit the spec; AI generation comes next.')
+                ->description('Designs stored as a Template Spec and rendered by the studio engine. Generate one with AI, or start from an example and edit its spec.')
+                // Refresh the cards while a generation is queued or running, and only then.
+                ->extraAttributes($studio->contains(fn (StudioTemplate $template): bool => $template->status->isWorking()) ? ['wire:poll.3s' => ''] : [])
                 ->schema([
                     $studio->isEmpty()
-                        ? Text::make('No studio templates yet. Use "New studio template" to start from an example.')->color('gray')
+                        ? Text::make('No studio templates yet. Use "Generate with AI", or "New studio template" to start from an example.')->color('gray')
                         : Grid::make(['default' => 1, 'md' => 2, 'xl' => 3])->schema($studio->map(
                             fn (StudioTemplate $template): Section => $this->studioCard($template, $registry->find($template->templateId())),
                         )->all()),
@@ -114,7 +124,8 @@ class Appearance extends Page
         }
 
         if ($version instanceof StudioTemplateVersion) {
-            $details[] = Text::make("Version {$version->number} · {$template->source->getLabel()}")->color('gray');
+            $tokens = $version->input_tokens !== null ? ' · '.Number::format($version->input_tokens + (int) $version->output_tokens).' tokens' : '';
+            $details[] = Text::make("Version {$version->number} · {$template->source->getLabel()}{$tokens}")->color('gray');
         }
 
         if ($template->status->isWorking()) {
@@ -139,7 +150,8 @@ class Appearance extends Page
             ->footer(array_values(array_filter([
                 $definition !== null ? $this->activateAction($definition) : null,
                 $definition !== null ? $this->previewAction($definition) : null,
-                $this->editStudioAction($template, $key),
+                $template->status === StudioStatus::Failed && $template->source === StudioSource::Ai ? $this->retryAction($template, $key) : null,
+                $template->status->isWorking() ? null : $this->editStudioAction($template, $key),
                 $version instanceof StudioTemplateVersion ? $this->duplicateStudioAction($template, $version, $key) : null,
                 $this->deleteStudioAction($template, $key, $isActive),
             ])));
@@ -182,6 +194,105 @@ class Appearance extends Page
             ->icon(Heroicon::OutlinedEye)
             ->color('gray')
             ->url(url('/?template='.$template->id), shouldOpenInNewTab: true);
+    }
+
+    /**
+     * Generate a studio template with AI (docs/12-ai-templates.md §5): the job runs in the background
+     * and the card shows its progress.
+     */
+    private function generateAction(): Action
+    {
+        $settings = AiSettings::current();
+        $studio = StudioTemplate::query()->renderable()->orderBy('name')->get();
+        $startOptions = [
+            'Built-in templates' => array_map(fn (TemplateDefinition $template): string => $template->label, app(TemplateRegistry::class)->code()),
+            'Studio templates' => $studio->mapWithKeys(fn (StudioTemplate $template): array => [$template->templateId() => $template->name])->all(),
+        ];
+
+        return Action::make('generate')
+            ->label('Generate with AI')
+            ->icon(Heroicon::OutlinedSparkles)
+            ->visible(fn (): bool => SiteSetting::current()->ai_enabled)
+            ->disabled(! $settings->enabled())
+            ->tooltip($settings->enabled() ? null : $settings->problem)
+            ->modalHeading('Generate a template with AI')
+            ->modalDescription(fn (): string => sprintf(
+                'Describe the look you want, add screenshots you like, or both. %s · %d of %d generations left today. It takes a minute or two; the card shows the progress.',
+                $settings->label(),
+                app(StudioGenerator::class)->remainingToday(),
+                $settings->dailyLimit,
+            ))
+            ->modalSubmitActionLabel('Generate')
+            ->modalWidth(Width::TwoExtraLarge)
+            ->schema([
+                TextInput::make('name')->required()->maxLength(SpecCatalogue::limit('name')),
+                Textarea::make('prompt')
+                    ->label('What should it look like?')
+                    ->rows(5)
+                    ->maxLength(2000)
+                    ->placeholder('A calm editorial design with a serif display font, lots of white space and a single warm accent. Projects as a bento grid.')
+                    ->requiredWithout('references'),
+                FileUpload::make('references')
+                    ->label('Reference images')
+                    ->helperText('Up to 3 screenshots of designs you like. Only their look is used, never their text.')
+                    ->image()
+                    ->multiple()
+                    ->maxFiles(3)
+                    ->maxSize(5 * 1024)
+                    ->disk('local')
+                    ->directory('studio-uploads')
+                    ->visibility('private'),
+                Select::make('start_from')
+                    ->label('Start from')
+                    ->placeholder('Nothing, design from scratch')
+                    ->options(array_filter($startOptions)),
+            ])
+            ->action(function (array $data): void {
+                $template = StudioTemplate::query()->create([
+                    'name' => $data['name'],
+                    'source' => StudioSource::Ai,
+                ]);
+
+                foreach ((array) ($data['references'] ?? []) as $path) {
+                    $template->addMedia(Storage::disk('local')->path((string) $path))->toMediaCollection('reference');
+                }
+
+                try {
+                    app(StudioGenerator::class)->start($template, (string) ($data['prompt'] ?? ''), $data['start_from'] ?? null);
+                } catch (GenerationRefused $exception) {
+                    $template->delete();
+                    Notification::make()->warning()->title('Not started')->body($exception->getMessage())->send();
+
+                    return;
+                }
+
+                Notification::make()->success()->title("Generating {$template->name}…")->body('You can leave this page; you will be notified when it is ready.')->send();
+                $this->refreshCards();
+            });
+    }
+
+    /**
+     * Run a failed generation again with the same prompt, starting point and images.
+     */
+    private function retryAction(StudioTemplate $template, string $key): Action
+    {
+        return Action::make("retry_{$key}")
+            ->label('Retry')
+            ->icon(Heroicon::OutlinedArrowPath)
+            ->action(function () use ($template): void {
+                $last = $template->generations()->first();
+
+                try {
+                    app(StudioGenerator::class)->start($template, (string) $last?->prompt, $last?->start_from);
+                } catch (GenerationRefused $exception) {
+                    Notification::make()->warning()->title('Not started')->body($exception->getMessage())->send();
+
+                    return;
+                }
+
+                Notification::make()->success()->title("Generating {$template->name} again…")->send();
+                $this->refreshCards();
+            });
     }
 
     private function createStudioAction(): Action
