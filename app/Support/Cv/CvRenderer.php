@@ -8,11 +8,15 @@ namespace App\Support\Cv;
  */
 final class CvRenderer
 {
-    public function html(CvOptions $options = new CvOptions): string
+    /**
+     * @param  bool  $preview  For a browser: page-like padding and width (the PDF uses @page margins)
+     */
+    public function html(CvOptions $options = new CvOptions, bool $preview = false): string
     {
         return view($options->template->view(), [
             'cv' => CvData::build($options),
             'options' => $options,
+            'preview' => $preview,
         ])->render();
     }
 }

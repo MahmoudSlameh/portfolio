@@ -131,5 +131,5 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P11-01 | Article editor you can paste into (Filament RichEditor)            | —                   | done   |
 | P11-02 | CV data + three ATS-friendly CV templates                          | —                   | done   |
 | P11-03 | PDF generation                                                     | P11-02              | done   |
-| P11-04 | Panel: CV page (pick template, generate, use as resume)            | P11-03              | todo   |
+| P11-04 | Panel: CV page (pick template, generate, use as resume)            | P11-03              | done   |
 | P11-05 | CV tests & docs                                                    | P11-04              | todo   |
