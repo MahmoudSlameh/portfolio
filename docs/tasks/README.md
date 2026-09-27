@@ -38,12 +38,12 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)   | Refine, versions, export/import, eject to code    |
 | P11   | [phase-11-content-tools.md](phase-11-content-tools.md)   | Paste-friendly article editor; ATS CV to PDF      |
 
-> **Status (2026-09-26): P0–P7 are done (P7: the template kit, see
+> **Status (2026-09-27): P0–P7 are done (P7: the template kit, see
 > [11](../11-template-kit.md) and the
-> [guide](../templates/building-a-template.md)) and P8 (studio templates
-> without AI: spec, sanitiser, models, engine, Appearance editor). P9–P10
-> (the AI template builder and extras) are planned** — design in
-> [12](../12-ai-templates.md).
+> [guide](../templates/building-a-template.md)), P8 (studio templates:
+> spec, sanitiser, models, engine, Appearance editor), P9 (the AI template
+> builder) and P11-01 (rich article editor). P10 (studio extras) and
+> P11-02… (ATS CV) are planned** — design in [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
 > decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
@@ -122,7 +122,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P9-03  | `TemplateDesigner` agent                                           | P9-01               | done   |
 | P9-04  | `GenerateStudioTemplate` job + repair loop                         | P9-02, P9-03        | done   |
 | P9-05  | Appearance: Generate with AI + live status                         | P9-04               | done   |
-| P9-06  | Docs & README for the AI builder                                   | P9-05               | todo   |
+| P9-06  | Docs & README for the AI builder                                   | P9-05               | done   |
 | P10-01 | Refine & versions                                                  | P9-*                | todo   |
 | P10-02 | Export / import JSON                                               | P8-05               | todo   |
 | P10-03 | Card screenshots                                                   | P8-05               | todo   |

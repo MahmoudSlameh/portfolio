@@ -115,11 +115,15 @@ and failure; no network in tests.
 
 **Acceptance**: Livewire tests for the modal, polling and retry.
 
-## P9-06 · Docs & README — `todo`
+## P9-06 · Docs & README — `done`
 
-- [ ] README "AI template builder" section switched from "in development" to
-      usage instructions; 04 (admin panel) and 10 (deployment: queue worker
-      is required, timeouts) updated.
+- [x] README "AI template builder" section switched from "in development" to
+      usage instructions (provider, worker, generate, preview/edit/activate,
+      safety, what comes next); features, configuration and roadmap rows
+      updated.
+- [x] 04 (Appearance and Site → AI) and 10 (deployment: AI env, queue worker
+      required, two worker processes, `retry_after` above the 300 s job,
+      launch checklist, troubleshooting) updated.
 
 ---
 
@@ -185,3 +189,10 @@ and failure; no network in tests.
   `local` disk (`studio-uploads/`) and are moved into the template's
   `reference` media. Tests: `tests/Feature/Studio/AppearanceGenerateTest.php`
   (9 cases).
+- 2026-09-27 — P9-06: writing the deployment notes surfaced two real
+  timeout problems, both fixed: the queues' `retry_after` defaulted to 90 s,
+  shorter than the 300 s generation job (a running job would be handed to a
+  second worker and fail as "attempted too many times") → default 360 s in
+  `config/queue.php`, guarded by `tests/Feature/Studio/QueueTimeoutTest.php`;
+  and `composer dev` ran `queue:listen` with its default 60 s process
+  timeout, which would kill local generations → `--timeout=320`.
