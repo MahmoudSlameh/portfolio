@@ -43,8 +43,8 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 > [guide](../templates/building-a-template.md)), P8 (studio templates:
 > spec, sanitiser, models, engine, Appearance editor), P9 (the AI template
 > builder), P10 (refine & versions, export/import, screenshots, eject) and
-> P11-01 (rich article editor). P11-02… (ATS CV) is planned** — design in
-> [12](../12-ai-templates.md).
+> P11 (rich article editor, ATS-friendly CV). Every planned phase is
+> done** — design in [12](../12-ai-templates.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
 > decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
@@ -132,4 +132,4 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P11-02 | CV data + three ATS-friendly CV templates                          | —                   | done   |
 | P11-03 | PDF generation                                                     | P11-02              | done   |
 | P11-04 | Panel: CV page (pick template, generate, use as resume)            | P11-03              | done   |
-| P11-05 | CV tests & docs                                                    | P11-04              | todo   |
+| P11-05 | CV tests & docs                                                    | P11-04              | done   |

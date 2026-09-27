@@ -154,12 +154,15 @@ migration, the Markdown import and the form.
       "Download CV" link serves it; the page shows which file the site
       currently offers.
 
-## P11-05 · Tests & docs — `todo`
+## P11-05 · Tests & docs — `done`
 
-- [ ] Tests: each template renders with demo data and with an empty
-      database; the PDF text (parsed in tests) contains the name, every
-      section heading and every role, in reading order.
-- [ ] Docs: a "CV" section in 04 (admin panel) and the README.
+- [x] Tests: each template renders with demo data and with an empty
+      database (`CvTemplatesTest`); the PDF text (parsed with
+      `smalot/pdfparser`) contains the name, every section heading and every
+      role, in reading order (`CvPdfTest`); the panel page, preview route,
+      download and "Use as my resume" (`CvPageTest`).
+- [x] Docs: "Profile · CV" in 04 (admin panel) and an "ATS-friendly CV"
+      section in the README.
 
 ---
 
@@ -189,3 +192,8 @@ migration, the Markdown import and the form.
   `CvTemplate` enum, so `CvOptions::fromArray()` accepts it; the iframe is
   a Blade view (inline styles on `Text` HTML were dropped). Tests:
   `tests/Feature/Cv/CvPageTest.php` (4 cases).
+- 2026-09-27 — README rewritten for GitHub visitors (owner request): pitch,
+  highlights, screenshots taken from the running app with the demo content
+  (`docs/images/*.webp`: hero collage, light/dark, AI dialog, studio
+  designs, CV page, dashboard, editor), quick start, and the deeper sections
+  kept short with folded lists.
