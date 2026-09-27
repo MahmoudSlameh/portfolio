@@ -67,11 +67,30 @@ resolution order tested.
       starting point; `specFrom()` for valid, fenced and broken output; a
       faked prompt with an image attachment returns a valid spec.
 
-## P9-04 · `GenerateStudioTemplate` job + repair loop — `todo`
+## P9-04 · `GenerateStudioTemplate` job + repair loop — `done`
 
-- [ ] Status/progress/current_step updates, validation + sanitising, up to 2
-      repair turns, version #1 saved, failure stored, database notification.
-- [ ] Daily limit and usage (tokens) recorded.
+- [x] `studio_generations` table + `StudioGeneration` model: one row per
+      attempt (template, status, provider, model, turns, input/output
+      tokens, error). Failed attempts cost tokens too, so the **daily
+      limit** counts these rows, not versions.
+- [x] `App\Support\Studio\StudioGenerator::start()` (template, prompt,
+      starting point): refuses (`GenerationRefused`, readable message) when AI
+      is not ready or today's limit is reached; otherwise records the
+      attempt, sets the template to `queued` ("Waiting for a worker…"),
+      `source = ai`, and dispatches the job. `remainingToday()` for the UI.
+- [x] `App\Jobs\GenerateStudioTemplate` (1 try, 300 s, `failOnTimeout`):
+      5 % Starting → 15 % Reading your references (the template's
+      `reference` media → `Image::fromStorage`) → 30 % Designing →
+      70 % Checking → up to **2 repair turns** (80 %, 90 %; the conversation
+      so far + `TemplateDesigner::repairPrompt()`) → 95 % Saving →
+      `addVersion()` with prompt, provider, model and summed tokens →
+      `activate()` → `ready` 100 %. The summary becomes the description
+      when there is none.
+- [x] Failure (exception, still invalid after 2 repairs, AI not ready,
+      timeout via `failed()`): template `failed` with a readable error
+      (key redacted, ≤ 500 characters), attempt `failed`, reported.
+- [x] Filament database notification to the panel users on success and on
+      failure.
 
 **Acceptance**: tests with the SDK's fakes for success, repair-then-success
 and failure; no network in tests.
@@ -135,3 +154,14 @@ and failure; no network in tests.
   loop handles it like any other error. Tests:
   `tests/Feature/Studio/TemplateDesignerTest.php` (12 cases; SDK fake with
   an image attachment, no network).
+- 2026-09-27 — P9-04: `StudioGeneration`, `StudioGenerator`,
+  `GenerationRefused`, `GenerateStudioTemplate`. The saved spec's `name` is
+  always the template name (the model's is ignored). Broken JSON goes
+  through the repair loop like a validation error. CSS the sanitiser
+  removes does not trigger a repair: the version is saved with the notes
+  (cheaper; the owner sees them on Edit). Notifications are Filament
+  database notifications (queued, so they need the worker too) with a
+  Preview link, or "Open Appearance" on failure. Tests:
+  `tests/Feature/Studio/GenerateStudioTemplateTest.php` (14 cases, SDK
+  fakes, no network). Not run against a real provider (no key in this
+  environment).

@@ -41,6 +41,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, StudioTemplateVersion> $versions
+ * @property-read Collection<int, StudioGeneration> $generations
  * @property-read StudioTemplateVersion|null $activeVersion
  */
 #[Fillable(['name', 'description', 'source', 'status', 'progress', 'current_step', 'error'])]
@@ -85,6 +86,16 @@ class StudioTemplate extends Model implements HasMedia
         // Reference images for AI generation stay private.
         $this->addMediaCollection('reference')->useDisk('local')->acceptsMimeTypes(MimeTypes::RASTER);
         $this->addMediaCollection('screenshot')->singleFile()->acceptsMimeTypes(MimeTypes::RASTER);
+    }
+
+    /**
+     * AI generation attempts for this template, newest first.
+     *
+     * @return HasMany<StudioGeneration, $this>
+     */
+    public function generations(): HasMany
+    {
+        return $this->hasMany(StudioGeneration::class)->latest('id');
     }
 
     /**
