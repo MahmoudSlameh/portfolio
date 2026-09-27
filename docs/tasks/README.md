@@ -123,7 +123,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P9-04  | `GenerateStudioTemplate` job + repair loop                         | P9-02, P9-03        | done   |
 | P9-05  | Appearance: Generate with AI + live status                         | P9-04               | done   |
 | P9-06  | Docs & README for the AI builder                                   | P9-05               | done   |
-| P10-01 | Refine & versions                                                  | P9-*                | todo   |
+| P10-01 | Refine & versions                                                  | P9-*                | done   |
 | P10-02 | Export / import JSON                                               | P8-05               | todo   |
 | P10-03 | Card screenshots                                                   | P8-05               | todo   |
 | P10-04 | `php artisan template:eject`                                       | P8-04, P7-04        | todo   |

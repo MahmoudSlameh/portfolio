@@ -248,8 +248,8 @@ As built:
   dropped), numbers the version and, for the first version, activates it
   and marks the template `ready`. Later versions (refinements) are
   activated with `activate($version)`, which also rolls back.
-- The registry lists **ready** studio templates (status `ready` with an
-  active version) after the code templates, as `TemplateDefinition`s with id
+- The registry lists studio templates **that have an active version**
+  (whatever a generation is doing, since P10-01) after the code templates, as `TemplateDefinition`s with id
   `studio:<ulid>`, namespace `studio` (Inertia pages and CSS scope), the
   spec's fonts preloaded and the `screenshot` media as the card image.
   Studio templates are never written to the template cache; saving or
@@ -432,6 +432,26 @@ and **Studio templates** (every `StudioTemplate` row, newest first).
   token usage.
 - The studio section has `wire:poll.3s` only while a card is queued or
   generating.
+
+### Refine & versions (as built, P10-01)
+
+- **Refine** (card action on a template with a version): "What should
+  change?" → `StudioGenerator::refine()`, a normal generation (daily limit,
+  progress, repair turns, Retry) whose brief says "Revise …" and carries
+  the current spec. The new version's parent is the version it started
+  from.
+- A refine of the **live** template saves the new version **without
+  activating it** (visitors keep the current one; the notification links
+  to a preview of the new version). Otherwise the new version becomes the
+  template's active version.
+- **Version preview**: `/?template=studio:<ulid>&version=<n>` (admin only;
+  unknown numbers are ignored), kept in the session like a template preview
+  and shown in the preview bar ("version n").
+- **Versions** page (`/admin/appearance/{template}/versions`, card action
+  "Versions (n)"): newest first, active badge, how each version was made
+  (created, edited from vN, generated with AI from vN + prompt), model and
+  tokens, removed CSS, with **Preview** and **Activate** (roll back or
+  forward; warns when the template is live).
 
 ## 9. Testing
 

@@ -23,6 +23,8 @@ export interface SharedProps {
         /** Display name from the template manifest. */
         name: string;
         isPreview: boolean;
+        /** The studio version being previewed (`?version=`), when it is not the active one. */
+        version: number | null;
     };
     /** The rendered studio template's spec; null for code templates. */
     studio: { spec: TemplateSpec } | null;

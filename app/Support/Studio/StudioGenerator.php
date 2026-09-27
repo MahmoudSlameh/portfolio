@@ -51,6 +51,20 @@ final class StudioGenerator
         return $generation;
     }
 
+    /**
+     * Ask for changes to a template: a generation that starts from its active version.
+     *
+     * @throws GenerationRefused
+     */
+    public function refine(StudioTemplate $template, string $instruction): StudioGeneration
+    {
+        if ($template->active_version_id === null) {
+            throw new GenerationRefused('Only a template with a version can be refined.');
+        }
+
+        return $this->start($template, $instruction, $template->templateId());
+    }
+
     public function remainingToday(): int
     {
         return max(0, AiSettings::current()->dailyLimit - StudioGeneration::query()->today()->count());

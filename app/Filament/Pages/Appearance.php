@@ -151,7 +151,9 @@ class Appearance extends Page
                 $definition !== null ? $this->activateAction($definition) : null,
                 $definition !== null ? $this->previewAction($definition) : null,
                 $template->status === StudioStatus::Failed && $template->source === StudioSource::Ai ? $this->retryAction($template, $key) : null,
+                $version instanceof StudioTemplateVersion && ! $template->status->isWorking() ? $this->refineAction($template, $key) : null,
                 $template->status->isWorking() ? null : $this->editStudioAction($template, $key),
+                $version instanceof StudioTemplateVersion ? $this->versionsAction($template, $key) : null,
                 $version instanceof StudioTemplateVersion ? $this->duplicateStudioAction($template, $version, $key) : null,
                 $this->deleteStudioAction($template, $key, $isActive),
             ])));
@@ -269,6 +271,58 @@ class Appearance extends Page
                 Notification::make()->success()->title("Generating {$template->name}…")->body('You can leave this page; you will be notified when it is ready.')->send();
                 $this->refreshCards();
             });
+    }
+
+    /**
+     * Ask the AI for changes; the result is a new version (never shown to visitors until activated
+     * when the template is live).
+     */
+    private function refineAction(StudioTemplate $template, string $key): Action
+    {
+        $settings = AiSettings::current();
+
+        return Action::make("refine_{$key}")
+            ->label('Refine')
+            ->icon(Heroicon::OutlinedSparkles)
+            ->color('gray')
+            ->visible(fn (): bool => SiteSetting::current()->ai_enabled)
+            ->disabled(! $settings->enabled())
+            ->tooltip($settings->enabled() ? null : $settings->problem)
+            ->modalHeading("Refine {$template->name}")
+            ->modalDescription(fn (): string => ($template->isLive()
+                ? 'The result is saved as a new version; visitors keep seeing the current one until you activate it on the Versions page.'
+                : 'The result becomes the new active version; older versions stay available on the Versions page.')
+                .' '.app(StudioGenerator::class)->remainingToday()." of {$settings->dailyLimit} generations left today.")
+            ->modalSubmitActionLabel('Refine')
+            ->schema([
+                Textarea::make('instruction')
+                    ->label('What should change?')
+                    ->placeholder('Make it darker, use a serif display font and show projects as a list.')
+                    ->rows(4)
+                    ->maxLength(2000)
+                    ->required(),
+            ])
+            ->action(function (array $data) use ($template): void {
+                try {
+                    app(StudioGenerator::class)->refine($template, (string) $data['instruction']);
+                } catch (GenerationRefused $exception) {
+                    Notification::make()->warning()->title('Not started')->body($exception->getMessage())->send();
+
+                    return;
+                }
+
+                Notification::make()->success()->title("Refining {$template->name}…")->body('You will be notified when the new version is ready.')->send();
+                $this->refreshCards();
+            });
+    }
+
+    private function versionsAction(StudioTemplate $template, string $key): Action
+    {
+        return Action::make("versions_{$key}")
+            ->label(fn (): string => 'Versions ('.$template->versions()->count().')')
+            ->icon(Heroicon::OutlinedClock)
+            ->color('gray')
+            ->url(StudioTemplateVersions::getUrl(['template' => $template->id]));
     }
 
     /**

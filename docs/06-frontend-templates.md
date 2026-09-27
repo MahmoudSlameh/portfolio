@@ -152,6 +152,11 @@ active template and `?template=` is ignored for them.
    `?template=reset` clears it.
 2. If a preview is stored in session and the user is still an admin → use it.
 3. Else → `SiteSetting::current()->active_template`.
+4. Studio templates only: `&version=<n>` with `?template=studio:<ulid>`
+   previews that version instead of the active one (session
+   `template.preview_version`, same admin rule; an unknown number is
+   ignored). It counts as a preview even for the live template, and the bar
+   says "version n" (shared prop `template.version`).
 
 While previewing: shared prop `template.isPreview = true` → render a small
 floating "Previewing _Terminal_ · Exit preview · Activate" bar (admin only),

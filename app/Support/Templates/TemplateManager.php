@@ -14,10 +14,13 @@ use Illuminate\Http\Request;
  *
  * Visitors always get the template activated in the panel. The signed-in owner can preview another
  * one with `?template=<id>` (kept in the session until `?template=reset`); see docs/06 § Preview.
+ * For a studio template, `&version=<n>` previews one of its versions instead of the active one.
  */
 final class TemplateManager
 {
     private const SESSION_KEY = 'template.preview';
+
+    private const SESSION_VERSION_KEY = 'template.preview_version';
 
     /** Stateless override used by the developer gallery (/dev/templates) when it is enabled. */
     public const GALLERY_QUERY = '_template';
@@ -35,6 +38,13 @@ final class TemplateManager
      * @var array<int, StudioTemplate|false>
      */
     private array $studio = [];
+
+    /**
+     * Studio version rendered by each request (false: none).
+     *
+     * @var array<int, StudioTemplateVersion|false>
+     */
+    private array $versions = [];
 
     public function __construct(private readonly TemplateRegistry $registry) {}
 
@@ -71,15 +81,47 @@ final class TemplateManager
     }
 
     /**
-     * The spec of the rendered studio template's active version.
+     * The studio version this request renders: the one being previewed (`&version=`), else the active one.
+     */
+    public function studioVersion(): ?StudioTemplateVersion
+    {
+        $key = spl_object_id($this->request());
+
+        if (! array_key_exists($key, $this->versions)) {
+            $template = $this->studio();
+            $number = $this->previewVersion();
+            $version = ($number !== null ? $template?->versions()->where('number', $number)->first() : null)
+                ?? $template?->getRelationValue('activeVersion');
+
+            $this->versions[$key] = $version instanceof StudioTemplateVersion ? $version : false;
+        }
+
+        return $this->versions[$key] ?: null;
+    }
+
+    /**
+     * The spec of the rendered studio version.
      *
      * @return array<string, mixed>|null
      */
     public function studioSpec(): ?array
     {
-        $version = $this->studio()?->getRelationValue('activeVersion');
+        return $this->studioVersion()?->spec;
+    }
 
-        return $version instanceof StudioTemplateVersion ? $version->spec : null;
+    /**
+     * The version number the owner is previewing (`?template=studio:<ulid>&version=<n>`), if any.
+     */
+    public function previewVersion(): ?int
+    {
+        if ($this->isGalleryRender() || ! $this->current()->isStudio() || ! $this->canPreview()) {
+            return null;
+        }
+
+        $request = $this->request();
+        $number = $request->hasSession() ? $request->session()->get(self::SESSION_VERSION_KEY) : null;
+
+        return is_int($number) && $number > 0 ? $number : null;
     }
 
     /**
@@ -106,7 +148,7 @@ final class TemplateManager
 
     public function isPreview(): bool
     {
-        return $this->current()->id !== $this->active()->id;
+        return $this->current()->id !== $this->active()->id || $this->previewVersion() !== null;
     }
 
     /**
@@ -144,6 +186,18 @@ final class TemplateManager
             $requested !== null && $this->canPreview()
                 ? $session->put(self::SESSION_KEY, $requested->id)
                 : $session->forget(self::SESSION_KEY);
+
+            $version = filter_var($request->query('version'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            $exists = $requested !== null && $requested->isStudio() && $version !== false
+                && StudioTemplateVersion::query()
+                    ->where('studio_template_id', substr($requested->id, strlen(StudioTemplate::ID_PREFIX)))
+                    ->where('number', $version)
+                    ->exists();
+
+            $exists && $this->canPreview()
+                ? $session->put(self::SESSION_VERSION_KEY, $version)
+                : $session->forget(self::SESSION_VERSION_KEY);
         }
 
         $stored = $session?->get(self::SESSION_KEY);

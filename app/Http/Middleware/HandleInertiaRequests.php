@@ -61,6 +61,8 @@ class HandleInertiaRequests extends Middleware
                 'name' => $templates->current()->label,
                 // The gallery renders templates side by side; the owner's preview bar would only get in the way.
                 'isPreview' => $templates->isPreview() && ! $templates->isGalleryRender(),
+                // A studio version other than the active one being previewed (null otherwise).
+                'version' => $templates->previewVersion(),
             ],
             'theme' => $templates->theme(),
             'flash' => fn (): array => ['success' => $request->hasSession() ? $request->session()->get('success') : null],
