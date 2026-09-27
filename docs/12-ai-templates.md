@@ -258,6 +258,11 @@ As built:
 - The example spec lives in `resources/studio/examples/neon-brutalist.json`
   (`SpecCatalogue::example()`), used by the factory's `ready()` state and the
   tests.
+- `studio_generations` (`App\Models\StudioGeneration`, _P9-04_): one row per
+  AI attempt — template, status, prompt, `start_from`, provider, model,
+  turns, input/output tokens, error. The daily limit counts today's rows,
+  so failed attempts count too. The version keeps the summed tokens of the
+  attempt that produced it.
 
 ## 5. AI generation pipeline (P9)
 
@@ -287,8 +292,13 @@ StudioTemplateVersion #1 → active_version_id → status=ready 100%
   JSON string (D31), checked by `SpecValidator`. Reference images are
   passed as attachments. When "start from" is set, the current spec (or a
   description of the code template) is included as a starting point.
+- **Start**: `App\Support\Studio\StudioGenerator::start()` refuses with a
+  readable `GenerationRefused` when AI is not ready or today's limit is
+  reached; otherwise it records the attempt, sets the template to `queued`
+  and dispatches the job.
 - **Job**: `App\Jobs\GenerateStudioTemplate` (timeout 300 s, 1 try, the
-  repair loop happens inside the job). It updates `progress`/`current_step`
+  repair loop happens inside the job; a repair turn resends the
+  conversation so far plus the validator's errors). It updates `progress`/`current_step`
   between steps. Requires the queue worker that production already runs
   ([10](10-deployment.md)).
 - **Refine** (P10): "Make it darker / use a serif display font" creates
