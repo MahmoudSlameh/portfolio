@@ -282,8 +282,14 @@ Import from `@/kit`:
 | Dates and numbers      | `formatDate`, `formatMonth`, `yearRange`, `formatNumber`, `cn`                                                                                                              |
 
 `ArticleBlockRenderers` is exhaustive: if a new block type is added to the
-panel's article builder, TypeScript points at every template that does not
-render it yet.
+article body, TypeScript points at every template that does not render it
+yet.
+
+Paragraph, quote, list item and callout text can hold inline formatting
+(`**bold**`, `*italic*`, `` `code` ``, `[text](url)`). Render it with
+`<InlineText text={block.text} classNames={{ code: '…', link: '…' }} />`,
+never as raw HTML; use `plainText(text)` where you need a string (an aria
+label, a title). Headings are always plain text.
 
 ## 9. Rules
 

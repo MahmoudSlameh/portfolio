@@ -3,13 +3,22 @@ import {
     ArticleBlocks,
     ResponsiveImage,
     type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
 } from '@/kit';
 import type { ArticleBlock } from '@/types/content';
+
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
 
 const renderers: ArticleBlockRenderers = {
     paragraph: (block, { isFirst }) => (
         <p className={isFirst ? 'mb-6 text-xl text-ink' : 'mb-5'}>
-            {block.text}
+            <InlineText text={block.text} classNames={inline} />
         </p>
     ),
     heading: (block) => (
@@ -34,7 +43,9 @@ const renderers: ArticleBlockRenderers = {
     ),
     quote: (block) => (
         <blockquote className="st-quote my-8 border-s-4 border-signal ps-5 text-xl text-ink">
-            <p>{block.text}</p>
+            <p>
+                <InlineText text={block.text} classNames={inline} />
+            </p>
             {block.cite && (
                 <footer className="mt-2 text-sm text-ink-subtle">
                     — {block.cite}
@@ -46,7 +57,7 @@ const renderers: ArticleBlockRenderers = {
         <ul className="mb-5 list-disc ps-6 marker:text-signal">
             {block.items.map((item) => (
                 <li key={item} className="mb-1.5">
-                    {item}
+                    <InlineText text={item} classNames={inline} />
                 </li>
             ))}
         </ul>
@@ -56,7 +67,9 @@ const renderers: ArticleBlockRenderers = {
             <Info aria-hidden className="mt-0.5 size-5 shrink-0 text-signal" />
             <div>
                 <p className="font-bold text-ink">{block.title}</p>
-                <p>{block.text}</p>
+                <p>
+                    <InlineText text={block.text} classNames={inline} />
+                </p>
             </div>
         </aside>
     ),

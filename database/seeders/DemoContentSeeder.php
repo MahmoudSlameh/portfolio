@@ -21,6 +21,7 @@ use App\Models\SkillCategory;
 use App\Models\Social;
 use App\Models\Testimonial;
 use App\Models\UsesGroup;
+use App\Support\Content\ArticleDocument;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -277,10 +278,10 @@ class DemoContentSeeder extends Seeder
             $model = Article::withTrashed()->updateOrCreate(['slug' => $article['slug']], [
                 'title' => $article['title'],
                 'excerpt' => $article['excerpt'],
-                'body' => array_map(fn (array $block): array => [
+                'body' => ArticleDocument::fromBuilder(array_values(array_map(fn (array $block): array => [
                     'type' => $block['type'],
                     'data' => array_diff_key($block, ['type' => true]),
-                ], $article['body']),
+                ], $article['body']))),
                 'tags' => $article['tags'],
                 'status' => ArticleStatus::Published,
                 'published_at' => $article['publishedAt'],

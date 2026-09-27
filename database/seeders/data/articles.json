@@ -10,7 +10,7 @@
         "body": [
             {
                 "type": "paragraph",
-                "text": "Every engineer who has worked near money eventually has the same realisation: a ledger is an append-only log with a very strict schema. Once you see it that way, most of the hard problems — auditing, history, reconciliation — become questions about logs, which we know how to answer."
+                "text": "Every engineer who has worked near money eventually has the same realisation: a ledger is an **append-only log** with a *very* strict schema. Once you see it that way, most of the hard problems — auditing, history, reconciliation — become questions about logs, which we know how to answer."
             },
             {
                 "type": "heading",
@@ -29,7 +29,7 @@
             },
             {
                 "type": "paragraph",
-                "text": "The same rule also lives in the database as a deferred constraint trigger. Types catch mistakes at build time; constraints catch the ones that slip through at three in the morning."
+                "text": "The same rule also lives in the database as a [deferred constraint trigger](https://www.postgresql.org/docs/current/sql-createtrigger.html). Types catch mistakes at build time; constraints catch the ones that slip through at three in the morning."
             },
             {
                 "type": "heading",

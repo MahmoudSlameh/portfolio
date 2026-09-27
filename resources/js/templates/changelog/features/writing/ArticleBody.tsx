@@ -8,6 +8,8 @@ import {
     ArticleBlocks as KitArticleBlocks,
     ResponsiveImage,
     type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
 } from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
@@ -93,15 +95,22 @@ function SectionHeading({ block }: { block: HeadingBlock }) {
     );
 }
 
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
 const renderers: ArticleBlockRenderers = {
     paragraph: (block, { isFirst }) =>
         isFirst ? (
             <p className="mb-6 font-display text-[1.625rem] leading-[1.35] text-ink md:text-[1.875rem]">
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
         ) : (
             <p className="mb-6 text-[1.0625rem] leading-[1.8] text-ink-muted md:text-[1.125rem]">
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
         ),
     heading: (block) => <SectionHeading block={block} />,
@@ -113,7 +122,7 @@ const renderers: ArticleBlockRenderers = {
                 className="absolute inset-y-6 start-0 w-1 rounded-full bg-[image:var(--gradient-brand)]"
             />
             <p className="font-display text-[1.75rem] leading-snug text-ink">
-                {block.text}
+                <InlineText text={block.text} classNames={inline} />
             </p>
             {block.cite && (
                 <footer className="mt-3 font-mono text-xs text-ink-subtle">
@@ -133,7 +142,7 @@ const renderers: ArticleBlockRenderers = {
                         aria-hidden
                         className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
                     />
-                    {item}
+                    <InlineText text={item} classNames={inline} />
                 </li>
             ))}
         </ul>
@@ -141,7 +150,9 @@ const renderers: ArticleBlockRenderers = {
     callout: (block) => (
         <aside className="my-8 border border-line bg-surface p-5 md:p-6">
             <p className="eyebrow mb-2 text-signal-ink">{block.title}</p>
-            <p className="text-[1rem] leading-relaxed text-ink">{block.text}</p>
+            <p className="text-[1rem] leading-relaxed text-ink">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
         </aside>
     ),
     image: (block) => (

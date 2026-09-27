@@ -82,7 +82,7 @@ class Project extends Model implements HasMedia
 | Project            | `cover`              | ✓       | image        | webp (responsive), og, thumb     | cards + case study (16:9) |
 | ProjectGalleryItem | `image`              | ✓       | image        | webp (responsive), thumb         | case-study gallery (4:3)  |
 | Article            | `cover`              | ✓       | image        | webp (responsive), og            | article hero + OG         |
-| Article            | `body_images`        | ✗       | image        | webp (responsive)                | image blocks              |
+| Article            | `body_images`        | ✗       | image        | webp (responsive)                | images in the rich editor |
 | Book               | `cover_image`        | ✓       | image        | webp 480, thumb                  | real book cover           |
 | UsesItem           | `image`              | ✓       | image        | webp 480                         | optional                  |
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Support\Content\ArticleDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,14 +22,14 @@ class ArticleFactory extends Factory
         return [
             'title' => fake()->unique()->sentence(5),
             'excerpt' => fake()->sentence(20),
-            'body' => [
+            'body' => ArticleDocument::fromBuilder([
                 ['type' => 'paragraph', 'data' => ['text' => fake()->paragraph()]],
                 ['type' => 'heading', 'data' => ['text' => 'Start with invariants', 'id' => 'start-with-invariants']],
                 ['type' => 'code', 'data' => ['language' => 'ts', 'filename' => 'journal.ts', 'code' => 'const total = 0;']],
                 ['type' => 'list', 'data' => ['items' => [fake()->sentence(), fake()->sentence()]]],
                 ['type' => 'callout', 'data' => ['title' => 'Note', 'text' => fake()->sentence()]],
                 ['type' => 'quote', 'data' => ['text' => fake()->sentence(), 'cite' => fake()->name()]],
-            ],
+            ]),
             'tags' => fake()->randomElements(['architecture', 'payments', 'postgres', 'react', 'laravel'], 2),
             'status' => ArticleStatus::Published,
             'published_at' => fake()->dateTimeBetween('-2 years', '-1 day'),

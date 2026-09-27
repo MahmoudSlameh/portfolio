@@ -205,15 +205,18 @@ Actions: view on site, replicate, delete/restore.
 
 ## Articles (`ArticleResource`)
 
-- Main: title → slug, excerpt, **body = `Builder`** with blocks (icons +
-  labels): Paragraph (Textarea), Heading (text; id auto-slug, hidden), Code
-  (language Select, filename, `CodeEditor` if available else monospace
-  Textarea), Quote, List (Repeater simple), Callout, Image (Select from
-  `body_images` with thumbnails, alt, caption). `->collapsible()->cloneable()->blockNumbers(false)`.
+- Main: title → slug, excerpt, **body = `RichEditor`** (TipTap, stored as
+  JSON; since P11-01). Pasting from a web page, Google Docs or Word keeps
+  headings, lists, quotes, code, links, bold and italic. Toolbar: bold,
+  italic, inline code, link · H2, H3 · quote, code block, lists · image,
+  blocks · undo/redo. Custom blocks: **Callout** and **Code with file name**
+  (`App\Filament\RichContent`). Images (with alt text) can be added once the
+  article is saved. **Import Markdown** (hint action): paste Markdown, add it
+  to the end or replace the body; raw HTML is stripped.
 - Aside: status ToggleButtons (Draft / Published), published_at, tags
   (TagsInput with suggestions from existing tags), related projects
-  (multi-select), cover upload + alt, `body_images` (multiple), reading time
-  (computed placeholder), SEO section.
+  (multi-select), cover upload + alt, reading time (computed placeholder),
+  SEO section.
 - Table: title, tags badges, status badge, published_at, reading minutes.
   Tabs on list page: All / Published / Drafts (with counts).
 
