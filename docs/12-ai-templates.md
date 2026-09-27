@@ -358,9 +358,13 @@ OPENAI_API_KEY=
 GEMINI_API_KEY=
 ```
 
-At runtime the key from the panel is applied to the SDK's provider config for
-that request only (`config(['ai.providers.<name>.key' => …])` inside the job),
-then the agent is prompted with `provider:` and `model:`.
+At runtime the resolved settings are registered as an extra SDK provider,
+`ai.providers.studio` (driver, key, URL), inside the job only; the cached
+instance is forgotten (`AiManager::forgetInstance('studio')`) and the agent
+is prompted with `provider: 'studio'` and `model:` (empty = the provider's
+default model). The other defaults live in `config/studio.php` → `ai`
+(`STUDIO_AI_DAILY_LIMIT`, `STUDIO_AI_MAX_TOKENS`, `STUDIO_AI_TIMEOUT`).
+_Installed in P9-01._
 
 ## 8. The Appearance page (P9)
 

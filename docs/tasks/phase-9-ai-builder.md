@@ -6,12 +6,16 @@ progress. Design: [12 §§ 5–9](../12-ai-templates.md). Decisions: D27, D28.
 
 ---
 
-## P9-01 · Install and configure `laravel/ai` — `todo`
+## P9-01 · Install and configure `laravel/ai` — `done`
 
-- [ ] `composer require laravel/ai`, publish config/migrations; verify the
-      API against the installed version with Boost `search-docs`.
-- [ ] `.env.example` gets `STUDIO_AI_PROVIDER`, `STUDIO_AI_MODEL` and the
-      provider key names (empty).
+- [x] `composer require laravel/ai` (`^1.0`, v1.0.0 installed). Nothing is
+      published: the SDK merges its own `ai` config, and its only migration
+      (`agent_conversations`) is for conversation memory, which the builder
+      does not use. The API was checked against the installed source.
+- [x] `.env.example` gets `STUDIO_AI_PROVIDER`, `STUDIO_AI_MODEL`, the
+      optional limits and the provider key names (empty).
+- [x] `config/studio.php` → `ai`: provider, model, daily limit, max output
+      tokens, timeout, and the providers the panel offers.
 
 ## P9-02 · AI settings page (Site → AI) — `todo`
 
@@ -55,3 +59,21 @@ and failure; no network in tests.
 ---
 
 ## Notes
+
+- 2026-09-27 — P9-01: `laravel/ai` v1.0.0. What the next tasks rely on,
+  checked in the SDK source:
+    - `Agent::prompt($prompt, attachments: [...], provider:, model:, timeout:)`;
+      `provider` may be a config name, so the job registers a runtime provider
+      `ai.providers.studio` (driver + panel key + URL) and calls
+      `AiManager::forgetInstance('studio')` (instances are cached per name).
+    - An empty model uses the provider's `defaultTextModel()`; only
+      `openai-compatible` has no default (`'model' => true` in the config,
+      so P9-02 must require a model for it).
+    - Structured output: `HasStructuredOutput::schema(JsonSchema)`; the
+      response is a `StructuredAgentResponse` (array access) with `usage`
+      (`inputTokens`, `outputTokens`).
+    - Images: `Laravel\Ai\Files\Image::fromStorage($path, $disk)` /
+      `fromPath()`; fakes: `TemplateDesigner::fake([...])`,
+      `assertPrompted()`, so tests need no network.
+      Test: `tests/Feature/Studio/StudioAiConfigTest.php` (every provider the
+      panel offers resolves to an SDK text provider).
