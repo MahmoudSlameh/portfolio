@@ -119,7 +119,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P8-05  | Appearance: studio templates without AI                            | P8-04               | done   |
 | P9-01  | Install and configure `laravel/ai`                                 | P8-*                | done   |
 | P9-02  | AI settings page (Site → AI)                                       | P9-01               | done   |
-| P9-03  | `TemplateDesigner` agent                                           | P9-01               | todo   |
+| P9-03  | `TemplateDesigner` agent                                           | P9-01               | done   |
 | P9-04  | `GenerateStudioTemplate` job + repair loop                         | P9-02, P9-03        | todo   |
 | P9-05  | Appearance: Generate with AI + live status                         | P9-04               | todo   |
 | P9-06  | Docs & README for the AI builder                                   | P9-05               | todo   |

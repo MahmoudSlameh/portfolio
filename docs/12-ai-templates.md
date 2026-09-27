@@ -283,7 +283,8 @@ StudioTemplateVersion #1 → active_version_id → status=ready 100%
 ```
 
 - **Agent**: `App\Ai\Agents\TemplateDesigner` implements `Agent` and
-  `HasStructuredOutput`; its schema mirrors `studio/v1`. Reference images are
+  `HasStructuredOutput`; it returns `{spec, summary}` with the spec as a
+  JSON string (D31), checked by `SpecValidator`. Reference images are
   passed as attachments. When "start from" is set, the current spec (or a
   description of the code template) is included as a starting point.
 - **Job**: `App\Jobs\GenerateStudioTemplate` (timeout 300 s, 1 try, the
