@@ -286,8 +286,9 @@ reading books (multi-select of books, default = status reading). Shows
 - Studio card actions: Activate, Preview, **Refine** (ask the AI for
   changes), **Edit** (JSON spec in a slide-over; each save is a new
   version), **Versions** (page with preview/activate per version),
-  **Export**, Duplicate, Delete (disabled while active), **Retry** on a
-  failed AI generation. The section polls every 3 s
+  **Export**, **Refresh screenshot** (when screenshots are enabled),
+  Duplicate, Delete (disabled while active), **Retry** on a failed AI
+  generation. Cards without a screenshot show a colour/type swatch. The section polls every 3 s
   only while a generation is queued or running.
 
 ## Site · SEO & settings (singleton page `SiteSettings`)

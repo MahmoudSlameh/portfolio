@@ -125,12 +125,15 @@ final class TemplateManager
     }
 
     /**
-     * Whether this request renders a template chosen by the developer gallery (`?_template=`).
+     * Whether this request renders a template chosen with `?_template=`: by the developer gallery (when
+     * enabled), or by a signed, short-lived URL such as the one the screenshot job opens (P10-03).
      */
     public function isGalleryRender(): bool
     {
-        return config('portfolio.templates.dev_gallery') === true
-            && $this->registry->has((string) $this->request()->query(self::GALLERY_QUERY));
+        $request = $this->request();
+
+        return $this->registry->has((string) $request->query(self::GALLERY_QUERY))
+            && (config('portfolio.templates.dev_gallery') === true || RenderSignature::valid($request));
     }
 
     /**

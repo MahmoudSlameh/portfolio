@@ -58,11 +58,31 @@ tests for all of it.
 **Acceptance**: export → import round-trips the spec; invalid files are
 rejected with readable errors; unsafe CSS is removed on import.
 
-## P10-03 · Card screenshots — `todo`
+## P10-03 · Card screenshots — `done`
 
-- [ ] Optional automatic screenshot of the home page for the Appearance card
-      (headless Chromium when available; otherwise a generated
-      colour/typography swatch from the tokens).
+- [x] **Swatch** (always available, no dependency):
+      `App\Support\Studio\StudioSwatch::svg($spec)` draws the light and
+      dark palettes (bg, surface, text, muted, accent, border), a heading in
+      the display font's family, the radius, and the header/hero variants,
+      as an SVG data URI. Studio cards show it when there is no screenshot.
+- [x] **Screenshot** (optional): enabled when `STUDIO_SCREENSHOT_CHROME`
+      points at a Chrome/Chromium binary (`config/studio.php` →
+      `screenshots`). `App\Jobs\CaptureStudioScreenshot` runs the binary
+      with `--headless --screenshot` (Symfony Process, no new package) at
+      1280 × 800 on a **signed URL valid for 5 minutes** that renders that
+      template (the gallery's stateless `?_template=` override, now also
+      honoured when `RenderSignature` is valid), saves it to the template's
+      `screenshot` media and deletes the temporary file. Failures are
+      reported and leave the swatch in place.
+- [x] Captured automatically (queued) whenever a template's active version
+      changes; card action **Refresh screenshot** (when enabled) and
+      `php artisan studio:screenshots` for existing templates.
+- [x] Override renders (gallery or signed) are always `noindex` and never
+      include the analytics snippet.
+
+**Acceptance**: every studio card shows an image (swatch or screenshot);
+screenshots never need a login or leak a public preview URL; tests fake the
+process.
 
 ## P10-04 · `php artisan template:eject` — `todo`
 
@@ -94,3 +114,17 @@ rejected with readable errors; unsafe CSS is removed on import.
   card's Export downloads `mono-grid.studio.json`, and importing that file
   creates the template. Tests: `tests/Feature/Studio/StudioFileTest.php`
   (14 cases).
+- 2026-09-27 — P10-03: `StudioSwatch`, `CaptureStudioScreenshot`,
+  `RenderSignature`, `studio:screenshots`, **Refresh screenshot**.
+  Findings: (1) Laravel's relative signed URLs never validate on `/`
+  (`hasValidRelativeSignature()` compares against `'/'.path()`, i.e. `//`),
+  and absolute ones break when Chrome reaches the site on another host; so
+  the render uses its own HMAC over template id, theme and expiry. The
+  first real capture had only looked right because `APP_ENV=local` enables
+  the dev gallery; re-checked with `TEMPLATE_GALLERY=false`: unsigned
+  `?_template=` falls back to the active template, the signed capture shows
+  the studio template. (2) A job's static `queue()` method is called by the
+  dispatcher to push it, so the helper is `captureIfEnabled()`. Captures
+  take ~0.9 s each with the demo content. Tests:
+  `tests/Feature/Studio/StudioScreenshotTest.php` (10 cases, Chrome faked
+  with `Process::fake()`).

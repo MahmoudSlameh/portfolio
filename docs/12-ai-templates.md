@@ -463,6 +463,24 @@ created on error) and stores it with `addVersion()` (CSS sanitised,
 `source = import`, never activated). Guide:
 [templates/sharing-studio-templates.md](templates/sharing-studio-templates.md).
 
+### Card screenshots (as built, P10-03)
+
+- Studio cards without a screenshot show a **swatch**
+  (`App\Support\Studio\StudioSwatch`): an SVG of the light and dark
+  palettes, a heading in the display font, radius and the header/hero
+  variants.
+- With `STUDIO_SCREENSHOT_CHROME` set, `App\Jobs\CaptureStudioScreenshot`
+  (queued by `StudioTemplate::activate()`) runs headless Chrome on the home
+  page and stores the image in the `screenshot` media. Chrome is not signed
+  in, so the URL carries `App\Support\Templates\RenderSignature`: an HMAC of
+  template id, theme and expiry (5 minutes) with the app key. It is not
+  tied to the host, so `STUDIO_SCREENSHOT_URL` can point Chrome at a local
+  address. `TemplateManager::isGalleryRender()` honours `?_template=` when
+  the dev gallery is on or that signature is valid; such renders are
+  `noindex` and skip analytics.
+- Card action **Refresh screenshot** and `php artisan studio:screenshots
+[--missing]`.
+
 ## 9. Testing
 
 - Spec validator and CSS sanitiser: unit tests with valid, invalid and

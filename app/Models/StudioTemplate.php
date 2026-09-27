@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\StudioSource;
 use App\Enums\StudioStatus;
+use App\Jobs\CaptureStudioScreenshot;
 use App\Support\Media\MimeTypes;
 use App\Support\Studio\CssSanitizer;
 use App\Support\Studio\InvalidSpecException;
@@ -221,5 +222,8 @@ class StudioTemplate extends Model implements HasMedia
         ])->save();
 
         $this->setRelation('activeVersion', $version);
+
+        // The card screenshot shows the active version (P10-03).
+        CaptureStudioScreenshot::captureIfEnabled($this);
     }
 }

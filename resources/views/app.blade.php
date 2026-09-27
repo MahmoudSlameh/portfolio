@@ -58,7 +58,7 @@
             <title>{{ $settings->site_name }}</title>
         </x-inertia::head>
 
-        @if ($settings->analytics_snippet && ! $templates->isPreview())
+        @if ($settings->analytics_snippet && ! $templates->isPreview() && ! $templates->isGalleryRender())
             {!! $settings->analytics_snippet !!}
         @endif
     </head>

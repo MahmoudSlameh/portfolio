@@ -42,7 +42,7 @@ final class Seo
         $profile = Profile::current();
         $siteName = $settings->site_name ?: $profile->name;
 
-        $indexable = $settings->indexable && ! $noindex && ! $this->templates->isPreview();
+        $indexable = $settings->indexable && ! $noindex && ! $this->templates->isPreview() && ! $this->templates->isGalleryRender();
 
         return [
             'title' => match (true) {
