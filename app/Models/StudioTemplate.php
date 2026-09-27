@@ -115,14 +115,15 @@ class StudioTemplate extends Model implements HasMedia
     }
 
     /**
-     * Templates the site can render: ready, with an active version.
+     * Templates the site can render: those with an active version, whatever a generation is doing
+     * (a queued, running or failed refine keeps showing the current version).
      *
      * @param  Builder<StudioTemplate>  $query
      */
     #[Scope]
     protected function renderable(Builder $query): void
     {
-        $query->where('status', StudioStatus::Ready)->whereNotNull('active_version_id');
+        $query->whereNotNull('active_version_id');
     }
 
     /**
@@ -177,6 +178,27 @@ class StudioTemplate extends Model implements HasMedia
 
             return $version;
         });
+    }
+
+    /**
+     * The generation finished without changing which version is shown (a refine of the live template).
+     */
+    public function markReady(): void
+    {
+        $this->forceFill([
+            'status' => StudioStatus::Ready,
+            'progress' => 100,
+            'current_step' => null,
+            'error' => null,
+        ])->save();
+    }
+
+    /**
+     * Whether visitors see this template right now.
+     */
+    public function isLive(): bool
+    {
+        return SiteSetting::current()->active_template === $this->templateId();
     }
 
     /**

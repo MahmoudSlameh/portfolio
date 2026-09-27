@@ -34,8 +34,10 @@ export function PreviewBar() {
                 }}
             >
                 <span>
-                    Previewing <strong>{template.name}</strong> — visitors still
-                    see the active template.
+                    Previewing <strong>{template.name}</strong>
+                    {template.version !== null &&
+                        ` (version ${template.version})`}{' '}
+                    — visitors still see the active template.
                 </span>
                 <button
                     type="button"

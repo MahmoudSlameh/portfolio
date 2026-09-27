@@ -138,22 +138,25 @@ class GenerateStudioTemplate implements ShouldQueue
         $spec['name'] = $template->name;
         $summary = TemplateDesigner::summaryFrom($response);
 
+        $parent = $template->getRelationValue('activeVersion');
         $version = $template->addVersion($spec, [
             'prompt' => $this->generation->prompt,
-            'parent' => $template->getRelationValue('activeVersion'),
+            'parent' => $parent,
             'provider' => $settings->provider,
             'model' => $response->meta->model ?? $settings->model,
             'input_tokens' => $this->generation->input_tokens,
             'output_tokens' => $this->generation->output_tokens,
         ]);
-        $template->activate($version);
+        // Never change what visitors see: a refined version of the live template waits for the owner.
+        $waits = $parent instanceof StudioTemplateVersion && $template->isLive();
+        $waits ? $template->markReady() : $template->activate($version);
 
         if ($template->description === null && $summary !== '') {
             $template->update(['description' => Str::limit($summary, 250)]);
         }
 
         $this->generation->update(['status' => StudioStatus::Ready, 'model' => $version->model, 'error' => null]);
-        $this->notify($template, $version, $summary);
+        $this->notify($template, $version, $summary, $waits);
     }
 
     private function brief(StudioTemplate $template, TemplateRegistry $registry, int $images): TemplateBrief
@@ -170,7 +173,7 @@ class GenerateStudioTemplate implements ShouldQueue
             $startTemplate = $registry->find($startFrom);
         }
 
-        return new TemplateBrief($template->name, (string) $this->generation->prompt, $startSpec, $startTemplate, $images);
+        return new TemplateBrief($template->name, (string) $this->generation->prompt, $startSpec, $startTemplate, $images, refine: $startFrom === $template->templateId());
     }
 
     private function record(AgentResponse $response): void
@@ -208,13 +211,19 @@ class GenerateStudioTemplate implements ShouldQueue
             ->sendToDatabase(User::all());
     }
 
-    private function notify(StudioTemplate $template, StudioTemplateVersion $version, string $summary): void
+    private function notify(StudioTemplate $template, StudioTemplateVersion $version, string $summary, bool $waits): void
     {
+        $preview = url('/?template='.$template->templateId().($waits ? "&version={$version->number}" : ''));
+
         Notification::make()
             ->success()
-            ->title("{$template->name} is ready")
-            ->body($summary !== '' ? $summary : "Version {$version->number} was generated. Preview it before activating.")
-            ->actions([Action::make('preview')->label('Preview')->url(url('/?template='.$template->templateId()), shouldOpenInNewTab: true)])
+            ->title($waits ? "Version {$version->number} of {$template->name} is ready" : "{$template->name} is ready")
+            ->body(match (true) {
+                $waits => 'Visitors still see the current version. Preview this one, then activate it on the Versions page.',
+                $summary !== '' => $summary,
+                default => "Version {$version->number} was generated. Preview it before activating.",
+            })
+            ->actions([Action::make('preview')->label('Preview')->url($preview, shouldOpenInNewTab: true)])
             ->sendToDatabase(User::all());
     }
 

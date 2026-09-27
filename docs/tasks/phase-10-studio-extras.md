@@ -5,10 +5,37 @@ Design: [12](../12-ai-templates.md).
 
 ---
 
-## P10-01 · Refine & versions — `todo`
+## P10-01 · Refine & versions — `done`
 
-- [ ] **Refine** action: instruction → new version from the current one.
-- [ ] **Versions** slide-over: list, preview, activate/roll back a version.
+- [x] **Renderable = has an active version.** The registry and the manager
+      render a studio template whenever it has an active version, whatever
+      its generation status, so a queued, running or failed refine never
+      takes a live template off the site. (Before: only `status = ready`.)
+- [x] **Refine** card action (AI ready, template has a version): "What
+      should change?" → `StudioGenerator::refine()` = a generation that
+      starts from the template's own active spec (the job already sends it
+      as `<start-spec>`), with the template's reference images. Counts
+      towards the daily limit; Retry works the same.
+- [x] Result: a new version whose parent is the version it started from.
+      If the template is **live on the site**, the new version is saved but
+      **not activated** (status back to `ready`, notification: preview and
+      activate it); otherwise it becomes the template's active version.
+- [x] **Version preview**: `?template=studio:<ulid>&version=<n>` (admin
+      only), kept in the session with the template preview and cleared by
+      `?template=reset` or another `?template=`; the preview bar shows
+      "version n". Previewing another version of the live template counts
+      as a preview (noindex, preview bar).
+- [x] **Versions** page per template (`/admin/appearance/{template}/versions`,
+      not in the navigation; a card action links to it): a table of
+      versions (number, active badge, how it was made — prompt excerpt,
+      model, tokens, CSS notes — and when) with **Preview** and
+      **Activate** (confirmation; says when visitors will see it). A table
+      instead of the planned slide-over: row actions need no custom modal
+      markup.
+
+**Acceptance**: refine creates version n+1 from version n without touching
+the live site; any version can be previewed and activated (roll back);
+tests for all of it.
 
 ## P10-02 · Export / import JSON — `todo`
 
@@ -31,3 +58,17 @@ Design: [12](../12-ai-templates.md).
 ---
 
 ## Notes
+
+- 2026-09-27 — P10-01: `StudioGenerator::refine()`, `TemplateBrief(refine:)`,
+  `StudioTemplate::isLive()` / `markReady()`, version preview in
+  `TemplateManager` (`studioVersion()`, `previewVersion()`, shared prop
+  `template.version`), `StudioTemplateVersions` page, Refine and Versions
+  card actions. Found in the browser: the versions table was oldest first
+  because the `versions()` relation already orders by number (fixed with
+  `reorder()`; the test now checks the order with row text that cannot
+  match the other way). Preloaded fonts still follow the active version
+  when previewing another one (preload only; the page renders correctly).
+  The page overrides `getRelativeRouteName()` (`studio-template-versions`):
+  Filament derives route names from the slug, and a name containing
+  `{template}` breaks the generated Wayfinder helpers (TypeScript error).
+  Tests: `tests/Feature/Studio/RefineAndVersionsTest.php` (11 cases).
