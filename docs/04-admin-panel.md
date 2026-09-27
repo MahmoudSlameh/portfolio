@@ -268,6 +268,16 @@ reading books (multi-select of books, default = status reading). Shows
 - On new message: database notification to all admins + mail notification
   to `contact_recipient` (queued).
 
+## Profile · CV (custom page `CvPage`)
+
+An ATS-friendly CV generated from the rest of the panel (profile, visible
+experience, education, skills, current certifications, featured projects).
+Choose **Classic**, **Modern** or **Compact**, A4 or US Letter, whether to
+include projects and certifications, and how many recent roles; a live
+preview shows the result. **Generate PDF** downloads it (dompdf, real text);
+**Use as my resume** stores it as the profile's `resume` file behind the
+site's "Download CV" link. Also `php artisan cv:generate`.
+
 ## Site · Appearance (custom page `Appearance`)
 
 - Card grid (one card per template in the `TemplateRegistry`): screenshot

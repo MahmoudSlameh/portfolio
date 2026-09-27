@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CvPreviewController;
 use App\Http\Controllers\Dev\TemplateGalleryController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\ContactMessageController;
@@ -29,6 +30,9 @@ Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/rss.xml', [SeoController::class, 'rss'])->name('rss');
 
 Route::post('/contact', [ContactMessageController::class, 'store'])->middleware('throttle:contact')->name('contact.store');
+
+// Live preview of the CV for the panel's CV page (404 unless signed in to the panel).
+Route::get('/cv/preview', CvPreviewController::class)->name('cv.preview');
 
 // Developer gallery; 404 unless portfolio.templates.dev_gallery is on (local by default).
 Route::get('/dev/templates', TemplateGalleryController::class)->name('dev.templates');

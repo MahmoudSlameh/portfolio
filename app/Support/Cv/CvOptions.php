@@ -26,10 +26,12 @@ final readonly class CvOptions
      */
     public static function fromArray(array $data): self
     {
+        $template = $data['template'] ?? null;
         $maxRoles = filter_var($data['max_roles'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
         return new self(
-            template: CvTemplate::tryFrom((string) ($data['template'] ?? '')) ?? CvTemplate::Classic,
+            // Form state may hold the enum itself (Filament casts enum options).
+            template: $template instanceof CvTemplate ? $template : (CvTemplate::tryFrom(is_string($template) ? $template : '') ?? CvTemplate::Classic),
             paper: ($data['paper'] ?? 'a4') === 'letter' ? 'letter' : 'a4',
             includeProjects: (bool) ($data['include_projects'] ?? true),
             includeCertifications: (bool) ($data['include_certifications'] ?? true),

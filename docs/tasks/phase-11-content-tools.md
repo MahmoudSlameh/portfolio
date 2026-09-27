@@ -141,20 +141,28 @@ migration, the Markdown import and the form.
 [--no-certifications] [--output=]` (default
       `storage/app/private/cv/<name>-cv.pdf`).
 
-## P11-04 · Panel: CV page — `todo`
+## P11-04 · Panel: CV page — `done`
 
-- [ ] **Profile → CV** page: pick a template (cards with thumbnails),
-      options (paper size, include projects, max roles), **Generate PDF**
-      (download).
-- [ ] **Use as my resume** action: stores the PDF in the profile's `resume`
-      media collection, so the site's "Download CV" link serves it.
+- [x] **Profile → CV** page (`App\Filament\Pages\CvPage`): template as
+      radio cards with descriptions, paper (A4 / US Letter), include
+      projects, include certifications, most recent roles; a **live
+      preview** of the real CV (iframe of `/cv/preview`, updated as the
+      options change) instead of static thumbnails; **Generate PDF**
+      (download), **Open preview** (new tab).
+- [x] **Use as my resume**: stores the PDF in the profile's `resume` media
+      (replacing the old file, confirmation says so), so the site's
+      "Download CV" link serves it; the page shows which file the site
+      currently offers.
 
-## P11-05 · Tests & docs — `todo`
+## P11-05 · Tests & docs — `done`
 
-- [ ] Tests: each template renders with demo data and with an empty
-      database; the PDF text (parsed in tests) contains the name, every
-      section heading and every role, in reading order.
-- [ ] Docs: a "CV" section in 04 (admin panel) and the README.
+- [x] Tests: each template renders with demo data and with an empty
+      database (`CvTemplatesTest`); the PDF text (parsed with
+      `smalot/pdfparser`) contains the name, every section heading and every
+      role, in reading order (`CvPdfTest`); the panel page, preview route,
+      download and "Use as my resume" (`CvPageTest`).
+- [x] Docs: "Profile · CV" in 04 (admin panel) and an "ATS-friendly CV"
+      section in the README.
 
 ---
 
@@ -175,3 +183,17 @@ migration, the Markdown import and the form.
   the demo content through `seedCvDemo()` (tests/Pest.php), which fakes the
   public disk and the queue: with the sync queue every demo image ran its
   conversions, and the CV tests took 160 s instead of 11 s.
+- 2026-09-27 — P11-04: `CvPage`, `CvPreviewController` (`/cv/preview`, 404
+  unless the user can open the panel, `noindex`, `no-store`), preview mode
+  in the CV layout (paper-like width and padding on screen; the PDF keeps
+  its `@page` margins, and `@media screen` cannot be used because dompdf
+  renders as screen). Found in the browser: the form needs
+  `EmbeddedSchema::make('form')` in `content()`; the Radio state is the
+  `CvTemplate` enum, so `CvOptions::fromArray()` accepts it; the iframe is
+  a Blade view (inline styles on `Text` HTML were dropped). Tests:
+  `tests/Feature/Cv/CvPageTest.php` (4 cases).
+- 2026-09-27 — README rewritten for GitHub visitors (owner request): pitch,
+  highlights, screenshots taken from the running app with the demo content
+  (`docs/images/*.webp`: hero collage, light/dark, AI dialog, studio
+  designs, CV page, dashboard, editor), quick start, and the deeper sections
+  kept short with folded lists.
