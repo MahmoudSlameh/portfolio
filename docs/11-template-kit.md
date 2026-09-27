@@ -96,6 +96,23 @@ resources/js/styles/main.css        # @import of the new stylesheet, after the s
 The Inertia wrappers are thin (`SeoHead` + page component +
 `withTemplateLayout(Layout)`) and rarely need editing.
 
+#### From a studio template — _built in P10-04_
+
+```bash
+php artisan template:eject <studio template> <id> [--name=] [--author=] [--no-format]
+```
+
+`App\Support\Templates\TemplateEjector` starts a code template from a
+studio template (by `studio:<ulid>`, ulid or exact name) instead of
+`minimal`: it copies the studio engine (`resources/js/templates/studio`)
+and its nine pages, renamed like `make:template` (same id checks), freezes
+the active spec in `frozenSpec.ts` (typed `TemplateSpec`) and points
+`useSpec.ts` at it instead of the shared `studio` prop, appends the tokens
+and the spec's sanitised CSS to `styles.css`, and writes the manifest (fonts
+from the spec), a README, the stylesheet import and a screenshot (the
+studio screenshot, or the swatch as SVG). Checked: an ejected template
+renders pixel-identical to its studio original on every page.
+
 ### 3. Shared building blocks (`resources/js/kit`) — _built in P7-02_
 
 Templates own **how things look**; the kit owns **how things work**. Import

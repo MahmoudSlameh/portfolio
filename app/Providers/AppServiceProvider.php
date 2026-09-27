@@ -25,6 +25,7 @@ use App\Models\UsesGroup;
 use App\Models\UsesItem;
 use App\Support\Seo\Seo;
 use App\Support\Templates\TemplateDefinition;
+use App\Support\Templates\TemplateEjector;
 use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
 use App\Support\Templates\TemplateScaffolder;
@@ -66,6 +67,13 @@ class AppServiceProvider extends ServiceProvider
             templatesPath: config('portfolio.templates.path'),
             pagesPath: config('portfolio.templates.pages_path'),
             stylesheet: config('portfolio.templates.stylesheet'),
+            screenshotsPath: config('portfolio.templates.screenshots_path'),
+        ));
+        $this->app->bind(TemplateEjector::class, fn (): TemplateEjector => new TemplateEjector(
+            files: $this->app->make(Filesystem::class),
+            scaffolder: $this->app->make(TemplateScaffolder::class),
+            templatesPath: config('portfolio.templates.path'),
+            pagesPath: config('portfolio.templates.pages_path'),
             screenshotsPath: config('portfolio.templates.screenshots_path'),
         ));
         $this->app->scoped(TemplateManager::class);

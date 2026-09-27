@@ -1,6 +1,6 @@
 # 12 · Studio templates & the AI template builder
 
-> Status: **P8 and P9 built** (studio templates and the AI builder); **P10 planned** (phases [P8](tasks/phase-8-studio-engine.md),
+> Status: **P8–P10 built** (studio templates, the AI builder, refine/versions, export/import, screenshots, eject) (phases [P8](tasks/phase-8-studio-engine.md),
 > [P9](tasks/phase-9-ai-builder.md), [P10](tasks/phase-10-studio-extras.md)).
 > Decisions: D25–D31 in [09](09-decisions.md).
 
@@ -480,6 +480,14 @@ created on error) and stores it with `addVersion()` (CSS sanitised,
   `noindex` and skip analytics.
 - Card action **Refresh screenshot** and `php artisan studio:screenshots
 [--missing]`.
+
+### Eject (as built, P10-04)
+
+`php artisan template:eject <studio template> <id>` turns a studio template
+into a code template: a renamed copy of the engine that renders the active
+spec frozen in `frozenSpec.ts`, with the tokens and CSS in its `styles.css`
+(details in [11 § 2](11-template-kit.md#2-scaffold-command--built-in-p7-04)).
+The studio template is left as it was.
 
 ## 9. Testing
 

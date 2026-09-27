@@ -84,11 +84,33 @@ rejected with readable errors; unsafe CSS is removed on import.
 screenshots never need a login or leak a public preview URL; tests fake the
 process.
 
-## P10-04 · `php artisan template:eject` — `todo`
+## P10-04 · `php artisan template:eject` — `done`
 
-- [ ] Turns a studio template into a code template (`template.json`, layout,
-      pages composed of the chosen sections, tokens → `styles.css`) for
-      developers to continue in TSX.
+`php artisan template:eject <studio template> <new-id> [--name=] [--author=] [--no-format]`
+(`<studio template>`: `studio:<ulid>`, the ulid or the exact name).
+
+- [x] `App\Support\Templates\TemplateEjector` copies the whole studio
+      engine (`resources/js/templates/studio`) and its nine Inertia pages to
+      `<new-id>`, renamed like `make:template` does (import paths,
+      `[data-template]` scope, `StudioLayout` → `<Id>Layout`). The copy is
+      plain TSX the developer owns: sections, variants and markup can all
+      change.
+- [x] The active spec is frozen into `frozenSpec.ts`
+      (`export const spec: TemplateSpec = {…}`, type-checked) and the copied
+      `useSpec.ts` reads it instead of the shared `studio` prop.
+- [x] Tokens and the spec's (already sanitised) CSS are written to the
+      template's `styles.css` (`StudioStyles::render()`, rescoped), after
+      the engine's base styles.
+- [x] `template.json` (fonts to preload from the spec), a README with next
+      steps, the stylesheet `@import`, and a screenshot: the studio
+      template's screenshot when it has one, else its swatch as SVG.
+- [x] Id checks shared with `make:template` (format, reserved, taken). The
+      studio template itself is untouched; the new code template can be
+      activated like any other.
+
+**Acceptance**: an ejected template type-checks, builds and renders every
+page like the studio template it came from (checked in the browser);
+tests run against a temporary copy of the engine.
 
 ---
 
@@ -128,3 +150,13 @@ process.
   take ~0.9 s each with the demo content. Tests:
   `tests/Feature/Studio/StudioScreenshotTest.php` (10 cases, Chrome faked
   with `Process::fake()`).
+- 2026-09-27 — P10-04: `TemplateEjector`, `template:eject`;
+  `TemplateScaffolder::assertNewId()` / `importStylesheet()` are now shared.
+  The frozen spec is a TypeScript module rather than `spec.json`
+  (`resolveJsonModule` is off, and a typed constant is checked by `tsc`).
+  Checked for real: ejecting "Neon Brutalist" as `neon-eject` type-checked,
+  passed lint and `npm run build`, the template test matrix picked it up
+  (428 tests green), and all 7 pages rendered pixel-identical to the studio
+  original in Chromium; the demo template was then removed. Tests:
+  `tests/Feature/TemplateEjectCommandTest.php` (8 cases, temporary copy of
+  the engine).

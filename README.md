@@ -128,9 +128,16 @@ internet. One built-in React engine renders any spec, so generated templates
 keep SSR and SEO, need no rebuild and survive deploys. Details:
 [docs/12-ai-templates.md](docs/12-ai-templates.md).
 
-Next ([P10](docs/tasks/phase-10-studio-extras.md)): refine a template by
-asking for changes, browse and roll back versions, export/import templates
-as JSON, card screenshots, and ejecting a template into React code.
+**5. Keep iterating.** **Refine** asks the AI for changes and saves a new
+version (the live template keeps showing the current one until you
+activate the new version); **Versions** previews and rolls back any version;
+**Export**/**Import** shares templates as `.studio.json` files
+([guide](docs/templates/sharing-studio-templates.md)). With Chromium on the
+server, cards show real screenshots; otherwise a colour swatch.
+
+**Graduate to code.** `php artisan template:eject "Night Shift" night-shift`
+turns a studio template into a regular code template: a copy of the studio
+engine with the design frozen in `frozenSpec.ts`, ready to edit in TSX.
 
 ## Tech stack
 
@@ -259,7 +266,7 @@ live status.
 | P7    | Done    | Template kit: registry, shared hooks, `make:template`, starter template, guide        |
 | P8    | Done    | Studio engine: templates stored as a JSON spec and rendered by one React engine       |
 | P9    | Done    | AI template builder with the Laravel AI SDK                                           |
-| P10   | Planned | Refine & versions, export/import, eject to code                                       |
+| P10   | Done    | Refine & versions, export/import, card screenshots, eject to code                     |
 | P11   | Started | Paste-friendly article editor (done); ATS-friendly CV generated as PDF from the panel |
 
 ## Contributing
