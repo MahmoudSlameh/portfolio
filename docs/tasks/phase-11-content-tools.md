@@ -100,22 +100,35 @@ links, bold/italic, quotes and code; all templates render it; existing
 articles render the same as before; tests cover the converter both ways, the
 migration, the Markdown import and the form.
 
-## P11-02 · CV data and three ATS-friendly CV templates — `todo`
+## P11-02 · CV data and three ATS-friendly CV templates — `done`
 
-- [ ] `App\Support\Cv\CvData` built from the panel: profile (name, role,
-      summary, location, email, phone, links), experience (role, company,
-      period, work mode, summary, achievements, stack), education (degree,
-      field, institution, period, grade, details), skills by category,
-      certifications, selected projects.
-- [ ] Three Blade templates in `resources/views/cv/`: **Classic** (serif
-      headings, single column), **Modern** (sans, accent colour rule),
-      **Compact** (dense, fits two pages).
-- [ ] ATS rules for all three: single column, standard section headings
-      (Summary, Experience, Education, Skills, Certifications, Projects),
-      real selectable text (no text in images, no tables or text boxes for
-      layout, no icons carrying meaning), standard fonts, dates as
-      `MMM YYYY`, contact details in the body (not a header/footer),
-      A4 or Letter.
+- [x] `App\Support\Cv\CvData::build(CvOptions)`: everything a CV shows, as
+      plain data, read with the **same visibility and ordering as the
+      site**: profile (name, role, summary — `summary`, else `headline`,
+      location, email, phone, website = `APP_URL`, visible socials as plain
+      `host/path` text), experience (newest first: role, organization,
+      location or work mode, `MMM YYYY – MMM YYYY | Present`, summary,
+      highlights, stack), education (current first, then newest: degree,
+      field, institution, location, dates, grade, description,
+      achievements), skills by category, certifications (newest first,
+      expired ones left out), selected projects (featured + published:
+      title, year, one line, stack, URL).
+- [x] `CvOptions`: template, paper (`a4` | `letter`), include projects,
+      max roles (older roles dropped), include certifications.
+- [x] `App\Enums\CvTemplate` (Classic, Modern, Compact; label,
+      description) and `App\Support\Cv\CvRenderer::html()`.
+      `resources/views/cv/{classic,modern,compact}.blade.php` share
+      `cv/partials/body.blade.php` (the sections, one order and heading set)
+      and differ in styles: **Classic** serif, centred header, rules;
+      **Modern** sans, accent-coloured headings and name; **Compact** sans,
+      smaller type, skills inline, tighter spacing.
+- [x] ATS rules for all three: single column; the section headings
+      Summary, Experience, Education, Skills, Certifications, Projects;
+      real text only (no images, icons or text boxes; no layout tables; no
+      flex/grid either, so the pure-PHP PDF engine renders them); standard
+      font stacks (DejaVu/Helvetica/Times); dates `MMM YYYY` on their own
+      line after the role, so extraction keeps the reading order; contact
+      details in the body; A4 or Letter; empty sections omitted.
 
 ## P11-03 · PDF generation — `todo`
 
@@ -142,3 +155,10 @@ migration, the Markdown import and the form.
 ---
 
 ## Notes
+
+- 2026-09-27 — P11-02: `CvData`, `CvOptions`, `CvRenderer`, `CvTemplate`,
+  `resources/views/cv/{layout,classic,modern,compact}.blade.php` +
+  `partials/body.blade.php`. The RSS and Email socials are left out of the
+  contact links (the email is already listed). Checked in Chromium at A4
+  with the demo content: all three read top to bottom in one column. Tests:
+  `tests/Feature/Cv/CvTemplatesTest.php` (10 cases).
