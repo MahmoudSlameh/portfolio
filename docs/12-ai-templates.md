@@ -1,6 +1,6 @@
 # 12 · Studio templates & the AI template builder
 
-> Status: **planned** (phases [P8](tasks/phase-8-studio-engine.md),
+> Status: **P8 built** (studio templates without AI); **P9–P10 planned** (phases [P8](tasks/phase-8-studio-engine.md),
 > [P9](tasks/phase-9-ai-builder.md), [P10](tasks/phase-10-studio-extras.md)).
 > Decisions: D25–D29 in [09](09-decisions.md).
 
@@ -375,6 +375,32 @@ then the agent is prompted with `provider:` and `model:`.
 - Header actions: **Generate with AI** (hidden when AI is disabled, with a
   hint linking to Site → AI), **New blank studio template**, **Import JSON**
   (P10).
+
+### As built (P8-05)
+
+`App\Filament\Pages\Appearance` has two sections, **Built-in templates**
+and **Studio templates** (every `StudioTemplate` row, newest first).
+
+- A studio card shows its status badge (or `Active`), the active version and
+  source (`Version 3 · Written by hand`), progress while working, and the
+  error when failed. **Preview** and **Activate** appear only once the
+  template has an active version (it is then in the registry).
+- **New studio template** (header): a name, a description and an example to
+  start from (`SpecCatalogue::examples()`); the example's `name` is replaced.
+  It replaces the planned "New blank studio template": a valid blank spec
+  would render an empty site.
+- **Edit** (slide-over): name, description and the spec in a JSON code
+  editor. Saving runs `SpecValidator`; every problem is listed in the
+  field's message (the first five, then a count). A valid spec becomes a new
+  version (parent = the previous active one), is activated and the content
+  cache is flushed. When the sanitiser removed CSS, a persistent warning
+  lists what was removed.
+- **Duplicate** copies the active spec as `Copy of <name>` (version 1).
+- **Delete** asks for confirmation and is disabled, with a tooltip, while
+  the template is active.
+- After every action the cards are rebuilt in the same response.
+- Studio cards have no screenshot until P10-03; they say so and point at
+  Preview.
 
 ## 9. Testing
 
