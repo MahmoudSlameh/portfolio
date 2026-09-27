@@ -7,8 +7,8 @@
     <style>
         @page { size: {{ $options->paper === 'letter' ? 'letter' : 'A4' }}; margin: {{ $margin ?? '16mm 17mm' }}; }
         * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
-        body { color: #1a1a1a; line-height: 1.4; }
+        body { margin: 0; padding: 0; }
+        body { color: #1a1a1a; line-height: 1.3; }
         h1, h2, h3, p, ul { margin: 0; }
         ul { padding-left: 1.1em; }
         li { margin: 0 0 0.15em; }

@@ -130,12 +130,16 @@ migration, the Markdown import and the form.
       line after the role, so extraction keeps the reading order; contact
       details in the body; A4 or Letter; empty sections omitted.
 
-## P11-03 · PDF generation — `todo`
+## P11-03 · PDF generation — `done`
 
-- [ ] Choose the engine: `barryvdh/laravel-dompdf` (pure PHP, works on any
-      host) or `spatie/laravel-pdf` (headless Chromium, better CSS). Default:
-      dompdf, since text PDFs are what ATS need.
-- [ ] `php artisan cv:generate --template=classic` for scripting/tests.
+- [x] Engine: `barryvdh/laravel-dompdf` (D32) — pure PHP, works on any host,
+      writes real text. `App\Support\Cv\CvPdf::render(CvOptions)` returns
+      the file; remote resources, PHP and JavaScript are disabled, and fonts
+      are subset (≈ 40 KB instead of ≈ 800 KB with full DejaVu fonts).
+- [x] `php artisan cv:generate [--template=classic|modern|compact]
+[--paper=a4|letter] [--max-roles=] [--no-projects]
+[--no-certifications] [--output=]` (default
+      `storage/app/private/cv/<name>-cv.pdf`).
 
 ## P11-04 · Panel: CV page — `todo`
 
@@ -162,3 +166,12 @@ migration, the Markdown import and the form.
   contact links (the email is already listed). Checked in Chromium at A4
   with the demo content: all three read top to bottom in one column. Tests:
   `tests/Feature/Cv/CvTemplatesTest.php` (10 cases).
+- 2026-09-27 — P11-03: `CvPdf`, `cv:generate`; `smalot/pdfparser` (dev) reads
+  the PDFs in tests. Found by looking at the pages (poppler): dompdf drops
+  the `@page` margin when `html` has `margin: 0`, so only `body` is reset.
+  With the demo content (7 roles): Classic and Modern 4 pages, Compact 3.
+  Tests: `tests/Feature/Cv/CvPdfTest.php` (10 cases: text order per
+  template, paper sizes, empty database, size, command). The CV tests seed
+  the demo content through `seedCvDemo()` (tests/Pest.php), which fakes the
+  public disk and the queue: with the sync queue every demo image ran its
+  conversions, and the CV tests took 160 s instead of 11 s.
