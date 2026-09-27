@@ -17,12 +17,18 @@ progress. Design: [12 §§ 5–9](../12-ai-templates.md). Decisions: D27, D28.
 - [x] `config/studio.php` → `ai`: provider, model, daily limit, max output
       tokens, timeout, and the providers the panel offers.
 
-## P9-02 · AI settings page (Site → AI) — `todo`
+## P9-02 · AI settings page (Site → AI) — `done`
 
-- [ ] Columns on `site_settings`: `ai_enabled`, `ai_provider`, `ai_model`,
-      `ai_api_key` (`encrypted`, hidden), `ai_base_url`, `ai_daily_limit`.
-- [ ] `App\Support\Studio\AiSettings` resolves panel → `.env` → disabled.
-- [ ] Filament page with masked key field and a **Test connection** action.
+- [x] Columns on `site_settings`: `ai_enabled` (default on), `ai_provider`,
+      `ai_model`, `ai_api_key` (`encrypted`, `$hidden`), `ai_base_url`,
+      `ai_daily_limit`.
+- [x] `App\Support\Studio\AiSettings` resolves panel → `.env` → disabled,
+      with the reason when it is not ready; `register()` writes the result
+      into the SDK as the `studio` provider.
+- [x] `App\Filament\Pages\AiSettingsPage` (Site → AI): status line,
+      provider Select, model (placeholder = the SDK default), masked key
+      that is never filled back, "Remove the saved key", base URL (Ollama /
+      OpenAI-compatible only), daily limit, **Test connection**.
 
 **Acceptance**: key never appears in HTML, logs or Inertia props (test);
 resolution order tested.
@@ -77,3 +83,17 @@ and failure; no network in tests.
       `assertPrompted()`, so tests need no network.
       Test: `tests/Feature/Studio/StudioAiConfigTest.php` (every provider the
       panel offers resolves to an SDK text provider).
+- 2026-09-27 — P9-02: resolution rules — the panel provider wins; its model
+  and URL come from the panel only (the `.env` model belongs to the `.env`
+  provider); the key is the panel key, else that provider's `.env` key.
+  "Enable AI features" off disables AI even when `.env` is set. Not ready
+  when: no provider, no key (except Ollama / OpenAI-compatible), no base URL
+  (those two), no model (OpenAI-compatible). An `.env` provider may be any
+  SDK text provider in `config/ai.php` (e.g. Azure), the panel offers the
+  list in `config/studio.php`. **Test connection** uses the form's unsaved
+  values (an empty key field keeps the saved key) and does not save;
+  provider errors are shown with the key replaced by `[key]`.
+  `AiSettings::__debugInfo()` hides the key. Checked in Chromium: the page,
+  required fields per provider, the "not ready" notice. Tests:
+  `tests/Feature/Studio/AiSettingsTest.php` (18 cases, SDK fakes, no
+  network).
