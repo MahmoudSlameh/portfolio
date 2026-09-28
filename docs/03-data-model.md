@@ -114,7 +114,7 @@ Media: `portrait` (single image), `resume` (single PDF, optional),
 | contact_recipient        | string nullable                          | where contact notifications go (defaults to profile email)   |
 | indexable                | bool default `true`                      | global noindex switch (staging)                              |
 
-Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`).
+Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`). Saving the settings (or `php artisan site:favicons`) makes `favicon.ico` (16/32/48), a 192px PNG and a 180px apple-touch-icon from the favicon on the public disk (`favicons/<media id>/`), recorded on the media item's `icons` custom property (App\Support\Media\Favicons).
 
 ### `now_pages` → `App\Models\NowPage`
 

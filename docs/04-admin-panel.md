@@ -307,7 +307,10 @@ Tabs: _General_ (site_name, title_separator, enabled_pages toggles,
 contact_recipient) · _SEO_ (meta_description, default_og_image, twitter_handle,
 indexable toggle with danger description, verification codes) ·
 _Advanced_ (analytics_snippet, favicon). Header action: "Rebuild caches"
-(flush content caches + regenerate sitemap).
+(flush content caches + regenerate sitemap). Saving generates the raster favicons
+(`favicon.ico`, 192px PNG, apple-touch-icon) from an uploaded favicon; if an SVG cannot be
+rasterised (no Imagick SVG support or Chrome), a warning says so. `php artisan site:favicons
+[--force]` does the same from the CLI.
 
 ## Site · AI (singleton page `AiSettingsPage`)
 

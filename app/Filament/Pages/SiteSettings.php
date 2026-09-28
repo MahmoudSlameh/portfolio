@@ -6,6 +6,7 @@ use App\Filament\Support\Fields;
 use App\Filament\Support\SingletonPage;
 use App\Models\SiteSetting;
 use App\Support\Content\ContentCache;
+use App\Support\Media\Favicons;
 use App\Support\Media\MimeTypes;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -20,6 +21,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
+use RuntimeException;
 use UnitEnum;
 
 /**
@@ -116,7 +118,7 @@ class SiteSettings extends SingletonPage
                             ->collection('favicon')
                             ->acceptedFileTypes(['image/svg+xml', 'image/png'])
                             ->maxSize(512)
-                            ->helperText('SVG or PNG. Falls back to /favicon.svg.'),
+                            ->helperText('Square SVG, or a PNG of at least 192×192. Saving makes favicon.ico, a 192px PNG and the Apple touch icon from it (search engines use these). Falls back to /favicon.svg.'),
                     ]),
                 ]),
             ]),
@@ -126,5 +128,11 @@ class SiteSettings extends SingletonPage
     protected function afterSave(): void
     {
         ContentCache::flush();
+
+        try {
+            Favicons::sync($this->getRecord()->refresh());
+        } catch (RuntimeException $exception) {
+            Notification::make()->warning()->title('Could not make the favicon icons')->body($exception->getMessage())->persistent()->send();
+        }
     }
 }

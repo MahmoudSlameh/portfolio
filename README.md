@@ -204,7 +204,7 @@ The important `.env` values (see [`.env.example`](.env.example)):
 | `MAIL_*`                                        | Contact-form notifications                                        |
 | `QUEUE_CONNECTION`                              | Queue for notifications, image conversions and AI generation      |
 | `STUDIO_AI_PROVIDER` / `STUDIO_AI_MODEL`        | AI template builder defaults (Site → AI overrides them)           |
-| `STUDIO_SCREENSHOT_CHROME`                      | Optional Chromium path for real screenshots on the template cards |
+| `STUDIO_SCREENSHOT_CHROME`                      | Optional Chromium path for template-card screenshots and SVG favicons |
 
 Everything else (site name, SEO defaults, favicon, analytics, enabled pages,
 active template) is edited in the panel.
