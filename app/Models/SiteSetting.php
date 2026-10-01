@@ -29,30 +29,23 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property array<string, bool> $enabled_pages
  * @property string|null $contact_recipient
  * @property bool $indexable
-<<<<<<< HEAD
  * @property string|null $services_kicker
  * @property string|null $services_title
  * @property string|null $services_highlight
-=======
  * @property bool $ai_enabled
  * @property string|null $ai_provider
  * @property string|null $ai_model
  * @property string|null $ai_api_key Encrypted; hidden from arrays and JSON
  * @property string|null $ai_base_url
  * @property int|null $ai_daily_limit
->>>>>>> e96cc4702d9728ce19d3c41d518f592ca53002c4
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 #[Fillable([
     'active_template', 'site_name', 'title_separator', 'meta_description', 'twitter_handle',
     'google_site_verification', 'bing_site_verification', 'analytics_snippet', 'enabled_pages',
-<<<<<<< HEAD
     'contact_recipient', 'indexable', 'services_kicker', 'services_title', 'services_highlight',
-=======
-    'contact_recipient', 'indexable',
     'ai_enabled', 'ai_provider', 'ai_model', 'ai_api_key', 'ai_base_url', 'ai_daily_limit',
->>>>>>> e96cc4702d9728ce19d3c41d518f592ca53002c4
 ])]
 class SiteSetting extends Model implements HasMedia
 {
