@@ -61,6 +61,7 @@ cards).
 | Career  | Certifications                  | Resource (simple)                             | `Certification`               |
 | Career  | **Companies & clients**         | Resource                                      | `Company`                     |
 | Career  | Testimonials                    | Resource                                      | `Testimonial`                 |
+| Work    | Services                        | Resource (simple) + "Section heading" action  | `Service`, `SiteSetting`      |
 | Work    | Projects                        | Resource                                      | `Project`                     |
 | Work    | Skills                          | Resource (simple) + category relation manager | `Skill`, `SkillCategory`      |
 | Content | Articles                        | Resource                                      | `Article`                     |
@@ -247,6 +248,9 @@ Filters: status, category. Header widget: reading stats.
   label (auto from platform), handle, url.
 - **Uses**: group resource with `kind`, `title`, and relationship Repeater
   `items` (name, description, url, image).
+- **Services** (simple, modals, reorderable): title, icon (`ServiceIcon`
+  select), summary, highlights (TagsInput). The list page's "Section heading"
+  action edits `site_settings.services_*` (blank → template default copy).
 
 ## Now page (singleton `EditNowPage`)
 

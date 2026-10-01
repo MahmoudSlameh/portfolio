@@ -114,6 +114,9 @@ Media: `portrait` (single image), `resume` (single PDF, optional),
 | enabled_pages            | json `{writing, books, uses, now}` bools | hides nav + returns 404 when off                             |
 | contact_recipient        | string nullable                          | where contact notifications go (defaults to profile email)   |
 | indexable                | bool default `true`                      | global noindex switch (staging)                              |
+| services_kicker          | string nullable                          | home Services heading; blank → template copy                 |
+| services_title           | string nullable                          | 〃                                                           |
+| services_highlight       | string nullable                          | 〃 (accent-colored part after the title)                     |
 
 Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`).
 
@@ -231,6 +234,20 @@ Media: `badge` (optional).
 | is_visible, sort_order |                 |                                       |
 
 Media: `avatar` (optional).
+
+### `services` → `App\Models\Service`
+
+What the owner offers (clients and employers). Sent to every template as the
+home `services` prop (`ServicesSection`: `heading` from `site_settings` +
+visible `items`); the section is hidden while there are no items.
+
+| Column                 | Type                                 | TS           |
+| ---------------------- | ------------------------------------ | ------------ |
+| title                  | string                               | `title`      |
+| summary                | text                                 | `summary`    |
+| icon                   | enum `ServiceIcon` default `sparkles`| `icon`       |
+| highlights             | json list of strings nullable        | `highlights` |
+| is_visible, sort_order |                                      |              |
 
 ---
 

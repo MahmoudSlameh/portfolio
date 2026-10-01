@@ -21,6 +21,7 @@ class HomeController extends Controller
             'profile' => $content->profile(),
             'socials' => $content->socials(),
             'skillGroups' => $content->skillGroups(),
+            'services' => $content->services(),
             'career' => $content->career(),
             'projects' => $content->projects(['featured' => true]),
             'companies' => array_values(array_filter($content->companies(), fn (array $company): bool => $company['featured'])),

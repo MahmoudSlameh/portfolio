@@ -15,6 +15,7 @@ use App\Models\NowPage;
 use App\Models\Profile;
 use App\Models\Project;
 use App\Models\ProjectGalleryItem;
+use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\Skill;
 use App\Models\SkillCategory;
@@ -41,6 +42,7 @@ class DemoContentSeeder extends Seeder
         $this->profile();
         $this->socials();
         $this->skills();
+        $this->services();
         $this->companies();
         $this->experiences();
         $this->education();
@@ -121,6 +123,18 @@ class DemoContentSeeder extends Seeder
                 'skill_category_id' => $categories[$skill['categoryId']] ?? null,
                 'proficiency' => $skill['proficiency'],
                 'years' => $skill['years'],
+                'sort_order' => $index,
+            ]);
+        }
+    }
+
+    private function services(): void
+    {
+        foreach ($this->data('services') as $index => $service) {
+            Service::query()->updateOrCreate(['title' => $service['title']], [
+                'summary' => $service['summary'],
+                'icon' => $service['icon'],
+                'highlights' => $service['highlights'],
                 'sort_order' => $index,
             ]);
         }

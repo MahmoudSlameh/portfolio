@@ -30,13 +30,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property array<string, bool> $enabled_pages
  * @property string|null $contact_recipient
  * @property bool $indexable
+ * @property string|null $services_kicker
+ * @property string|null $services_title
+ * @property string|null $services_highlight
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 #[Fillable([
     'active_template', 'site_name', 'title_separator', 'meta_description', 'twitter_handle',
     'google_site_verification', 'bing_site_verification', 'analytics_snippet', 'enabled_pages',
-    'contact_recipient', 'indexable',
+    'contact_recipient', 'indexable', 'services_kicker', 'services_title', 'services_highlight',
 ])]
 class SiteSetting extends Model implements HasMedia
 {

@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Backend & API Development",
+        "summary": "Fast, well-tested backends and APIs that your web and mobile apps can rely on — designed to stay readable as the product grows.",
+        "icon": "server",
+        "highlights": ["Laravel", "REST APIs", "Queues & jobs"]
+    },
+    {
+        "title": "SaaS Platforms",
+        "summary": "From idea to a running product: multi-tenant accounts, subscriptions, roles and an admin panel your team can actually use.",
+        "icon": "platform",
+        "highlights": ["Multi-tenancy", "Billing", "Admin dashboards"]
+    },
+    {
+        "title": "Integrations",
+        "summary": "Connecting your system to the services it depends on — payments, messaging and third-party APIs — with retries and monitoring built in.",
+        "icon": "integrations",
+        "highlights": ["Payment gateways", "WhatsApp", "Webhooks"]
+    },
+    {
+        "title": "Performance & Scaling",
+        "summary": "Finding what makes an existing system slow or fragile and fixing it, without a risky rewrite.",
+        "icon": "performance",
+        "highlights": ["Query tuning", "Caching", "Code audits"]
+    }
+]

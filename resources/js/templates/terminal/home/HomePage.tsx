@@ -23,8 +23,8 @@ export function HomePage(data: HomePageProps) {
                 companies={data.companies}
                 career={data.career}
             />
-            {hasSkills && (
-                <Services profile={data.profile} groups={data.skillGroups} />
+            {data.services.items.length > 0 && (
+                <Services profile={data.profile} services={data.services} />
             )}
             {data.career.length > 0 && <Experience career={data.career} />}
             {(data.education.length > 0 || data.certifications.length > 0) && (

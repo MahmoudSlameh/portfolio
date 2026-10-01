@@ -4,8 +4,10 @@ use App\Enums\ProjectCategory;
 use App\Enums\Template;
 use App\Models\Article;
 use App\Models\Book;
+use App\Models\Profile;
 use App\Models\Project;
 use App\Models\SiteSetting;
+use App\Support\Seo\Seo;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -20,7 +22,7 @@ test('every page renders in every template with its props', function (Template $
     SiteSetting::current()->update(['active_template' => $template]);
 
     $pages = [
-        '/' => ['Home', ['profile', 'socials', 'skillGroups', 'career', 'projects', 'companies', 'testimonials', 'education', 'certifications', 'articles', 'books']],
+        '/' => ['Home', ['profile', 'socials', 'skillGroups', 'services', 'career', 'projects', 'companies', 'testimonials', 'education', 'certifications', 'articles', 'books']],
         '/projects' => ['ProjectArchive', ['projects', 'facets', 'total', 'search']],
         "/projects/{$this->project->slug}" => ['CaseStudy', ['project']],
         '/writing' => ['WritingArchive', ['articles', 'allArticles', 'tags', 'search']],
@@ -117,6 +119,18 @@ test('pages carry complete seo data', function () {
             ->where('seo.type', 'profile')
             ->where('seo.jsonLd.0.@type', 'Person')
             ->where('seo.jsonLd.1.@type', 'WebSite'));
+});
+
+test('link preview tags are in the html even without ssr', function () {
+    config(['inertia.ssr.enabled' => false]);
+    Profile::current()->update(['headline' => 'Backend engineer & Laravel specialist.']);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('<meta data-inertia="og:description" property="og:description" content="Backend engineer &amp; Laravel specialist.">', escape: false)
+        ->assertSee('<meta data-inertia="og:url" property="og:url" content="'.Seo::url('/').'">', escape: false)
+        ->assertSee('<meta data-inertia="twitter:card" name="twitter:card"', escape: false)
+        ->assertSee('<script data-inertia="jsonld-0" type="application/ld+json">{"@context":"https://schema.org"', escape: false);
 });
 
 test('the whole site is noindex when indexing is switched off', function () {

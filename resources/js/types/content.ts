@@ -93,6 +93,33 @@ export interface SkillCategory {
     description: string;
 }
 
+export type ServiceIcon =
+    | 'code'
+    | 'server'
+    | 'layout'
+    | 'database'
+    | 'cloud'
+    | 'integrations'
+    | 'performance'
+    | 'security'
+    | 'mobile'
+    | 'automation'
+    | 'platform'
+    | 'ai'
+    | 'maintenance'
+    | 'consulting'
+    | 'analytics'
+    | 'terminal'
+    | 'sparkles';
+
+export interface Service {
+    id: string;
+    title: string;
+    summary: string;
+    icon: ServiceIcon;
+    highlights: string[];
+}
+
 export type Proficiency = 1 | 2 | 3 | 4 | 5;
 
 export interface Skill {
@@ -391,6 +418,16 @@ export interface ContactMessage {
 export interface SkillGroup {
     category: SkillCategory;
     skills: Skill[];
+}
+
+/** Blank heading fields fall back to the template's own copy. */
+export interface ServicesSection {
+    heading: {
+        kicker: string | null;
+        title: string | null;
+        highlight: string | null;
+    };
+    items: Service[];
 }
 
 export interface ProjectReference {

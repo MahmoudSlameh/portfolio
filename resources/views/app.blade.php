@@ -51,7 +51,11 @@
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>
-            <title>{{ $settings->site_name }}</title>
+            @isset($page['props']['seo'])
+                @include('partials.seo', ['seo' => $page['props']['seo']])
+            @else
+                <title>{{ $settings->site_name }}</title>
+            @endisset
         </x-inertia::head>
 
         @if ($settings->analytics_snippet && ! $templates->isPreview())

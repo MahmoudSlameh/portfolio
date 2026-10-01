@@ -14,6 +14,7 @@ import type {
     ProjectDetail,
     ProjectFacets,
     SearchIndex,
+    ServicesSection,
     SkillGroup,
     Social,
     TestimonialEntry,
@@ -42,6 +43,7 @@ export interface HomePageProps {
     profile: Profile;
     socials: Social[];
     skillGroups: SkillGroup[];
+    services: ServicesSection;
     career: CareerEntry[];
     projects: Project[];
     companies: Company[];

@@ -36,7 +36,6 @@ const en = {
     'services.titleB': 'that stay calm',
     'services.titleC': 'under real-world load',
     'services.reach': 'Reach out!',
-    'services.working': 'Working daily with',
     'experience.kicker': 'Experience',
     'experience.titleA': '+{count}',
     'experience.titleB': 'years of',

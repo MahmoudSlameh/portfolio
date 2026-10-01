@@ -13,6 +13,7 @@ use App\Http\Resources\ExperienceResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProjectCardResource;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SkillCategoryResource;
 use App\Http\Resources\SkillResource;
 use App\Http\Resources\SocialResource;
@@ -27,6 +28,8 @@ use App\Models\Experience;
 use App\Models\NowPage;
 use App\Models\Profile;
 use App\Models\Project;
+use App\Models\Service;
+use App\Models\SiteSetting;
 use App\Models\SkillCategory;
 use App\Models\Social;
 use App\Models\Testimonial;
@@ -78,6 +81,25 @@ final class PortfolioContent
                 'skills' => $this->resolve(SkillResource::class, $category->skills),
             ])
             ->all());
+    }
+
+    /**
+     * The home page services section; blank heading fields fall back to the template's own copy.
+     *
+     * @return array{heading: array{kicker: string|null, title: string|null, highlight: string|null}, items: list<array<string, mixed>>}
+     */
+    public function services(): array
+    {
+        $settings = SiteSetting::current();
+
+        return [
+            'heading' => [
+                'kicker' => $settings->services_kicker,
+                'title' => $settings->services_title,
+                'highlight' => $settings->services_highlight,
+            ],
+            'items' => $this->resolve(ServiceResource::class, Service::query()->visible()->ordered()->get()),
+        ];
     }
 
     /**

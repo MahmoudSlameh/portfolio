@@ -13,6 +13,7 @@ export type {
     ProjectFacets,
     ProjectReference,
     SearchIndex,
+    ServicesSection,
     SkillGroup,
     TestimonialEntry,
 } from '@/types/content';
