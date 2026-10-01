@@ -18,7 +18,6 @@ import {
     Wrench,
     type LucideIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import type { ServicesSection } from '@/lib/content';
 import type { Profile, ServiceIcon } from '@/types/content';
 import { useTerminalCopy } from '../copy';
@@ -95,14 +94,7 @@ export function Services({
                         </h2>
                     </div>
 
-                    <ul
-                        className={cn(
-                            'mt-12 grid grid-cols-1 gap-6 px-3 md:grid-cols-2',
-                            items.length % 3 === 0
-                                ? 'xl:grid-cols-3'
-                                : 'xl:grid-cols-4',
-                        )}
-                    >
+                    <ul className="mt-12 grid grid-cols-1 gap-6 px-3 md:grid-cols-2 lg:grid-cols-3">
                         {items.map((service) => {
                             const Icon = ICONS[service.icon] ?? Sparkles;
                             return (
