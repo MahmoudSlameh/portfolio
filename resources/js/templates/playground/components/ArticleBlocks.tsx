@@ -4,6 +4,13 @@ import { highlight } from 'sugar-high';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
+import {
+    ArticleBlocks as KitArticleBlocks,
+    ResponsiveImage,
+    type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
+} from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
 type CodeBlock = Extract<ArticleBlock, { type: 'code' }>;
@@ -93,97 +100,92 @@ function Heading({ block, index }: { block: HeadingBlock; index: number }) {
     );
 }
 
-function Block({
-    block,
-    isFirst,
-    headingIndex,
-}: {
-    block: ArticleBlock;
-    isFirst: boolean;
-    headingIndex: number;
-}) {
-    switch (block.type) {
-        case 'paragraph':
-            return isFirst ? (
-                <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
-                    {block.text}
-                </p>
-            ) : (
-                <p className="pg-prose mb-6">{block.text}</p>
-            );
-        case 'heading':
-            return <Heading block={block} index={headingIndex} />;
-        case 'code':
-            return <CodeCard block={block} />;
-        case 'quote':
-            return (
-                <blockquote className="pg-card my-12 rotate-[-1deg] bg-pop-pink p-6 text-on-pop md:p-10">
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
+const renderers: ArticleBlockRenderers = {
+    paragraph: (block, { isFirst }) =>
+        isFirst ? (
+            <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+        ) : (
+            <p className="pg-prose mb-6">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+        ),
+    heading: (block, { headingIndex }) => (
+        <Heading block={block} index={headingIndex} />
+    ),
+    code: (block) => <CodeCard block={block} />,
+    quote: (block) => (
+        <blockquote className="pg-card my-12 rotate-[-1deg] bg-pop-pink p-6 text-on-pop md:p-10">
+            <span
+                aria-hidden
+                className="block font-display text-7xl leading-none font-black"
+            >
+                “
+            </span>
+            <p className="text-2xl leading-snug font-bold md:text-[1.75rem]">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+            {block.cite && (
+                <footer className="mt-4 font-mono text-sm font-bold">
+                    — {block.cite}
+                </footer>
+            )}
+        </blockquote>
+    ),
+    list: (block) => (
+        <ul className="mb-8 flex flex-col gap-3">
+            {block.items.map((item) => (
+                <li
+                    key={item}
+                    className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
+                >
                     <span
                         aria-hidden
-                        className="block font-display text-7xl leading-none font-black"
-                    >
-                        “
-                    </span>
-                    <p className="text-2xl leading-snug font-bold md:text-[1.75rem]">
-                        {block.text}
-                    </p>
-                    {block.cite && (
-                        <footer className="mt-4 font-mono text-sm font-bold">
-                            — {block.cite}
-                        </footer>
-                    )}
-                </blockquote>
-            );
-        case 'list':
-            return (
-                <ul className="mb-8 flex flex-col gap-3">
-                    {block.items.map((item) => (
-                        <li
-                            key={item}
-                            className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
-                        >
-                            <span
-                                aria-hidden
-                                className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
-                            />
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            );
-        case 'callout':
-            return (
-                <aside className="pg-card my-10 flex gap-4 bg-pop-yellow p-6 text-on-pop">
-                    <span aria-hidden className="text-3xl">
-                        💡
-                    </span>
-                    <div>
-                        <p className="mb-1 text-lg font-bold">{block.title}</p>
-                        <p className="text-base leading-relaxed font-medium">
-                            {block.text}
-                        </p>
-                    </div>
-                </aside>
-            );
-    }
-}
+                        className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
+                    />
+                    <InlineText text={item} classNames={inline} />
+                </li>
+            ))}
+        </ul>
+    ),
+    callout: (block) => (
+        <aside className="pg-card my-10 flex gap-4 bg-pop-yellow p-6 text-on-pop">
+            <span aria-hidden className="text-3xl">
+                💡
+            </span>
+            <div>
+                <p className="mb-1 text-lg font-bold">{block.title}</p>
+                <p className="text-base leading-relaxed font-medium">
+                    <InlineText text={block.text} classNames={inline} />
+                </p>
+            </div>
+        </aside>
+    ),
+    image: (block) => (
+        <figure className="my-10">
+            <div className="pg-card overflow-hidden">
+                <ResponsiveImage
+                    image={block.image}
+                    sizes="(min-width: 768px) 720px, 100vw"
+                />
+            </div>
+            {block.caption && (
+                <figcaption className="mt-3 font-mono text-sm font-bold text-ink-muted">
+                    {block.caption}
+                </figcaption>
+            )}
+        </figure>
+    ),
+};
 
 export function ArticleBlocks({ blocks }: { blocks: ArticleBlock[] }) {
-    let headingCount = 0;
-
-    return (
-        <div>
-            {blocks.map((block, index) => {
-                if (block.type === 'heading') headingCount += 1;
-                return (
-                    <Block
-                        key={`${block.type}-${index}`}
-                        block={block}
-                        isFirst={index === 0}
-                        headingIndex={headingCount}
-                    />
-                );
-            })}
-        </div>
-    );
+    return <KitArticleBlocks blocks={blocks} renderers={renderers} />;
 }

@@ -13,5 +13,7 @@
 @import '@fontsource/dm-mono/500.css';
 @import './base.css';
 @import '../templates/changelog/styles.css';
+@import '../templates/minimal/styles.css';
 @import '../templates/playground/styles.css';
+@import '../templates/studio/styles.css';
 @import '../templates/terminal/styles.css';

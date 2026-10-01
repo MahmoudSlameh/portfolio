@@ -2,11 +2,12 @@
     $templates = app(\App\Support\Templates\TemplateManager::class);
     $template = $templates->current();
     $settings = \App\Models\SiteSetting::current();
-    $theme = in_array(request()->cookie('theme'), ['light', 'dark'], true) ? request()->cookie('theme') : null;
+    $theme = $templates->theme();
     $favicon = $settings->getFirstMediaUrl('favicon');
+    $icons = \App\Support\Media\Favicons::links($settings);
 @endphp
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-template="{{ $template->value }}" data-theme="{{ $theme ?? 'light' }}" style="color-scheme: {{ $theme ?? 'light' }}">
+<html lang="en" dir="ltr" data-template="{{ $template->namespace() }}" data-theme="{{ $theme ?? 'light' }}" style="color-scheme: {{ $theme ?? 'light' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -26,15 +27,21 @@
             </script>
         @endif
 
-        @if ($favicon)
+        @if ($icons)
+            <link rel="icon" href="{{ $icons['ico'] }}" sizes="48x48">
+            <link rel="icon" href="{{ $favicon }}" @if (str_ends_with(parse_url($favicon, PHP_URL_PATH) ?: '', '.svg')) type="image/svg+xml" @endif>
+            <link rel="icon" href="{{ $icons['png'] }}" type="image/png" sizes="192x192">
+            <link rel="apple-touch-icon" href="{{ $icons['apple'] }}">
+        @elseif ($favicon)
             <link rel="icon" href="{{ $favicon }}">
+            <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         @else
             <link rel="icon" href="/favicon.ico" sizes="any">
             <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+            <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         @endif
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-        @foreach ($template->preloadFonts() as $font)
+        @foreach ($template->preloadFonts as $font)
             <link rel="preload" href="{{ Vite::asset($font) }}" as="font" type="font/woff2" crossorigin>
         @endforeach
 
@@ -50,6 +57,10 @@
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @if ($studioSpec = $templates->studioSpec())
+            {{-- Design tokens and sanitised CSS of the studio template (App\Support\Studio\StudioStyles). --}}
+            <style id="studio-styles">{!! \App\Support\Studio\StudioStyles::render($studioSpec) !!}</style>
+        @endif
         <x-inertia::head>
             @isset($page['props']['seo'])
                 @include('partials.seo', ['seo' => $page['props']['seo']])
@@ -58,7 +69,7 @@
             @endisset
         </x-inertia::head>
 
-        @if ($settings->analytics_snippet && ! $templates->isPreview())
+        @if ($settings->analytics_snippet && ! $templates->isPreview() && ! $templates->isGalleryRender())
             {!! $settings->analytics_snippet !!}
         @endif
     </head>

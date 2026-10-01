@@ -44,6 +44,8 @@ const en = {
     'experience.titleE': 'shipping calm software',
     'experience.present': 'Present',
     'experience.companies': 'Companies',
+    'experience.showAchievements': 'View achievements',
+    'experience.hideAchievements': 'Hide achievements',
     'resume.education': 'Education',
     'resume.certifications': 'Certifications',
     'resume.verify': 'Verify credential',

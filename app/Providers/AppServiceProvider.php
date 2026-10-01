@@ -17,16 +17,23 @@ use App\Models\SiteSetting;
 use App\Models\Skill;
 use App\Models\SkillCategory;
 use App\Models\Social;
+use App\Models\StudioTemplate;
+use App\Models\StudioTemplateVersion;
 use App\Models\Testimonial;
 use App\Models\User;
 use App\Models\UsesGroup;
 use App\Models\UsesItem;
 use App\Support\Seo\Seo;
+use App\Support\Templates\TemplateDefinition;
+use App\Support\Templates\TemplateEjector;
 use App\Support\Templates\TemplateManager;
+use App\Support\Templates\TemplateRegistry;
+use App\Support\Templates\TemplateScaffolder;
 use Carbon\CarbonImmutable;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +50,32 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(TemplateRegistry::class, fn (): TemplateRegistry => new TemplateRegistry(
+            path: config('portfolio.templates.path'),
+            defaultId: config('portfolio.templates.default'),
+            cachePath: $this->app->bootstrapPath('cache/templates.php'),
+            studio: fn (): iterable => StudioTemplate::query()
+                ->renderable()
+                ->with(['activeVersion', 'media'])
+                ->latest()
+                ->get()
+                ->map(fn (StudioTemplate $template): TemplateDefinition => TemplateDefinition::forStudio($template)),
+        ));
+        $this->app->bind(TemplateScaffolder::class, fn (): TemplateScaffolder => new TemplateScaffolder(
+            files: $this->app->make(Filesystem::class),
+            registry: $this->app->make(TemplateRegistry::class),
+            templatesPath: config('portfolio.templates.path'),
+            pagesPath: config('portfolio.templates.pages_path'),
+            stylesheet: config('portfolio.templates.stylesheet'),
+            screenshotsPath: config('portfolio.templates.screenshots_path'),
+        ));
+        $this->app->bind(TemplateEjector::class, fn (): TemplateEjector => new TemplateEjector(
+            files: $this->app->make(Filesystem::class),
+            scaffolder: $this->app->make(TemplateScaffolder::class),
+            templatesPath: config('portfolio.templates.path'),
+            pagesPath: config('portfolio.templates.pages_path'),
+            screenshotsPath: config('portfolio.templates.screenshots_path'),
+        ));
         $this->app->scoped(TemplateManager::class);
     }
 
@@ -56,6 +89,8 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureErrorPages();
         $this->configureMediaUploads();
+
+        $this->optimizes(optimize: 'template:cache', clear: 'template:clear', key: 'templates');
     }
 
     /**
@@ -122,6 +157,8 @@ class AppServiceProvider extends ServiceProvider
             'uses_item' => UsesItem::class,
             'social' => Social::class,
             'contact_message' => ContactMessage::class,
+            'studio_template' => StudioTemplate::class,
+            'studio_template_version' => StudioTemplateVersion::class,
         ]);
     }
 

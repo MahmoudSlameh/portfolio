@@ -41,7 +41,6 @@ class HandleInertiaRequests extends Middleware
         $templates = app(TemplateManager::class);
         $content = app(PortfolioContent::class);
         $settings = SiteSetting::current();
-        $theme = $request->cookie('theme');
 
         return [
             ...parent::share($request),
@@ -55,11 +54,17 @@ class HandleInertiaRequests extends Middleware
             'profile' => fn (): array => $content->profile(),
             'socials' => fn (): array => $content->socials(),
             'searchIndex' => inertia()->defer(fn (): array => $content->searchIndex())->once(),
+            // The rendered studio template's spec (null for code templates); see docs/12-ai-templates.md §3.
+            'studio' => fn (): ?array => ($spec = $templates->studioSpec()) === null ? null : ['spec' => $spec],
             'template' => fn (): array => [
-                'id' => $templates->current()->value,
-                'isPreview' => $templates->isPreview(),
+                'id' => $templates->current()->id,
+                'name' => $templates->current()->label,
+                // The gallery renders templates side by side; the owner's preview bar would only get in the way.
+                'isPreview' => $templates->isPreview() && ! $templates->isGalleryRender(),
+                // A studio version other than the active one being previewed (null otherwise).
+                'version' => $templates->previewVersion(),
             ],
-            'theme' => in_array($theme, ['light', 'dark'], true) ? $theme : null,
+            'theme' => $templates->theme(),
             'flash' => fn (): array => ['success' => $request->hasSession() ? $request->session()->get('success') : null],
         ];
     }

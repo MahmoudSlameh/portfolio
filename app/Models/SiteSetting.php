@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Template;
 use App\Models\Concerns\IsSingleton;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Support\Media\MimeTypes;
@@ -19,7 +18,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * Site-wide settings: active template, SEO defaults and page toggles (single row).
  *
  * @property int $id
- * @property Template $active_template
+ * @property string $active_template Template id (see App\Support\Templates\TemplateRegistry)
  * @property string $site_name
  * @property string $title_separator
  * @property string|null $meta_description
@@ -30,16 +29,30 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property array<string, bool> $enabled_pages
  * @property string|null $contact_recipient
  * @property bool $indexable
+<<<<<<< HEAD
  * @property string|null $services_kicker
  * @property string|null $services_title
  * @property string|null $services_highlight
+=======
+ * @property bool $ai_enabled
+ * @property string|null $ai_provider
+ * @property string|null $ai_model
+ * @property string|null $ai_api_key Encrypted; hidden from arrays and JSON
+ * @property string|null $ai_base_url
+ * @property int|null $ai_daily_limit
+>>>>>>> e96cc4702d9728ce19d3c41d518f592ca53002c4
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 #[Fillable([
     'active_template', 'site_name', 'title_separator', 'meta_description', 'twitter_handle',
     'google_site_verification', 'bing_site_verification', 'analytics_snippet', 'enabled_pages',
+<<<<<<< HEAD
     'contact_recipient', 'indexable', 'services_kicker', 'services_title', 'services_highlight',
+=======
+    'contact_recipient', 'indexable',
+    'ai_enabled', 'ai_provider', 'ai_model', 'ai_api_key', 'ai_base_url', 'ai_daily_limit',
+>>>>>>> e96cc4702d9728ce19d3c41d518f592ca53002c4
 ])]
 class SiteSetting extends Model implements HasMedia
 {
@@ -54,12 +67,20 @@ class SiteSetting extends Model implements HasMedia
     public const TOGGLEABLE_PAGES = ['writing', 'books', 'uses', 'now'];
 
     /**
+     * The AI key never leaves the server (docs/12-ai-templates.md §6).
+     *
+     * @var list<string>
+     */
+    protected $hidden = ['ai_api_key'];
+
+    /**
      * @var array<string, mixed>
      */
     protected $attributes = [
         'active_template' => 'changelog',
         'title_separator' => '—',
         'indexable' => true,
+        'ai_enabled' => true,
         'enabled_pages' => '{"writing":true,"books":true,"uses":true,"now":true}',
     ];
 
@@ -69,9 +90,11 @@ class SiteSetting extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'active_template' => Template::class,
             'enabled_pages' => 'array',
             'indexable' => 'boolean',
+            'ai_enabled' => 'boolean',
+            'ai_api_key' => 'encrypted',
+            'ai_daily_limit' => 'integer',
         ];
     }
 
@@ -81,7 +104,7 @@ class SiteSetting extends Model implements HasMedia
     protected static function singletonDefaults(): array
     {
         return [
-            'active_template' => Template::default(),
+            'active_template' => config('portfolio.templates.default'),
             'site_name' => config('app.name'),
         ];
     }

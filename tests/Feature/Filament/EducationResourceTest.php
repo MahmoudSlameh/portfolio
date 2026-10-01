@@ -46,7 +46,8 @@ test('a diploma that is still being studied can be created', function () {
 });
 
 test('a finished qualification can be edited', function () {
-    $education = Education::factory()->create();
+    // Pinned start: the factory's random start date can fall after the end date set below.
+    $education = Education::factory()->create(['start_date' => '2018-09-01']);
 
     Livewire::test(EditEducation::class, ['record' => $education->getRouteKey()])
         ->fillForm(['grade' => '3.7 / 4.0', 'is_current' => false, 'end_date' => '2022-06-01'])

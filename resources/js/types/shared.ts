@@ -1,6 +1,8 @@
+import type { TemplateSpec } from '@/templates/studio/spec';
 import type { Profile, SearchIndex, Social } from '@/types/content';
 
-export type TemplateId = 'changelog' | 'playground' | 'terminal';
+/** A template id from the registry (`resources/js/templates/<id>/template.json`). */
+export type TemplateId = string;
 
 export type ToggleablePage = 'writing' | 'books' | 'uses' | 'now';
 
@@ -18,8 +20,14 @@ export interface SharedProps {
     searchIndex?: SearchIndex;
     template: {
         id: TemplateId;
+        /** Display name from the template manifest. */
+        name: string;
         isPreview: boolean;
+        /** The studio version being previewed (`?version=`), when it is not the active one. */
+        version: number | null;
     };
+    /** The rendered studio template's spec; null for code templates. */
+    studio: { spec: TemplateSpec } | null;
     theme: 'light' | 'dark' | null;
     flash: { success?: string | null };
 }

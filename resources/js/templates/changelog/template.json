@@ -1,0 +1,11 @@
+{
+    "id": "changelog",
+    "name": "Changelog",
+    "description": "Editorial “engineer’s changelog”: a git-graph career, versions and release notes.",
+    "author": "Mahmoud Slameh",
+    "preloadFonts": [
+        "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2",
+        "node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2"
+    ],
+    "screenshot": "templates/changelog.webp"
+}

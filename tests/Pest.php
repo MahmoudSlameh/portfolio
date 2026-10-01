@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\DemoContentSeeder;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Tests\Support\TypeScriptInterfaces;
 use Tests\TestCase;
 
@@ -68,4 +71,31 @@ function actingAsAdmin(): User
     Filament::setCurrentPanel('admin');
 
     return $user;
+}
+
+/**
+ * Ids of the code templates (`resources/js/templates/<id>/template.json`), read without booting the
+ * app so they can feed datasets. Every template added to the folder is tested automatically.
+ *
+ * @return list<string>
+ */
+function templateIds(): array
+{
+    $ids = array_map(fn (string $file): string => basename(dirname($file)), glob(dirname(__DIR__).'/resources/js/templates/*/template.json') ?: []);
+    sort($ids);
+
+    return $ids;
+}
+
+dataset('templates', fn (): array => templateIds());
+
+/**
+ * The demo content without its image conversions (they would run synchronously and take seconds per
+ * image; the CV has no images anyway).
+ */
+function seedCvDemo(): void
+{
+    Storage::fake('public');
+    Queue::fake();
+    test()->seed(DemoContentSeeder::class);
 }

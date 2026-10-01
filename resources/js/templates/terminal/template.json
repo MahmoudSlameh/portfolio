@@ -1,0 +1,11 @@
+{
+    "id": "terminal",
+    "name": "Terminal",
+    "description": "Dark developer-terminal look with mono type, a project slider and services.",
+    "author": "Mahmoud Slameh",
+    "preloadFonts": [
+        "node_modules/@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2",
+        "node_modules/@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2"
+    ],
+    "screenshot": "templates/terminal.webp"
+}

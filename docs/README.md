@@ -4,28 +4,39 @@
 > [`tasks/README.md`](tasks/README.md) to find the next open task. Every task
 > links back to the doc section it implements.
 
-## ملخص سريع (Arabic summary)
+## Summary
 
-مشروع Portfolio شخصي مبني على **Laravel 13 + Filament 5 (لوحة التحكم) + Inertia 3 + React 19 (الواجهة) مع SSR لدعم الـ SEO**.
-الواجهة الأمامية فيها 3 قوالب (`changelog` · `playground` · `terminal`) منقولة من مجلد `Reference-Frontend/` (انحذف بعد النقل، آخر commit فيه `eb06a9a`).
-من لوحة التحكم بتختار القالب الفعّال، وبتدير **كل** المحتوى: البروفايل والـ Bio، الخبرات، الدراسة، الشركات والعملاء، المشاريع، المقالات، الكتب، المهارات… وكل الصور عن طريق **Spatie Media Library**.
-اللغة الوحيدة هي **الإنكليزية**.
+A personal developer portfolio built on **Laravel 13 + Filament 5 (admin
+panel) + Inertia 3 + React 19 (public site) with SSR for SEO**. The public
+site ships three templates (`changelog` · `playground` · `terminal`), ported
+from a reference design that was removed after the port (last in commit
+`eb06a9a`). The panel picks the active template and manages **all** content:
+profile and bio, experience, education, companies and clients, projects,
+articles, books, skills… with every image stored through **Spatie Media
+Library**. The only language is **English**.
+
+The public-facing introduction (features, quick start, roadmap) is the root
+[`README.md`](../README.md).
 
 ## Documentation map
 
-| #   | Document                                         | What it answers                                                                                   |
-| --- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| 01  | [Project overview](01-project-overview.md)       | Goals, scope, stack, what exists today                                                            |
-| 02  | [Architecture](02-architecture.md)               | How Laravel, Filament, Inertia, SSR and templates fit together; folder layout; request lifecycle  |
-| 03  | [Data model](03-data-model.md)                   | Every table, column, enum and relation, and how each maps to the frontend TypeScript types        |
-| 04  | [Admin panel](04-admin-panel.md)                 | Filament panel design: navigation, every resource's form/table/filters/actions                    |
-| 05  | [Media](05-media.md)                             | Spatie Media Library: collections, conversions, alt text, how images reach React                  |
-| 06  | [Frontend & templates](06-frontend-templates.md) | Template system, porting from `Reference-Frontend`, template contract, preview                    |
-| 07  | [SEO](07-seo.md)                                 | SSR, meta tags, JSON-LD, sitemap, RSS, performance budget                                         |
-| 08  | [Conventions](08-conventions.md)                 | Code style, commands, testing, git workflow, definition of done                                   |
-| 09  | [Decisions & open questions](09-decisions.md)    | Architecture decision log + questions still waiting for the owner                                 |
-| 10  | [Deployment & launch](10-deployment.md)          | Server requirements, env, build steps, Supervisor (SSR + queue), Nginx, backups, launch checklist |
-| —   | [Tasks](tasks/README.md)                         | The phased task plan and live status board                                                        |
+| #   | Document                                                          | What it answers                                                                                     |
+| --- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 01  | [Project overview](01-project-overview.md)                        | Goals, scope, stack, what exists today                                                              |
+| 02  | [Architecture](02-architecture.md)                                | How Laravel, Filament, Inertia, SSR and templates fit together; folder layout; request lifecycle    |
+| 03  | [Data model](03-data-model.md)                                    | Every table, column, enum and relation, and how each maps to the frontend TypeScript types          |
+| 04  | [Admin panel](04-admin-panel.md)                                  | Filament panel design: navigation, every resource's form/table/filters/actions                      |
+| 05  | [Media](05-media.md)                                              | Spatie Media Library: collections, conversions, alt text, how images reach React                    |
+| 06  | [Frontend & templates](06-frontend-templates.md)                  | Template system, porting from `Reference-Frontend`, template contract, preview                      |
+| 07  | [SEO](07-seo.md)                                                  | SSR, meta tags, JSON-LD, sitemap, RSS, performance budget                                           |
+| 08  | [Conventions](08-conventions.md)                                  | Code style, commands, testing, git workflow, definition of done                                     |
+| 09  | [Decisions & open questions](09-decisions.md)                     | Architecture decision log + questions still waiting for the owner                                   |
+| 10  | [Deployment & launch](10-deployment.md)                           | Server requirements, env, build steps, Supervisor (SSR + queue), Nginx, backups, launch checklist   |
+| 11  | [Template kit](11-template-kit.md)                                | Template registry, the kit (`@/kit`), `make:template`, `/dev/templates`, rules for template authors |
+| —   | [Building a template](templates/building-a-template.md)           | Step-by-step guide for template authors, with the prop reference of every page                      |
+| —   | [Sharing studio templates](templates/sharing-studio-templates.md) | Export and import studio templates as `.studio.json` files; the file format                         |
+| 12  | [Studio & AI templates](12-ai-templates.md)                       | _Planned (P8–P10)_: spec-driven templates in the DB and the AI template builder (Laravel AI SDK)    |
+| —   | [Tasks](tasks/README.md)                                          | The phased task plan and live status board                                                          |
 
 ## Hard rules (non-negotiable)
 

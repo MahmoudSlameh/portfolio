@@ -6,14 +6,11 @@ use App\Enums\ArticleStatus;
 use App\Filament\Support\Fields;
 use App\Models\Article;
 use App\Support\Media\MimeTypes;
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Builder\Block;
-use Filament\Forms\Components\CodeEditor;
+use Filament\Actions\Action;
 use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -22,10 +19,9 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Str;
 
 class ArticleForm
 {
@@ -69,20 +65,6 @@ class ArticleForm
                         Fields::image('cover', ['16:9'], MimeTypes::RASTER)->hiddenLabel(),
                         Fields::alt('cover_alt'),
                     ]),
-                    Section::make('Images')
-                        ->icon(Heroicon::OutlinedPhoto)
-                        ->description('Upload images here, save, then place them in the body with an Image block.')
-                        ->collapsible()
-                        ->schema([
-                            SpatieMediaLibraryFileUpload::make('body_images')
-                                ->collection('body_images')
-                                ->hiddenLabel()
-                                ->multiple()
-                                ->reorderable()
-                                ->image()
-                                ->maxSize(10 * 1024)
-                                ->panelLayout('grid'),
-                        ]),
                     Section::make('SEO')->icon(Heroicon::OutlinedMagnifyingGlass)->collapsed()->schema([
                         TextInput::make('meta_title')->maxLength(70)->live(onBlur: true)->hint(fn (?string $state): string => mb_strlen((string) $state).' / 60'),
                         Textarea::make('meta_description')->rows(2)->maxLength(255)->live(onBlur: true)->hint(fn (?string $state): string => mb_strlen((string) $state).' / 160'),
@@ -92,58 +74,70 @@ class ArticleForm
         ]);
     }
 
-    public static function body(): Builder
+    public static function body(): RichEditor
     {
-        return Builder::make('body')
+        return RichEditor::make('body')
             ->hiddenLabel()
-            ->blocks([
-                Block::make('paragraph')->icon(Heroicon::OutlinedBars3BottomLeft)->schema([
-                    Textarea::make('text')->hiddenLabel()->rows(4)->required()->helperText('Inline **bold**, `code` and [links](https://…) are supported.'),
-                ]),
-                Block::make('heading')->icon(Heroicon::OutlinedHashtag)->schema([
-                    TextInput::make('text')->hiddenLabel()->required()->maxLength(255),
-                    TextInput::make('id')->label('Anchor')->alphaDash()->placeholder('Generated from the heading')->maxLength(100),
-                ])->columns(2),
-                Block::make('code')->icon(Heroicon::OutlinedCodeBracket)->schema([
-                    Select::make('language')->options(self::CODE_LANGUAGES)->default('ts')->required()->live(),
-                    TextInput::make('filename')->placeholder('journal.ts')->maxLength(100),
-                    CodeEditor::make('code')
-                        ->hiddenLabel()
-                        ->language(fn (Get $get): ?Language => self::editorLanguage($get('language')))
-                        ->required()
-                        ->columnSpanFull(),
-                ])->columns(2),
-                Block::make('quote')->icon(Heroicon::OutlinedChatBubbleBottomCenterText)->schema([
-                    Textarea::make('text')->hiddenLabel()->rows(2)->required(),
-                    TextInput::make('cite')->placeholder('Who said it')->maxLength(255),
-                ]),
-                Block::make('list')->icon(Heroicon::OutlinedListBullet)->schema([
-                    Repeater::make('items')->hiddenLabel()->defaultItems(1)->simple(TextInput::make('item')->required())->reorderable(),
-                ]),
-                Block::make('callout')->icon(Heroicon::OutlinedLightBulb)->schema([
-                    TextInput::make('title')->required()->maxLength(255),
-                    Textarea::make('text')->rows(2)->required(),
-                ]),
-                Block::make('image')->icon(Heroicon::OutlinedPhoto)->schema([
-                    Select::make('media_uuid')
-                        ->label('Image')
-                        ->options(fn (?Article $record): array => $record?->getMedia('body_images')
-                            ->mapWithKeys(fn (Media $media): array => [$media->uuid => '<span class="flex items-center gap-2"><img src="'.e($media->getUrl('thumb')).'" alt="" class="size-8 rounded object-cover">'.e($media->name).'</span>'])
-                            ->all() ?? [])
-                        ->allowHtml()
-                        ->required()
-                        ->helperText('Choose from the images uploaded in the Images section.'),
-                    TextInput::make('alt')->label('Alt text')->required()->maxLength(255),
-                    TextInput::make('caption')->maxLength(255),
-                ]),
+            ->toolbarButtons([
+                ['bold', 'italic', 'code', 'link'],
+                ['h2', 'h3'],
+                ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                ['attachFiles', 'customBlocks'],
+                ['undo', 'redo'],
             ])
-            ->collapsible()
-            ->cloneable()
-            ->blockNumbers(false)
-            ->addActionLabel('Add block');
+            ->fileAttachmentsAcceptedFileTypes(MimeTypes::RASTER)
+            ->fileAttachmentsMaxSize(10 * 1024)
+            ->placeholder('Write, or paste an article from a web page, Google Docs or Word…')
+            ->helperText('Images can be added once the article is saved. Use "Import Markdown" to paste Markdown.')
+            ->extraInputAttributes(['style' => 'min-height: 24rem'])
+            ->hintAction(self::importMarkdownAction());
     }
 
-    private static function editorLanguage(mixed $language): ?Language
+    /**
+     * Paste Markdown (e.g. from GitHub or dev.to) and turn it into editor content.
+     */
+    public static function importMarkdownAction(): Action
+    {
+        return Action::make('importMarkdown')
+            ->label('Import Markdown')
+            ->icon(Heroicon::OutlinedArrowDownTray)
+            ->modalHeading('Import Markdown')
+            ->modalDescription('Headings, lists, quotes, code blocks, links, bold and italic are kept. Raw HTML is removed.')
+            ->modalSubmitActionLabel('Import')
+            ->schema([
+                Textarea::make('markdown')->hiddenLabel()->rows(16)->required()->extraInputAttributes(['class' => 'font-mono']),
+                ToggleButtons::make('mode')
+                    ->hiddenLabel()
+                    ->options(['append' => 'Add to the end', 'replace' => 'Replace the body'])
+                    ->default('append')
+                    ->inline()
+                    ->required(),
+            ])
+            ->action(function (array $data, RichEditor $component): void {
+                $imported = self::markdownToDocument((string) $data['markdown'], $component);
+                $current = $component->getState();
+                $existing = is_array($current) && is_array($current['content'] ?? null) ? $current['content'] : [];
+
+                $component->state([
+                    'type' => 'doc',
+                    'content' => $data['mode'] === 'replace' ? $imported['content'] : [...$existing, ...$imported['content']],
+                ]);
+            });
+    }
+
+    /**
+     * @return array{type: string, content: list<array<string, mixed>>}
+     */
+    public static function markdownToDocument(string $markdown, RichEditor $editor): array
+    {
+        $html = Str::markdown($markdown, ['html_input' => 'strip', 'allow_unsafe_links' => false]);
+        /** @var array{type: string, content?: list<array<string, mixed>>} $document */
+        $document = $editor->getTipTapEditor()->setContent($html)->getDocument();
+
+        return ['type' => 'doc', 'content' => $document['content'] ?? []];
+    }
+
+    public static function editorLanguage(mixed $language): ?Language
     {
         return match ($language) {
             'ts', 'tsx', 'js' => Language::JavaScript,

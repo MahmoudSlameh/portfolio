@@ -296,15 +296,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             {t('case.back')}
                         </Link>
                     </nav>
-                    <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
-                        <div className="overflow-hidden rounded-md border border-tm-border">
-                            <ResponsiveImage
-                                image={project.cover}
-                                sizes="(min-width: 64rem) 40vw, 100vw"
-                                priority
-                                className="aspect-[4/3]"
-                            />
-                        </div>
+                    <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-12">
                         <div>
                             <Kicker>
                                 {t(`category.${project.category}`)} ·{' '}
@@ -322,7 +314,33 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                             <p lang="en" className="text-tm-body">
                                 {project.tagline}
                             </p>
-                            <p className="mt-6 mb-4 border-b border-tm-border pb-4 text-tm-secondary">
+                            {project.links.length > 0 && (
+                                <ul className="mt-8 flex flex-wrap gap-4">
+                                    {project.links.map((link) => (
+                                        <li key={link.url}>
+                                            <a
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="tm-link-hover inline-flex items-center gap-1.5 px-2 pb-2"
+                                            >
+                                                <ArrowUpRight
+                                                    aria-hidden
+                                                    className="size-4"
+                                                />
+                                                {link.label}
+                                                <span className="sr-only">
+                                                    {' '}
+                                                    {t('common.opensNewTab')}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                        <div>
+                            <p className="mb-4 border-b border-tm-border pb-4 text-tm-secondary">
                                 {c('case.info')}
                             </p>
                             <dl>
@@ -370,32 +388,18 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                                     </dd>
                                 </div>
                             </dl>
-                            {project.links.length > 0 && (
-                                <ul className="mt-8 flex flex-wrap gap-4">
-                                    {project.links.map((link) => (
-                                        <li key={link.url}>
-                                            <a
-                                                href={link.url}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="tm-link-hover inline-flex items-center gap-1.5 px-2 pb-2"
-                                            >
-                                                <ArrowUpRight
-                                                    aria-hidden
-                                                    className="size-4"
-                                                />
-                                                {link.label}
-                                                <span className="sr-only">
-                                                    {' '}
-                                                    {t('common.opensNewTab')}
-                                                </span>
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
                         </div>
                     </div>
+                    {project.cover && (
+                        <div className="relative mt-10 overflow-hidden rounded-md border border-tm-border lg:mt-12">
+                            <ResponsiveImage
+                                image={project.cover}
+                                sizes="(min-width: 80rem) 72rem, 100vw"
+                                priority
+                                className="aspect-video object-top"
+                            />
+                        </div>
+                    )}
                 </GlowCard>
             </header>
 

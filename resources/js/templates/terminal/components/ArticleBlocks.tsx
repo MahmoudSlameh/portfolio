@@ -4,6 +4,13 @@ import { highlight } from 'sugar-high';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
+import {
+    ArticleBlocks as KitArticleBlocks,
+    ResponsiveImage,
+    type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
+} from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
 type CodeBlock = Extract<ArticleBlock, { type: 'code' }>;
@@ -87,78 +94,79 @@ function Heading({ block }: { block: HeadingBlock }) {
     );
 }
 
-function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
-    switch (block.type) {
-        case 'paragraph':
-            return (
-                <p
-                    className={
-                        isFirst
-                            ? 'mb-8 text-xl leading-relaxed text-ink'
-                            : 'tm-prose mb-6'
-                    }
-                >
-                    {block.text}
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
+const renderers: ArticleBlockRenderers = {
+    paragraph: (block, { isFirst }) => (
+        <p
+            className={
+                isFirst
+                    ? 'mb-8 text-xl leading-relaxed text-ink'
+                    : 'tm-prose mb-6'
+            }
+        >
+            <InlineText text={block.text} classNames={inline} />
+        </p>
+    ),
+    heading: (block) => <Heading block={block} />,
+    code: (block) => <CodeCard block={block} />,
+    quote: (block) => (
+        <blockquote className="my-10 border-s-2 border-tm-primary ps-6">
+            <p className="text-xl leading-relaxed text-ink">
+                <span className="text-tm-secondary">&gt; </span>
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+            {block.cite && (
+                <footer className="mt-3 text-sm text-tm-300">
+                    — {block.cite}
+                </footer>
+            )}
+        </blockquote>
+    ),
+    list: (block) => (
+        <ul className="mb-8 list-disc ps-6 marker:text-tm-primary">
+            {block.items.map((item) => (
+                <li key={item} className="tm-prose mb-2">
+                    <InlineText text={item} classNames={inline} />
+                </li>
+            ))}
+        </ul>
+    ),
+    callout: (block) => (
+        <aside className="tm-box my-10 flex gap-4 p-6">
+            <Lightbulb
+                aria-hidden
+                className="size-6 shrink-0 text-tm-primary"
+            />
+            <div>
+                <p className="mb-1 font-medium text-ink">{block.title}</p>
+                <p className="mb-0 leading-relaxed text-tm-300">
+                    <InlineText text={block.text} classNames={inline} />
                 </p>
-            );
-        case 'heading':
-            return <Heading block={block} />;
-        case 'code':
-            return <CodeCard block={block} />;
-        case 'quote':
-            return (
-                <blockquote className="my-10 border-s-2 border-tm-primary ps-6">
-                    <p className="text-xl leading-relaxed text-ink">
-                        <span className="text-tm-secondary">&gt; </span>
-                        {block.text}
-                    </p>
-                    {block.cite && (
-                        <footer className="mt-3 text-sm text-tm-300">
-                            — {block.cite}
-                        </footer>
-                    )}
-                </blockquote>
-            );
-        case 'list':
-            return (
-                <ul className="mb-8 list-disc ps-6 marker:text-tm-primary">
-                    {block.items.map((item) => (
-                        <li key={item} className="tm-prose mb-2">
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            );
-        case 'callout':
-            return (
-                <aside className="tm-box my-10 flex gap-4 p-6">
-                    <Lightbulb
-                        aria-hidden
-                        className="size-6 shrink-0 text-tm-primary"
-                    />
-                    <div>
-                        <p className="mb-1 font-medium text-ink">
-                            {block.title}
-                        </p>
-                        <p className="mb-0 leading-relaxed text-tm-300">
-                            {block.text}
-                        </p>
-                    </div>
-                </aside>
-            );
-    }
-}
+            </div>
+        </aside>
+    ),
+    image: (block) => (
+        <figure className="my-10">
+            <ResponsiveImage
+                image={block.image}
+                sizes="(min-width: 768px) 720px, 100vw"
+                className="tm-box"
+            />
+            {block.caption && (
+                <figcaption className="mt-3 text-sm text-tm-300">
+                    {block.caption}
+                </figcaption>
+            )}
+        </figure>
+    ),
+};
 
 export function ArticleBlocks({ blocks }: { blocks: ArticleBlock[] }) {
-    return (
-        <div>
-            {blocks.map((block, index) => (
-                <Block
-                    key={`${block.type}-${index}`}
-                    block={block}
-                    isFirst={index === 0}
-                />
-            ))}
-        </div>
-    );
+    return <KitArticleBlocks blocks={blocks} renderers={renderers} />;
 }

@@ -101,7 +101,7 @@ Builders live in `App\Support\Seo\JsonLd` (static methods returning arrays).
 - Everything else `loading="lazy" decoding="async"`.
 - Template JS/CSS code-split per template (only the active template ships).
 - Fonts: self-hosted (Fontsource, `display=swap`), above-the-fold faces
-  preloaded per template (`Template::preloadFonts()`).
+  preloaded per template (`preloadFonts` in `template.json`).
 - `motion`: respect reduced motion (`MotionConfig reducedMotion="user"`,
   already in reference); avoid layout-shifting reveal animations above the fold.
 - HTTP: `Cache-Control` for built assets (Vite hashed) = immutable; enable

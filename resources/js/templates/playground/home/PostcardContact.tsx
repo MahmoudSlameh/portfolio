@@ -1,45 +1,16 @@
 import { Check, Copy, Send } from 'lucide-react';
-import {
-    useEffect,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type FormEvent,
-} from 'react';
+import { useEffect, useRef } from 'react';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useNow } from '@/hooks/useLocalTime';
 import { useTranslation } from '@/hooks/useTranslation';
-import {
-    validateContact,
-    type ContactErrors,
-    type ContactField,
-} from '@/lib/contactSchema';
-import { submitContactMessage } from '@/lib/content';
+import { CONTACT_FIELDS, CONTACT_TOPICS, useContactForm } from '@/kit';
 import { formatTime } from '@/lib/utils';
 import { useToast } from '@/providers/ToastProvider';
-import type { ContactMessage, Profile } from '@/types/content';
+import type { Profile } from '@/types/content';
 import { usePlaygroundCopy } from '../copy';
 import { PopInput, PopTextArea } from '../components/PopField';
 import { PopButton } from '../components/PopButton';
 import { SectionHeading } from '../components/SectionHeading';
-
-const initialValues: ContactMessage = {
-    name: '',
-    email: '',
-    topic: 'advisory',
-    message: '',
-};
-
-const TOPICS: ContactMessage['topic'][] = [
-    'advisory',
-    'role',
-    'speaking',
-    'hello',
-];
-
-const FIELD_ORDER: ContactField[] = ['name', 'email', 'topic', 'message'];
-
-type FormStatus = 'idle' | 'submitting' | 'success';
 
 function PostageStamp({ profile }: { profile: Profile }) {
     return (
@@ -191,68 +162,19 @@ function DeliveredCard({
 export function PostcardContact({ profile }: { profile: Profile }) {
     const { t } = useTranslation();
     const p = usePlaygroundCopy();
-    const [values, setValues] = useState<ContactMessage>(initialValues);
-    const [errors, setErrors] = useState<ContactErrors>({});
-    const [hasAttempted, setHasAttempted] = useState(false);
-    const [status, setStatus] = useState<FormStatus>('idle');
-    const { notify: notifyFailure } = useToast();
-    const [messageId, setMessageId] = useState('');
-    const summaryRef = useRef<HTMLDivElement>(null);
-    const nameRef = useRef<HTMLInputElement>(null);
-    const errorCount = Object.keys(errors).length;
-
-    const handleChange = (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ): void => {
-        const nextValues = {
-            ...values,
-            [event.target.name]: event.target.value,
-        };
-        setValues(nextValues);
-        if (!hasAttempted) return;
-        const result = validateContact(nextValues);
-        setErrors(result.success ? {} : result.errors);
-    };
-
-    const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> => {
-        event.preventDefault();
-        setHasAttempted(true);
-
-        const result = validateContact(values);
-        if (!result.success) {
-            setErrors(result.errors);
-            window.requestAnimationFrame(() => summaryRef.current?.focus());
-            return;
-        }
-
-        setErrors({});
-        setStatus('submitting');
-        let response: Awaited<ReturnType<typeof submitContactMessage>>;
-        try {
-            response = await submitContactMessage(result.data);
-        } catch {
-            setStatus('idle');
-            notifyFailure(t('contact.failed'));
-            return;
-        }
-        setMessageId(response.id);
-        setStatus('success');
-    };
-
-    const handleReset = (): void => {
-        setValues(initialValues);
-        setErrors({});
-        setHasAttempted(false);
-        setStatus('idle');
-        window.requestAnimationFrame(() => nameRef.current?.focus());
-    };
-
-    const errorText = (field: ContactField): string | undefined => {
-        const key = errors[field];
-        return key ? t(key) : undefined;
-    };
+    const {
+        values,
+        errors,
+        errorCount,
+        status,
+        messageId,
+        errorText,
+        handleChange,
+        handleSubmit,
+        reset: handleReset,
+        summaryRef,
+        nameRef,
+    } = useContactForm();
 
     return (
         <section
@@ -302,7 +224,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                                         })}
                                     </p>
                                     <ul className="mt-1.5 flex flex-col gap-0.5">
-                                        {FIELD_ORDER.filter(
+                                        {CONTACT_FIELDS.filter(
                                             (field) => errors[field],
                                         ).map((field) => (
                                             <li key={field}>
@@ -356,7 +278,7 @@ export function PostcardContact({ profile }: { profile: Profile }) {
                                     {p('contact.topicLegend')}
                                 </legend>
                                 <div className="flex flex-wrap gap-2">
-                                    {TOPICS.map((topic) => (
+                                    {CONTACT_TOPICS.map((topic) => (
                                         <label
                                             key={topic}
                                             className="pg-chip cursor-pointer"

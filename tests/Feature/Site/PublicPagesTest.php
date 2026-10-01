@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\ProjectCategory;
-use App\Enums\Template;
 use App\Models\Article;
 use App\Models\Book;
 use App\Models\Profile;
@@ -16,9 +15,7 @@ beforeEach(function () {
     Book::factory()->create();
 });
 
-dataset('templates', array_map(fn (Template $template): array => [$template], Template::cases()));
-
-test('every page renders in every template with its props', function (Template $template) {
+test('every page renders in every template with its props', function (string $template) {
     SiteSetting::current()->update(['active_template' => $template]);
 
     $pages = [
@@ -36,14 +33,14 @@ test('every page renders in every template with its props', function (Template $
         $this->get($url)
             ->assertOk()
             ->assertInertia(fn (Assert $inertia) => $inertia
-                ->component("{$template->value}/{$page}")
+                ->component("{$template}/{$page}")
                 ->hasAll([...$props, 'seo', 'site', 'profile', 'socials', 'template'])
-                ->where('template.id', $template->value)
+                ->where('template.id', $template)
                 ->where('template.isPreview', false));
     }
 })->with('templates');
 
-test('a fresh install without any content renders every page with empty lists', function (Template $template) {
+test('a fresh install without any content renders every page with empty lists', function (string $template) {
     Project::query()->delete();
     Article::query()->delete();
     Book::query()->delete();
@@ -52,7 +49,7 @@ test('a fresh install without any content renders every page with empty lists', 
     $this->get('/')
         ->assertOk()
         ->assertInertia(fn (Assert $inertia) => $inertia
-            ->component("{$template->value}/Home")
+            ->component("{$template}/Home")
             ->where('projects', [])
             ->where('career', [])
             ->where('companies', [])
@@ -64,13 +61,13 @@ test('a fresh install without any content renders every page with empty lists', 
     }
 })->with('templates');
 
-test('unknown pages render the template 404 page with a 404 status', function (Template $template) {
+test('unknown pages render the template 404 page with a 404 status', function (string $template) {
     SiteSetting::current()->update(['active_template' => $template]);
 
     $this->get('/definitely-not-here')
         ->assertNotFound()
         ->assertInertia(fn (Assert $inertia) => $inertia
-            ->component("{$template->value}/NotFound")
+            ->component("{$template}/NotFound")
             ->where('seo.robots', 'noindex,nofollow'));
 })->with('templates');
 

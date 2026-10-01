@@ -3,14 +3,14 @@ import { ChangelogLayout } from '@/templates/changelog/layout/ChangelogLayout';
 import { withTemplateLayout } from '@/shared/inertia/withTemplateLayout';
 import { SeoHead, type SeoData } from '@/shared/seo/SeoHead';
 import type { ProjectArchivePageProps } from '@/templates/types';
-import { useSearchChange } from '@/shared/inertia/useSearchChange';
+import { useArchiveFilters } from '@/kit';
 
 type Props = Omit<ProjectArchivePageProps, 'onSearchChange'> & { seo: SeoData };
 
 const ONLY = ['projects', 'facets', 'total'];
 
 export default function ProjectArchive({ seo, ...props }: Props) {
-    const onSearchChange = useSearchChange(props.search, ONLY);
+    const onSearchChange = useArchiveFilters(props.search, ONLY);
 
     return (
         <>

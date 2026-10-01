@@ -2,18 +2,20 @@
 
 ## Commands
 
-| Purpose                     | Command                                                                 |
-| --------------------------- | ----------------------------------------------------------------------- |
-| Dev (server + queue + vite) | `composer dev`                                                          |
-| PHP format                  | `composer lint` (Pint, `laravel` preset) · check: `composer lint:check` |
-| PHP static analysis         | `composer types:check` (Larastan level 7)                               |
-| PHP tests                   | `php artisan test` (Pest 5) — `composer test` runs lint + types + tests |
-| JS lint/format              | `npm run check` / `npm run check:fix` (vite-plus)                       |
-| TS types                    | `npm run types:check`                                                   |
-| Everything CI runs          | `composer ci:check`                                                     |
-| Build                       | `npm run build` · with SSR `npm run build:ssr`                          |
-| Filament resource           | `php artisan make:filament-resource Experience --generate --view`       |
-| Filament page               | `php artisan make:filament-page EditProfile`                            |
+| Purpose                     | Command                                                                             |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| Dev (server + queue + vite) | `composer dev`                                                                      |
+| PHP format                  | `composer lint` (Pint, `laravel` preset) · check: `composer lint:check`             |
+| PHP static analysis         | `composer types:check` (Larastan level 7)                                           |
+| PHP tests                   | `php artisan test` (Pest 5) — `composer test` runs lint + types + tests             |
+| JS lint/format              | `npm run check` / `npm run check:fix` (vite-plus)                                   |
+| TS types                    | `npm run types:check`                                                               |
+| Everything CI runs          | `composer ci:check`                                                                 |
+| Build                       | `npm run build` · with SSR `npm run build:ssr`                                      |
+| Filament resource           | `php artisan make:filament-resource Experience --generate --view`                   |
+| Filament page               | `php artisan make:filament-page EditProfile`                                        |
+| New public-site template    | `php artisan make:template <id> [--from=minimal]` (see 11 §2)                       |
+| Studio spec schema          | `php artisan studio:generate` after changing `SpecCatalogue` or `config/studio.php` |
 
 A task is **not done** until `composer ci:check` passes.
 
@@ -82,8 +84,8 @@ migrate:fresh --seed` without the demo seeder) and check the browser console.
 
 ## Testing (Pest)
 
-- Feature test per public route × per template (dataset over
-  `Template::cases()`): status 200, component name, required props, SEO prop.
+- Feature test per public route × per template (the `templates`
+  dataset in `tests/Pest.php`, one entry per `template.json`): status 200, component name, required props, SEO prop.
 - Filament tests with `livewire()` helpers: list/create/edit/delete per
   resource, validation rules (e.g. end date ≥ start date), media upload
   (`UploadedFile::fake()->image()`), singleton pages save.

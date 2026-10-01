@@ -1,0 +1,503 @@
+# 12 · Studio templates & the AI template builder
+
+> Status: **P8–P10 built** (studio templates, the AI builder, refine/versions, export/import, screenshots, eject) (phases [P8](tasks/phase-8-studio-engine.md),
+> [P9](tasks/phase-9-ai-builder.md), [P10](tasks/phase-10-studio-extras.md)).
+> Decisions: D25–D31 in [09](09-decisions.md).
+
+The owner opens **Site → Appearance → Generate with AI**, describes a design
+(a prompt, a reference screenshot or both), and a few minutes later a new
+template appears next to the built-in ones, ready to preview and activate.
+It renders the same content from the panel, through the same controllers,
+with SSR and SEO intact.
+
+## 1. Storage decision (D25): a spec in the database, not generated code
+
+Code templates are TSX compiled by Vite at deploy time, and SSR runs a
+pre-built bundle. We compared three options:
+
+| Option                            | How                                                                  | Verdict                                                                                                                                                                                                                   |
+| --------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A. Generate TSX files             | The AI writes React code into `resources/js/templates/<id>`          | ✗ Needs `npm run build` on the server per template (the site breaks while the build output is replaced), runs AI-written code inside the SSR Node process (remote code execution risk), files are lost on the next deploy |
+| B. Spec (JSON) in the database    | The AI writes a **Template Spec**; one React engine renders any spec | ✓ No build, SSR/SEO intact, safe, instant. Freedom is limited to the section library                                                                                                                                      |
+| **C. Spec + scoped CSS** (chosen) | Like B, plus a sanitised stylesheet scoped to the template           | ✓ All of B, with much more visual freedom and still **no JavaScript** from the AI                                                                                                                                         |
+
+Consequences:
+
+- A generated template is **data**: a row in `studio_templates` with
+  versions in `studio_template_versions`. It survives deploys, is backed up
+  with the database and can be exported/imported as a JSON file.
+- The same engine renders hand-written specs, so the feature is useful even
+  without an AI provider (write or import a spec).
+- Developers who want full control can **eject** a studio template into a
+  real code template (`php artisan template:eject`, P10) and continue in TSX.
+
+## 2. The Template Spec
+
+A versioned JSON document (`"$schema": "studio/v1"`). _Built in P8-01:_
+
+| Piece                           | Where                                                             | Role                                                                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Catalogue** (source of truth) | `App\Support\Studio\SpecCatalogue` + fonts in `config/studio.php` | Sections, variants, props, page variants, layout, tokens, copy keys and limits                                                                  |
+| Validator                       | `App\Support\Studio\SpecValidator`                                | Checks a spec; every error has a path (`pages.home[2].variant must be one of: grid, bento, list, slider.`); nothing unknown is silently ignored |
+| JSON Schema                     | `resources/studio/schema/v1.json` (generated)                     | Draft 2020-12, closed objects; given to the AI as its output format (P9)                                                                        |
+| Engine catalogue                | `resources/js/templates/studio/catalogue.ts` (generated)          | The same data `as const` for React                                                                                                              |
+| Types                           | `resources/js/templates/studio/spec.ts`                           | `TemplateSpec` derived from the catalogue, so they cannot drift                                                                                 |
+
+`php artisan studio:generate` writes the two generated files (excluded from
+Vite+ lint/format); `studio:generate --check` and a test fail when they are
+stale. Example fixture: `resources/studio/examples/neon-brutalist.json`.
+
+```json
+{
+    "$schema": "studio/v1",
+    "name": "Neon Brutalist",
+    "tokens": {
+        "colors": {
+            "light": {
+                "bg": "#f6f5f0",
+                "surface": "#ffffff",
+                "text": "#111111",
+                "muted": "#5b5b5b",
+                "accent": "#ff3d7f",
+                "border": "#111111"
+            },
+            "dark": {
+                "bg": "#0c0c0f",
+                "surface": "#16161c",
+                "text": "#f2f2f2",
+                "muted": "#9a9aa5",
+                "accent": "#ff3d7f",
+                "border": "#f2f2f2"
+            }
+        },
+        "fonts": {
+            "display": "space-grotesk",
+            "body": "geist",
+            "mono": "jetbrains-mono"
+        },
+        "radius": "none",
+        "density": "comfortable",
+        "shadow": "hard",
+        "motion": "subtle"
+    },
+    "layout": {
+        "header": { "variant": "bar-sticky" },
+        "footer": { "variant": "columns" },
+        "container": "wide"
+    },
+    "pages": {
+        "home": [
+            {
+                "section": "hero",
+                "variant": "split-portrait",
+                "props": { "showAvailability": true }
+            },
+            { "section": "stats", "variant": "inline" },
+            {
+                "section": "projects",
+                "variant": "bento",
+                "props": { "limit": 6 }
+            },
+            { "section": "career", "variant": "timeline" },
+            { "section": "clients", "variant": "marquee" },
+            { "section": "testimonials", "variant": "carousel" },
+            {
+                "section": "writing",
+                "variant": "list",
+                "props": { "limit": 3 }
+            },
+            { "section": "contact", "variant": "card" }
+        ],
+        "projects": { "variant": "grid" },
+        "caseStudy": { "variant": "longform" },
+        "writing": { "variant": "list" },
+        "article": { "variant": "centered" },
+        "books": { "variant": "shelf" },
+        "uses": { "variant": "columns" },
+        "now": { "variant": "notes" },
+        "notFound": { "variant": "big-number" }
+    },
+    "copy": {
+        "heroKicker": "Available for select projects",
+        "contactHeading": "Let's build something loud"
+    },
+    "css": "[data-template=\"studio\"] .st-hero h1 { letter-spacing: -0.04em; text-transform: uppercase; }"
+}
+```
+
+Rules:
+
+- **Content is never in the spec.** Names, bios, projects and images always
+  come from the controllers' props (hard rule 1). `copy` is limited to UI
+  micro-copy keys defined by the section library, each with a max length.
+- **Fonts** are chosen from a fixed allow-list of Fontsource families that
+  ship with the app (hard rule / D20: no third-party requests). The list
+  lives in `config/studio.php` and is sent to the AI: Geist, Bricolage
+  Grotesque, Space Grotesk, Archivo, JetBrains Mono, Space Mono, DM Mono and
+  the system sans/serif/mono stacks. `tokens.fonts.mono` only accepts
+  monospace fonts.
+- **Everything is required** except `copy` and `css`: all colour roles for
+  light and dark, all three fonts, all tokens, header/footer/container and a
+  variant for every page. Each home section may appear once (up to 16).
+- **Copy and names are plain text**: no `<`/`>`, line breaks or control
+  characters; colours must be hex (`#rgb`, `#rrggbb`, `#rrggbbaa`), so no CSS
+  can be smuggled through a token.
+- **Unknown sections, variants or props are rejected** by validation (they
+  are not silently ignored), so the AI gets precise errors to repair.
+- Every home section is optional; sections whose data is empty render
+  nothing (same rule as the code templates).
+
+## 3. The `studio` engine (P8)
+
+A fourth code template, `resources/js/templates/studio/`, that renders a
+spec. It is a normal Inertia template: `resources/js/pages/studio/*.tsx`
+wrappers, the same page props, plus a shared `studio` prop with the active
+spec version.
+
+- **Tokens → CSS variables.** The server turns `tokens` into a `<style>`
+  block of custom properties (`--st-bg`, `--st-accent`, `--st-radius`, …) for
+  light and dark, emitted in `app.blade.php` so SSR paints the right colours
+  with no flash.
+- **Section library.** Each section is a React component with a small set of
+  variants, built on the [template kit](11-template-kit.md) hooks:
+
+    | Page   | Sections / variants (initial set)                                                                                                                                                                                                                                                                                                                                                                 |
+    | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | Layout | header: `bar-sticky`, `floating-pill`, `sidebar`, `minimal` · footer: `minimal`, `columns`, `big-name`                                                                                                                                                                                                                                                                                            |
+    | Home   | `hero` (`centered`, `split-portrait`, `editorial`, `terminal`), `about`, `stats`, `skills` (`chips`, `grid`, `bars`), `career` (`timeline`, `cards`, `table`), `projects` (`grid`, `bento`, `list`, `slider`), `clients` (`logos`, `marquee`), `testimonials` (`carousel`, `wall`), `education`, `writing` (`list`, `cards`), `books` (`shelf`, `covers`), `contact` (`card`, `split`, `minimal`) |
+    | Other  | one to three variants each for project archive, case study, writing archive, article, books, uses, now, 404                                                                                                                                                                                                                                                                                       |
+
+- **Scoped CSS.** `css` is sanitised on save (see §6) and injected after the
+  engine's base styles, scoped under `[data-template="studio"]`. (A page only
+  ever renders one template, so no per-template id is needed, and the CSS
+  stays valid when a template is duplicated or refined.)
+- **Stable class hooks.** Every section exposes documented class names
+  (`.st-hero`, `.st-hero__title`, `.st-card`, …) so the AI's CSS targets a
+  known surface. The list is generated into the AI instructions.
+
+### As built (P8-04)
+
+- Server: `TemplateManager::studio()`/`studioSpec()`; shared prop
+  `studio: { spec } | null`; `App\Support\Studio\StudioStyles` prints
+  `<style id="studio-styles">` in `<head>` after the bundle: the tokens as
+  the shared colour system (`--paper`, `--surface`, `--ink`, `--ink-muted`,
+  `--line`, `--signal`, `--on-signal` = black or white by WCAG contrast, …)
+  and engine variables (`--st-radius`, `--st-section-gap`, `--st-container`,
+  `--st-shadow`, `--st-duration`, fonts), light and dark, then the spec's
+  sanitised CSS.
+- Engine: `resources/js/templates/studio/` — `layout/StudioLayout.tsx`
+  (4 headers, 3 footers, command palette, pages switched off in the panel
+  are hidden), `sections/*` (12 home sections), `home/HomePage.tsx` (an
+  exhaustive map from section name to component: a section added to the
+  catalogue does not compile until implemented), `pages/*` (the 8 other
+  pages with their variants), `components/*` (cards, contact form on the
+  kit, article renderers), `styles.css` (the `.st-*` building blocks). The
+  wrappers are in `resources/js/pages/studio/`.
+- Class hooks for the spec's CSS: `SpecCatalogue::CLASS_HOOKS` (also in the
+  generated catalogue for the AI); a test fails if one disappears from the
+  engine.
+- Examples: `resources/studio/examples/*.json` (Neon Brutalist, Quiet Serif,
+  Mono Grid, Sidebar Atelier) use every section, variant, header and footer
+  between them (tested). `php artisan db:seed --class=StudioDemoSeeder`
+  creates them as ready studio templates to try in `/dev/templates`.
+
+## 4. Data model (P8/P9) — _built in P8-03_
+
+`studio_templates`
+
+| Column              | Type                 | Notes                                                   |
+| ------------------- | -------------------- | ------------------------------------------------------- |
+| `id`                | ulid                 | Template id is `studio:<id>`                            |
+| `name`              | string               |                                                         |
+| `description`       | string, nullable     |                                                         |
+| `source`            | enum `StudioSource`  | `ai` · `manual` · `import`                              |
+| `status`            | enum `StudioStatus`  | `draft` · `queued` · `in_progress` · `ready` · `failed` |
+| `progress`          | tinyint 0–100        | Shown on the Appearance card                            |
+| `current_step`      | string, nullable     | e.g. "Composing pages…"                                 |
+| `error`             | text, nullable       | Last failure, shown to the owner                        |
+| `active_version_id` | foreign id, nullable | Version rendered on the site                            |
+| timestamps          |                      |                                                         |
+
+`studio_template_versions`
+
+| Column                          | Type                   | Notes                                        |
+| ------------------------------- | ---------------------- | -------------------------------------------- |
+| `id`                            | id                     |                                              |
+| `studio_template_id`            | foreign id             |                                              |
+| `number`                        | unsigned int           | 1, 2, 3 … per template                       |
+| `spec`                          | json                   | Validated Template Spec (no DB default, D15) |
+| `notes`                         | json, nullable         | What the CSS sanitiser removed               |
+| `prompt`                        | text, nullable         | Prompt (v1) or refine instruction (v2+)      |
+| `parent_id`                     | foreign id, nullable   | Version this one refined                     |
+| `provider`, `model`             | string, nullable       | What generated it                            |
+| `input_tokens`, `output_tokens` | unsigned int, nullable | Usage, for the cost display                  |
+| timestamps                      |                        |                                              |
+
+Media (Spatie, hard rule 2): `StudioTemplate` collections `reference`
+(uploaded screenshots/mockups, private disk) and `screenshot` (card image).
+
+As built:
+
+- `App\Models\StudioTemplate` (ULID key, enums `StudioStatus` and
+  `StudioSource`) and `App\Models\StudioTemplateVersion`; morph aliases
+  `studio_template`, `studio_template_version`. Deleting a template deletes
+  its versions.
+- **`StudioTemplate::addVersion($spec, $meta)` is the only way to store a
+  design:** it validates the spec (`InvalidSpecException`, nothing stored),
+  sanitises its CSS (removed items go to `notes`; fully unsafe CSS is
+  dropped), numbers the version and, for the first version, activates it
+  and marks the template `ready`. Later versions (refinements) are
+  activated with `activate($version)`, which also rolls back.
+- The registry lists studio templates **that have an active version**
+  (whatever a generation is doing, since P10-01) after the code templates, as `TemplateDefinition`s with id
+  `studio:<ulid>`, namespace `studio` (Inertia pages and CSS scope), the
+  spec's fonts preloaded and the `screenshot` media as the card image.
+  Studio templates are never written to the template cache; saving or
+  deleting one refreshes the list. A deleted active template falls back to
+  the default.
+- The example spec lives in `resources/studio/examples/neon-brutalist.json`
+  (`SpecCatalogue::example()`), used by the factory's `ready()` state and the
+  tests.
+- `studio_generations` (`App\Models\StudioGeneration`, _P9-04_): one row per
+  AI attempt — template, status, prompt, `start_from`, provider, model,
+  turns, input/output tokens, error. The daily limit counts today's rows,
+  so failed attempts count too. The version keeps the summed tokens of the
+  attempt that produced it.
+
+## 5. AI generation pipeline (P9)
+
+Built on the official **Laravel AI SDK** (`laravel/ai`, D27): agents,
+structured output, image attachments, queueing and per-request
+provider/model selection across Anthropic, OpenAI, Gemini, Groq, xAI,
+DeepSeek, Mistral, OpenRouter and Ollama.
+
+```
+Appearance ─ "Generate with AI" modal
+   │  name · prompt · reference images (0–3) · start from (optional template) · pages
+   ▼
+StudioTemplate (status=queued) + GenerateStudioTemplate job (queue)
+   ▼  in_progress 10%  "Reading your references…"
+TemplateDesigner agent  (instructions = spec schema + section catalogue + class hooks + font list)
+   │  structured output → Template Spec
+   ▼  in_progress 70%  "Validating…"
+SpecValidator + CssSanitizer
+   │  invalid? → send the errors back to the agent (repair turn), max 2 retries
+   ▼
+StudioTemplateVersion #1 → active_version_id → status=ready 100%
+   (any exception → status=failed, error saved, owner notified)
+```
+
+- **Agent**: `App\Ai\Agents\TemplateDesigner` implements `Agent` and
+  `HasStructuredOutput`; it returns `{spec, summary}` with the spec as a
+  JSON string (D31), checked by `SpecValidator`. Reference images are
+  passed as attachments. When "start from" is set, the current spec (or a
+  description of the code template) is included as a starting point.
+- **Start**: `App\Support\Studio\StudioGenerator::start()` refuses with a
+  readable `GenerationRefused` when AI is not ready or today's limit is
+  reached; otherwise it records the attempt, sets the template to `queued`
+  and dispatches the job.
+- **Job**: `App\Jobs\GenerateStudioTemplate` (timeout 300 s, 1 try, the
+  repair loop happens inside the job; a repair turn resends the
+  conversation so far plus the validator's errors). It updates `progress`/`current_step`
+  between steps. Requires the queue worker that production already runs
+  ([10](10-deployment.md)).
+- **Refine** (P10): "Make it darker / use a serif display font" creates
+  version _n+1_ from version _n_ plus the instruction; older versions stay
+  available (activate or roll back any version).
+- **Notifications**: a Filament database notification when a generation
+  finishes or fails.
+
+## 6. Safety
+
+- **No executable output.** The AI produces JSON; JSON is validated against
+  the schema; nothing is ever `eval`-ed, compiled or written to disk.
+- **CSS sanitiser** (`App\Support\Studio\CssSanitizer`, _built in P8-02_):
+  an allow-list parser (no dependency) that writes back only what it
+  understands and reports everything it dropped (`CssSanitizeResult::$removed`,
+  shown to the owner and sent back to the AI):
+    - keeps style rules, `@media`, `@supports` and `@keyframes`; drops every
+      other at-rule (`@import`, `@font-face`, `@charset`, `@namespace`,
+      `@page`, …), nested rules and stray text;
+    - scopes every selector: `.x` → `[data-template="studio"] .x`;
+      `html`/`:root` → the scope; `[data-theme="dark"] .x` →
+      `[data-template="studio"][data-theme="dark"] .x`;
+    - drops declarations with `expression()`, `javascript:`, `behavior`,
+      `-moz-binding`, backslash escapes (they can hide any of these), `<`, `>`
+      `{`, `}` or `@` in values, and anything that loads a resource:
+      `url()` only for inline `data:` images (png, jpeg, gif, webp, svg) up to
+      20 KB; `image-set()`, `image()`, `element()`, `src()`, `cross-fade()` are
+      dropped;
+    - removes comments; `<` never survives, so the output cannot close the
+      `<style>` tag; over 40 KB nothing is kept;
+    - is stable: sanitising its own output changes nothing.
+
+    Known limit: CSS escapes are not supported at all, so `content: "\201C"`
+    is dropped; write the character itself (`content: "“"`).
+
+- **Copy** strings are plain text, length-limited, escaped by React.
+- **Preview first.** A new or refined template is never activated
+  automatically; the owner previews it (`?template=studio:<ulid>`, admin
+  only, `noindex`, D13) and activates it.
+- **Cost guard.** A daily generation limit (default 20) and a per-request
+  max output tokens setting; usage is stored per version and shown on the card.
+- **Secrets.** API keys are stored with Laravel's `encrypted` cast, never
+  sent to the browser (masked field in the panel), never logged.
+
+## 7. AI settings (P9)
+
+New singleton page **Site → AI** (backed by new columns on `site_settings`,
+D28):
+
+| Field                    | Notes                                                                                     |
+| ------------------------ | ----------------------------------------------------------------------------------------- |
+| Enable AI features       | Hides the "Generate with AI" button when off                                              |
+| Provider                 | Select from the SDK's supported text providers                                            |
+| Model                    | Free text with suggestions per provider (e.g. the provider's latest vision-capable model) |
+| API key                  | `encrypted`; leave empty to use the `.env` key                                            |
+| Base URL                 | Only for Ollama / OpenAI-compatible endpoints                                             |
+| Daily generation limit   | Default 20                                                                                |
+| Test connection (action) | Sends a tiny prompt and reports success, latency and model                                |
+
+Resolution order for every request: **panel settings → `.env` → disabled**.
+The `.env` path makes it work for people who prefer config files:
+
+```dotenv
+STUDIO_AI_PROVIDER=anthropic       # any provider supported by laravel/ai
+STUDIO_AI_MODEL=                   # the provider's model id
+ANTHROPIC_API_KEY=                 # provider keys use laravel/ai's own env names
+OPENAI_API_KEY=
+GEMINI_API_KEY=
+```
+
+At runtime the resolved settings are registered as an extra SDK provider,
+`ai.providers.studio` (driver, key, URL), inside the job only; the cached
+instance is forgotten (`AiManager::forgetInstance('studio')`) and the agent
+is prompted with `provider: 'studio'` and `model:` (empty = the provider's
+default model). The other defaults live in `config/studio.php` → `ai`
+(`STUDIO_AI_DAILY_LIMIT`, `STUDIO_AI_MAX_TOKENS`, `STUDIO_AI_TIMEOUT`).
+_Installed in P9-01._
+
+## 8. The Appearance page (P9)
+
+- Built-in templates first, then studio templates, as the same cards.
+- Card badges: `Draft` · `Queued` · `Generating 45% — Composing pages…` ·
+  `Ready` · `Failed` (with the error and a Retry action) · `Active`.
+- The page polls (`wire:poll.3s`) **only while** a template is queued or in
+  progress.
+- Actions on a ready studio template: **Preview**, **Activate**, **Refine**
+  (P10), **Versions** (P10), **Duplicate**, **Export JSON** (P10),
+  **Delete** (disabled while active).
+- Header actions: **Generate with AI** (hidden when AI is disabled, with a
+  hint linking to Site → AI), **New blank studio template**, **Import JSON**
+  (P10).
+
+### As built (P8-05)
+
+`App\Filament\Pages\Appearance` has two sections, **Built-in templates**
+and **Studio templates** (every `StudioTemplate` row, newest first).
+
+- A studio card shows its status badge (or `Active`), the active version and
+  source (`Version 3 · Written by hand`), progress while working, and the
+  error when failed. **Preview** and **Activate** appear only once the
+  template has an active version (it is then in the registry).
+- **New studio template** (header): a name, a description and an example to
+  start from (`SpecCatalogue::examples()`); the example's `name` is replaced.
+  It replaces the planned "New blank studio template": a valid blank spec
+  would render an empty site.
+- **Edit** (slide-over): name, description and the spec in a JSON code
+  editor. Saving runs `SpecValidator`; every problem is listed in the
+  field's message (the first five, then a count). A valid spec becomes a new
+  version (parent = the previous active one), is activated and the content
+  cache is flushed. When the sanitiser removed CSS, a persistent warning
+  lists what was removed.
+- **Duplicate** copies the active spec as `Copy of <name>` (version 1).
+- **Delete** asks for confirmation and is disabled, with a tooltip, while
+  the template is active.
+- After every action the cards are rebuilt in the same response.
+- Studio cards have no screenshot until P10-03; they say so and point at
+  Preview.
+
+### As built (P9-05)
+
+- **Generate with AI** (header): hidden when AI is switched off in Site →
+  AI, disabled with the reason as tooltip when it is not ready. Modal:
+  name, "What should it look like?" (required unless an image is given),
+  up to 3 reference images (5 MB each, private disk), **Start from** (none,
+  a built-in template or a ready studio template) and the generations left
+  today. The planned "pages" field was dropped: every spec defines every
+  page.
+- Cards show `Queued` / `Generating` with `n% — step`, and `Failed` with the
+  error and **Retry** (same prompt, starting point and images). Edit is not
+  offered while a template is queued or generating. AI versions show their
+  token usage.
+- The studio section has `wire:poll.3s` only while a card is queued or
+  generating.
+
+### Refine & versions (as built, P10-01)
+
+- **Refine** (card action on a template with a version): "What should
+  change?" → `StudioGenerator::refine()`, a normal generation (daily limit,
+  progress, repair turns, Retry) whose brief says "Revise …" and carries
+  the current spec. The new version's parent is the version it started
+  from.
+- A refine of the **live** template saves the new version **without
+  activating it** (visitors keep the current one; the notification links
+  to a preview of the new version). Otherwise the new version becomes the
+  template's active version.
+- **Version preview**: `/?template=studio:<ulid>&version=<n>` (admin only;
+  unknown numbers are ignored), kept in the session like a template preview
+  and shown in the preview bar ("version n").
+- **Versions** page (`/admin/appearance/{template}/versions`, card action
+  "Versions (n)"): newest first, active badge, how each version was made
+  (created, edited from vN, generated with AI from vN + prompt), model and
+  tokens, removed CSS, with **Preview** and **Activate** (roll back or
+  forward; warns when the template is live).
+
+### Export / import (as built, P10-02)
+
+`App\Support\Studio\StudioFile`: **Export** (card: active version;
+Versions page: any version) downloads `<name>.studio.json` with the spec, a
+name and a description only. **Import** (Appearance header) takes a file or
+pasted text, accepts that format or a bare spec, validates it (nothing is
+created on error) and stores it with `addVersion()` (CSS sanitised,
+`source = import`, never activated). Guide:
+[templates/sharing-studio-templates.md](templates/sharing-studio-templates.md).
+
+### Card screenshots (as built, P10-03)
+
+- Studio cards without a screenshot show a **swatch**
+  (`App\Support\Studio\StudioSwatch`): an SVG of the light and dark
+  palettes, a heading in the display font, radius and the header/hero
+  variants.
+- With `STUDIO_SCREENSHOT_CHROME` set, `App\Jobs\CaptureStudioScreenshot`
+  (queued by `StudioTemplate::activate()`) runs headless Chrome on the home
+  page and stores the image in the `screenshot` media. Chrome is not signed
+  in, so the URL carries `App\Support\Templates\RenderSignature`: an HMAC of
+  template id, theme and expiry (5 minutes) with the app key. It is not
+  tied to the host, so `STUDIO_SCREENSHOT_URL` can point Chrome at a local
+  address. `TemplateManager::isGalleryRender()` honours `?_template=` when
+  the dev gallery is on or that signature is valid; such renders are
+  `noindex` and skip analytics.
+- Card action **Refresh screenshot** and `php artisan studio:screenshots
+[--missing]`.
+
+### Eject (as built, P10-04)
+
+`php artisan template:eject <studio template> <id>` turns a studio template
+into a code template: a renamed copy of the engine that renders the active
+spec frozen in `frozenSpec.ts`, with the tokens and CSS in its `styles.css`
+(details in [11 § 2](11-template-kit.md#2-scaffold-command--built-in-p7-04)).
+The studio template is left as it was.
+
+## 9. Testing
+
+- Spec validator and CSS sanitiser: unit tests with valid, invalid and
+  malicious fixtures.
+- The job: the SDK's agent fakes return canned specs (valid, invalid-then-
+  valid, always invalid) to cover the repair loop and the failed state; no
+  network in tests.
+- The template matrix (`tests/Feature/...` datasets) includes a studio
+  template built from a fixture spec, so every public page is rendered
+  through the engine in CI.
+- Appearance page: Livewire tests for the generate modal, polling state and
+  activation of a studio template.

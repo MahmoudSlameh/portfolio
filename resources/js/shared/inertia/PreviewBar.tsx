@@ -1,12 +1,6 @@
 import { router, usePage } from '@inertiajs/react';
 import type { SharedProps } from '@/types/shared';
 
-const LABELS = {
-    changelog: 'Changelog',
-    playground: 'Playground',
-    terminal: 'Terminal',
-} as const;
-
 /** Floating bar shown to the signed-in owner while previewing a non-active template. */
 export function PreviewBar() {
     const { template } = usePage<SharedProps>().props;
@@ -40,8 +34,10 @@ export function PreviewBar() {
                 }}
             >
                 <span>
-                    Previewing <strong>{LABELS[template.id]}</strong> — visitors
-                    still see the active template.
+                    Previewing <strong>{template.name}</strong>
+                    {template.version !== null &&
+                        ` (version ${template.version})`}{' '}
+                    — visitors still see the active template.
                 </span>
                 <button
                     type="button"

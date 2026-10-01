@@ -36,14 +36,15 @@ function CompanyTicker({ companies }: { companies: Company[] }) {
                             rel="noreferrer"
                             lang="en"
                             className={cn(
-                                'inline-flex whitespace-nowrap text-[#607b96] transition-colors hover:text-tm-primary',
+                                'group inline-flex items-center whitespace-nowrap text-[#607b96] transition-colors duration-500 hover:text-tm-primary focus-visible:text-tm-primary',
                                 wordmarkClass[company.wordmark],
                             )}
                         >
+                            {/* Grey until hovered or focused, then the logo's own colours fade and scale in. */}
                             <CompanyLogo
                                 company={company}
                                 fallback={company.name}
-                                className="h-7 opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0"
+                                className="tm-client-logo"
                             />
                         </a>
                     </span>

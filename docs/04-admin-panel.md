@@ -70,6 +70,7 @@ cards).
 | Inbox   | Messages (badge = unread count) | Resource (read-only + actions)                | `ContactMessage`              |
 | Site    | **Appearance (templates)**      | Custom page                                   | `SiteSetting.active_template` |
 | Site    | SEO & settings                  | Singleton page                                | `SiteSetting`                 |
+| Site    | AI                              | Singleton page (`AiSettingsPage`)             | `SiteSetting.ai_*`            |
 | Site    | Users                           | Resource (simple)                             | `User`                        |
 
 ## Shared building blocks (`app/Filament/Support`)
@@ -206,15 +207,18 @@ Actions: view on site, replicate, delete/restore.
 
 ## Articles (`ArticleResource`)
 
-- Main: title → slug, excerpt, **body = `Builder`** with blocks (icons +
-  labels): Paragraph (Textarea), Heading (text; id auto-slug, hidden), Code
-  (language Select, filename, `CodeEditor` if available else monospace
-  Textarea), Quote, List (Repeater simple), Callout, Image (Select from
-  `body_images` with thumbnails, alt, caption). `->collapsible()->cloneable()->blockNumbers(false)`.
+- Main: title → slug, excerpt, **body = `RichEditor`** (TipTap, stored as
+  JSON; since P11-01). Pasting from a web page, Google Docs or Word keeps
+  headings, lists, quotes, code, links, bold and italic. Toolbar: bold,
+  italic, inline code, link · H2, H3 · quote, code block, lists · image,
+  blocks · undo/redo. Custom blocks: **Callout** and **Code with file name**
+  (`App\Filament\RichContent`). Images (with alt text) can be added once the
+  article is saved. **Import Markdown** (hint action): paste Markdown, add it
+  to the end or replace the body; raw HTML is stripped.
 - Aside: status ToggleButtons (Draft / Published), published_at, tags
   (TagsInput with suggestions from existing tags), related projects
-  (multi-select), cover upload + alt, `body_images` (multiple), reading time
-  (computed placeholder), SEO section.
+  (multi-select), cover upload + alt, reading time (computed placeholder),
+  SEO section.
 - Table: title, tags badges, status badge, published_at, reading minutes.
   Tabs on list page: All / Published / Drafts (with counts).
 
@@ -268,15 +272,38 @@ reading books (multi-select of books, default = status reading). Shows
 - On new message: database notification to all admins + mail notification
   to `contact_recipient` (queued).
 
+## Profile · CV (custom page `CvPage`)
+
+An ATS-friendly CV generated from the rest of the panel (profile, visible
+experience, education, skills, current certifications, featured projects).
+Choose **Classic**, **Modern** or **Compact**, A4 or US Letter, whether to
+include projects and certifications, and how many recent roles; a live
+preview shows the result. **Generate PDF** downloads it (dompdf, real text);
+**Use as my resume** stores it as the profile's `resume` file behind the
+site's "Download CV" link. Also `php artisan cv:generate`.
+
 ## Site · Appearance (custom page `Appearance`)
 
-- Card grid (one card per `Template` enum case): screenshot
+- Card grid (one card per template in the `TemplateRegistry`): screenshot
   (`public/templates/<id>.webp`), name, short description, fonts, "Active"
   badge on the current one.
 - Card actions: **Activate** (confirmation modal → updates
   `site_settings.active_template`, flushes cache, success notification) and
   **Preview** (opens `/?template=<id>` in a new tab; preview works only for
   the logged-in admin — visitors always get the active template).
+- Two sections: **Built-in templates** (code) and **Studio templates**
+  (database, rendered by the studio engine; [12](12-ai-templates.md)).
+- Header actions: **Generate with AI** (name, prompt, up to 3 reference
+  images, start from; queued job with live progress), **New studio
+  template** (from an example spec) and **Import** (a `.studio.json` file
+  or pasted spec; [sharing guide](templates/sharing-studio-templates.md)).
+- Studio card actions: Activate, Preview, **Refine** (ask the AI for
+  changes), **Edit** (JSON spec in a slide-over; each save is a new
+  version), **Versions** (page with preview/activate per version),
+  **Export**, **Refresh screenshot** (when screenshots are enabled),
+  Duplicate, Delete (disabled while active), **Retry** on a failed AI
+  generation. Cards without a screenshot show a colour/type swatch. The section polls every 3 s
+  only while a generation is queued or running.
 
 ## Site · SEO & settings (singleton page `SiteSettings`)
 
@@ -284,7 +311,22 @@ Tabs: _General_ (site_name, title_separator, enabled_pages toggles,
 contact_recipient) · _SEO_ (meta_description, default_og_image, twitter_handle,
 indexable toggle with danger description, verification codes) ·
 _Advanced_ (analytics_snippet, favicon). Header action: "Rebuild caches"
-(flush content caches + regenerate sitemap).
+(flush content caches + regenerate sitemap). Saving generates the raster favicons
+(`favicon.ico`, 192px PNG, apple-touch-icon) from an uploaded favicon; if an SVG cannot be
+rasterised (no Imagick SVG support or Chrome), a warning says so. `php artisan site:favicons
+[--force]` does the same from the CLI.
+
+## Site · AI (singleton page `AiSettingsPage`)
+
+Settings for the AI template builder ([12 §7](12-ai-templates.md#7-ai-settings-p9)),
+resolved by `App\Support\Studio\AiSettings` (panel → `.env` → disabled).
+A status line says whether AI is ready and why not. Fields: Enable AI
+features · provider (Select from `config('studio.ai.providers')`) · model
+(placeholder shows the SDK's default) · API key (password field, never
+filled back; "Remove the saved key" toggle) · base URL (Ollama and
+OpenAI-compatible only) · generations per day. Header action **Test
+connection** prompts the provider with the form's unsaved values and
+reports the model and latency; errors never show the key.
 
 ## Dashboard widgets
 

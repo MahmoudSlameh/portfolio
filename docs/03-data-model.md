@@ -38,7 +38,6 @@ All enums are string-backed and implement Filament `HasLabel` (+ `HasColor` /
 
 | Enum                   | Cases                                                                                                               | Source                               |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `Template`             | `changelog`, `playground`, `terminal`                                                                               | `templates/types.ts`                 |
 | `CompanyKind`          | `employer`, `client`                                                                                                | `CompanyKind`                        |
 | `WordmarkStyle`        | `serif`, `serif-italic`, `mono`, `sans-bold`, `sans-light`, `spaced`                                                | used when no logo is uploaded        |
 | `EmploymentType`       | `full-time`, `part-time`, `contract`, `freelance`, `open-source`, `internship`                                      | `EmploymentType` (+ `part-time`)     |
@@ -103,7 +102,7 @@ Media: `portrait` (single image), `resume` (single PDF, optional),
 
 | Column                   | Type                                     | Notes                                                        |
 | ------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
-| active_template          | enum `Template` default `changelog`      | **the switch the owner uses**                                |
+| active_template          | string (template id) default `changelog` | **the switch the owner uses**                                |
 | site_name                | string                                   | e.g. "Mahmoud Slameh" / brand title used in `<title>` suffix |
 | title_separator          | string default `—`                       |                                                              |
 | meta_description         | string(300)                              | default description                                          |
@@ -118,7 +117,7 @@ Media: `portrait` (single image), `resume` (single PDF, optional),
 | services_title           | string nullable                          | 〃                                                           |
 | services_highlight       | string nullable                          | 〃 (accent-colored part after the title)                     |
 
-Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`).
+Media: `default_og_image`, `favicon` (optional; falls back to `public/favicon.*`). Saving the settings (or `php artisan site:favicons`) makes `favicon.ico` (16/32/48), a 192px PNG and a 180px apple-touch-icon from the favicon on the public disk (`favicons/<media id>/`), recorded on the media item's `icons` custom property (App\Support\Media\Favicons).
 
 ### `now_pages` → `App\Models\NowPage`
 
@@ -329,39 +328,44 @@ Filament relationship `Repeater` so each image has its own alt + caption.
 
 ### `articles` → `App\Models\Article` (HasMedia, SoftDeletes)
 
-| Column                       | Type                  | TS `Article`                            |
-| ---------------------------- | --------------------- | --------------------------------------- |
-| slug                         | string unique         | `slug` / `id`                           |
-| title                        | string                | `title`                                 |
-| excerpt                      | string(400)           | `excerpt`                               |
-| body                         | json `ArticleBlock[]` | `body` — edited with Filament `Builder` |
-| tags                         | json `string[]`       | `tags`                                  |
-| status                       | enum `ArticleStatus`  |                                         |
-| published_at                 | timestamp nullable    | `publishedAt`                           |
-| cover_alt                    | string nullable       |                                         |
-| meta_title, meta_description | string nullable       | SEO overrides                           |
+| Column                       | Type                 | TS `Article`                         |
+| ---------------------------- | -------------------- | ------------------------------------ |
+| slug                         | string unique        | `slug` / `id`                        |
+| title                        | string               | `title`                              |
+| excerpt                      | string(400)          | `excerpt`                            |
+| body                         | json TipTap document | `body` (`ArticleBlock[]`), see below |
+| tags                         | json `string[]`      | `tags`                               |
+| status                       | enum `ArticleStatus` |                                      |
+| published_at                 | timestamp nullable   | `publishedAt`                        |
+| cover_alt                    | string nullable      |                                      |
+| meta_title, meta_description | string nullable      | SEO overrides                        |
 
 Media: `cover` (optional; used as OG image). Relation: `projects()`
 belongsToMany via `article_project` (→ `projectIds`).
 `readingMinutes` computed server-side (220 wpm, same algorithm as
 `lib/content.ts`).
 
-`ArticleBlock` union (Builder blocks, stored as
-`[{type, data}]` by Filament → normalized to the TS union in the resource):
+The body is written in Filament's rich editor and stored as a **TipTap
+document** (`{"type":"doc","content":[…]}`, since P11-01).
+`App\Support\Content\ArticleDocument` flattens it into the `ArticleBlock`
+union templates receive (mapping table in
+[P11-01](tasks/phase-11-content-tools.md)); `ArticleBody::toBlocks()` adds
+heading ids and resolves images.
 
-| Block     | Fields                                                                                                                    |
-| --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| paragraph | `text` (Textarea; inline markdown allowed: `**bold**`, `` `code` ``, links)                                               |
-| heading   | `text`, `id` (auto slug)                                                                                                  |
-| code      | `language` (ts, tsx, sql, bash, json, php, …), `filename?`, `code`                                                        |
-| quote     | `text`, `cite?`                                                                                                           |
-| list      | `items[]`                                                                                                                 |
-| callout   | `title`, `text`                                                                                                           |
-| image     | **new** — `media_uuid` (one of the article's `body_images` media, picked from a Select with thumbnails), `alt`, `caption` |
+| Block     | Fields                                                                                                                                 |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| paragraph | `text` — inline Markdown subset: `**bold**`, `*italic*`, `` `code` ``, `[text](url)`, `\` escapes (render with the kit's `InlineText`) |
+| heading   | `text` (plain), `id` (slug of the text, unique in the article)                                                                         |
+| code      | `language` (from the pasted `language-*` class or the Code block; `text` when unknown), `filename?` (Code block only), `code`          |
+| quote     | `text` (inline Markdown), `cite?` (a last line starting with `—` or `--`)                                                              |
+| list      | `items[]` (inline Markdown; nested lists are flattened)                                                                                |
+| callout   | `title`, `text` (inline Markdown) — the **Callout** custom block                                                                       |
+| image     | `image` (`ImageData` with the alt text given on upload), `caption?` (the image's `title`)                                              |
 
-Article media collections: `cover` (single) and `body_images` (multiple,
-uploaded in an "Images" section of the form, then referenced by uuid from
-`image` blocks). The resource resolves each uuid to `ImageData`.
+Article media collections: `cover` (single) and `body_images` (multiple).
+Images added in the editor are stored in `body_images` by Filament's
+media-library attachment provider and referenced by uuid from the image
+node; images removed from the body are deleted on save.
 
 ### `books` → `App\Models\Book` (HasMedia)
 
@@ -401,6 +405,12 @@ generated one).
 Never exposed to the frontend.
 
 ---
+
+## Studio templates
+
+`studio_templates` and `studio_template_versions` (templates stored as a
+Template Spec, rendered by the `studio` engine): see
+[12 §4](12-ai-templates.md#4-data-model-p8p9--built-in-p8-03).
 
 ## Frontend shapes (API Resources)
 

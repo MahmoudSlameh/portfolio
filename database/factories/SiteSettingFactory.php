@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\Template;
 use App\Models\SiteSetting;
+use App\Support\Templates\TemplateRegistry;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +19,7 @@ class SiteSettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'active_template' => fake()->randomElement(Template::cases()),
+            'active_template' => fake()->randomElement(app(TemplateRegistry::class)->ids()),
             'site_name' => fake()->name(),
             'meta_description' => fake()->sentence(),
             'indexable' => true,

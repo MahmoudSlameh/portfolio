@@ -11,7 +11,7 @@
  Visitor ─► Laravel route ─► Controller ─► Query/Action ─► API Resources (arrays)
                                 │
                                 ▼
-                  Inertia::render(Template::page('Home'), props)
+                  Inertia::render($templates->page('Home'), props)
                                 │  e.g. component = "terminal/Home"
                                 ▼
           Inertia SSR server (Node) renders React → full HTML + <head>
@@ -90,14 +90,14 @@ docs/                               # this documentation
 ## TemplateManager (`app/Support/Templates/TemplateManager.php`)
 
 ```php
-enum Template: string { case Changelog = 'changelog'; case Playground = 'playground'; case Terminal = 'terminal'; }
-
+// Templates come from TemplateRegistry: one TemplateDefinition per
+// resources/js/templates/<id>/template.json (see 11 · Template kit).
 final class TemplateManager
 {
-    public function active(): Template;            // SiteSetting::current()->active_template, cached
-    public function current(Request $r): Template; // preview (?template= / session) if allowed, else active
-    public function isPreview(Request $r): bool;
-    public function page(string $name): string;    // "{$this->current()->value}/{$name}"
+    public function active(): TemplateDefinition;  // settings' active_template, or the default if it no longer exists
+    public function current(): TemplateDefinition; // preview (?template= / session) if allowed, else active
+    public function isPreview(): bool;
+    public function page(string $name): string;    // "{$this->current()->id}/{$name}"
 }
 ```
 

@@ -1,4 +1,3 @@
-import { useToast } from '@/providers/ToastProvider';
 import {
     ArrowUpRight,
     Check,
@@ -8,41 +7,14 @@ import {
     Radio,
     type LucideIcon,
 } from 'lucide-react';
-import {
-    useId,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type FormEvent,
-    type ReactNode,
-} from 'react';
+import { useId, useRef, type ReactNode } from 'react';
 import { useNow } from '@/hooks/useLocalTime';
 import { useTranslation } from '@/hooks/useTranslation';
-import {
-    validateContact,
-    type ContactErrors,
-    type ContactField,
-} from '@/lib/contactSchema';
-import { submitContactMessage } from '@/lib/content';
+import { CONTACT_FIELDS, CONTACT_TOPICS, useContactForm } from '@/kit';
+import type { ContactField } from '@/lib/contactSchema';
 import { cn, formatTime } from '@/lib/utils';
-import type { ContactMessage, Profile } from '@/types/content';
+import type { Profile } from '@/types/content';
 import { useTerminalCopy } from '../copy';
-
-const initialValues: ContactMessage = {
-    name: '',
-    email: '',
-    topic: 'advisory',
-    message: '',
-};
-const TOPICS: ContactMessage['topic'][] = [
-    'advisory',
-    'role',
-    'speaking',
-    'hello',
-];
-const FIELD_ORDER: ContactField[] = ['name', 'email', 'topic', 'message'];
-
-type FormStatus = 'idle' | 'submitting' | 'success';
 
 function FieldError({ id, message }: { id: string; message?: string }) {
     if (!message) return null;
@@ -96,74 +68,28 @@ export function Contact({ profile }: { profile: Profile }) {
     const c = useTerminalCopy();
     const now = useNow();
     const baseId = useId();
-    const [values, setValues] = useState<ContactMessage>(initialValues);
-    const [errors, setErrors] = useState<ContactErrors>({});
-    const [hasAttempted, setHasAttempted] = useState(false);
-    const [status, setStatus] = useState<FormStatus>('idle');
-    const { notify: notifyFailure } = useToast();
-    const [messageId, setMessageId] = useState('');
-    const summaryRef = useRef<HTMLDivElement>(null);
     const successRef = useRef<HTMLHeadingElement>(null);
-    const nameRef = useRef<HTMLInputElement>(null);
-    const errorCount = Object.keys(errors).length;
+    const {
+        values,
+        errors,
+        errorCount,
+        status,
+        messageId,
+        errorText,
+        handleChange,
+        handleSubmit,
+        reset: handleReset,
+        summaryRef,
+        nameRef,
+    } = useContactForm({
+        onSuccess: () =>
+            window.requestAnimationFrame(() => successRef.current?.focus()),
+    });
 
     const fieldId = (field: ContactField): string => `contact-${field}`;
     const errorId = (field: ContactField): string => `${baseId}-${field}-error`;
-    const errorText = (field: ContactField): string | undefined => {
-        const key = errors[field];
-        return key ? t(key) : undefined;
-    };
     const describedBy = (field: ContactField): string | undefined =>
         errors[field] ? errorId(field) : undefined;
-
-    const handleChange = (
-        event: ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >,
-    ): void => {
-        const nextValues = {
-            ...values,
-            [event.target.name]: event.target.value,
-        };
-        setValues(nextValues);
-        if (!hasAttempted) return;
-        const result = validateContact(nextValues);
-        setErrors(result.success ? {} : result.errors);
-    };
-
-    const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> => {
-        event.preventDefault();
-        setHasAttempted(true);
-        const result = validateContact(values);
-        if (!result.success) {
-            setErrors(result.errors);
-            window.requestAnimationFrame(() => summaryRef.current?.focus());
-            return;
-        }
-        setErrors({});
-        setStatus('submitting');
-        let response: Awaited<ReturnType<typeof submitContactMessage>>;
-        try {
-            response = await submitContactMessage(result.data);
-        } catch {
-            setStatus('idle');
-            notifyFailure(t('contact.failed'));
-            return;
-        }
-        setMessageId(response.id);
-        setStatus('success');
-        window.requestAnimationFrame(() => successRef.current?.focus());
-    };
-
-    const handleReset = (): void => {
-        setValues(initialValues);
-        setErrors({});
-        setHasAttempted(false);
-        setStatus('idle');
-        window.requestAnimationFrame(() => nameRef.current?.focus());
-    };
 
     return (
         <section
@@ -241,7 +167,7 @@ export function Contact({ profile }: { profile: Profile }) {
                                         })}
                                     </p>
                                     <ul className="flex flex-col gap-0.5">
-                                        {FIELD_ORDER.filter(
+                                        {CONTACT_FIELDS.filter(
                                             (field) => errors[field],
                                         ).map((field) => (
                                             <li key={field}>
@@ -324,7 +250,7 @@ export function Contact({ profile }: { profile: Profile }) {
                                         onChange={handleChange}
                                         className="tm-input text-ink"
                                     >
-                                        {TOPICS.map((topic) => (
+                                        {CONTACT_TOPICS.map((topic) => (
                                             <option key={topic} value={topic}>
                                                 {c('contact.subject')}:{' '}
                                                 {t(`contact.topic.${topic}`)}

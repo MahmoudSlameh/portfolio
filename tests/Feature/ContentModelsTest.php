@@ -10,18 +10,19 @@ use App\Models\Project;
 use App\Models\Social;
 use App\Models\UsesGroup;
 use App\Models\UsesItem;
+use App\Support\Content\ArticleDocument;
 
 test('reading time matches the reference frontend for the ledger article', function () {
     $fixture = json_decode((string) file_get_contents(base_path('tests/Fixtures/ledgers-article.json')), true);
 
-    $article = Article::factory()->make(['body' => $fixture['body']]);
+    $article = Article::factory()->make(['body' => ArticleDocument::fromBuilder($fixture['body'])]);
 
     expect($article->wordCount())->toBe($fixture['expectedWords'])
         ->and($article->readingMinutes())->toBe($fixture['expectedMinutes']);
 });
 
 test('reading time is at least one minute', function () {
-    expect(Article::factory()->make(['body' => []])->readingMinutes())->toBe(1);
+    expect(Article::factory()->make(['body' => ArticleDocument::empty()])->readingMinutes())->toBe(1);
 });
 
 test('publishing an article without a date stamps it now', function () {

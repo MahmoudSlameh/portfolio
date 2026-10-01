@@ -316,6 +316,11 @@ export interface Testimonial {
     avatar: ImageData | null;
 }
 
+/**
+ * One block of an article body. Paragraph, quote, list item and callout `text` may contain the
+ * inline Markdown subset `**bold**`, `*italic*`, `` `code` `` and `[text](url)`: render it with
+ * `InlineText` from `@/kit` (and `plainText()` where a string is needed). Headings are plain.
+ */
 export type ArticleBlock =
     | { type: 'paragraph'; text: string }
     | { type: 'heading'; id: string; text: string }

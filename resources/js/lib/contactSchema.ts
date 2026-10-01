@@ -5,7 +5,8 @@ export type ContactField = keyof ContactMessage;
 
 export type ContactErrors = Partial<Record<ContactField, DictionaryKey>>;
 
-const TOPICS: ContactMessage['topic'][] = [
+/** Topics offered in the contact form (validated again by the server). */
+export const CONTACT_TOPICS: ContactMessage['topic'][] = [
     'advisory',
     'role',
     'speaking',
@@ -35,7 +36,7 @@ export const validateContact = (
     if (data.email === '') errors.email = 'contact.error.emailRequired';
     else if (!EMAIL_PATTERN.test(data.email))
         errors.email = 'contact.error.emailInvalid';
-    if (!TOPICS.includes(data.topic)) data.topic = 'hello';
+    if (!CONTACT_TOPICS.includes(data.topic)) data.topic = 'hello';
     if (data.message.length < 20) errors.message = 'contact.error.messageShort';
 
     return Object.keys(errors).length === 0

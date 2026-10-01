@@ -46,4 +46,29 @@ return [
 
     'cache_ttl' => (int) env('PORTFOLIO_CACHE_TTL', 60 * 60 * 24),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Templates
+    |--------------------------------------------------------------------------
+    |
+    | Code templates are discovered from `<path>/<id>/template.json` (see
+    | docs/11-template-kit.md). The default is used on a fresh install and
+    | whenever the active template no longer exists.
+    |
+    */
+
+    'templates' => [
+        'path' => resource_path('js/templates'),
+        'default' => 'changelog',
+
+        // Used by `php artisan make:template` (see docs/11-template-kit.md).
+        'pages_path' => resource_path('js/pages'),
+        'stylesheet' => resource_path('js/styles/main.css'),
+        'screenshots_path' => public_path('templates'),
+
+        // Developer gallery at /dev/templates (every page of every template side by side) and the
+        // stateless `?_template=<id>` override it relies on. On in the local environment only.
+        'dev_gallery' => (bool) env('TEMPLATE_GALLERY', env('APP_ENV') === 'local'),
+    ],
+
 ];

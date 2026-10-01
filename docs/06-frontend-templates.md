@@ -46,7 +46,7 @@ every template (except the removed language toggle).
   (`SeoHead` + template component + `Page.layout = withTemplateLayout(Layout)`).
 - `shared/inertia/withTemplateLayout.tsx` passes the shared `profile`, `socials` and the deferred
   `searchIndex` to the template Layout and shows the admin `PreviewBar` while previewing.
-- `shared/inertia/useSearchChange.ts` implements `onSearchChange` with `router.get(..., { only, preserveState, replace })`.
+- `kit/useArchiveFilters.ts` (was `shared/inertia/useSearchChange.ts`) implements `onSearchChange` with `router.get(..., { only, preserveState, replace })`. The kit (`@/kit`) is described in [11 §3](11-template-kit.md#3-shared-building-blocks-resourcesjskit--built-in-p7-02).
 - `shared/ui/CompanyLogo.tsx` renders uploaded company logos (dark variant aware) on the clients walls,
   falling back to the template wordmark.
 - Images are `ImageData | null`; `ResponsiveImage` renders a neutral placeholder when nothing was uploaded.
@@ -152,6 +152,11 @@ active template and `?template=` is ignored for them.
    `?template=reset` clears it.
 2. If a preview is stored in session and the user is still an admin → use it.
 3. Else → `SiteSetting::current()->active_template`.
+4. Studio templates only: `&version=<n>` with `?template=studio:<ulid>`
+   previews that version instead of the active one (session
+   `template.preview_version`, same admin rule; an unknown number is
+   ignored). It counts as a preview even for the live template, and the bar
+   says "version n" (shared prop `template.version`).
 
 While previewing: shared prop `template.isPreview = true` → render a small
 floating "Previewing _Terminal_ · Exit preview · Activate" bar (admin only),
@@ -164,7 +169,7 @@ send `<meta name="robots" content="noindex">` and
   `@fontsource/*`), imported at the top of `resources/js/styles/main.css`.
   Vite fingerprints the `.woff2` files; `@font-face` + `unicode-range` means a
   page downloads only the faces it renders. No third-party font requests.
-- `Template::preloadFonts()` lists the above-the-fold font files (Vite manifest
+- `preloadFonts` in each `template.json` lists the above-the-fold font files (Vite manifest
   keys); `app.blade.php` emits `<link rel="preload" as="font">` for the active
   template only, so the first paint uses the right type (no swap CLS).
 - `<html data-template="terminal">` is set server-side in Blade.
@@ -190,9 +195,16 @@ uses 5.7 — keep root's and fix any type errors.
 
 ## Adding a new template later
 
-1. Add a case to `App\Enums\Template` (label, description, preloadFonts,
-   screenshot path) and import its Fontsource packages in `styles/main.css`.
-2. Create `resources/js/templates/<id>/` and the 9 pages in
-   `resources/js/pages/<id>/`.
+> Full guide: [templates/building-a-template.md](templates/building-a-template.md).
+
+0. Easiest: `php artisan make:template <id> [--from=minimal]` does steps 1–3
+   for you (see [11 §2](11-template-kit.md#2-scaffold-command--built-in-p7-04)).
+1. Copy `resources/js/templates/minimal` (the commented starter) or create
+   `resources/js/templates/<id>/` with a `template.json` manifest
+   (id, name, description, author, preloadFonts, screenshot — see
+   [11](11-template-kit.md#1-template-registry-replaces-the-enum)) and import
+   its Fontsource packages in `styles/main.css`.
+2. Add the 9 pages in `resources/js/pages/<id>/`.
 3. Add `public/templates/<id>.webp` screenshot for the Appearance page.
-4. The Pest test matrix picks the new enum case up automatically.
+4. The registry discovers the manifest and the Pest test matrix picks the new
+   template up automatically. No PHP change is needed.

@@ -4,6 +4,13 @@ import { highlight } from 'sugar-high';
 import { useClipboard } from '@/hooks/useClipboard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
+import {
+    ArticleBlocks as KitArticleBlocks,
+    ResponsiveImage,
+    type ArticleBlockRenderers,
+    InlineText,
+    type InlineTextClassNames,
+} from '@/kit';
 import type { ArticleBlock } from '@/types/content';
 
 type CodeBlock = Extract<ArticleBlock, { type: 'code' }>;
@@ -88,80 +95,82 @@ function SectionHeading({ block }: { block: HeadingBlock }) {
     );
 }
 
-function Block({ block, isFirst }: { block: ArticleBlock; isFirst: boolean }) {
-    switch (block.type) {
-        case 'paragraph':
-            return isFirst ? (
-                <p className="mb-6 font-display text-[1.625rem] leading-[1.35] text-ink md:text-[1.875rem]">
-                    {block.text}
-                </p>
-            ) : (
-                <p className="mb-6 text-[1.0625rem] leading-[1.8] text-ink-muted md:text-[1.125rem]">
-                    {block.text}
-                </p>
-            );
-        case 'heading':
-            return <SectionHeading block={block} />;
-        case 'code':
-            return <CodeSample block={block} />;
-        case 'quote':
-            return (
-                <blockquote className="relative my-10 rounded-2xl border border-line bg-surface/70 p-6 ps-8 md:p-8 md:ps-10">
+/** Inline formatting inside article text (bold, italic, code, links). */
+const inline: InlineTextClassNames = {
+    code: 'rounded bg-current/10 px-1 py-0.5 font-mono text-[0.9em]',
+    link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:decoration-current',
+    strong: 'font-semibold',
+};
+
+const renderers: ArticleBlockRenderers = {
+    paragraph: (block, { isFirst }) =>
+        isFirst ? (
+            <p className="mb-6 font-display text-[1.625rem] leading-[1.35] text-ink md:text-[1.875rem]">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+        ) : (
+            <p className="mb-6 text-[1.0625rem] leading-[1.8] text-ink-muted md:text-[1.125rem]">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+        ),
+    heading: (block) => <SectionHeading block={block} />,
+    code: (block) => <CodeSample block={block} />,
+    quote: (block) => (
+        <blockquote className="relative my-10 rounded-2xl border border-line bg-surface/70 p-6 ps-8 md:p-8 md:ps-10">
+            <span
+                aria-hidden
+                className="absolute inset-y-6 start-0 w-1 rounded-full bg-[image:var(--gradient-brand)]"
+            />
+            <p className="font-display text-[1.75rem] leading-snug text-ink">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+            {block.cite && (
+                <footer className="mt-3 font-mono text-xs text-ink-subtle">
+                    — {block.cite}
+                </footer>
+            )}
+        </blockquote>
+    ),
+    list: (block) => (
+        <ul className="mb-6 flex flex-col gap-3">
+            {block.items.map((item) => (
+                <li
+                    key={item}
+                    className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
+                >
                     <span
                         aria-hidden
-                        className="absolute inset-y-6 start-0 w-1 rounded-full bg-[image:var(--gradient-brand)]"
+                        className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
                     />
-                    <p className="font-display text-[1.75rem] leading-snug text-ink">
-                        {block.text}
-                    </p>
-                    {block.cite && (
-                        <footer className="mt-3 font-mono text-xs text-ink-subtle">
-                            — {block.cite}
-                        </footer>
-                    )}
-                </blockquote>
-            );
-        case 'list':
-            return (
-                <ul className="mb-6 flex flex-col gap-3">
-                    {block.items.map((item) => (
-                        <li
-                            key={item}
-                            className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
-                        >
-                            <span
-                                aria-hidden
-                                className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
-                            />
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            );
-        case 'callout':
-            return (
-                <aside className="my-8 border border-line bg-surface p-5 md:p-6">
-                    <p className="eyebrow mb-2 text-signal-ink">
-                        {block.title}
-                    </p>
-                    <p className="text-[1rem] leading-relaxed text-ink">
-                        {block.text}
-                    </p>
-                </aside>
-            );
-    }
-}
+                    <InlineText text={item} classNames={inline} />
+                </li>
+            ))}
+        </ul>
+    ),
+    callout: (block) => (
+        <aside className="my-8 border border-line bg-surface p-5 md:p-6">
+            <p className="eyebrow mb-2 text-signal-ink">{block.title}</p>
+            <p className="text-[1rem] leading-relaxed text-ink">
+                <InlineText text={block.text} classNames={inline} />
+            </p>
+        </aside>
+    ),
+    image: (block) => (
+        <figure className="my-10">
+            <ResponsiveImage
+                image={block.image}
+                sizes="(min-width: 768px) 720px, 100vw"
+                className="border border-line"
+            />
+            {block.caption && (
+                <figcaption className="mt-3 font-mono text-xs text-ink-subtle">
+                    {block.caption}
+                </figcaption>
+            )}
+        </figure>
+    ),
+};
 
 export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
-    return (
-        <div>
-            {blocks.map((block, index) => (
-                <Block
-                    key={`${block.type}-${index}`}
-                    block={block}
-                    isFirst={index === 0}
-                />
-            ))}
-        </div>
-    );
+    return <KitArticleBlocks blocks={blocks} renderers={renderers} />;
 }
