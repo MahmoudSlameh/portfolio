@@ -13,6 +13,8 @@
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/ai": "^1.0",
         "laravel/framework": "^13.17",
+        "laravel/mcp": "^1.0.1",
+        "laravel/passport": "^13.8",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
         "symfony/intl": "^8.1"
@@ -49,6 +51,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
             "@php artisan migrate --force",
+            "@php -r \"file_exists('storage/oauth-private.key') || passthru(escapeshellarg(PHP_BINARY).' artisan passport:keys');\"",
             "npm install",
             "npm run build"
         ],
