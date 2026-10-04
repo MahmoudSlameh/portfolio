@@ -66,25 +66,25 @@ class Project extends Model implements HasMedia
 
 ## Collections per model
 
-| Model              | Collection           | Single? | Accepts      | Conversions                      | Used for                  |
-| ------------------ | -------------------- | ------- | ------------ | -------------------------------- | ------------------------- |
-| Profile            | `portrait`           | ✓       | image        | webp (responsive), og, thumb     | hero portrait (3:4)       |
-| Profile            | `resume`             | ✓       | pdf          | —                                | "Download CV"             |
-| Profile            | `og_image`           | ✓       | image        | og                               | personal share card       |
-| SiteSetting        | `default_og_image`   | ✓       | image        | og                               | fallback OG image         |
+| Model              | Collection           | Single? | Accepts      | Conversions                      | Used for                                                                                                          |
+| ------------------ | -------------------- | ------- | ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Profile            | `portrait`           | ✓       | image        | webp (responsive), og, thumb     | hero portrait (3:4)                                                                                               |
+| Profile            | `resume`             | ✓       | pdf          | —                                | "Download CV"                                                                                                     |
+| Profile            | `og_image`           | ✓       | image        | og                               | personal share card                                                                                               |
+| SiteSetting        | `default_og_image`   | ✓       | image        | og                               | fallback OG image                                                                                                 |
 | SiteSetting        | `favicon`            | ✓       | png/svg      | —                                | favicon override; `site:favicons` derives ico / 192px PNG / apple-touch-icon (SVG via Imagick or headless Chrome) |
-| Company            | `logo` / `logo_dark` | ✓       | svg/png/webp | webp, thumb (svg passes through) | clients wall              |
-| Education          | `logo`               | ✓       | image/svg    | thumb                            | institution logo          |
-| Education          | `certificate`        | ✓       | image/pdf    | —                                | optional proof            |
-| Certification      | `badge`              | ✓       | image/svg    | thumb                            | badge                     |
-| Testimonial        | `avatar`             | ✓       | image        | webp 256, thumb                  | author photo              |
-| Skill              | `icon`               | ✓       | svg/png      | —                                | custom icon               |
-| Project            | `cover`              | ✓       | image        | webp (responsive), og, thumb     | cards + case study (16:9) |
-| ProjectGalleryItem | `image`              | ✓       | image        | webp (responsive), thumb         | case-study gallery (4:3)  |
-| Article            | `cover`              | ✓       | image        | webp (responsive), og            | article hero + OG         |
-| Article            | `body_images`        | ✗       | image        | webp (responsive)                | images in the rich editor |
-| Book               | `cover_image`        | ✓       | image        | webp 480, thumb                  | real book cover           |
-| UsesItem           | `image`              | ✓       | image        | webp 480                         | optional                  |
+| Company            | `logo` / `logo_dark` | ✓       | svg/png/webp | webp, thumb (svg passes through) | clients wall                                                                                                      |
+| Education          | `logo`               | ✓       | image/svg    | thumb                            | institution logo                                                                                                  |
+| Education          | `certificate`        | ✓       | image/pdf    | —                                | optional proof                                                                                                    |
+| Certification      | `badge`              | ✓       | image/svg    | thumb                            | badge                                                                                                             |
+| Testimonial        | `avatar`             | ✓       | image        | webp 256, thumb                  | author photo                                                                                                      |
+| Skill              | `icon`               | ✓       | svg/png      | —                                | custom icon                                                                                                       |
+| Project            | `cover`              | ✓       | image        | webp (responsive), og, thumb     | cards + case study (16:9)                                                                                         |
+| ProjectGalleryItem | `image`              | ✓       | image        | webp (responsive), thumb         | case-study gallery (4:3)                                                                                          |
+| Article            | `cover`              | ✓       | image        | webp (responsive), og            | article hero + OG                                                                                                 |
+| Article            | `body_images`        | ✗       | image        | webp (responsive)                | images in the rich editor                                                                                         |
+| Book               | `cover_image`        | ✓       | image        | webp 480, thumb                  | real book cover                                                                                                   |
+| UsesItem           | `image`              | ✓       | image        | webp 480                         | optional                                                                                                          |
 
 ## Filament usage
 
