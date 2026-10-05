@@ -33,7 +33,7 @@ class SaveSkillCategoryTool extends Tool
         ]);
 
         $category = filled($data['id'] ?? null)
-            ? SkillCategory::query()->find($data['id'])
+            ? SkillCategory::query()->find((int) $data['id'])
             : SkillCategory::query()->whereRaw('lower(name) = ?', [Str::lower((string) $data['name'])])->first();
 
         if (filled($data['id'] ?? null) && $category === null) {

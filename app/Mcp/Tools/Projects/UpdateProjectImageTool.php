@@ -30,7 +30,7 @@ class UpdateProjectImageTool extends Tool
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:1000'],
         ]);
 
-        $item = ProjectGalleryItem::query()->find($data['image_id']);
+        $item = ProjectGalleryItem::query()->find((int) $data['image_id']);
 
         if ($item === null) {
             return Response::error("No gallery image has id {$data['image_id']}. Call get_project to see the gallery.");

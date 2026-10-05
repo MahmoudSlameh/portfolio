@@ -236,7 +236,7 @@ class ClaudeConnector extends Page implements HasTable
 
     private function redirectHost(Token $token): ?string
     {
-        $uris = $token->client?->redirect_uris ?? [];
+        $uris = $token->client->getAttribute('redirect_uris');
         $host = is_array($uris) && isset($uris[0]) ? parse_url((string) $uris[0], PHP_URL_HOST) : null;
 
         return is_string($host) ? "Returns to {$host}" : null;

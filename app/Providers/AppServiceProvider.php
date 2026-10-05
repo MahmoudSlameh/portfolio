@@ -33,10 +33,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -125,10 +125,10 @@ class AppServiceProvider extends ServiceProvider
         Passport::refreshTokensExpireIn(CarbonInterval::days(365));
         Passport::personalAccessTokensExpireIn(CarbonInterval::days((int) config('portfolio.mcp.token_days')));
 
-        Passport::authorizationView(function (array $parameters): View {
+        Passport::authorizationView(function (array $parameters): Response {
             abort_unless($parameters['user'] instanceof User && $parameters['user']->isOwner(), 403);
 
-            return view('mcp.authorize', [...$parameters, 'siteName' => Profile::current()->name]);
+            return response()->view('mcp.authorize', [...$parameters, 'siteName' => Profile::current()->name]);
         });
     }
 

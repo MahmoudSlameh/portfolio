@@ -23,7 +23,7 @@ class RemoveProjectImageTool extends Tool
     {
         $data = $request->validate(['image_id' => ['required', 'integer']]);
 
-        $item = ProjectGalleryItem::query()->with('project')->find($data['image_id']);
+        $item = ProjectGalleryItem::query()->with('project')->find((int) $data['image_id']);
 
         if ($item === null) {
             return Response::error("No gallery image has id {$data['image_id']}. Call get_project to see the gallery.");

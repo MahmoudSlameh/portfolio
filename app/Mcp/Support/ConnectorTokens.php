@@ -21,6 +21,8 @@ final class ConnectorTokens
 
     /**
      * A personal access token with the MCP scope. The plain token is only available here, once.
+     *
+     * @return PersonalAccessTokenResult<mixed>
      */
     public static function create(User $user, string $name): PersonalAccessTokenResult
     {

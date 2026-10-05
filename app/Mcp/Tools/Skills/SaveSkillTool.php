@@ -38,7 +38,7 @@ class SaveSkillTool extends Tool
             'sort_order' => ['sometimes', 'integer', 'min:0'],
         ], ['icon.regex' => 'icon is a Simple Icons slug, e.g. "laravel" or "dotnet".']);
 
-        $skill = filled($data['id'] ?? null) ? Skill::query()->find($data['id']) : Stack::find((string) $data['name']);
+        $skill = filled($data['id'] ?? null) ? Skill::query()->find((int) $data['id']) : Stack::find((string) $data['name']);
 
         if (filled($data['id'] ?? null) && $skill === null) {
             return Response::error("No skill has id {$data['id']}. Call list_skills to find it.");

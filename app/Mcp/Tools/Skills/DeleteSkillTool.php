@@ -23,7 +23,7 @@ class DeleteSkillTool extends Tool
     {
         $data = $request->validate(['id' => ['required', 'integer']]);
 
-        $skill = Skill::query()->withCount(['projects', 'experiences'])->find($data['id']);
+        $skill = Skill::query()->withCount(['projects', 'experiences'])->find((int) $data['id']);
 
         if ($skill === null) {
             return Response::error("No skill has id {$data['id']}. Call list_skills to find it.");

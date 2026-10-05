@@ -21,7 +21,7 @@ class DeleteExperienceTool extends Tool
 {
     public function handle(Request $request): Response|ResponseFactory
     {
-        $id = $request->validate(['id' => ['required', 'integer']])['id'];
+        $id = (int) $request->validate(['id' => ['required', 'integer']])['id'];
         $experience = Experience::query()->with('company')->find($id);
 
         if ($experience === null) {

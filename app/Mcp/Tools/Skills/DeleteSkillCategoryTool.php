@@ -23,7 +23,7 @@ class DeleteSkillCategoryTool extends Tool
     {
         $data = $request->validate(['id' => ['required', 'integer']]);
 
-        $category = SkillCategory::query()->withCount('skills')->find($data['id']);
+        $category = SkillCategory::query()->withCount('skills')->find((int) $data['id']);
 
         if ($category === null) {
             return Response::error("No skill category has id {$data['id']}. Call list_skills to find it.");
