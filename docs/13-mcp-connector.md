@@ -160,7 +160,10 @@ over stdio without a token, for a local MCP client on the same machine
 ## 5. Panel: Site → Claude connector
 
 - Setup problems first: connector switched off, Passport keys missing
-  (`php artisan passport:keys`), site not on HTTPS in production.
+  (`php artisan passport:keys`), unreadable by the PHP user, or with
+  permissions Passport refuses (anything but `400`/`440`/`600`/`640`/`660`,
+  checked by `App\Mcp\Support\OAuthKeys`), site not on HTTPS in production.
+  Any of the key problems makes every request to `/mcp` fail with a 500.
 - The server URL, step-by-step instructions for claude.ai / Desktop, and the
   `claude mcp add --transport http portfolio <url>` command for Claude Code.
 - **Create token**: shows the token and a ready-to-paste Claude Code command
