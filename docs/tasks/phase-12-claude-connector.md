@@ -60,3 +60,7 @@ needs (skills, companies, experience, profile). Built on the official
 - 2026-10-04: done. `composer setup` now creates the Passport keys when they
   are missing. Larastan could not run in the build container (the
   `phpstan/phpstan` download was blocked there); CI runs it.
+- 2026-10-05: first production deploy hit a 500 on `/mcp` because the key
+  files were `644` (Passport only accepts `600`/`660`-style modes). The
+  deployment guide now sets the owner and mode after `passport:keys`, and the
+  panel page warns about missing, unreadable or too-open keys (`OAuthKeys`).

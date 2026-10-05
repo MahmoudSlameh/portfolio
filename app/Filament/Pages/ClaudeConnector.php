@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Mcp\Support\ConnectorTokens;
+use App\Mcp\Support\OAuthKeys;
 use App\Models\User;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -26,7 +27,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
-use Laravel\Passport\Passport;
 use Laravel\Passport\Token;
 use UnitEnum;
 
@@ -209,10 +209,8 @@ class ClaudeConnector extends Page implements HasTable
                 ->danger();
         }
 
-        if (blank(config('passport.private_key')) && ! is_file(Passport::keyPath('oauth-private.key'))) {
-            $problems[] = Callout::make('OAuth keys are missing')
-                ->description('Run "php artisan passport:keys" on the server (or set PASSPORT_PRIVATE_KEY and PASSPORT_PUBLIC_KEY), otherwise Claude cannot sign in.')
-                ->danger();
+        foreach (OAuthKeys::problems() as $title => $fix) {
+            $problems[] = Callout::make($title)->description($fix)->danger();
         }
 
         if (app()->isProduction() && ! str_starts_with(self::serverUrl(), 'https://')) {
