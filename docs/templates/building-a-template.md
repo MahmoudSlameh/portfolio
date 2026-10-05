@@ -194,6 +194,7 @@ empty section.
 | `career`         | `CareerEntry[]`      | Experience + `company` (with `logo`/`logoDark`) + linked `projects`   |
 | `projects`       | `Project[]`          | Featured projects only (case-study fields are empty in lists)         |
 | `companies`      | `Company[]`          | Featured companies; show `logo` with `<CompanyLogo>`                  |
+| `services`       | `ServicesSection`    | `{ heading: { kicker, title, highlight }, items }`; hide when empty   |
 | `testimonials`   | `TestimonialEntry[]` |                                                                       |
 | `education`      | `Education[]`        | Show `description` and every entry of `notes` (the panel's "Details") |
 | `certifications` | `Certification[]`    |                                                                       |

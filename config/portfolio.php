@@ -71,4 +71,30 @@ return [
         'dev_gallery' => (bool) env('TEMPLATE_GALLERY', env('APP_ENV') === 'local'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Claude connector (MCP)
+    |--------------------------------------------------------------------------
+    |
+    | The MCP server at `/mcp` lets Claude (claude.ai, Claude Desktop, Claude
+    | Code) read and edit the portfolio's content (see docs/13-mcp-connector.md).
+    | Images given by URL are downloaded by the server: only public http(s)
+    | addresses are allowed, unless `allow_private_urls` is on (local dev).
+    |
+    */
+
+    'mcp' => [
+        'enabled' => (bool) env('MCP_ENABLED', true),
+        'rate_limit' => (int) env('MCP_RATE_LIMIT', 120), // requests per minute and user
+        'token_days' => (int) env('MCP_TOKEN_DAYS', 365), // lifetime of personal access tokens
+        'uploads' => [
+            'minutes' => (int) env('MCP_UPLOAD_MINUTES', 15), // lifetime of a request_image_upload URL
+        ],
+        'images' => [
+            'max_kilobytes' => 10 * 1024,
+            'timeout' => 20, // seconds to download one image
+            'allow_private_urls' => (bool) env('MCP_ALLOW_PRIVATE_URLS', false),
+        ],
+    ],
+
 ];

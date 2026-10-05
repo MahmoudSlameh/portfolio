@@ -55,6 +55,11 @@ PORTFOLIO_CACHE_TTL=86400            # seconds; content cache is flushed on ever
 STUDIO_AI_PROVIDER=anthropic         # anthropic, openai, gemini, xai, mistral, deepseek, groq, openrouter, ollama, openai-compatible
 STUDIO_AI_MODEL=                     # empty = the provider's default model
 ANTHROPIC_API_KEY=                   # the provider's key, with the Laravel AI SDK's env name
+
+# Claude connector (docs/13-mcp-connector.md); these are the defaults
+MCP_ENABLED=true
+# MCP_REDIRECT_DOMAINS="https://claude.ai,https://claude.com,http://localhost,http://127.0.0.1"
+# PASSPORT_PRIVATE_KEY / PASSPORT_PUBLIC_KEY   only if the keys come from the environment
 ```
 
 Notes:
@@ -66,6 +71,10 @@ Notes:
   `ADMIN_EMAIL`. The email is queued, so the queue worker must run.
 - If a proxy or CDN terminates TLS, configure trusted proxies so generated
   URLs use `https`.
+- The Claude connector signs tokens with the Passport keys in
+  `storage/oauth-private.key` / `oauth-public.key` (created once with
+  `php artisan passport:keys`, kept out of git). Keep them across deploys:
+  new keys log Claude out. claude.ai only connects to an `https://` URL.
 - AI settings saved in **Site → AI** win over `.env`. The key is stored with
   Laravel's `encrypted` cast, so it depends on `APP_KEY`: rotating `APP_KEY`
   means entering the key again.
@@ -80,6 +89,7 @@ composer install --no-dev --optimize-autoloader
 php artisan key:generate
 php artisan migrate --force
 php artisan db:seed --force     # admin user + default settings
+php artisan passport:keys       # OAuth keys for the Claude connector (once; keep them)
 # Optional: php artisan db:seed --class=DemoContentSeeder --force   (demo portfolio to explore the panel)
 
 php artisan storage:link        # serves the "public" media disk at /storage
@@ -212,7 +222,7 @@ server {
         include fastcgi_params;
     }
 
-    client_max_body_size 20m;   # panel uploads
+    client_max_body_size 20m;   # panel uploads and Claude's image uploads (/mcp/uploads)
 }
 ```
 
@@ -250,6 +260,9 @@ Before going live:
       the Inbox and arrive by email, which confirms the queue worker and mail work.
 - [ ] Upload an image and check that thumb/WebP/OG conversions appear
       (queue worker + WebP support).
+- [ ] Optional, Claude connector: **Site → Claude connector** shows no
+      warning; add the server URL as a custom connector in claude.ai,
+      approve it, and ask Claude for `get_portfolio_overview`.
 - [ ] Optional, AI templates: **Site → AI → Test connection** succeeds, then
       generate a template on **Appearance** and check that the card moves
       from `Queued` to `Ready` and a notification arrives.

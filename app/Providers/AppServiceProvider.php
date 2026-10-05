@@ -30,11 +30,13 @@ use App\Support\Templates\TemplateManager;
 use App\Support\Templates\TemplateRegistry;
 use App\Support\Templates\TemplateScaffolder;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterval;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -42,6 +44,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Inertia\ExceptionResponse;
 use Inertia\Inertia;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -89,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureErrorPages();
         $this->configureMediaUploads();
+        $this->configurePassport();
 
         $this->optimizes(optimize: 'template:cache', clear: 'template:clear', key: 'templates');
     }
@@ -107,6 +111,26 @@ class AppServiceProvider extends ServiceProvider
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('contact', fn (Request $request): Limit => Limit::perMinute(5)->by((string) $request->ip()));
+        RateLimiter::for('mcp', fn (Request $request): Limit => Limit::perMinute((int) config('portfolio.mcp.rate_limit'))->by('mcp:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
+        RateLimiter::for('mcp-oauth', fn (Request $request): Limit => Limit::perMinute(30)->by('mcp-oauth:'.$request->ip()));
+        RateLimiter::for('mcp-upload', fn (Request $request): Limit => Limit::perMinute(30)->by('mcp-upload:'.$request->ip()));
+    }
+
+    /**
+     * OAuth for the Claude connector (docs/13-mcp-connector.md): short-lived access tokens that Claude
+     * refreshes, and a consent screen only the site owner can get past.
+     */
+    protected function configurePassport(): void
+    {
+        Passport::tokensExpireIn(CarbonInterval::days(30));
+        Passport::refreshTokensExpireIn(CarbonInterval::days(365));
+        Passport::personalAccessTokensExpireIn(CarbonInterval::days((int) config('portfolio.mcp.token_days')));
+
+        Passport::authorizationView(function (array $parameters): Response {
+            abort_unless($parameters['user'] instanceof User && $parameters['user']->isOwner(), 403);
+
+            return response()->view('mcp.authorize', [...$parameters, 'siteName' => Profile::current()->name]);
+        });
     }
 
     /**

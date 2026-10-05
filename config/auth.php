@@ -33,13 +33,21 @@ return [
     | users are actually retrieved out of your database or other storage
     | system used by the application. Typically, Eloquent is utilized.
     |
-    | Supported: "session"
+    | Supported: "session", "passport"
+    |
+    | The "api" guard authenticates Claude (the MCP connector) with Passport
+    | OAuth or personal access tokens (see docs/13-mcp-connector.md).
     |
     */
 
     'guards' => [
         'web' => [
             'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'passport',
             'provider' => 'users',
         ],
     ],
