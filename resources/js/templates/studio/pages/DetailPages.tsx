@@ -4,6 +4,7 @@ import {
     formatDate,
     Link,
     ResponsiveImage,
+    useImageLightbox,
     useTranslation,
 } from '@/kit';
 import type {
@@ -47,8 +48,12 @@ function Items({ items }: { items: TitledItem[] }) {
 }
 
 function CaseContent({ project }: { project: ProjectDetail }) {
+    const { t } = useTranslation();
+    const { open: openImage, lightbox } = useImageLightbox(project.gallery);
+
     return (
         <>
+            {lightbox}
             {project.overview.length > 0 && (
                 <Block title="Overview">
                     <div className="grid gap-4 text-lg text-ink-muted">
@@ -110,13 +115,20 @@ function CaseContent({ project }: { project: ProjectDetail }) {
             {project.gallery.length > 0 && (
                 <Block title="Gallery">
                     <div className="grid gap-6">
-                        {project.gallery.map((image) => (
+                        {project.gallery.map((image, index) => (
                             <figure key={image.src}>
-                                <ResponsiveImage
-                                    image={image}
-                                    sizes="(min-width: 1024px) 60vw, 100vw"
-                                    className="rounded-[var(--st-radius)]"
-                                />
+                                <button
+                                    type="button"
+                                    onClick={() => openImage(index)}
+                                    aria-label={t('lightbox.open')}
+                                    className="block w-full cursor-zoom-in"
+                                >
+                                    <ResponsiveImage
+                                        image={image}
+                                        sizes="(min-width: 1024px) 60vw, 100vw"
+                                        className="rounded-[var(--st-radius)]"
+                                    />
+                                </button>
                                 <figcaption className="mt-2 text-sm text-ink-subtle">
                                     {image.caption}
                                 </figcaption>

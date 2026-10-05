@@ -2,6 +2,7 @@ import {
     ArchitectureDiagram,
     Link,
     ResponsiveImage,
+    useImageLightbox,
     useTranslation,
 } from '@/kit';
 import type { CaseStudyPageProps } from '@/templates/types';
@@ -15,6 +16,7 @@ import { PageHeader, Section } from '../components/Section';
  */
 export function CaseStudyPage({ project }: CaseStudyPageProps) {
     const { t } = useTranslation();
+    const { open: openImage, lightbox } = useImageLightbox(project.gallery);
 
     return (
         <article>
@@ -115,13 +117,20 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
             {project.gallery.length > 0 && (
                 <Section id="gallery" title="Gallery">
                     <div className="grid gap-6">
-                        {project.gallery.map((image) => (
+                        {project.gallery.map((image, index) => (
                             <figure key={image.src}>
-                                <ResponsiveImage
-                                    image={image}
-                                    sizes="(min-width: 768px) 672px, 100vw"
-                                    className="rounded-md"
-                                />
+                                <button
+                                    type="button"
+                                    onClick={() => openImage(index)}
+                                    aria-label={t('lightbox.open')}
+                                    className="block w-full cursor-zoom-in"
+                                >
+                                    <ResponsiveImage
+                                        image={image}
+                                        sizes="(min-width: 768px) 672px, 100vw"
+                                        className="rounded-md"
+                                    />
+                                </button>
                                 <figcaption className="mt-2 text-sm text-ink-subtle">
                                     {image.caption}
                                 </figcaption>
@@ -176,6 +185,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     </Link>
                 )}
             </nav>
+            {lightbox}
         </article>
     );
 }

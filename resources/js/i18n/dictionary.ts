@@ -243,6 +243,13 @@ const en = {
     'case.relatedWriting': 'Related writing',
     'case.contents': 'On this page',
     'case.adjacent': 'More projects',
+    'lightbox.open': 'View full size',
+    'lightbox.close': 'Close image',
+    'lightbox.previous': 'Previous image',
+    'lightbox.next': 'Next image',
+    'diagram.zoomIn': 'Zoom in',
+    'diagram.zoomOut': 'Zoom out',
+    'diagram.reset': 'Reset view',
 
     'archiveWriting.title': 'Writing',
     'archiveWriting.intro':

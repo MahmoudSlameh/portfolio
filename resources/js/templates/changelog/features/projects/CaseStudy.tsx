@@ -11,6 +11,7 @@ import type { ProjectDetail } from '@/lib/content';
 import { accentTint, categoryAccent } from '@/templates/changelog/lib/accents';
 import { cn } from '@/lib/utils';
 import { ArchitectureDiagram } from '@/shared/content/ArchitectureDiagram';
+import { useImageLightbox } from '@/shared/content/ImageLightbox';
 
 interface CaseSectionProps {
     id: string;
@@ -63,6 +64,7 @@ const linkLabels: Record<ProjectDetail['links'][number]['kind'], string> = {
 export function CaseStudy({ project }: { project: ProjectDetail }) {
     const { t } = useTranslation();
     const accent = categoryAccent[project.category];
+    const { open: openImage, lightbox } = useImageLightbox(project.gallery);
 
     const sections: SectionDefinition[] = [
         {
@@ -214,7 +216,12 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                 <div className="grid gap-6 md:grid-cols-2">
                     {project.gallery.map((image, index) => (
                         <figure key={image.src}>
-                            <div className="group relative overflow-hidden rounded-2xl border border-line">
+                            <button
+                                type="button"
+                                onClick={() => openImage(index)}
+                                aria-label={t('lightbox.open')}
+                                className="group relative block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-line"
+                            >
                                 <ResponsiveImage
                                     image={image}
                                     sizes="(min-width: 1024px) 32vw, (min-width: 768px) 45vw, 92vw"
@@ -227,7 +234,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                                         'group-hover:opacity-75',
                                     )}
                                 />
-                            </div>
+                            </button>
                             <figcaption className="mt-3 flex gap-3 text-sm leading-relaxed text-ink-muted">
                                 <span className="ltr-isolate shrink-0 font-mono text-xs text-ink-subtle">
                                     {String(index + 1).padStart(2, '0')}
@@ -530,6 +537,7 @@ export function CaseStudy({ project }: { project: ProjectDetail }) {
                     )}
                 </div>
             </nav>
+            {lightbox}
         </article>
     );
 }

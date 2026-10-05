@@ -5,6 +5,7 @@ import type { DictionaryKey } from '@/i18n/dictionary';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { ProjectReference } from '@/lib/content';
 import { ArchitectureDiagram } from '@/shared/content/ArchitectureDiagram';
+import { useImageLightbox } from '@/shared/content/ImageLightbox';
 import { CountUp } from '@/shared/ui/CountUp';
 import { ResponsiveImage } from '@/shared/ui/ResponsiveImage';
 import type { CaseStudyPageProps } from '@/templates/types';
@@ -92,6 +93,7 @@ function AdjacentLink({
 export function CaseStudyPage({ project }: CaseStudyPageProps) {
     const { t } = useTranslation();
     const c = useTerminalCopy();
+    const { open: openImage, lightbox } = useImageLightbox(project.gallery);
 
     const sections: SectionDefinition[] = [
         {
@@ -240,16 +242,23 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
             visible: project.gallery.length > 0,
             body: (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {project.gallery.map((image) => (
+                    {project.gallery.map((image, index) => (
                         <figure
                             key={image.src}
                             className="tm-zoom overflow-hidden rounded-md border border-tm-border"
                         >
-                            <ResponsiveImage
-                                image={image}
-                                sizes="(min-width: 768px) 45vw, 92vw"
-                                className="aspect-[4/3]"
-                            />
+                            <button
+                                type="button"
+                                onClick={() => openImage(index)}
+                                aria-label={t('lightbox.open')}
+                                className="block w-full cursor-zoom-in"
+                            >
+                                <ResponsiveImage
+                                    image={image}
+                                    sizes="(min-width: 768px) 45vw, 92vw"
+                                    className="aspect-[4/3]"
+                                />
+                            </button>
                             <figcaption className="border-t border-tm-border p-4 text-sm text-tm-300">
                                 {image.caption}
                             </figcaption>
@@ -484,6 +493,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     </nav>
                 </div>
             </div>
+            {lightbox}
         </article>
     );
 }

@@ -37,6 +37,7 @@ export { Link, useNavigate, useRouterState } from '@/lib/router';
 
 // Shared components
 export { ArchitectureDiagram } from '@/shared/content/ArchitectureDiagram';
+export { useImageLightbox } from '@/shared/content/ImageLightbox';
 export { CommandPalette } from '@/shared/command/CommandPalette';
 export { SeoHead, type SeoData } from '@/shared/seo/SeoHead';
 export { BrandIcon } from '@/shared/ui/BrandIcon';

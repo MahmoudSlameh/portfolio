@@ -6,6 +6,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import type { ProjectDetail, ProjectReference } from '@/lib/content';
 import { cn } from '@/lib/utils';
 import { ArchitectureDiagram } from '@/shared/content/ArchitectureDiagram';
+import { useImageLightbox } from '@/shared/content/ImageLightbox';
 import { CountUp } from '@/shared/ui/CountUp';
 import { ResponsiveImage } from '@/shared/ui/ResponsiveImage';
 import type { CaseStudyPageProps } from '@/templates/types';
@@ -74,6 +75,7 @@ function buildSections(
     project: ProjectDetail,
     t: (key: DictionaryKey) => string,
     stepLabel: (index: number) => string,
+    openImage: (index: number) => void,
 ): SectionDefinition[] {
     return [
         {
@@ -263,11 +265,18 @@ function buildSections(
                             }}
                             className="pg-card pg-press bg-raised p-3 pb-4"
                         >
-                            <ResponsiveImage
-                                image={image}
-                                sizes="(min-width: 1024px) 40vw, (min-width: 768px) 45vw, 92vw"
-                                className="aspect-[4/3] rounded-lg border-2 border-edge"
-                            />
+                            <button
+                                type="button"
+                                onClick={() => openImage(index)}
+                                aria-label={t('lightbox.open')}
+                                className="block w-full cursor-zoom-in"
+                            >
+                                <ResponsiveImage
+                                    image={image}
+                                    sizes="(min-width: 1024px) 40vw, (min-width: 768px) 45vw, 92vw"
+                                    className="aspect-[4/3] rounded-lg border-2 border-edge"
+                                />
+                            </button>
                             <figcaption className="mt-3 px-1 font-mono text-xs leading-relaxed font-bold text-ink-muted">
                                 {image.caption}
                             </figcaption>
@@ -389,8 +398,12 @@ function AdjacentCard({
 export function CaseStudyPage({ project }: CaseStudyPageProps) {
     const { t } = useTranslation();
     const p = usePlaygroundCopy();
-    const sections = buildSections(project, t, (index) =>
-        p('case.step', { index }),
+    const { open: openImage, lightbox } = useImageLightbox(project.gallery);
+    const sections = buildSections(
+        project,
+        t,
+        (index) => p('case.step', { index }),
+        openImage,
     ).filter((section) => section.visible);
     const activeId = useActiveSection(sections.map((section) => section.id));
     const pop = categoryPop[project.category];
@@ -574,6 +587,7 @@ export function CaseStudyPage({ project }: CaseStudyPageProps) {
                     direction="next"
                 />
             </nav>
+            {lightbox}
         </article>
     );
 }
