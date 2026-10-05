@@ -65,6 +65,16 @@ Prefer concrete nouns and verbs over adjectives; never invent numbers, clients o
 }
 ```
 
+## Images
+
+- **Local files** (screenshots, mockups): call `request_image_upload` with the target (`cover`,
+  `gallery` or `company_logo`), the file's `mime_type` and alt text, then run the returned curl
+  command: `curl -X PUT --data-binary @file.png -H "Content-Type: image/png" <upload_url>`. The URL
+  works once and expires after a few minutes; the response says where the image was attached.
+- **Images already online**: `image_url` on `set_project_cover`, `add_project_image` or `set_company_logo`.
+- **Live sites**: `screenshot_url`, when `capabilities.screenshots` is true in the overview.
+- `image_base64` only for tiny images (under ~200 KB).
+
 ## Publishing
 
 New projects are drafts. Publish (`is_published: true`) only when the owner asks; `is_featured`

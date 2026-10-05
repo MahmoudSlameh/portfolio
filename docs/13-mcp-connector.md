@@ -64,6 +64,7 @@ Annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`,
 |            | `delete_skill`, `delete_skill_category`                                           | Deleting a category keeps its skills, uncategorised                                                         |
 | Companies  | `list_companies`, `create_company`, `update_company`, `delete_company`            | Employers and clients                                                                                       |
 |            | `set_company_logo`                                                                | Light or dark logo, PNG/WebP only                                                                           |
+| Uploads    | `request_image_upload`                                                            | Single-use URL to PUT a local image file to (cover, gallery or company logo); see §3                        |
 | Experience | `list_experiences`, `create_experience`, `update_experience`, `delete_experience` | Month dates `YYYY-MM`; `end_date` null = current role                                                       |
 
 **Stacks.** Projects and experiences take `stack` as a list of skill names in
@@ -86,11 +87,41 @@ on request, read before replacing a list, English, owner's voice.
 
 ## 3. Images
 
+### Local files: `request_image_upload`
+
+Agents often have the images as local files (screenshots, mockups of 1–5 MB). Base64 makes those
+millions of characters inside a tool call, and uploading them to a public file host first is
+rightly blocked by agent permission systems. So the server hands out an upload URL on its own
+domain:
+
+1. `request_image_upload` with `target` (`cover` / `gallery` / `company_logo`), the project or
+   company, `filename`, `mime_type`, `alt` (and `caption` for the gallery, `variant` for logos)
+   returns `upload_url`, `method: PUT`, `headers`, `expires_at`, `max_bytes` and a ready
+   `curl_example`.
+2. The agent runs `curl -X PUT --data-binary @file.png -H "Content-Type: image/png" <upload_url>`
+   (a multipart POST with a `file` field works too).
+3. `PUT|POST /mcp/uploads/{token}` (`App\Http\Controllers\Mcp\ImageUploadController`) checks the
+   ticket, the size (`max_kilobytes`), the real type of the bytes (must match the requested
+   `mime_type`) and the dimensions (≤ 10 000 px per side), attaches the image through the same
+   code as the tools (`ImageAttacher`: cover, gallery item appended at the end, or logo) and
+   answers `201 {ok, target, image, project_admin_url}`. Errors are JSON
+   `{ok: false, error}`: 410 expired/used/unknown, 413 too large, 422 wrong type or not an image.
+
+The 64-character random token is the only credential (the agent may only have curl). Tickets
+(`UploadTickets`) live in the cache under a SHA-256 of the token, are scoped to one record,
+target and type, expire after `MCP_UPLOAD_MINUTES` (15) and are deleted once used; a cache lock
+stops two requests using one token at once. The route is limited to 30 requests per minute per
+IP and every upload is logged. Nginx must accept the body size (`client_max_body_size`, see
+[10 § 6](10-deployment.md#6-nginx)).
+
+### Images in tool calls
+
 Every image tool takes exactly one of:
 
 - `image_url`: the server downloads it (e.g. a `raw.githubusercontent.com`
   screenshot from the repository);
-- `image_base64`: the bytes themselves (data URIs accepted);
+- `image_base64`: the bytes themselves (data URIs accepted), only sensible for tiny images
+  (< 200 KB);
 - `screenshot_url` + `screenshot_viewport`: the server opens the page in
   headless Chrome and screenshots it: `desktop` 1600×900 (16:9, covers),
   `laptop` 1440×900, `tablet` 1024×768 (4:3, gallery), `mobile` 390×844.

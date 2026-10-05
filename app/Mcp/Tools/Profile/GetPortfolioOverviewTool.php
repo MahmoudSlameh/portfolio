@@ -51,6 +51,7 @@ class GetPortfolioOverviewTool extends Tool
             'project_categories' => array_column(ProjectCategory::cases(), 'value'),
             'capabilities' => [
                 'screenshots' => PageScreenshot::available(),
+                'direct_uploads' => true, // request_image_upload
                 'max_image_mb' => (int) config('portfolio.mcp.images.max_kilobytes') / 1024,
             ],
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\Mcp\Tools\Companies;
 
+use App\Mcp\Support\ImageAttacher;
 use App\Mcp\Support\ImageInput;
 use App\Mcp\Support\Payload;
 use App\Mcp\Support\Records;
@@ -25,7 +26,7 @@ class SetCompanyLogoTool extends Tool
     /**
      * Raster only: SVGs from the internet could carry scripts, so they are left to the panel.
      */
-    private const MIME_TYPES = ['image/png', 'image/webp'];
+    public const MIME_TYPES = ['image/png', 'image/webp'];
 
     public function handle(Request $request): Response|ResponseFactory
     {
@@ -45,7 +46,7 @@ class SetCompanyLogoTool extends Tool
         $collection = ($data['variant'] ?? 'light') === 'dark' ? 'logo_dark' : 'logo';
 
         try {
-            ImageInput::fetch($data, self::MIME_TYPES)->storeOn($company, $collection, "{$company->name} logo");
+            ImageAttacher::logo($company, ImageInput::fetch($data, self::MIME_TYPES), $collection === 'logo_dark' ? 'dark' : 'light');
         } catch (ImageRejected $exception) {
             return Response::error($exception->getMessage());
         }

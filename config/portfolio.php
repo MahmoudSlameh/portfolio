@@ -87,6 +87,9 @@ return [
         'enabled' => (bool) env('MCP_ENABLED', true),
         'rate_limit' => (int) env('MCP_RATE_LIMIT', 120), // requests per minute and user
         'token_days' => (int) env('MCP_TOKEN_DAYS', 365), // lifetime of personal access tokens
+        'uploads' => [
+            'minutes' => (int) env('MCP_UPLOAD_MINUTES', 15), // lifetime of a request_image_upload URL
+        ],
         'images' => [
             'max_kilobytes' => 10 * 1024,
             'timeout' => 20, // seconds to download one image

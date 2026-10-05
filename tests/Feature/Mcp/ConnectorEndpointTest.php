@@ -63,8 +63,8 @@ test('a token with the mcp scope reaches the server', function () {
 
     $tools = collect(mcpCall('tools/list')->assertOk()->json('result.tools'))->pluck('name');
 
-    expect($tools)->toContain('create_project', 'set_project_cover', 'save_skill', 'create_company', 'create_experience', 'update_profile')
-        ->and($tools)->toHaveCount(27);
+    expect($tools)->toContain('create_project', 'set_project_cover', 'request_image_upload', 'save_skill', 'create_company', 'create_experience', 'update_profile')
+        ->and($tools)->toHaveCount(28);
 
     mcpCall('tools/call', ['name' => 'get_portfolio_overview', 'arguments' => (object) []])
         ->assertOk()

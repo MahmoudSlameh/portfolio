@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Mcp\ImageUploadController;
 use App\Http\Middleware\EnsureMcpAccess;
 use App\Mcp\Servers\PortfolioServer;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,11 @@ Route::middleware('throttle:mcp-oauth')->group(function (): void {
 Mcp::web('/mcp', PortfolioServer::class)
     ->middleware(['auth:api', CheckToken::using(Registrar::OAUTH_SCOPE), EnsureMcpAccess::class, 'throttle:mcp'])
     ->name('mcp');
+
+// Direct uploads for request_image_upload: the single-use token in the URL is the credential.
+Route::match(['put', 'post'], '/mcp/uploads/{token}', ImageUploadController::class)
+    ->where('token', '[A-Za-z0-9]{64}')
+    ->middleware('throttle:mcp-upload')
+    ->name('mcp.uploads');
 
 Mcp::local('portfolio', PortfolioServer::class);

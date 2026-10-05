@@ -161,10 +161,13 @@ the admin link to review and publish.
 
 <img src="docs/images/admin-claude.webp" alt="Site → Claude connector: the server URL, setup steps for claude.ai and Claude Code, and the list of connected apps and tokens" width="100%">
 
-- **27 tools**: projects (create, update, delete/restore, cover, gallery),
+- **28 tools**: projects (create, update, delete/restore, cover, gallery),
   skills and categories, companies (with logos), work experience, profile,
   and an overview to start from. Plus a ready-made
   `add_project_from_github` prompt and a content guide resource.
+- **Local images upload directly.** `request_image_upload` returns a single-use
+  URL on your own domain; Claude uploads a screenshot with one `curl -X PUT`
+  and it lands as the cover or in the gallery. No base64, no third-party host.
 - **Connect in a minute.** claude.ai / Claude Desktop: _Settings → Connectors
   → Add custom connector_ with your `https://your-site/mcp` URL, then sign in
   and approve. Claude Code: `claude mcp add --transport http portfolio

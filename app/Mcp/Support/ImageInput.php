@@ -14,6 +14,11 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 final class ImageInput
 {
     /**
+     * Longest side accepted, in pixels (bigger images would exhaust memory in the conversions).
+     */
+    private const MAX_EDGE = 10000;
+
+    /**
      * @return array<string, mixed>
      */
     public static function schema(JsonSchema $schema): array
@@ -22,7 +27,7 @@ final class ImageInput
             'image_url' => $schema->string()
                 ->description('Public http(s) URL of a JPEG, PNG, WebP or AVIF image to download (e.g. a screenshot in the repository: use the raw.githubusercontent.com URL).'),
             'image_base64' => $schema->string()
-                ->description('The image itself, base64-encoded (a data: URI is fine). Use this for images you have locally.'),
+                ->description('The image itself, base64-encoded (a data: URI is fine). Only for tiny images (under ~200 KB): for local files call request_image_upload and PUT the file with curl instead.'),
             'screenshot_url' => $schema->string()
                 ->description('Public URL of a web page (e.g. the project\'s live site) to screenshot with headless Chrome on the server.'),
             'screenshot_viewport' => $schema->string()
@@ -72,14 +77,32 @@ final class ImageInput
     {
         [$bytes, $source] = self::bytes($input);
 
+        return self::check($bytes, $mimeTypes, $source);
+    }
+
+    /**
+     * Checks that the bytes are a readable image of an accepted type (by content, not by name or header).
+     *
+     * @param  list<string>  $mimeTypes  accepted types
+     *
+     * @throws ImageRejected
+     */
+    public static function check(string $bytes, array $mimeTypes, string $source = 'file'): IncomingImage
+    {
         $mime = (string) (new \finfo(FILEINFO_MIME_TYPE))->buffer($bytes);
 
         if (! in_array($mime, $mimeTypes, true)) {
             throw new ImageRejected("The {$source} is not an accepted image (got {$mime}; accepted: ".implode(', ', $mimeTypes).').');
         }
 
-        if (@getimagesizefromstring($bytes) === false) {
+        $size = @getimagesizefromstring($bytes);
+
+        if ($size === false || $size[0] < 1 || $size[1] < 1) {
             throw new ImageRejected("The {$source} is not a readable image.");
+        }
+
+        if ($size[0] > self::MAX_EDGE || $size[1] > self::MAX_EDGE) {
+            throw new ImageRejected("The {$source} is {$size[0]}×{$size[1]} pixels; the limit is ".self::MAX_EDGE.' pixels per side.');
         }
 
         return new IncomingImage($bytes, $mime);

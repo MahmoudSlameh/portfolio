@@ -222,7 +222,7 @@ server {
         include fastcgi_params;
     }
 
-    client_max_body_size 20m;   # panel uploads
+    client_max_body_size 20m;   # panel uploads and Claude's image uploads (/mcp/uploads)
 }
 ```
 

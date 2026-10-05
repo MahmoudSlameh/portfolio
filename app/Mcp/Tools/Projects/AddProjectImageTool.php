@@ -2,14 +2,13 @@
 
 namespace App\Mcp\Tools\Projects;
 
+use App\Mcp\Support\ImageAttacher;
 use App\Mcp\Support\ImageInput;
 use App\Mcp\Support\Payload;
 use App\Mcp\Support\Records;
-use App\Models\ProjectGalleryItem;
 use App\Support\Media\ImageRejected;
 use App\Support\Media\MimeTypes;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Illuminate\Support\Facades\DB;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
@@ -41,19 +40,7 @@ class AddProjectImageTool extends Tool
         }
 
         try {
-            $image = ImageInput::fetch($data, MimeTypes::RASTER);
-
-            $item = DB::transaction(function () use ($project, $data, $image): ProjectGalleryItem {
-                $item = $project->galleryItems()->create([
-                    'alt' => $data['alt'],
-                    'caption' => filled($data['caption'] ?? null) ? $data['caption'] : null,
-                    'sort_order' => (int) $project->galleryItems()->max('sort_order') + 1,
-                ]);
-
-                $image->storeOn($item, 'image', $data['alt']);
-
-                return $item;
-            });
+            $item = ImageAttacher::gallery($project, ImageInput::fetch($data, MimeTypes::RASTER), $data['alt'], $data['caption'] ?? null);
         } catch (ImageRejected $exception) {
             return Response::error($exception->getMessage());
         }

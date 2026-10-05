@@ -2,6 +2,7 @@
 
 namespace App\Mcp\Tools\Projects;
 
+use App\Mcp\Support\ImageAttacher;
 use App\Mcp\Support\ImageInput;
 use App\Mcp\Support\Payload;
 use App\Mcp\Support\Records;
@@ -38,12 +39,10 @@ class SetProjectCoverTool extends Tool
         }
 
         try {
-            ImageInput::fetch($data, MimeTypes::RASTER)->storeOn($project, 'cover', "{$project->title} cover");
+            ImageAttacher::cover($project, ImageInput::fetch($data, MimeTypes::RASTER), $data['alt']);
         } catch (ImageRejected $exception) {
             return Response::error($exception->getMessage());
         }
-
-        $project->forceFill(['cover_alt' => $data['alt']])->save();
 
         return Response::structured([
             'message' => "Set the cover of \"{$project->title}\".",

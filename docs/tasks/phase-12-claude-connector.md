@@ -60,3 +60,6 @@ needs (skills, companies, experience, profile). Built on the official
 - 2026-10-04: done. `composer setup` now creates the Passport keys when they
   are missing. Larastan could not run in the build container (the
   `phpstan/phpstan` download was blocked there); CI runs it.
+- 2026-10-05: `request_image_upload` + `PUT /mcp/uploads/{token}`: agents upload local image
+  files directly (single-use URL on the site's own domain) instead of base64 or a third-party
+  host. Shared `ImageAttacher` for the tools and the endpoint.

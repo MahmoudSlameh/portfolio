@@ -113,6 +113,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('contact', fn (Request $request): Limit => Limit::perMinute(5)->by((string) $request->ip()));
         RateLimiter::for('mcp', fn (Request $request): Limit => Limit::perMinute((int) config('portfolio.mcp.rate_limit'))->by('mcp:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
         RateLimiter::for('mcp-oauth', fn (Request $request): Limit => Limit::perMinute(30)->by('mcp-oauth:'.$request->ip()));
+        RateLimiter::for('mcp-upload', fn (Request $request): Limit => Limit::perMinute(30)->by('mcp-upload:'.$request->ip()));
     }
 
     /**
