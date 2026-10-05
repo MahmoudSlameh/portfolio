@@ -31,6 +31,12 @@ final class Favicons
     private const PROPERTY = 'icons';
 
     /**
+     * Whether SVGs may be rasterised with Imagick before falling back to Chrome (tests turn it off to
+     * exercise the Chrome path on machines that have Imagick).
+     */
+    public static bool $useImagick = true;
+
+    /**
      * Make the icons for the current favicon if they are missing, and remove icons of older favicons.
      * Returns whether icons were generated.
      */
@@ -151,7 +157,7 @@ final class Favicons
      */
     private static function rasterise(string $svg): string
     {
-        if (extension_loaded('imagick') && in_array('SVG', \Imagick::queryFormats('SVG'), true)) {
+        if (self::$useImagick && extension_loaded('imagick') && in_array('SVG', \Imagick::queryFormats('SVG'), true)) {
             $imagick = new \Imagick;
             $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
             $imagick->setResolution(self::SOURCE, self::SOURCE);
