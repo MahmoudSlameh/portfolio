@@ -25,7 +25,7 @@ class ServiceResource extends JsonResource
             'title' => $this->title,
             'summary' => $this->summary,
             'icon' => $this->icon->value,
-            'highlights' => array_values($this->highlights ?? []),
+            'highlights' => collect($this->highlights ?? [])->values()->all(),
         ];
     }
 }

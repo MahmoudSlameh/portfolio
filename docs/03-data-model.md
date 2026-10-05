@@ -240,13 +240,13 @@ What the owner offers (clients and employers). Sent to every template as the
 home `services` prop (`ServicesSection`: `heading` from `site_settings` +
 visible `items`); the section is hidden while there are no items.
 
-| Column                 | Type                                 | TS           |
-| ---------------------- | ------------------------------------ | ------------ |
-| title                  | string                               | `title`      |
-| summary                | text                                 | `summary`    |
-| icon                   | enum `ServiceIcon` default `sparkles`| `icon`       |
-| highlights             | json list of strings nullable        | `highlights` |
-| is_visible, sort_order |                                      |              |
+| Column                 | Type                                  | TS           |
+| ---------------------- | ------------------------------------- | ------------ |
+| title                  | string                                | `title`      |
+| summary                | text                                  | `summary`    |
+| icon                   | enum `ServiceIcon` default `sparkles` | `icon`       |
+| highlights             | json list of strings nullable         | `highlights` |
+| is_visible, sort_order |                                       |              |
 
 ---
 

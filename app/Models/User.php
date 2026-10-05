@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Laravel\Passport\Contracts\OAuthenticatable;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * @property int $id
@@ -25,10 +27,10 @@ use Illuminate\Support\Carbon;
  */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Get the attributes that should be cast.
@@ -47,6 +49,15 @@ class User extends Authenticatable implements FilamentUser
      * Only the owner's email(s) may enter the panel in production; any user outside production.
      */
     public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isOwner();
+    }
+
+    /**
+     * The owner may use the panel and connect Claude (MCP): any user outside production, only the
+     * ADMIN_EMAILS in production.
+     */
+    public function isOwner(): bool
     {
         if (! app()->isProduction()) {
             return true;

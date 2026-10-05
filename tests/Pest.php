@@ -99,3 +99,20 @@ function seedCvDemo(): void
     Queue::fake();
     test()->seed(DemoContentSeeder::class);
 }
+
+/**
+ * An RSA key pair for Passport (OAuth tokens are signed with it), made once per run.
+ */
+function usePassportKeys(): void
+{
+    static $keys = null;
+
+    if ($keys === null) {
+        $key = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
+        openssl_pkey_export($key, $private);
+        $keys = ['private' => $private, 'public' => openssl_pkey_get_details($key)['key']];
+    }
+
+    config()->set('passport.private_key', $keys['private']);
+    config()->set('passport.public_key', $keys['public']);
+}

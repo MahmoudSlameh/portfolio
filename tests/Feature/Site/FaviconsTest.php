@@ -104,9 +104,14 @@ it('rasterises an SVG favicon with Chrome', function () {
 
 it('explains what to do when an SVG favicon cannot be rasterised', function () {
     config(['studio.screenshots.chrome' => '/nonexistent/chrome']);
+    Favicons::$useImagick = false;
     uploadFavicon(svgFavicon());
 
-    $this->artisan('site:favicons')
-        ->expectsOutputToContain('Chrome could not render the SVG favicon')
-        ->assertFailed();
+    try {
+        $this->artisan('site:favicons')
+            ->expectsOutputToContain('Chrome could not render the SVG favicon')
+            ->assertFailed();
+    } finally {
+        Favicons::$useImagick = true;
+    }
 });

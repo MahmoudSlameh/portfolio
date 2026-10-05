@@ -71,6 +71,7 @@ cards).
 | Site    | **Appearance (templates)**      | Custom page                                   | `SiteSetting.active_template` |
 | Site    | SEO & settings                  | Singleton page                                | `SiteSetting`                 |
 | Site    | AI                              | Singleton page (`AiSettingsPage`)             | `SiteSetting.ai_*`            |
+| Site    | Claude connector                | Custom page (`ClaudeConnector`)               | Passport tokens               |
 | Site    | Users                           | Resource (simple)                             | `User`                        |
 
 ## Shared building blocks (`app/Filament/Support`)
@@ -328,6 +329,17 @@ OpenAI-compatible only) · generations per day. Header action **Test
 connection** prompts the provider with the form's unsaved values and
 reports the model and latency; errors never show the key.
 
+## Site · Claude connector (custom page `ClaudeConnector`)
+
+The MCP server for Claude ([13](13-mcp-connector.md)). Warnings first
+(connector off, Passport keys missing, no HTTPS in production), then the
+server URL and setup steps for claude.ai / Claude Desktop and Claude Code.
+Header action **Create token** makes a personal access token with the
+`mcp:use` scope and shows it once, with a ready-made `claude mcp add`
+command. An embedded table lists the user's working tokens (OAuth apps with
+the host they return to, and personal tokens) with **Revoke**, which also
+revokes the refresh token.
+
 ## Dashboard widgets
 
 1. `StatsOverviewWidget`: projects (published/total), articles, unread
@@ -340,4 +352,6 @@ reports the model and latency; errors never show the key.
 ## Authorization
 
 Single owner. `User::canAccessPanel()` returns true only for emails in
-`config('portfolio.admin_emails')` (env `ADMIN_EMAILS`) in production.
+`config('portfolio.admin_emails')` (env `ADMIN_EMAILS`) in production. The
+same rule (`User::isOwner()`) guards the Claude connector's consent screen
+and every MCP request.

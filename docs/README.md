@@ -36,6 +36,7 @@ The public-facing introduction (features, quick start, roadmap) is the root
 | —   | [Building a template](templates/building-a-template.md)           | Step-by-step guide for template authors, with the prop reference of every page                      |
 | —   | [Sharing studio templates](templates/sharing-studio-templates.md) | Export and import studio templates as `.studio.json` files; the file format                         |
 | 12  | [Studio & AI templates](12-ai-templates.md)                       | _Planned (P8–P10)_: spec-driven templates in the DB and the AI template builder (Laravel AI SDK)    |
+| 13  | [Claude connector (MCP)](13-mcp-connector.md)                     | The MCP server at `/mcp`: tools, OAuth with Passport, images and the SSRF guard, the panel page     |
 | —   | [Tasks](tasks/README.md)                                          | The phased task plan and live status board                                                          |
 
 ## Hard rules (non-negotiable)

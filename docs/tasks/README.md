@@ -23,20 +23,21 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 
 ## Phases
 
-| Phase | File                                                     | Outcome                                           |
-| ----- | -------------------------------------------------------- | ------------------------------------------------- |
-| P0    | [phase-0-foundation.md](phase-0-foundation.md)           | Project installs, packages & tooling ready        |
-| P1    | [phase-1-data-layer.md](phase-1-data-layer.md)           | Enums, migrations, models, factories, seeders     |
-| P2    | [phase-2-admin-panel.md](phase-2-admin-panel.md)         | Complete Filament panel                           |
-| P3    | [phase-3-frontend.md](phase-3-frontend.md)               | Three templates running on Inertia with real data |
-| P4    | [phase-4-seo-performance.md](phase-4-seo-performance.md) | SSR, meta, JSON-LD, sitemap, RSS, perf            |
-| P5    | [phase-5-quality-launch.md](phase-5-quality-launch.md)   | Tests hardening, cleanup, deployment              |
-| P6    | [phase-6-open-source.md](phase-6-open-source.md)         | README, license, community files, English docs    |
-| P7    | [phase-7-template-kit.md](phase-7-template-kit.md)       | Template registry, kit, scaffold command, guide   |
-| P8    | [phase-8-studio-engine.md](phase-8-studio-engine.md)     | Spec-driven studio templates stored in the DB     |
-| P9    | [phase-9-ai-builder.md](phase-9-ai-builder.md)           | Generate templates with AI (Laravel AI SDK)       |
-| P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)   | Refine, versions, export/import, eject to code    |
-| P11   | [phase-11-content-tools.md](phase-11-content-tools.md)   | Paste-friendly article editor; ATS CV to PDF      |
+| Phase | File                                                         | Outcome                                           |
+| ----- | ------------------------------------------------------------ | ------------------------------------------------- |
+| P0    | [phase-0-foundation.md](phase-0-foundation.md)               | Project installs, packages & tooling ready        |
+| P1    | [phase-1-data-layer.md](phase-1-data-layer.md)               | Enums, migrations, models, factories, seeders     |
+| P2    | [phase-2-admin-panel.md](phase-2-admin-panel.md)             | Complete Filament panel                           |
+| P3    | [phase-3-frontend.md](phase-3-frontend.md)                   | Three templates running on Inertia with real data |
+| P4    | [phase-4-seo-performance.md](phase-4-seo-performance.md)     | SSR, meta, JSON-LD, sitemap, RSS, perf            |
+| P5    | [phase-5-quality-launch.md](phase-5-quality-launch.md)       | Tests hardening, cleanup, deployment              |
+| P6    | [phase-6-open-source.md](phase-6-open-source.md)             | README, license, community files, English docs    |
+| P7    | [phase-7-template-kit.md](phase-7-template-kit.md)           | Template registry, kit, scaffold command, guide   |
+| P8    | [phase-8-studio-engine.md](phase-8-studio-engine.md)         | Spec-driven studio templates stored in the DB     |
+| P9    | [phase-9-ai-builder.md](phase-9-ai-builder.md)               | Generate templates with AI (Laravel AI SDK)       |
+| P10   | [phase-10-studio-extras.md](phase-10-studio-extras.md)       | Refine, versions, export/import, eject to code    |
+| P11   | [phase-11-content-tools.md](phase-11-content-tools.md)       | Paste-friendly article editor; ATS CV to PDF      |
+| P12   | [phase-12-claude-connector.md](phase-12-claude-connector.md) | Claude connector: MCP server with OAuth           |
 
 > **Status (2026-09-27): P0–P7 are done (P7: the template kit, see
 > [11](../11-template-kit.md) and the
@@ -45,6 +46,9 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 > builder), P10 (refine & versions, export/import, screenshots, eject) and
 > P11 (rich article editor, ATS-friendly CV). Every planned phase is
 > done** — design in [12](../12-ai-templates.md).
+>
+> Status 2026-10-04: **P12 (the Claude connector, an MCP server) is done**
+> — design in [13](../13-mcp-connector.md).
 >
 > Status 2026-09-24: all phases P0–P5 were done. The owner still has to
 > decide the open questions in [09](../09-decisions.md#open-questions-for-the-owner) (their
@@ -133,3 +137,7 @@ Statuses: `todo` · `in-progress` · `blocked` · `done`.
 | P11-03 | PDF generation                                                     | P11-02              | done   |
 | P11-04 | Panel: CV page (pick template, generate, use as resume)            | P11-03              | done   |
 | P11-05 | CV tests & docs                                                    | P11-04              | done   |
+| P12-01 | OAuth (Passport) and access control for `/mcp`                     | —                   | done   |
+| P12-02 | MCP tools: projects, skills, companies, experience, profile        | P12-01              | done   |
+| P12-03 | Images over MCP: URL, base64, screenshots; SSRF guard              | P12-02              | done   |
+| P12-04 | Panel: Site → Claude connector; docs & tests                       | P12-03              | done   |
