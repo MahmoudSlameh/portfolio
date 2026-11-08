@@ -2,13 +2,17 @@
 
 namespace App\Filament\Resources\Articles\Schemas;
 
+use App\Enums\ArticleLanguage;
 use App\Enums\ArticleStatus;
 use App\Filament\Support\Fields;
 use App\Models\Article;
+use App\Support\Content\VideoEmbed;
 use App\Support\Media\MimeTypes;
+use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -49,10 +53,23 @@ class ArticleForm
                     Section::make('Body')->icon(Heroicon::OutlinedDocumentText)->schema([
                         self::body(),
                     ]),
+                    Section::make('Sources')->icon(Heroicon::OutlinedBookOpen)->description('Listed at the end of the article.')->collapsible()->schema([
+                        Repeater::make('sources')
+                            ->hiddenLabel()
+                            ->schema([
+                                TextInput::make('title')->required()->maxLength(255),
+                                TextInput::make('url')->label('URL')->required()->url()->maxLength(2048),
+                            ])
+                            ->columns(2)
+                            ->reorderable()
+                            ->defaultItems(0)
+                            ->addActionLabel('Add source'),
+                    ]),
                 ])->columnSpan(['lg' => 2]),
                 Group::make([
                     Section::make('Publishing')->icon(Heroicon::OutlinedRocketLaunch)->schema([
                         ToggleButtons::make('status')->options(ArticleStatus::class)->default(ArticleStatus::Draft->value)->inline()->required(),
+                        ToggleButtons::make('language')->options(ArticleLanguage::class)->default(ArticleLanguage::English->value)->inline()->required()->helperText('Arabic articles are shown right to left.'),
                         DateTimePicker::make('published_at')->label('Publish date')->native(false)->helperText('Set automatically when published; a future date schedules it.'),
                         Text::make(fn (?Article $record): string => $record ? "≈ {$record->readingMinutes()} min read" : 'Reading time is calculated on save.')->color('gray'),
                         Select::make('projects')
@@ -61,9 +78,26 @@ class ArticleForm
                             ->multiple()
                             ->preload(),
                     ]),
+                    Section::make('Series')->icon(Heroicon::OutlinedQueueList)->columns(3)->schema([
+                        TextInput::make('series')
+                            ->datalist(fn (): array => Article::query()->whereNotNull('series')->distinct()->orderBy('series')->pluck('series')->all())
+                            ->maxLength(255)
+                            ->columnSpan(2),
+                        TextInput::make('series_order')->label('Part')->integer()->minValue(1)->maxValue(999),
+                    ]),
                     Section::make('Cover')->icon(Heroicon::OutlinedPhoto)->schema([
                         Fields::image('cover', ['16:9'], MimeTypes::RASTER)->hiddenLabel(),
                         Fields::alt('cover_alt'),
+                        TextInput::make('video_url')
+                            ->label('Video')
+                            ->url()
+                            ->maxLength(2048)
+                            ->helperText('A YouTube or Vimeo link, shown under the cover.')
+                            ->rule(fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                                if (filled($value) && VideoEmbed::playerUrl((string) $value) === null) {
+                                    $fail('Use a YouTube or Vimeo video link.');
+                                }
+                            }),
                     ]),
                     Section::make('SEO')->icon(Heroicon::OutlinedMagnifyingGlass)->collapsed()->schema([
                         TextInput::make('meta_title')->maxLength(70)->live(onBlur: true)->hint(fn (?string $state): string => mb_strlen((string) $state).' / 60'),
@@ -81,7 +115,7 @@ class ArticleForm
             ->toolbarButtons([
                 ['bold', 'italic', 'code', 'link'],
                 ['h2', 'h3'],
-                ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                ['blockquote', 'codeBlock', 'bulletList', 'orderedList', 'table'],
                 ['attachFiles', 'customBlocks'],
                 ['undo', 'redo'],
             ])

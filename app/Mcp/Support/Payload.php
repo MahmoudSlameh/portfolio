@@ -2,9 +2,12 @@
 
 namespace App\Mcp\Support;
 
+use App\Enums\ArticleStatus;
+use App\Filament\Resources\Articles\ArticleResource;
 use App\Filament\Resources\Companies\CompanyResource;
 use App\Filament\Resources\Experiences\ExperienceResource;
 use App\Filament\Resources\Projects\ProjectResource;
+use App\Models\Article;
 use App\Models\Company;
 use App\Models\Experience;
 use App\Models\Profile;
@@ -12,6 +15,7 @@ use App\Models\Project;
 use App\Models\ProjectGalleryItem;
 use App\Models\Skill;
 use App\Models\SkillCategory;
+use App\Support\Content\ArticleMarkdown;
 use DateTimeInterface;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -93,6 +97,76 @@ final class Payload
                 'admin' => ProjectResource::getUrl('edit', ['record' => $project], panel: 'admin'),
             ],
             'updated_at' => self::date($project->updated_at),
+        ];
+    }
+
+    /**
+     * Short form for lists.
+     *
+     * @return array<string, mixed>
+     */
+    public static function articleSummary(Article $article): array
+    {
+        return [
+            'id' => $article->id,
+            'slug' => $article->slug,
+            'title' => $article->title,
+            'language' => $article->language->value,
+            'is_published' => $article->status === ArticleStatus::Published,
+            'published_at' => self::date($article->published_at),
+            'is_deleted' => $article->trashed(),
+            'series' => $article->series,
+            'series_order' => $article->series_order,
+            'tags' => $article->tags,
+            'has_cover' => $article->getFirstMedia('cover') !== null,
+            'updated_at' => self::date($article->updated_at),
+        ];
+    }
+
+    /**
+     * The article with its body as Markdown (the format update_article takes back).
+     *
+     * @return array<string, mixed>
+     */
+    public static function article(Article $article): array
+    {
+        $article->loadMissing(['projects', 'media']);
+        $isPublished = $article->status === ArticleStatus::Published;
+
+        return [
+            'id' => $article->id,
+            'slug' => $article->slug,
+            'title' => $article->title,
+            'excerpt' => $article->excerpt,
+            'language' => $article->language->value,
+            'direction' => $article->language->direction(),
+            'body' => ArticleMarkdown::fromDocument($article->body),
+            'pending_images' => ArticleImages::placeholders($article->body),
+            'tags' => $article->tags,
+            'series' => $article->series,
+            'series_order' => $article->series_order,
+            'sources' => $article->sources,
+            'video_url' => $article->video_url,
+            'project_ids' => $article->projects->pluck('id')->values()->all(),
+            'is_published' => $isPublished,
+            'is_scheduled' => $isPublished && $article->published_at?->isFuture() === true,
+            'published_at' => self::date($article->published_at),
+            'is_deleted' => $article->trashed(),
+            'word_count' => $article->wordCount(),
+            'reading_minutes' => $article->readingMinutes(),
+            'cover' => self::image($article->getFirstMedia('cover'), $article->cover_alt),
+            'cover_alt' => $article->cover_alt,
+            'images' => $article->getMedia('body_images')->map(fn (Media $media): array => [
+                'src' => "media:{$media->uuid}",
+                ...(array) self::image($media, null),
+            ])->values()->all(),
+            'meta_title' => $article->meta_title,
+            'meta_description' => $article->meta_description,
+            'urls' => [
+                'site' => $article->isPublished() ? url("/writing/{$article->slug}") : null,
+                'admin' => $article->trashed() ? null : ArticleResource::getUrl('edit', ['record' => $article], panel: 'admin'),
+            ],
+            'updated_at' => self::date($article->updated_at),
         ];
     }
 

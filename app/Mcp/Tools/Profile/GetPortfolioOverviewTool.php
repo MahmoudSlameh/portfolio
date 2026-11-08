@@ -44,7 +44,11 @@ class GetPortfolioOverviewTool extends Tool
                 'skills' => Skill::query()->count(),
                 'skill_categories' => SkillCategory::query()->count(),
                 'articles' => Article::query()->count(),
+                'published_articles' => Article::query()->published()->count(),
+                'deleted_articles' => Article::onlyTrashed()->count(),
             ],
+            'latest_articles' => Article::query()->latest('updated_at')->limit(10)->get(['id', 'slug', 'title', 'language', 'status'])
+                ->map(fn (Article $article): array => ['id' => $article->id, 'slug' => $article->slug, 'title' => $article->title, 'language' => $article->language->value, 'status' => $article->status->value])->all(),
             'latest_projects' => Project::query()->latest('updated_at')->limit(10)->get(['id', 'slug', 'title', 'year', 'is_published'])
                 ->map(fn (Project $project): array => $project->only(['id', 'slug', 'title', 'year', 'is_published']))->all(),
             'project_statuses' => array_column(ProjectStatus::cases(), 'value'),

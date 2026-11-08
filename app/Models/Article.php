@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\ArticleLanguage;
 use App\Enums\ArticleStatus;
 use App\Filament\RichContent\CalloutBlock;
 use App\Filament\RichContent\CodeBlock;
 use App\Models\Concerns\GeneratesSlug;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Support\Content\ArticleDocument;
+use App\Support\Content\VideoEmbed;
 use App\Support\Media\MimeTypes;
 use Carbon\CarbonImmutable;
 use Database\Factories\ArticleFactory;
@@ -36,8 +38,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string $slug
  * @property string $title
  * @property string|null $excerpt
+ * @property ArticleLanguage $language
  * @property array<string, mixed> $body
  * @property list<string> $tags
+ * @property string|null $series
+ * @property int|null $series_order
+ * @property list<array{title: string, url: string}> $sources
+ * @property string|null $video_url
  * @property ArticleStatus $status
  * @property CarbonImmutable|null $published_at
  * @property string|null $cover_alt
@@ -48,7 +55,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon|null $deleted_at
  * @property-read Collection<int, Project> $projects
  */
-#[Fillable(['slug', 'title', 'excerpt', 'body', 'tags', 'status', 'published_at', 'cover_alt', 'meta_title', 'meta_description'])]
+#[Fillable(['slug', 'title', 'excerpt', 'language', 'body', 'tags', 'series', 'series_order', 'sources', 'video_url', 'status', 'published_at', 'cover_alt', 'meta_title', 'meta_description'])]
 #[RouteKey('slug')]
 class Article extends Model implements HasMedia, HasRichContent
 {
@@ -59,8 +66,10 @@ class Article extends Model implements HasMedia, HasRichContent
      * @var array<string, mixed>
      */
     protected $attributes = [
+        'language' => 'en',
         'body' => '{"type":"doc","content":[]}',
         'tags' => '[]',
+        'sources' => '[]',
         'status' => 'draft',
     ];
 
@@ -79,8 +88,11 @@ class Article extends Model implements HasMedia, HasRichContent
     protected function casts(): array
     {
         return [
+            'language' => ArticleLanguage::class,
             'body' => 'array',
             'tags' => 'array',
+            'series_order' => 'integer',
+            'sources' => 'array',
             'status' => ArticleStatus::class,
             'published_at' => 'immutable_datetime',
         ];
@@ -143,6 +155,14 @@ class Article extends Model implements HasMedia, HasRichContent
     }
 
     /**
+     * The embeddable player of the article's video (YouTube or Vimeo), or null.
+     */
+    public function videoPlayerUrl(): ?string
+    {
+        return VideoEmbed::playerUrl($this->video_url);
+    }
+
+    /**
      * Words in the body, counted like the reference frontend (code, list items, callout title + text).
      */
     public function wordCount(): int
@@ -155,6 +175,10 @@ class Article extends Model implements HasMedia, HasRichContent
                 'code' => (string) ($data['code'] ?? ''),
                 'callout' => ($data['title'] ?? '').' '.ArticleDocument::plainText((string) ($data['text'] ?? '')),
                 'image' => '',
+                'table' => implode(' ', array_map(
+                    fn (mixed $cell): string => ArticleDocument::plainText((string) $cell),
+                    array_merge((array) ($data['header'] ?? []), ...array_map(fn (mixed $row): array => (array) $row, (array) ($data['rows'] ?? []))),
+                )),
                 'heading' => (string) ($data['text'] ?? ''),
                 default => ArticleDocument::plainText((string) ($data['text'] ?? '')),
             };

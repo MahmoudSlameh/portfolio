@@ -13,7 +13,7 @@ use Laravel\Mcp\Server\Resource;
 
 #[Name('content_guide')]
 #[Title('Portfolio content guide')]
-#[Description('Where each project field appears on the site, recommended lengths and the writing style to use.')]
+#[Description('Where each project and article field appears on the site, recommended lengths, the article Markdown and the writing style to use.')]
 #[Uri('portfolio://guides/content')]
 #[MimeType('text/markdown')]
 class ContentGuideResource extends Resource
@@ -24,6 +24,7 @@ class ContentGuideResource extends Resource
 # Portfolio content guide
 
 The site is in **English** and written in the owner's voice ("I built…", "we shipped…"), plain and specific.
+Articles are the exception: each is written in its own language (`language`: `en` or `ar`).
 Prefer concrete nouns and verbs over adjectives; never invent numbers, clients or results.
 
 ## Where project fields appear
@@ -65,20 +66,75 @@ Prefer concrete nouns and verbs over adjectives; never invent numbers, clients o
 }
 ```
 
+## Where article fields appear
+
+| Field | Shown | Length |
+| --- | --- | --- |
+| `title` | Cards, article heading, page title | ≤ 80 characters |
+| `excerpt` | Cards, search results, meta description fallback | 1–2 sentences, ≤ 300 characters |
+| `language` | Sets `lang` and the direction of the article (`ar` = right to left) | — |
+| `slug` | `/writing/<slug>` | Latin letters, numbers, dashes; always English, also for Arabic articles |
+| `series`, `series_order` | Above the title: "System Design · 01" | Same series name on every part |
+| `tags` | Chips and the archive filter | 2–5 |
+| `video_url` | Player under the cover | YouTube or Vimeo link |
+| `body` | The article | Markdown, see below |
+| `sources` | "Sources" list at the end | Every fact that needs one; `{title, url}` |
+| cover | Cards, article, social previews | 16:9, ≥ 1600 × 900 |
+
+Reading time is calculated from the body.
+
+### Article Markdown
+
+~~~markdown
+Opening paragraph: what the reader will learn.
+
+## A section heading
+
+Text with **bold**, *italic*, `code` and [a link](https://example.com).
+
+1. Numbered step
+2. Another step
+   - a nested point
+
+> A quote.
+> — Who said it
+
+> [!NOTE] Callout title
+> The callout text.
+
+| Option | When to use it |
+| --- | --- |
+| Index | Reads outnumber writes |
+
+```php title="app/Models/User.php"
+class User extends Model {}
+```
+
+![Step 1: the request reaches the load balancer](image:step-1 "Step 1")
+~~~
+
+Images: `image:<key>` is a placeholder filled later by `add_article_image` (or `request_image_upload`
+with target `article_image`) with `placeholder: "<key>"`; `media:<uuid>` is an image already on the
+article (as `get_article` returns it); an https URL is downloaded when the body is saved. Images
+removed from the body are deleted. Raw HTML is shown as text. Lists or quotes inside a callout
+become plain callout text.
+
 ## Images
 
 - **Local files** (screenshots, mockups): call `request_image_upload` with the target (`cover`,
-  `gallery` or `company_logo`), the file's `mime_type` and alt text, then run the returned curl
+  `gallery`, `company_logo`, `article_cover` or `article_image`), the file's `mime_type` and alt text, then run the returned curl
   command: `curl -X PUT --data-binary @file.png -H "Content-Type: image/png" <upload_url>`. The URL
   works once and expires after a few minutes; the response says where the image was attached.
-- **Images already online**: `image_url` on `set_project_cover`, `add_project_image` or `set_company_logo`.
+- **Images already online**: `image_url` on `set_project_cover`, `add_project_image`, `set_company_logo`,
+  `set_article_cover` or `add_article_image`.
 - **Live sites**: `screenshot_url`, when `capabilities.screenshots` is true in the overview.
 - `image_base64` only for tiny images (under ~200 KB).
 
 ## Publishing
 
-New projects are drafts. Publish (`is_published: true`) only when the owner asks; `is_featured`
-puts a project on the home page. Deleting moves a project to the trash (`restore_project` undoes it).
+New projects and articles are drafts. Publish (`is_published: true`) only when the owner asks; a future
+`published_at` schedules an article. `is_featured` puts a project on the home page. Deleting moves a
+project or article to the trash (`restore_project` / `restore_article` undo it).
 MARKDOWN);
     }
 }

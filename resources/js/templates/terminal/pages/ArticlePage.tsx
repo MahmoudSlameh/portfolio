@@ -9,6 +9,12 @@ import {
 import { m, useScroll, useSpring } from 'motion/react';
 import { useRef } from 'react';
 import { useClipboard } from '@/hooks/useClipboard';
+import {
+    ArticleSources,
+    ArticleVideo,
+    articleLocale,
+    seriesLabel,
+} from '@/kit';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { ArticleSummary } from '@/lib/content';
 import { useSiteConfig } from '@/lib/seo';
@@ -47,7 +53,10 @@ function Neighbour({
                     <Icon aria-hidden className="size-4 rtl:-scale-x-100" />
                 )}
             </span>
-            <span lang="en" className="text-xl font-medium text-ink">
+            <span
+                {...articleLocale(article)}
+                className="text-xl font-medium text-ink"
+            >
                 {article.title}
             </span>
         </Link>
@@ -70,6 +79,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
     const { copied, copy } = useClipboard();
     const { notify } = useToast();
     const LinkIcon = copied ? Check : Link2;
+    const locale = articleLocale(article);
     const entries = article.body.flatMap((block) =>
         block.type === 'heading' ? [{ id: block.id, text: block.text }] : [],
     );
@@ -134,9 +144,18 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                 {t('writing.minRead', {
                                     count: article.readingMinutes,
                                 })}
+                                {article.series && (
+                                    <>
+                                        {' '}
+                                        •{' '}
+                                        <span {...locale}>
+                                            {seriesLabel(article.series)}
+                                        </span>
+                                    </>
+                                )}
                             </Kicker>
                             <h1
-                                lang="en"
+                                {...locale}
                                 className="mt-3 mb-4 text-[clamp(2rem,5vw,3.125rem)] font-medium"
                             >
                                 {article.title}
@@ -145,7 +164,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                 </span>
                             </h1>
                             <p
-                                lang="en"
+                                {...locale}
                                 className="mx-auto max-w-2xl text-tm-body"
                             >
                                 {article.excerpt}
@@ -178,7 +197,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                 <p className="mb-3 text-sm text-tm-400">
                                     {t('article.toc')}
                                 </p>
-                                <ol lang="en" className="flex flex-col gap-1">
+                                <ol {...locale} className="flex flex-col gap-1">
                                     {entries.map((entry) => (
                                         <li key={entry.id}>
                                             <a
@@ -199,11 +218,27 @@ export function ArticlePage({ article }: ArticlePageProps) {
                         )}
                     </aside>
                     <div
-                        lang="en"
-                        dir="ltr"
+                        {...locale}
                         className="tm-box min-w-0 p-5 text-start md:p-10"
                     >
+                        {article.video && (
+                            <ArticleVideo
+                                video={article.video}
+                                title={`${t('article.video')}: ${article.title}`}
+                                className="mb-10 overflow-hidden rounded-lg border border-tm-border"
+                            />
+                        )}
                         <ArticleBlocks blocks={article.body} />
+                        <ArticleSources
+                            sources={article.sources}
+                            heading={t('article.sources')}
+                            classNames={{
+                                root: 'mt-12 border-t border-tm-border pt-6',
+                                heading: 'mb-4 text-sm font-normal text-tm-400',
+                                list: 'flex list-decimal flex-col gap-2 ps-5 text-sm text-tm-300 marker:text-tm-primary',
+                                link: 'underline decoration-current/40 underline-offset-4 hover:text-[#62a92b]',
+                            }}
+                        />
                     </div>
                     {article.relatedProjects.length > 0 ? (
                         <aside aria-labelledby="related-projects">

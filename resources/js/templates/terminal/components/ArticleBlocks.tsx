@@ -6,6 +6,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
 import {
     ArticleBlocks as KitArticleBlocks,
+    ArticleTable,
+    cn,
     ResponsiveImage,
     type ArticleBlockRenderers,
     InlineText,
@@ -128,14 +130,35 @@ const renderers: ArticleBlockRenderers = {
             )}
         </blockquote>
     ),
-    list: (block) => (
-        <ul className="mb-8 list-disc ps-6 marker:text-tm-primary">
-            {block.items.map((item) => (
-                <li key={item} className="tm-prose mb-2">
-                    <InlineText text={item} classNames={inline} />
-                </li>
-            ))}
-        </ul>
+    list: (block) => {
+        const List = block.ordered ? 'ol' : 'ul';
+
+        return (
+            <List
+                className={cn(
+                    'mb-8 ps-6 marker:text-tm-primary',
+                    block.ordered ? 'list-decimal' : 'list-disc',
+                )}
+            >
+                {block.items.map((item) => (
+                    <li key={item} className="tm-prose mb-2">
+                        <InlineText text={item} classNames={inline} />
+                    </li>
+                ))}
+            </List>
+        );
+    },
+    table: (block) => (
+        <ArticleTable
+            block={block}
+            classNames={{
+                root: 'my-10 overflow-x-auto rounded-lg border border-tm-border',
+                table: 'w-full border-collapse text-sm',
+                th: 'border-b border-tm-border bg-[#272730] px-4 py-2.5 text-start font-medium text-tm-primary',
+                td: 'border-b border-tm-border px-4 py-3 align-top text-tm-300',
+                inline,
+            }}
+        />
     ),
     callout: (block) => (
         <aside className="tm-box my-10 flex gap-4 p-6">

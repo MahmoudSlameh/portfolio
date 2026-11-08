@@ -59,12 +59,17 @@ Annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`,
 |            | `delete_project`, `restore_project`                                               | Soft delete (trash) and restore                                                                             |
 |            | `set_project_cover`                                                               | 16:9 cover + alt text                                                                                       |
 |            | `add_project_image`, `update_project_image`, `remove_project_image`               | Case-study gallery                                                                                          |
+| Articles   | `list_articles`                                                                   | Filters: search, language, series, tag, published, include_deleted; paginated                               |
+|            | `get_article`                                                                     | Every field, the body as Markdown (images as `media:<uuid>`), pending placeholders, reading time, URLs      |
+|            | `create_article`, `update_article`                                                | Body in Markdown; `language` en/ar (ar = RTL), series, sources, video; **drafts by default**                |
+|            | `delete_article`, `restore_article`                                               | Soft delete (trash) and restore                                                                             |
+|            | `set_article_cover`, `add_article_image`                                          | 16:9 cover; body image in place of an `image:<key>` placeholder or at the end                               |
 | Skills     | `list_skills`                                                                     | Categories + skills with usage counts                                                                       |
 |            | `save_skill`, `save_skill_category`                                               | Create or update; matched by id or name (case-insensitive)                                                  |
 |            | `delete_skill`, `delete_skill_category`                                           | Deleting a category keeps its skills, uncategorised                                                         |
 | Companies  | `list_companies`, `create_company`, `update_company`, `delete_company`            | Employers and clients                                                                                       |
 |            | `set_company_logo`                                                                | Light or dark logo, PNG/WebP only                                                                           |
-| Uploads    | `request_image_upload`                                                            | Single-use URL to PUT a local image file to (cover, gallery or company logo); see §3                        |
+| Uploads    | `request_image_upload`                                                            | Single-use URL to PUT a local image file to (project cover/gallery, company logo, article cover/image); §3  |
 | Experience | `list_experiences`, `create_experience`, `update_experience`, `delete_experience` | Month dates `YYYY-MM`; `end_date` null = current role                                                       |
 
 **Stacks.** Projects and experiences take `stack` as a list of skill names in
@@ -78,12 +83,20 @@ category, exactly like a stack tag added in the panel. The tool result lists
 duplicates, reuse skills/companies, create the project, add a cover and
 gallery, keep it a draft, report back with the admin link.
 
-**Resource `portfolio://guides/content`** says where each field appears on
-the site, recommended lengths, an architecture example and the writing style.
+**Articles.** The body is exchanged as Markdown (`App\Support\Content\ArticleMarkdown`) and stored as
+the rich editor's TipTap document: headings, lists, quotes, code (with an optional file name),
+GitHub tables, callouts (`> [!NOTE] Title`) and images. An image source is `media:<uuid>` (stored on
+the article), `image:<key>` (a placeholder filled later by `add_article_image` or an upload) or an
+https URL (downloaded on save); images taken out of the body are deleted, as in the panel
+(`App\Mcp\Support\ArticleImages`).
+
+**Resource `portfolio://guides/content`** says where each project and article field appears on
+the site, recommended lengths, an architecture example, the article Markdown and the writing style.
 
 The server **instructions** (sent on `initialize`) repeat the rules that
 matter most: never invent facts or metrics, drafts unless asked, delete only
-on request, read before replacing a list, English, owner's voice.
+on request, read before replacing a list, owner's voice; English except articles, which are
+written in their own language.
 
 ## 3. Images
 
@@ -94,8 +107,9 @@ millions of characters inside a tool call, and uploading them to a public file h
 rightly blocked by agent permission systems. So the server hands out an upload URL on its own
 domain:
 
-1. `request_image_upload` with `target` (`cover` / `gallery` / `company_logo`), the project or
-   company, `filename`, `mime_type`, `alt` (and `caption` for the gallery, `variant` for logos)
+1. `request_image_upload` with `target` (`cover` / `gallery` / `company_logo` / `article_cover` /
+   `article_image`), the project, company or article, `filename`, `mime_type`, `alt` (and `caption`
+   for the gallery and article images, `placeholder` for article images, `variant` for logos)
    returns `upload_url`, `method: PUT`, `headers`, `expires_at`, `max_bytes` and a ready
    `curl_example`.
 2. The agent runs `curl -X PUT --data-binary @file.png -H "Content-Type: image/png" <upload_url>`

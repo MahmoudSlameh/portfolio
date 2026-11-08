@@ -6,7 +6,7 @@ namespace App\Support\Content;
  * The article body as stored by the rich editor: a TipTap document (docs/tasks/phase-11-content-tools.md, P11-01).
  *
  * Templates never see it. `toBuilder()` flattens it into the block list the site renders
- * (paragraph, heading, code, quote, list, callout, image), with marks written as the inline
+ * (paragraph, heading, code, quote, list, table, callout, image), with marks written as the inline
  * Markdown subset `**bold**`, `*italic*`, `` `code` `` and `[text](url)`. `fromBuilder()` is the
  * reverse, used by the migration, the factory and the demo seeder.
  */
@@ -61,10 +61,14 @@ final class ArticleDocument
                     self::paragraph($text('text')),
                     $text('cite') !== '' ? self::paragraph('— '.$text('cite')) : null,
                 ]))],
-                'list' => ['type' => 'bulletList', 'content' => array_map(
+                'list' => ['type' => ($data['ordered'] ?? false) === true ? 'orderedList' : 'bulletList', 'content' => array_map(
                     fn (mixed $item): array => ['type' => 'listItem', 'content' => [self::paragraph(self::scalar(is_array($item) ? ($item['item'] ?? '') : $item))]],
                     array_values((array) ($data['items'] ?? [])),
                 )],
+                'table' => ['type' => 'table', 'content' => array_values(array_filter([
+                    is_array($data['header'] ?? null) ? self::tableRow($data['header'], 'tableHeader') : null,
+                    ...array_map(fn (mixed $row): array => self::tableRow((array) $row, 'tableCell'), array_values((array) ($data['rows'] ?? []))),
+                ]))],
                 'callout' => self::customBlock(self::CALLOUT_BLOCK, ['title' => $text('title'), 'text' => $text('text')]),
                 'image' => ['type' => 'image', 'attrs' => array_filter([
                     'id' => $text('media_uuid'),
@@ -107,7 +111,14 @@ final class ArticleDocument
             case 'orderedList':
                 $items = self::listItems($node);
 
-                return $items === [] ? [] : [['type' => 'list', 'data' => ['items' => $items]]];
+                if ($items === []) {
+                    return [];
+                }
+
+                return [['type' => 'list', 'data' => $node['type'] === 'orderedList' ? ['items' => $items, 'ordered' => true] : ['items' => $items]]];
+
+            case 'table':
+                return self::table($node);
 
             case 'blockquote':
                 return self::quote($node);
@@ -130,7 +141,7 @@ final class ArticleDocument
                 ], fn (mixed $value): bool => $value !== null)]];
 
             case 'tableRow':
-                // The site has no tables: a row becomes one line, its cells separated by a dot.
+                // A row outside a table becomes one line, its cells separated by a dot.
                 $cells = array_filter(array_map(fn (array $cell): string => trim(self::inline($cell)), self::children($node)), fn (string $cell): bool => $cell !== '');
 
                 return $cells === [] ? [] : [['type' => 'paragraph', 'data' => ['text' => implode(' · ', $cells)]]];
@@ -174,6 +185,49 @@ final class ArticleDocument
             ], fn (mixed $value): bool => $value !== null)]],
             default => [],
         };
+    }
+
+    /**
+     * A table: the first row is the header when all its cells are header cells. Cells are inline Markdown.
+     *
+     * @param  array<array-key, mixed>  $node
+     * @return list<array{type: string, data: array<string, mixed>}>
+     */
+    private static function table(array $node): array
+    {
+        $header = null;
+        $rows = [];
+
+        foreach (self::children($node) as $index => $row) {
+            $cells = self::children($row);
+            $texts = array_map(fn (array $cell): string => trim(self::inline($cell)), $cells);
+            $isHeader = $cells !== [] && array_all($cells, fn (array $cell): bool => ($cell['type'] ?? null) === 'tableHeader');
+
+            if ($index === 0 && $isHeader) {
+                $header = $texts;
+            } elseif (implode('', $texts) !== '') {
+                $rows[] = $texts;
+            }
+        }
+
+        if ($rows === [] && $header === null) {
+            return [];
+        }
+
+        return [['type' => 'table', 'data' => ['header' => $header, 'rows' => $rows]]];
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $cells  inline Markdown per cell
+     * @param  'tableHeader'|'tableCell'  $cellType
+     * @return array<string, mixed>
+     */
+    private static function tableRow(array $cells, string $cellType): array
+    {
+        return ['type' => 'tableRow', 'content' => array_map(
+            fn (mixed $cell): array => ['type' => $cellType, 'content' => [self::paragraph(self::scalar($cell))]],
+            array_values($cells),
+        )];
     }
 
     /**
@@ -242,6 +296,16 @@ final class ArticleDocument
         }
 
         return $items;
+    }
+
+    /**
+     * A node's text with marks written as inline Markdown, trimmed (the Markdown export of the MCP tools).
+     *
+     * @param  array<array-key, mixed>  $node
+     */
+    public static function inlineMarkdown(array $node): string
+    {
+        return trim(self::inline($node));
     }
 
     /**

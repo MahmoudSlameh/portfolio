@@ -1,4 +1,13 @@
-import { formatDate, Link, ResponsiveImage, useTranslation } from '@/kit';
+import {
+    ArticleSources,
+    ArticleVideo,
+    articleLocale,
+    formatDate,
+    Link,
+    ResponsiveImage,
+    seriesLabel,
+    useTranslation,
+} from '@/kit';
 import type { ArticlePageProps } from '@/templates/types';
 import { ArticleBody } from '../components/ArticleBody';
 
@@ -8,13 +17,22 @@ import { ArticleBody } from '../components/ArticleBody';
  */
 export function ArticlePage({ article }: ArticlePageProps) {
     const { t } = useTranslation();
+    const locale = articleLocale(article);
 
     return (
         <article className="mn-container pt-16">
             <Link to="/writing" className="mn-link text-sm">
                 ← {t('article.back')}
             </Link>
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            {article.series && (
+                <p {...locale} className="mt-6 text-sm text-ink-subtle">
+                    {seriesLabel(article.series)}
+                </p>
+            )}
+            <h1
+                {...locale}
+                className="mt-6 text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+            >
                 {article.title}
             </h1>
             <p className="mt-3 text-sm text-ink-subtle">
@@ -33,8 +51,26 @@ export function ArticlePage({ article }: ArticlePageProps) {
                 />
             )}
 
-            <div className="mt-10">
+            {article.video && (
+                <ArticleVideo
+                    video={article.video}
+                    title={`${t('article.video')}: ${article.title}`}
+                    className="mt-8 overflow-hidden rounded-md"
+                />
+            )}
+
+            <div {...locale} className="mt-10">
                 <ArticleBody blocks={article.body} />
+                <ArticleSources
+                    sources={article.sources}
+                    heading={t('article.sources')}
+                    classNames={{
+                        root: 'mt-12 border-t border-line pt-6',
+                        heading: 'text-sm font-semibold text-ink-subtle',
+                        list: 'mt-3 list-decimal space-y-1 ps-6 text-sm',
+                        link: 'mn-link',
+                    }}
+                />
             </div>
 
             {article.relatedProjects.length > 0 && (

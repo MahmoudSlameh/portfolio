@@ -12,12 +12,12 @@ use Illuminate\Support\Str;
  * file to /mcp/uploads/{token}. Tickets live in the cache under a hash of the token (so the cache never
  * holds a usable token), expire after `portfolio.mcp.uploads.minutes` and are deleted once used.
  *
- * @phpstan-type Ticket array{target: string, project_id: int|null, company_id: int|null, variant: string, mime_type: string, filename: string, alt: string, caption: string|null, user_id: int|string|null, expires_at: string}
+ * @phpstan-type Ticket array{target: string, project_id: int|null, company_id: int|null, article_id: int|null, variant: string, mime_type: string, filename: string, alt: string, caption: string|null, placeholder: string|null, user_id: int|string|null, expires_at: string}
  */
 final class UploadTickets
 {
     /**
-     * @param  array{target: string, project_id?: int|null, company_id?: int|null, variant?: string, mime_type: string, filename: string, alt: string, caption?: string|null, user_id?: int|string|null}  $data
+     * @param  array{target: string, project_id?: int|null, company_id?: int|null, article_id?: int|null, variant?: string, mime_type: string, filename: string, alt: string, caption?: string|null, placeholder?: string|null, user_id?: int|string|null}  $data
      * @return array{token: string, expires_at: CarbonImmutable}
      */
     public static function issue(array $data): array
@@ -29,11 +29,13 @@ final class UploadTickets
             'target' => $data['target'],
             'project_id' => $data['project_id'] ?? null,
             'company_id' => $data['company_id'] ?? null,
+            'article_id' => $data['article_id'] ?? null,
             'variant' => $data['variant'] ?? 'light',
             'mime_type' => $data['mime_type'],
             'filename' => $data['filename'],
             'alt' => $data['alt'],
             'caption' => $data['caption'] ?? null,
+            'placeholder' => $data['placeholder'] ?? null,
             'user_id' => $data['user_id'] ?? null,
             'expires_at' => $expiresAt->toIso8601String(),
         ], $expiresAt);

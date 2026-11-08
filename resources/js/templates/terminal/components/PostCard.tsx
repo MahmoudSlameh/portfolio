@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router';
 import { ArrowUpRight } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { articleLocale } from '@/kit';
 import type { ArticleSummary } from '@/lib/content';
 import { formatDate } from '@/lib/utils';
 import { ResponsiveImage } from '@/shared/ui/ResponsiveImage';
@@ -73,7 +74,7 @@ export function PostCard({
                     • {t('writing.minRead', { count: article.readingMinutes })}
                 </p>
                 <h3
-                    lang="en"
+                    {...articleLocale(article)}
                     className="tm-blog-title mt-2 mb-4 text-[19px] font-medium transition-colors"
                 >
                     <Link
@@ -84,7 +85,10 @@ export function PostCard({
                         {article.title}
                     </Link>
                 </h3>
-                <p lang="en" className="mb-0 text-sm text-tm-body">
+                <p
+                    {...articleLocale(article)}
+                    className="mb-0 text-sm text-tm-body"
+                >
                     {article.excerpt}
                 </p>
             </div>

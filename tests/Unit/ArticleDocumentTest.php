@@ -92,10 +92,10 @@ test('pasted structure is mapped to the site blocks', function () {
     expect($blocks)->toBe([
         ['type' => 'heading', 'data' => ['text' => 'Title here']],
         ['type' => 'paragraph', 'data' => ['text' => 'line one line two']],
-        ['type' => 'list', 'data' => ['items' => ['first', 'nested']]],
+        ['type' => 'list', 'data' => ['items' => ['first', 'nested'], 'ordered' => true]],
         ['type' => 'quote', 'data' => ['text' => 'Only a quote']],
         ['type' => 'code', 'data' => ['language' => 'text', 'code' => "a\nb"]],
-        ['type' => 'paragraph', 'data' => ['text' => 'Tool · **Why**']],
+        ['type' => 'table', 'data' => ['header' => null, 'rows' => [['Tool', '**Why**']]]],
     ]);
 });
 

@@ -1,9 +1,13 @@
 import {
     ArchitectureDiagram,
+    ArticleSources,
+    ArticleVideo,
+    articleLocale,
     cn,
     formatDate,
     Link,
     ResponsiveImage,
+    seriesLabel,
     useImageLightbox,
     useTranslation,
 } from '@/kit';
@@ -285,6 +289,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
     const { t } = useTranslation();
     const { variant } = useStudioSpec().pages.article;
     const headings = article.body.filter((block) => block.type === 'heading');
+    const locale = articleLocale(article);
 
     return (
         <article className="st-article">
@@ -292,7 +297,15 @@ export function ArticlePage({ article }: ArticlePageProps) {
                 <Link to="/writing" className="st-link text-sm">
                     ← {t('article.back')}
                 </Link>
-                <h1 className="mt-6 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] font-bold text-ink">
+                {article.series && (
+                    <p {...locale} className="st-kicker mt-6">
+                        {seriesLabel(article.series)}
+                    </p>
+                )}
+                <h1
+                    {...locale}
+                    className="mt-6 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] font-bold text-ink"
+                >
                     {article.title}
                 </h1>
                 <p className="mt-4 font-mono text-sm text-ink-subtle">
@@ -309,6 +322,15 @@ export function ArticlePage({ article }: ArticlePageProps) {
                         sizes="100vw"
                         priority
                         className="rounded-[var(--st-radius)]"
+                    />
+                </div>
+            )}
+            {article.video && (
+                <div className="st-container mx-auto mt-10 max-w-3xl">
+                    <ArticleVideo
+                        video={article.video}
+                        title={`${t('article.video')}: ${article.title}`}
+                        className="overflow-hidden rounded-[var(--st-radius)]"
                     />
                 </div>
             )}
@@ -341,7 +363,19 @@ export function ArticlePage({ article }: ArticlePageProps) {
                     </nav>
                 )}
                 <div className="max-w-3xl min-w-0">
-                    <ArticleBody blocks={article.body} />
+                    <div {...locale}>
+                        <ArticleBody blocks={article.body} />
+                        <ArticleSources
+                            sources={article.sources}
+                            heading={t('article.sources')}
+                            classNames={{
+                                root: 'mt-12 border-t border-line pt-6',
+                                heading: 'st-kicker',
+                                list: 'mt-3 grid list-decimal gap-1.5 ps-6 text-ink-muted marker:text-signal',
+                                link: 'st-link',
+                            }}
+                        />
+                    </div>
                     {article.relatedProjects.length > 0 && (
                         <aside className="mt-12 border-t border-line pt-6">
                             <h2 className="st-kicker">

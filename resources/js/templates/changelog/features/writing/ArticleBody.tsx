@@ -6,6 +6,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
 import {
     ArticleBlocks as KitArticleBlocks,
+    ArticleTable,
     ResponsiveImage,
     type ArticleBlockRenderers,
     InlineText,
@@ -131,21 +132,46 @@ const renderers: ArticleBlockRenderers = {
             )}
         </blockquote>
     ),
-    list: (block) => (
-        <ul className="mb-6 flex flex-col gap-3">
-            {block.items.map((item) => (
-                <li
-                    key={item}
-                    className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
-                >
-                    <span
-                        aria-hidden
-                        className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
-                    />
-                    <InlineText text={item} classNames={inline} />
-                </li>
-            ))}
-        </ul>
+    list: (block) => {
+        const List = block.ordered ? 'ol' : 'ul';
+
+        return (
+            <List className="mb-6 flex flex-col gap-3">
+                {block.items.map((item, index) => (
+                    <li
+                        key={item}
+                        className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
+                    >
+                        {block.ordered ? (
+                            <span
+                                aria-hidden
+                                className="min-w-5 shrink-0 font-mono text-sm leading-[1.9] text-ink-subtle tabular-nums"
+                            >
+                                {index + 1}.
+                            </span>
+                        ) : (
+                            <span
+                                aria-hidden
+                                className="mt-[0.7em] h-px w-3 shrink-0 bg-ink-subtle"
+                            />
+                        )}
+                        <InlineText text={item} classNames={inline} />
+                    </li>
+                ))}
+            </List>
+        );
+    },
+    table: (block) => (
+        <ArticleTable
+            block={block}
+            classNames={{
+                root: 'not-prose my-8 overflow-x-auto rounded-[4px] border border-line',
+                table: 'w-full border-collapse text-[0.9375rem]',
+                th: 'border-b border-line bg-surface px-4 py-2.5 text-start font-mono text-[0.6875rem] tracking-wide text-ink-subtle uppercase',
+                td: 'border-b border-line px-4 py-3 align-top leading-relaxed text-ink-muted',
+                inline,
+            }}
+        />
     ),
     callout: (block) => (
         <aside className="my-8 border border-line bg-surface p-5 md:p-6">

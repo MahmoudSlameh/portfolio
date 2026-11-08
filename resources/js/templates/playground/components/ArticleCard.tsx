@@ -1,5 +1,6 @@
 import { Link } from '@/lib/router';
 import { ArrowUpRight } from 'lucide-react';
+import { articleLocale } from '@/kit';
 import type { ArticleSummary } from '@/lib/content';
 import { cn, formatDate } from '@/lib/utils';
 import { usePlaygroundCopy } from '../copy';
@@ -41,13 +42,13 @@ export function ArticleCard({
             </span>
             <span className="flex flex-1 flex-col gap-3 p-5">
                 <span
-                    lang="en"
+                    {...articleLocale(article)}
                     className="font-display text-2xl leading-tight font-extrabold text-ink [font-stretch:110%]"
                 >
                     {article.title}
                 </span>
                 <span
-                    lang="en"
+                    {...articleLocale(article)}
                     className="text-[0.9375rem] leading-relaxed text-ink-muted"
                 >
                     {article.excerpt}

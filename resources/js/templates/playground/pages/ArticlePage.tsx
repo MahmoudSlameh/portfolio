@@ -9,6 +9,12 @@ import {
 import { m, useScroll, useSpring } from 'motion/react';
 import { useRef, type RefObject } from 'react';
 import { useClipboard } from '@/hooks/useClipboard';
+import {
+    ArticleSources,
+    ArticleVideo,
+    articleLocale,
+    seriesLabel,
+} from '@/kit';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { ArticleSummary } from '@/lib/content';
 import { useSiteConfig } from '@/lib/seo';
@@ -50,7 +56,13 @@ function ProgressBar({
     );
 }
 
-function Contents({ entries }: { entries: { id: string; text: string }[] }) {
+function Contents({
+    entries,
+    locale,
+}: {
+    entries: { id: string; text: string }[];
+    locale: { lang: string; dir: 'ltr' | 'rtl' };
+}) {
     const { t } = useTranslation();
     const activeId = useActiveSection(entries.map((entry) => entry.id));
     if (entries.length === 0) return null;
@@ -58,7 +70,7 @@ function Contents({ entries }: { entries: { id: string; text: string }[] }) {
     return (
         <nav aria-label={t('article.toc')} className="pg-card p-4">
             <p className="pg-label mb-3 text-ink">{t('article.toc')}</p>
-            <ol lang="en" className="flex flex-col gap-1">
+            <ol {...locale} className="flex flex-col gap-1">
                 {entries.map((entry, index) => (
                     <li key={entry.id}>
                         <a
@@ -121,7 +133,7 @@ function NeighbourCard({
                 )}
             </span>
             <span
-                lang="en"
+                {...articleLocale(article)}
                 className="font-display text-2xl leading-tight font-black [font-stretch:115%] md:text-3xl"
             >
                 {article.title}
@@ -137,6 +149,7 @@ export function ArticlePage({ article }: ArticlePageProps) {
     const { copied, copy } = useClipboard();
     const { notify } = useToast();
     const LinkIcon = copied ? Check : Link2;
+    const locale = articleLocale(article);
     const entries = article.body.flatMap((block) =>
         block.type === 'heading' ? [{ id: block.id, text: block.text }] : [],
     );
@@ -199,15 +212,22 @@ export function ArticlePage({ article }: ArticlePageProps) {
                                     count: article.readingMinutes,
                                 })}
                             </Sticker>
+                            {article.series && (
+                                <Sticker pop="pink" tilt={-2}>
+                                    <span {...locale}>
+                                        {seriesLabel(article.series)}
+                                    </span>
+                                </Sticker>
+                            )}
                         </div>
                         <h1
-                            lang="en"
+                            {...locale}
                             className="pg-display pg-keep-case text-[clamp(2.75rem,7.5vw,6.5rem)] text-ink"
                         >
                             {article.title}
                         </h1>
                         <p
-                            lang="en"
+                            {...locale}
                             className="max-w-2xl text-xl leading-snug font-medium text-ink-muted"
                         >
                             {article.excerpt}
@@ -232,11 +252,28 @@ export function ArticlePage({ article }: ArticlePageProps) {
                 <div className="pg-shell grid gap-10 lg:grid-cols-[16rem_minmax(0,44rem)_minmax(0,1fr)] lg:justify-center">
                     <aside className="hidden lg:block">
                         <div className="sticky top-8">
-                            <Contents entries={entries} />
+                            <Contents entries={entries} locale={locale} />
                         </div>
                     </aside>
-                    <div lang="en" dir="ltr" className="min-w-0 text-start">
+                    <div {...locale} className="min-w-0 text-start">
+                        {article.video && (
+                            <ArticleVideo
+                                video={article.video}
+                                title={`${t('article.video')}: ${article.title}`}
+                                className="pg-card mb-10 overflow-hidden"
+                            />
+                        )}
                         <ArticleBlocks blocks={article.body} />
+                        <ArticleSources
+                            sources={article.sources}
+                            heading={t('article.sources')}
+                            classNames={{
+                                root: 'pg-card mt-12 bg-raised p-6',
+                                heading: 'pg-label mb-4 text-ink',
+                                list: 'flex list-decimal flex-col gap-2 ps-5 font-medium text-ink-muted marker:font-mono marker:font-bold',
+                                link: 'underline decoration-2 underline-offset-4 hover:text-ink',
+                            }}
+                        />
                     </div>
                     {article.relatedProjects.length > 0 && (
                         <aside aria-labelledby="related-projects">

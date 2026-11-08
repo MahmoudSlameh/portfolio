@@ -2,6 +2,7 @@ import { Link } from '@/lib/router';
 import { ArrowUpRight } from 'lucide-react';
 import { Tag } from '@/templates/changelog/components/ui/Tag';
 import { useTranslation } from '@/hooks/useTranslation';
+import { articleLocale } from '@/kit';
 import type { ArticleSummary } from '@/lib/content';
 import { formatIsoDate } from '@/lib/utils';
 
@@ -30,7 +31,10 @@ export function ArticleRow({
                 <p className="col-span-2 text-end font-mono text-xs text-ink-subtle md:order-last md:col-span-2">
                     {t('writing.minRead', { count: article.readingMinutes })}
                 </p>
-                <div lang="en" className="col-span-4 md:col-span-6">
+                <div
+                    {...articleLocale(article)}
+                    className="col-span-4 md:col-span-6"
+                >
                     <Heading className="font-display text-[1.75rem] leading-tight text-ink md:text-[2rem]">
                         <Link
                             to="/writing/$slug"

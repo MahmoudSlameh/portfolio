@@ -1,6 +1,8 @@
 import { Info } from 'lucide-react';
 import {
     ArticleBlocks,
+    ArticleTable,
+    cn,
     ResponsiveImage,
     type ArticleBlockRenderers,
     InlineText,
@@ -53,14 +55,35 @@ const renderers: ArticleBlockRenderers = {
             )}
         </blockquote>
     ),
-    list: (block) => (
-        <ul className="mb-5 list-disc ps-6 marker:text-signal">
-            {block.items.map((item) => (
-                <li key={item} className="mb-1.5">
-                    <InlineText text={item} classNames={inline} />
-                </li>
-            ))}
-        </ul>
+    list: (block) => {
+        const List = block.ordered ? 'ol' : 'ul';
+
+        return (
+            <List
+                className={cn(
+                    'mb-5 ps-6 marker:text-signal',
+                    block.ordered ? 'list-decimal' : 'list-disc',
+                )}
+            >
+                {block.items.map((item) => (
+                    <li key={item} className="mb-1.5">
+                        <InlineText text={item} classNames={inline} />
+                    </li>
+                ))}
+            </List>
+        );
+    },
+    table: (block) => (
+        <ArticleTable
+            block={block}
+            classNames={{
+                root: 'st-table my-8 overflow-x-auto rounded-[var(--st-radius)] border border-line',
+                table: 'w-full border-collapse text-base',
+                th: 'border-b border-line bg-surface px-4 py-2.5 text-start font-bold text-ink',
+                td: 'border-b border-line px-4 py-3 align-top',
+                inline,
+            }}
+        />
     ),
     callout: (block) => (
         <aside className="st-callout my-8 flex gap-3 rounded-[var(--st-radius)] bg-signal-soft p-5">

@@ -331,15 +331,39 @@ export type ArticleBlock =
           code: string;
       }
     | { type: 'quote'; text: string; cite?: string }
-    | { type: 'list'; items: string[] }
+    | { type: 'list'; items: string[]; ordered?: boolean }
+    | { type: 'table'; header: string[] | null; rows: string[][] }
     | { type: 'callout'; title: string; text: string }
     | { type: 'image'; image: ImageData; caption?: string };
+
+export type ArticleLanguage = 'en' | 'ar';
+
+export interface ArticleSeries {
+    name: string;
+    /** 1-based position in the series, when set. */
+    order: number | null;
+}
+
+export interface ArticleSource {
+    title: string;
+    url: string;
+}
+
+export interface ArticleVideo {
+    /** The link as entered (YouTube or Vimeo). */
+    url: string;
+    /** Privacy-friendly player URL for an iframe. */
+    embedUrl: string;
+}
 
 export interface Article {
     id: string;
     slug: string;
     title: string;
     excerpt: string;
+    language: ArticleLanguage;
+    direction: 'ltr' | 'rtl';
+    series: ArticleSeries | null;
     publishedAt: string;
     tags: string[];
     projectIds: string[];
@@ -464,6 +488,8 @@ export interface ProjectDetail extends Project {
 
 export interface ArticleDetail extends Article {
     readingMinutes: number;
+    sources: ArticleSource[];
+    video: ArticleVideo | null;
     relatedProjects: ProjectReference[];
     previous: ArticleSummary | null;
     next: ArticleSummary | null;

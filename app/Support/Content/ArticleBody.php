@@ -42,7 +42,16 @@ final class ArticleBody
                     'text' => self::string($data, 'text'),
                     'cite' => self::string($data, 'cite') ?: null,
                 ], fn (mixed $value): bool => $value !== null),
-                'list' => ['type' => 'list', 'items' => array_values(array_map(strval(...), (array) ($data['items'] ?? [])))],
+                'list' => array_filter([
+                    'type' => 'list',
+                    'items' => array_values(array_map(strval(...), (array) ($data['items'] ?? []))),
+                    'ordered' => ($data['ordered'] ?? false) === true ? true : null,
+                ], fn (mixed $value): bool => $value !== null),
+                'table' => [
+                    'type' => 'table',
+                    'header' => is_array($data['header'] ?? null) ? array_values(array_map(strval(...), $data['header'])) : null,
+                    'rows' => array_values(array_map(fn (mixed $row): array => array_values(array_map(strval(...), (array) $row)), (array) ($data['rows'] ?? []))),
+                ],
                 'callout' => ['type' => 'callout', 'title' => self::string($data, 'title'), 'text' => self::string($data, 'text')],
                 'image' => self::image($data, $images->get(self::string($data, 'media_uuid'))),
                 default => null,

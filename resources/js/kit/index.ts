@@ -31,6 +31,15 @@ export {
     type ArticleBlockType,
 } from './ArticleBlocks';
 export { InlineText, plainText, type InlineTextClassNames } from './InlineText';
+export {
+    ArticleSources,
+    ArticleTable,
+    ArticleVideo,
+    articleLocale,
+    seriesLabel,
+    type ArticleSourcesClassNames,
+    type ArticleTableClassNames,
+} from './ArticleParts';
 
 // Navigation (Inertia links with the route helpers' shape)
 export { Link, useNavigate, useRouterState } from '@/lib/router';

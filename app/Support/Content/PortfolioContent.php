@@ -263,11 +263,14 @@ final class PortfolioContent
 
         $summary = (new ArticleSummaryResource($article))->toArray($this->request);
         unset($summary['readingMinutes']);
+        $videoPlayer = $article->videoPlayerUrl();
 
         return [
             ...$summary,
             'body' => ArticleBody::toBlocks($article),
             'readingMinutes' => $article->readingMinutes(),
+            'sources' => array_values(array_map(fn (array $source): array => ['title' => (string) $source['title'], 'url' => (string) $source['url']], $article->sources)),
+            'video' => $videoPlayer === null ? null : ['url' => (string) $article->video_url, 'embedUrl' => $videoPlayer],
             'relatedProjects' => $article->projects
                 ->filter(fn (Project $project): bool => $project->isPublished())
                 ->map(fn (Project $project): array => ProjectResource::reference($project))

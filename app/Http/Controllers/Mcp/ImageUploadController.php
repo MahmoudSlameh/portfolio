@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mcp;
 
+use App\Filament\Resources\Articles\ArticleResource;
 use App\Filament\Resources\Companies\CompanyResource;
 use App\Filament\Resources\Projects\ProjectResource;
 use App\Mcp\Support\ImageAttacher;
@@ -10,6 +11,7 @@ use App\Mcp\Support\IncomingImage;
 use App\Mcp\Support\Payload;
 use App\Mcp\Support\UploadTickets;
 use App\Mcp\Tools\Companies\SetCompanyLogoTool;
+use App\Models\Article;
 use App\Models\Company;
 use App\Models\Project;
 use App\Support\Media\ImageRejected;
@@ -73,7 +75,7 @@ class ImageUploadController
             if ($result === null) {
                 UploadTickets::consume($token);
 
-                return $this->error('The project or company of this upload no longer exists.', Response::HTTP_GONE);
+                return $this->error('The project, company or article of this upload no longer exists.', Response::HTTP_GONE);
             }
 
             UploadTickets::consume($token);
@@ -82,6 +84,7 @@ class ImageUploadController
                 'target' => $ticket['target'],
                 'project_id' => $ticket['project_id'],
                 'company_id' => $ticket['company_id'],
+                'article_id' => $ticket['article_id'] ?? null,
                 'bytes' => strlen($bytes),
                 'mime_type' => $image->mimeType,
                 'ip' => $request->ip(),
@@ -125,7 +128,7 @@ class ImageUploadController
     }
 
     /**
-     * @param  array{target: string, project_id: int|null, company_id: int|null, variant: string, alt: string, caption: string|null}  $ticket
+     * @param  array{target: string, project_id: int|null, company_id: int|null, article_id?: int|null, variant: string, alt: string, caption: string|null, placeholder?: string|null}  $ticket
      * @return array<string, mixed>|null null when the record is gone
      *
      * @throws ImageRejected
@@ -148,6 +151,10 @@ class ImageUploadController
             ];
         }
 
+        if (in_array($ticket['target'], ['article_cover', 'article_image'], true)) {
+            return $this->attachToArticle($ticket, $image);
+        }
+
         $project = Project::query()->find((int) $ticket['project_id']);
 
         if ($project === null) {
@@ -166,6 +173,38 @@ class ImageUploadController
             'target' => $ticket['target'],
             'image' => $stored,
             'project_admin_url' => ProjectResource::getUrl('edit', ['record' => $project], panel: 'admin'),
+        ];
+    }
+
+    /**
+     * @param  array{target: string, article_id?: int|null, alt: string, caption: string|null, placeholder?: string|null}  $ticket
+     * @return array<string, mixed>|null null when the article is gone
+     *
+     * @throws ImageRejected
+     */
+    private function attachToArticle(array $ticket, IncomingImage $image): ?array
+    {
+        $article = Article::query()->find((int) ($ticket['article_id'] ?? 0));
+
+        if ($article === null) {
+            return null;
+        }
+
+        if ($ticket['target'] === 'article_cover') {
+            $media = ImageAttacher::articleCover($article, $image, $ticket['alt']);
+            $result = ['image' => ['id' => $media->id, ...(array) Payload::image($media, $ticket['alt'])]];
+        } else {
+            ['media' => $media, 'filled_placeholder' => $filled] = ImageAttacher::articleImage($article, $image, $ticket['alt'], $ticket['caption'], $ticket['placeholder'] ?? null);
+            $result = [
+                'image' => ['src' => "media:{$media->uuid}", ...(array) Payload::image($media, $ticket['alt'])],
+                'placed' => $filled ? 'in place of image:'.$ticket['placeholder'] : 'at the end of the body',
+            ];
+        }
+
+        return [
+            'target' => $ticket['target'],
+            ...$result,
+            'article_admin_url' => ArticleResource::getUrl('edit', ['record' => $article], panel: 'admin'),
         ];
     }
 

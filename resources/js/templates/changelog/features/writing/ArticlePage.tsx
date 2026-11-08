@@ -4,6 +4,12 @@ import { useRef } from 'react';
 import { CopyButton } from '@/templates/changelog/components/ui/CopyButton';
 import { Tag } from '@/templates/changelog/components/ui/Tag';
 import { useTranslation } from '@/hooks/useTranslation';
+import {
+    ArticleSources,
+    ArticleVideo,
+    articleLocale,
+    seriesLabel,
+} from '@/kit';
 import type { ArticleDetail, ArticleSummary } from '@/lib/content';
 import { useSiteConfig } from '@/lib/seo';
 import { cn, formatDate } from '@/lib/utils';
@@ -52,7 +58,7 @@ function AdjacentArticle({
                 )}
             </span>
             <span
-                lang="en"
+                {...articleLocale(article)}
                 className="link-draw-target font-display text-3xl leading-tight text-ink md:text-4xl"
             >
                 {article.title}
@@ -65,6 +71,7 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
     const siteConfig = useSiteConfig();
     const { t } = useTranslation();
     const articleRef = useRef<HTMLElement>(null);
+    const locale = articleLocale(article);
     const tocEntries: TocEntry[] = article.body.flatMap((block) =>
         block.type === 'heading' ? [{ id: block.id, text: block.text }] : [],
     );
@@ -125,14 +132,22 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                                     </li>
                                 ))}
                             </ul>
+                            {article.series && (
+                                <p
+                                    {...locale}
+                                    className="eyebrow mb-4 text-signal-ink"
+                                >
+                                    {seriesLabel(article.series)}
+                                </p>
+                            )}
                             <h1
-                                lang="en"
+                                {...locale}
                                 className="font-display text-5xl leading-[0.98] tracking-[-0.015em] text-ink sm:text-6xl lg:text-7xl"
                             >
                                 {article.title}
                             </h1>
                             <p
-                                lang="en"
+                                {...locale}
                                 className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted md:text-xl"
                             >
                                 {article.excerpt}
@@ -169,8 +184,25 @@ export function ArticlePage({ article }: { article: ArticleDetail }) {
                             <TableOfContents entries={tocEntries} />
                         </div>
                     </aside>
-                    <div lang="en" dir="ltr" className="min-w-0 text-start">
+                    <div {...locale} className="min-w-0 text-start">
+                        {article.video && (
+                            <ArticleVideo
+                                video={article.video}
+                                title={`${t('article.video')}: ${article.title}`}
+                                className="mb-10 overflow-hidden rounded-[4px] border border-line"
+                            />
+                        )}
                         <ArticleBody blocks={article.body} />
+                        <ArticleSources
+                            sources={article.sources}
+                            heading={t('article.sources')}
+                            classNames={{
+                                root: 'mt-14 border-t border-line pt-6',
+                                heading: 'eyebrow mb-4 text-ink-subtle',
+                                list: 'flex list-decimal flex-col gap-2 ps-5 text-sm text-ink-muted marker:font-mono marker:text-ink-subtle',
+                                link: 'underline decoration-current/40 underline-offset-4 transition-colors hover:text-ink hover:decoration-current',
+                            }}
+                        />
                     </div>
                     {article.relatedProjects.length > 0 && (
                         <aside

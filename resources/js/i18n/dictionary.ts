@@ -276,6 +276,8 @@ const en = {
     'article.readTime': 'Reading time',
     'article.adjacent': 'More writing',
     'article.englishOnly': 'Written in English',
+    'article.sources': 'Sources',
+    'article.video': 'Video',
 
     'booksPage.title': 'Bookshelf',
     'booksPage.intro':

@@ -6,6 +6,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/providers/ToastProvider';
 import {
     ArticleBlocks as KitArticleBlocks,
+    ArticleTable,
     ResponsiveImage,
     type ArticleBlockRenderers,
     InlineText,
@@ -110,7 +111,7 @@ const inline: InlineTextClassNames = {
 const renderers: ArticleBlockRenderers = {
     paragraph: (block, { isFirst }) =>
         isFirst ? (
-            <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-left first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
+            <p className="mb-8 text-[1.5rem] leading-snug font-semibold text-ink first-letter:float-start first-letter:me-3 first-letter:rounded-xl first-letter:border-2 first-letter:border-edge first-letter:bg-pop-yellow first-letter:px-3 first-letter:font-display first-letter:text-6xl first-letter:leading-none first-letter:font-black first-letter:text-on-pop md:text-[1.75rem]">
                 <InlineText text={block.text} classNames={inline} />
             </p>
         ) : (
@@ -140,21 +141,46 @@ const renderers: ArticleBlockRenderers = {
             )}
         </blockquote>
     ),
-    list: (block) => (
-        <ul className="mb-8 flex flex-col gap-3">
-            {block.items.map((item) => (
-                <li
-                    key={item}
-                    className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
-                >
-                    <span
-                        aria-hidden
-                        className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
-                    />
-                    <InlineText text={item} classNames={inline} />
-                </li>
-            ))}
-        </ul>
+    list: (block) => {
+        const List = block.ordered ? 'ol' : 'ul';
+
+        return (
+            <List className="mb-8 flex flex-col gap-3">
+                {block.items.map((item, index) => (
+                    <li
+                        key={item}
+                        className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-muted"
+                    >
+                        {block.ordered ? (
+                            <span
+                                aria-hidden
+                                className="inline-flex size-7 shrink-0 items-center justify-center rounded-lg border-2 border-edge bg-pop-blue font-mono text-xs font-bold text-on-pop"
+                            >
+                                {index + 1}
+                            </span>
+                        ) : (
+                            <span
+                                aria-hidden
+                                className="mt-2 size-3 shrink-0 rotate-45 border-2 border-edge bg-pop-blue"
+                            />
+                        )}
+                        <InlineText text={item} classNames={inline} />
+                    </li>
+                ))}
+            </List>
+        );
+    },
+    table: (block) => (
+        <ArticleTable
+            block={block}
+            classNames={{
+                root: 'pg-card my-10 overflow-x-auto bg-raised',
+                table: 'w-full border-collapse text-[0.9375rem]',
+                th: 'border-b-2 border-edge bg-pop-yellow px-4 py-2.5 text-start font-bold text-on-pop',
+                td: 'border-b-2 border-edge/20 px-4 py-3 align-top text-ink-muted',
+                inline,
+            }}
+        />
     ),
     callout: (block) => (
         <aside className="pg-card my-10 flex gap-4 bg-pop-yellow p-6 text-on-pop">

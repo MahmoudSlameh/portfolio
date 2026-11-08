@@ -2,6 +2,7 @@ import { Link } from '@/lib/router';
 import { useState } from 'react';
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { useTranslation } from '@/hooks/useTranslation';
+import { articleLocale } from '@/kit';
 import { formatDate } from '@/lib/utils';
 import type { WritingArchivePageProps } from '@/templates/types';
 import { ChipGroup } from '../components/Chip';
@@ -114,7 +115,10 @@ export function WritingArchivePage({
                                         })}
                                     </span>
                                 </p>
-                                <div lang="en" className="min-w-0">
+                                <div
+                                    {...articleLocale(article)}
+                                    className="min-w-0"
+                                >
                                     <h2 className="mb-2 text-xl font-medium">
                                         <Link
                                             to="/writing/$slug"

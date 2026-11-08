@@ -2,6 +2,7 @@
 
 namespace App\Mcp\Support;
 
+use App\Models\Article;
 use App\Models\Company;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,11 @@ final class Records
     public static function project(mixed $reference, bool $withTrashed = false): ?Project
     {
         return self::bySlugOrId(Project::query()->when($withTrashed, fn ($query) => $query->withTrashed()), $reference);
+    }
+
+    public static function article(mixed $reference, bool $withTrashed = false): ?Article
+    {
+        return self::bySlugOrId(Article::query()->when($withTrashed, fn ($query) => $query->withTrashed()), $reference);
     }
 
     public static function company(mixed $reference): ?Company
